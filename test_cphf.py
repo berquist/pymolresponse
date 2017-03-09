@@ -1,12 +1,7 @@
-import sys
-sys.path.append('/home/eric/Chemistry/calc.epr/cpscfman_test_jobs')
-
 import numpy as np
 
 from utils import (np_load, parse_int_file_2)
 from cphf import (CPHF, Operator)
-
-# from dalton_sopr import DALTONExt
 
 
 def test_final_result_rhf_h2o_sto3g_rpa_singlet():
@@ -56,10 +51,12 @@ def test_final_result_rhf_h2o_sto3g_rpa_singlet():
                              [ 0.,          3.12731363,  0.        ],
                              [ 0.,          0.,          0.05473482]])
 
-    assert cphf.results[0].all() == result__0_00.all()
-    assert cphf.results[1].all() == result__0_02.all()
-    assert cphf.results[2].all() == result__0_06.all()
-    assert cphf.results[3].all() == result__0_10.all()
+    atol = 1.0e-8
+    rtol = 0.0
+    np.testing.assert_allclose(cphf.results[0], result__0_00, rtol=rtol, atol=atol)
+    np.testing.assert_allclose(cphf.results[1], result__0_02, rtol=rtol, atol=atol)
+    np.testing.assert_allclose(cphf.results[2], result__0_06, rtol=rtol, atol=atol)
+    np.testing.assert_allclose(cphf.results[3], result__0_10, rtol=rtol, atol=atol)
 
     return
 
@@ -111,10 +108,12 @@ def test_final_result_rhf_h2o_sto3g_rpa_triplet():
                              [  0.,          20.21670386,   0.        ],
                              [  0.,           0.,           0.08892512]])
 
-    assert cphf.results[0].all() == result__0_00.all()
-    assert cphf.results[1].all() == result__0_02.all()
-    assert cphf.results[2].all() == result__0_06.all()
-    assert cphf.results[3].all() == result__0_10.all()
+    atol = 1.0e-8
+    rtol = 0.0
+    np.testing.assert_allclose(cphf.results[0], result__0_00, rtol=rtol, atol=atol)
+    np.testing.assert_allclose(cphf.results[1], result__0_02, rtol=rtol, atol=atol)
+    np.testing.assert_allclose(cphf.results[2], result__0_06, rtol=rtol, atol=atol)
+    np.testing.assert_allclose(cphf.results[3], result__0_10, rtol=rtol, atol=atol)
 
     return
 
@@ -166,10 +165,12 @@ def test_final_result_rhf_h2o_sto3g_tda_singlet():
                              [ 0.,          4.06981937,  0.        ],
                              [ 0.,          0.,          0.05999934]])
 
-    assert cphf.results[0].all() == result__0_00.all()
-    assert cphf.results[1].all() == result__0_02.all()
-    assert cphf.results[2].all() == result__0_06.all()
-    assert cphf.results[3].all() == result__0_10.all()
+    atol = 1.0e-8
+    rtol = 0.0
+    np.testing.assert_allclose(cphf.results[0], result__0_00, rtol=rtol, atol=atol)
+    np.testing.assert_allclose(cphf.results[1], result__0_02, rtol=rtol, atol=atol)
+    np.testing.assert_allclose(cphf.results[2], result__0_06, rtol=rtol, atol=atol)
+    np.testing.assert_allclose(cphf.results[3], result__0_10, rtol=rtol, atol=atol)
 
     return
 
@@ -221,10 +222,12 @@ def test_final_result_rhf_h2o_sto3g_tda_triplet():
                              [  0.,           9.52504267,   0.        ],
                              [  0.,           0.,           0.07805428]])
 
-    assert cphf.results[0].all() == result__0_00.all()
-    assert cphf.results[1].all() == result__0_02.all()
-    assert cphf.results[2].all() == result__0_06.all()
-    assert cphf.results[3].all() == result__0_10.all()
+    atol = 1.0e-8
+    rtol = 0.0
+    np.testing.assert_allclose(cphf.results[0], result__0_00, rtol=rtol, atol=atol)
+    np.testing.assert_allclose(cphf.results[1], result__0_02, rtol=rtol, atol=atol)
+    np.testing.assert_allclose(cphf.results[2], result__0_06, rtol=rtol, atol=atol)
+    np.testing.assert_allclose(cphf.results[3], result__0_10, rtol=rtol, atol=atol)
 
     return
 
