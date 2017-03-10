@@ -175,7 +175,7 @@ class CPHF(object):
 
         superoverlap = np.bmat([[np.eye(nov), np.zeros(shape=(nov, nov))],
                                 [np.zeros(shape=(nov, nov)), -np.eye(nov)]])
-        superoverlap *= frequency
+        superoverlap = superoverlap * frequency
 
         if hamiltonian == 'rpa' and spin == 'singlet':
             A_singlet = form_rpa_a_matrix_mo_singlet(self.moenergies, self.TEI_MO, nocc)
@@ -201,7 +201,7 @@ class CPHF(object):
         else:
             pass
 
-        explicit_hessian -= superoverlap
+        explicit_hessian = explicit_hessian - superoverlap
         self.explicit_hessian = explicit_hessian
 
     def invert_explicit_hessian(self):
@@ -214,14 +214,16 @@ class CPHF(object):
                 shape = operator.mo_integrals_ai_supervector[idx_operator_component, ...].shape
                 assert len(shape) == 2
                 assert shape[1] == 1
-                rspvec_operator_component = np.dot(self.explicit_hessian_inv, operator.mo_integrals_ai_supervector[idx_operator_component, ...])
+                rspvec_operator_component = np.dot(self.explicit_hessian_inv,
+                                                   operator.mo_integrals_ai_supervector[idx_operator_component, ...])
                 assert rspvec_operator_component.shape == shape
                 rspvecs_operator.append(rspvec_operator_component)
             # TODO this isn't working and I don't know why
             # rspvecs_operator = np.stack(rspvecs_operator, axis=0)
             # All the lines with 'tmp' could be replaced by a working
             # stack call.
-            tmp = np.empty(shape=(len(rspvecs_operator), shape[0], 1))
+            tmp = np.empty(shape=(len(rspvecs_operator), shape[0], 1),
+                           dtype=rspvec_operator_component.dtype)
             for idx, rspvec_operator_component in enumerate(rspvecs_operator):
                 tmp[idx, ...] = rspvec_operator_component
             rspvecs_operator = tmp
@@ -256,7 +258,9 @@ class CPHF(object):
                            for i in range(len(self.operators)))
             assert dim_rows == dim_cols
 
-            results = np.zeros(shape=(dim_rows, dim_cols))
+            # FIXME
+            results = np.zeros(shape=(dim_rows, dim_cols),
+                               dtype=self.operators[0].rspvecs[f].dtype)
 
             # Form the result blocks between each pair of
             # operators. Ignore any potential symmetry in the final
