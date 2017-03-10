@@ -26,7 +26,7 @@ def test_final_result_rhf_h2o_sto3g_rpa_singlet():
     ao_integrals_dipole[0, :, :] = mat_dipole_x
     ao_integrals_dipole[1, :, :] = mat_dipole_y
     ao_integrals_dipole[2, :, :] = mat_dipole_z
-    operator_dipole = Operator(is_imaginary=False, is_spin_dependent=False)
+    operator_dipole = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False)
     operator_dipole.ao_integrals = ao_integrals_dipole
     cphf.add_operator(operator_dipole)
     cphf.TEI_MO = TEI_MO
@@ -83,7 +83,7 @@ def test_final_result_rhf_h2o_sto3g_rpa_triplet():
     ao_integrals_dipole[0, :, :] = mat_dipole_x
     ao_integrals_dipole[1, :, :] = mat_dipole_y
     ao_integrals_dipole[2, :, :] = mat_dipole_z
-    operator_dipole = Operator(is_imaginary=False, is_spin_dependent=False)
+    operator_dipole = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False)
     operator_dipole.ao_integrals = ao_integrals_dipole
     cphf.add_operator(operator_dipole)
     cphf.TEI_MO = TEI_MO
@@ -140,7 +140,7 @@ def test_final_result_rhf_h2o_sto3g_tda_singlet():
     ao_integrals_dipole[0, :, :] = mat_dipole_x
     ao_integrals_dipole[1, :, :] = mat_dipole_y
     ao_integrals_dipole[2, :, :] = mat_dipole_z
-    operator_dipole = Operator(is_imaginary=False, is_spin_dependent=False)
+    operator_dipole = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False)
     operator_dipole.ao_integrals = ao_integrals_dipole
     cphf.add_operator(operator_dipole)
     cphf.TEI_MO = TEI_MO
@@ -197,7 +197,7 @@ def test_final_result_rhf_h2o_sto3g_tda_triplet():
     ao_integrals_dipole[0, :, :] = mat_dipole_x
     ao_integrals_dipole[1, :, :] = mat_dipole_y
     ao_integrals_dipole[2, :, :] = mat_dipole_z
-    operator_dipole = Operator(is_imaginary=False, is_spin_dependent=False)
+    operator_dipole = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False)
     operator_dipole.ao_integrals = ao_integrals_dipole
     cphf.add_operator(operator_dipole)
     cphf.TEI_MO = TEI_MO

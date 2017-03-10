@@ -26,7 +26,7 @@ def form_results(vecs_property, vecs_response):
 
 class Operator(object):
 
-    def __init__(self, label=None, is_imaginary=False, is_spin_dependent=False):
+    def __init__(self, label='', is_imaginary=False, is_spin_dependent=False):
         self.label = label
         self.is_imaginary = is_imaginary
         self.is_spin_dependent = is_spin_dependent
@@ -36,6 +36,33 @@ class Operator(object):
 
         self.frequencies = None
         self.rspvecs = []
+
+    def form_rhs(self, C, nocc):
+        b_prefactor = 1
+        if self.is_imaginary:
+            b_prefactor = -1
+        operator_ai = []
+        operator_ai_supervector = []
+        # Loop over the operator components (usually multiple
+        # Cartesian directions).
+        for idx in range(self.ao_integrals.shape[0]):
+            operator_component_ai = np.dot(C[:, nocc:].T, np.dot(self.ao_integrals[idx, :, :], C[:, :nocc]))
+            # If the operator is a triplet operator and doing singlet
+            # response, remove inactive -> secondary excitations.
+            # Is this only true for spin-orbit operators?
+            # if self.is_spin_dependent:
+            #     for (i, a) in self.indices_closed_secondary:
+            #         operator_component_ai[a - nocc, i] = 0.0
+            operator_component_ai = repack_matrix_to_vector(operator_component_ai)[:, np.newaxis]
+            # TODO move to Operator
+            if hasattr(self, 'hsofac'):
+                operator_component_ai *= self.hsofac
+            operator_component_ai_supervector = np.concatenate((operator_component_ai,
+                                                                operator_component_ai * b_prefactor), axis=0)
+            operator_ai.append(operator_component_ai)
+            operator_ai_supervector.append(operator_component_ai_supervector)
+        self.mo_integrals_ai = np.stack(operator_ai, axis=0)
+        self.mo_integrals_ai_supervector = np.stack(operator_ai_supervector, axis=0)
 
 
 class CPHF(object):
@@ -83,40 +110,15 @@ class CPHF(object):
             operator.frequences = self.frequencies
 
     def add_operator(self, operator):
-        b_prefactor = 1
-        if operator.is_imaginary:
-            b_prefactor = -1
-        # RHF only for now
         nocc = self.occupations[0]
-        nvirt = self.occupations[1]
+        # nvirt = self.occupations[1]
         shape = operator.ao_integrals.shape
         # First dimension is the number of Cartesian components, next
         # two are the number of AOs.
         assert len(shape) == 3
         assert shape[0] >= 1
         assert shape[1] == shape[2]
-        operator_ai = []
-        operator_ai_supervector = []
-        # Loop over the operator components (usually multiple
-        # Cartesian directions).
-        for idx in range(operator.ao_integrals.shape[0]):
-            operator_component_ai = np.dot(self.mocoeffs[:, nocc:].T, np.dot(operator.ao_integrals[idx, :, :], self.mocoeffs[:, :nocc]))
-            # If the operator is a triplet operator and doing singlet
-            # response, remove inactive -> secondary excitations.
-            # Is this only true for spin-orbit operators?
-            # if operator.is_spin_dependent:
-            #     for (i, a) in self.indices_closed_secondary:
-            #         operator_component_ai[a - nocc, i] = 0.0
-            operator_component_ai = repack_matrix_to_vector(operator_component_ai)[:, np.newaxis]
-            # TODO move to Operator
-            if hasattr(operator, 'hsofac'):
-                operator_component_ai *= operator.hsofac
-            operator_component_ai_supervector = np.concatenate((operator_component_ai,
-                                                                operator_component_ai * b_prefactor), axis=0)
-            operator_ai.append(operator_component_ai)
-            operator_ai_supervector.append(operator_component_ai_supervector)
-        operator.mo_integrals_ai = np.stack(operator_ai, axis=0)
-        operator.mo_integrals_ai_supervector = np.stack(operator_ai_supervector, axis=0)
+        operator.form_rhs(self.mocoeffs, nocc)
         self.operators.append(operator)
 
     def run(self, solver=None, hamiltonian=None, spin=None):
