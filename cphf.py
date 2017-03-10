@@ -11,29 +11,15 @@ from utils import (np_load, parse_int_file_2,
                    form_rpa_b_matrix_mo_singlet, form_rpa_b_matrix_mo_triplet)
 
 
-# TODO could probably just do this with a reshape...
 def repack_matrix_to_vector(mat):
-    nrows, ncols = mat.shape
-    vec = np.empty((nrows * ncols))
-    for a in range(nrows):
-        for i in range(ncols):
-            ia = (i * nrows) + a
-            vec[ia] = mat[a, i]
-    return vec
+    # TODO get rid of the copy?
+    return np.reshape(mat.copy(), -1, order='F')
 
 
 def form_results(vecs_property, vecs_response):
     assert vecs_property.shape[1:] == vecs_response.shape[1:]
     assert len(vecs_property.shape) == 3
     assert vecs_property.shape[2] == 1
-    # Unnecessary, just do the whole thing in one shot.
-    # nr = vecs_property.shape[0]
-    # nc = vecs_response.shape[0]
-    # results = np.empty(shape=(nr, nc))
-    # for a in range(nr):
-    #     for b in range(nc):
-    #         results[a, b] = np.dot(vecs_property[a, :, 0], vecs_response[b, :, 0])
-    # print(results)
     results = np.dot(vecs_property[:, :, 0], vecs_response[:, :, 0].T)
     return results
 
