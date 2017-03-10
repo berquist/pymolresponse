@@ -311,6 +311,6 @@ if __name__ == '__main__':
         for spin in ('singlet', 'triplet'):
             print('hamiltonian: {}, spin: {}'.format(hamiltonian, spin))
             cphf.run(solver='direct', hamiltonian=hamiltonian, spin=spin)
-            thresh = 1.0e-08
+            thresh = 1.0e-10
             cphf.results[0][cphf.results[0] < thresh] = 0.0
             print(cphf.results[0])
