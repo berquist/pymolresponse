@@ -69,6 +69,9 @@ class CPHF(object):
             self.frequencies = frequencies
 
     def add_operator(self, operator):
+        b_prefactor = 1
+        if operator.is_imaginary:
+            b_prefactor = -1
         # RHF only for now
         nocc = self.occupations[0]
         shape = operator.ao_integrals.shape
@@ -84,7 +87,8 @@ class CPHF(object):
         for idx in range(operator.ao_integrals.shape[0]):
             operator_component_ai = np.dot(self.mocoeffs[:, nocc:].T, np.dot(operator.ao_integrals[idx, :, :], self.mocoeffs[:, :nocc]))
             operator_component_ai = repack_matrix_to_vector(operator_component_ai)[:, np.newaxis]
-            operator_component_ai_supervector = np.concatenate((operator_component_ai, operator_component_ai), axis=0)
+            operator_component_ai_supervector = np.concatenate((operator_component_ai,
+                                                                operator_component_ai * b_prefactor), axis=0)
             operator_ai.append(operator_component_ai)
             operator_ai_supervector.append(operator_component_ai_supervector)
         operator.mo_integrals_ai = np.stack(operator_ai, axis=0)
