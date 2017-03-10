@@ -104,12 +104,12 @@ class CPHF(object):
         self.indices_act_secondary = [(t, a) for t in range_act for a in range_secondary]
 
     def set_frequencies(self, frequencies=None):
-        if not frequencies:
+        if frequencies is None:
             self.frequencies = [0.0]
         else:
             self.frequencies = frequencies
         for operator in self.operators:
-            operator.frequences = self.frequencies
+            operator.frequencies = self.frequencies
 
     def add_operator(self, operator):
         nocc = self.occupations[0]
