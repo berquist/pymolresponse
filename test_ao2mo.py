@@ -86,7 +86,7 @@ def form_rpa_b_matrix_mo_singlet_os(TEI_MO_xxyy, nocc_x, nocc_y):
 
     return B
 
-def test_direct_rhf_as_uhf():
+def test_direct_uhf_from_rhf():
     from pyscf import ao2mo, gto, scf
 
     mol = gto.Mole()
@@ -217,7 +217,138 @@ def test_direct_rhf_as_uhf():
     print(res_u)
 
 
+def test_direct_uhf():
+    from pyscf import ao2mo, gto, scf
+
+    mol = gto.Mole()
+    mol.verbose = 5
+    with open('water.xyz') as fh:
+        mol.atom = fh.read()
+    mol.unit = 'Bohr'
+    mol.basis = 'sto-3g'
+    mol.symmetry = False
+
+    mol.charge = 1
+    mol.spin = 1
+
+    mol.build()
+
+    mf = scf.UHF(mol)
+    mf.kernel()
+    C_a = mf.mo_coeff[0, ...]
+    C_b = mf.mo_coeff[1, ...]
+    E_a = np.diag(mf.mo_energy[0, ...])
+    E_b = np.diag(mf.mo_energy[1, ...])
+    assert C_a.shape == C_b.shape
+    assert E_a.shape == E_b.shape
+    norb = C_a.shape[1]
+    C_aaaa = (C_a, C_a, C_a, C_a)
+    C_aabb = (C_a, C_a, C_b, C_b)
+    C_bbaa = (C_b, C_b, C_a, C_a)
+    C_bbbb = (C_b, C_b, C_b, C_b)
+    tei_mo_aaaa = ao2mo.general(mol, C_aaaa, aosym='s1', compact=False, verbose=5).reshape(norb, norb, norb, norb)
+    tei_mo_aabb = ao2mo.general(mol, C_aabb, aosym='s1', compact=False, verbose=5).reshape(norb, norb, norb, norb)
+    tei_mo_bbaa = ao2mo.general(mol, C_bbaa, aosym='s1', compact=False, verbose=5).reshape(norb, norb, norb, norb)
+    tei_mo_bbbb = ao2mo.general(mol, C_bbbb, aosym='s1', compact=False, verbose=5).reshape(norb, norb, norb, norb)
+
+    nocc_a, nocc_b = mol.nelec
+    nvirt_a, nvirt_b = norb - nocc_a, norb - nocc_b
+    occupations = [nocc_a, nvirt_a, nocc_b, nvirt_b]
+
+    A_s_ss_a = form_rpa_a_matrix_mo_singlet_ss(E_a, tei_mo_aaaa, nocc_a)
+    A_s_os_a = form_rpa_a_matrix_mo_singlet_os(tei_mo_aabb, nocc_a, nocc_b)
+    B_s_ss_a = form_rpa_b_matrix_mo_singlet_ss(tei_mo_aaaa, nocc_a)
+    B_s_os_a = form_rpa_b_matrix_mo_singlet_os(tei_mo_aabb, nocc_a, nocc_b)
+    A_s_ss_b = form_rpa_a_matrix_mo_singlet_ss(E_b, tei_mo_bbbb, nocc_b)
+    A_s_os_b = form_rpa_a_matrix_mo_singlet_os(tei_mo_bbaa, nocc_b, nocc_a)
+    B_s_ss_b = form_rpa_b_matrix_mo_singlet_ss(tei_mo_bbbb, nocc_b)
+    B_s_os_b = form_rpa_b_matrix_mo_singlet_os(tei_mo_bbaa, nocc_b, nocc_a)
+    # Since the "triplet" part contains no Coulomb contribution, and
+    # (xx|yy) is only in the Coulomb part, there is no ss/os
+    # separation for the triplet part.
+
+    G_aa = np.bmat([[A_s_ss_a, B_s_ss_a],
+                    [B_s_ss_a, A_s_ss_a]])
+    G_bb = np.bmat([[A_s_ss_b, B_s_ss_b],
+                    [B_s_ss_b, A_s_ss_b]])
+    G_ab = np.bmat([[A_s_os_a, B_s_os_a],
+                    [B_s_os_a, A_s_os_a]])
+    G_ba = np.bmat([[A_s_os_b, B_s_os_b],
+                    [B_s_os_b, A_s_os_b]])
+
+    G_aa_inv = np.linalg.inv(G_aa)
+    G_ab_inv = np.linalg.pinv(G_ab)
+    G_ba_inv = np.linalg.pinv(G_ba)
+    G_bb_inv = np.linalg.inv(G_bb)
+
+    nov_aa = nocc_a * nvirt_a
+    nov_bb = nocc_b * nvirt_b
+
+    assert G_aa_inv.shape == (2 * nov_aa, 2 * nov_aa)
+    assert G_ab_inv.shape == (2 * nov_bb, 2 * nov_aa)
+    assert G_ba_inv.shape == (2 * nov_aa, 2 * nov_bb)
+    assert G_bb_inv.shape == (2 * nov_bb, 2 * nov_bb)
+
+    # Form the operator_dependent part of the response vectors.
+    left_a = np.linalg.inv(G_aa - np.dot(G_ab, np.dot(G_bb_inv, G_ba)))
+    left_b = np.linalg.inv(G_bb - np.dot(G_ba, np.dot(G_aa_inv, G_ab)))
+
+    from pyscf import gto
+    mol = gto.Mole()
+    mol.verbose = 5
+    with open('water.xyz') as fh:
+        mol.atom = fh.read()
+    mol.unit = 'Bohr'
+    mol.basis = 'sto-3g'
+    mol.symmetry = False
+    mol.build()
+
+    integrals_dipole_ao = mol.intor('cint1e_r_sph', comp=3)
+
+    integrals_dipole_mo_ai_a = []
+    integrals_dipole_mo_ai_b = []
+
+    for comp in range(3):
+
+        integrals_dipole_mo_ai_comp_a = np.dot(C_a[:, nocc_a:].T, np.dot(integrals_dipole_ao[comp, ...], C_a[:, :nocc_a]))
+        integrals_dipole_mo_ai_comp_b = np.dot(C_b[:, nocc_b:].T, np.dot(integrals_dipole_ao[comp, ...], C_b[:, :nocc_b]))
+
+        integrals_dipole_mo_ai_comp_a = np.reshape(integrals_dipole_mo_ai_comp_a, -1, order='F')
+        integrals_dipole_mo_ai_comp_b = np.reshape(integrals_dipole_mo_ai_comp_b, -1, order='F')
+
+        integrals_dipole_mo_ai_a.append(integrals_dipole_mo_ai_comp_a)
+        integrals_dipole_mo_ai_b.append(integrals_dipole_mo_ai_comp_b)
+
+    integrals_dipole_mo_ai_a = np.stack(integrals_dipole_mo_ai_a, axis=0).T
+    integrals_dipole_mo_ai_b = np.stack(integrals_dipole_mo_ai_b, axis=0).T
+
+    integrals_dipole_mo_ai_a_super = np.concatenate((integrals_dipole_mo_ai_a, integrals_dipole_mo_ai_a), axis=0)
+    integrals_dipole_mo_ai_b_super = np.concatenate((integrals_dipole_mo_ai_b, integrals_dipole_mo_ai_b), axis=0)
+
+    # Form the operator-dependent part of the response vectors.
+    right_a = integrals_dipole_mo_ai_a_super - (np.dot(G_ab, np.dot(G_bb_inv, integrals_dipole_mo_ai_b_super)))
+    right_b = integrals_dipole_mo_ai_b_super - (np.dot(G_ba, np.dot(G_aa_inv, integrals_dipole_mo_ai_a_super)))
+
+    # The total response vector for each spin is the product of the
+    # operator-independent (left) and operator-dependent (right)
+    # parts.
+    rspvec_a = np.dot(left_a, right_a)
+    rspvec_b = np.dot(left_b, right_b)
+
+    res_a = np.dot(integrals_dipole_mo_ai_a_super.T, rspvec_a) / 2
+    res_b = np.dot(integrals_dipole_mo_ai_b_super.T, rspvec_b) / 2
+    res_u = 2 * (res_a + res_b)
+
+    atol = 1.0e-8
+    rtol = 0.0
+    # np.testing.assert_allclose(res_u, res_r, rtol=rtol, atol=atol)
+
+    # print(res_r)
+    print(res_u)
+
+
 if __name__ == '__main__':
 
     print(__name__)
-    test_direct_rhf_as_uhf()
+    test_direct_uhf_from_rhf()
+    test_direct_uhf()
