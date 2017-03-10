@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.6
+#!/usr/bin/env python
 
 from __future__ import print_function
 from __future__ import division
@@ -25,6 +25,7 @@ def form_results(vecs_property, vecs_response):
     assert vecs_property.shape[1:] == vecs_response.shape[1:]
     assert len(vecs_property.shape) == 3
     assert vecs_property.shape[2] == 1
+    # Unnecessary, just do the whole thing in one shot.
     # nr = vecs_property.shape[0]
     # nc = vecs_response.shape[0]
     # results = np.empty(shape=(nr, nc))
@@ -152,29 +153,26 @@ class CPHF(object):
             B_singlet = form_rpa_b_matrix_mo_singlet(self.TEI_MO, nocc)
             explicit_hessian = np.bmat([[A_singlet, B_singlet],
                                         [B_singlet, A_singlet]])
-            explicit_hessian -= superoverlap
         elif hamiltonian == 'rpa' and spin == 'triplet':
             A_triplet = form_rpa_a_matrix_mo_triplet(self.moenergies, self.TEI_MO, nocc)
             B_triplet = form_rpa_b_matrix_mo_triplet(self.TEI_MO, nocc)
             explicit_hessian = np.bmat([[A_triplet, B_triplet],
                                         [B_triplet, A_triplet]])
-            explicit_hessian -= superoverlap
         elif hamiltonian == 'tda' and spin == 'singlet':
             A_singlet = form_rpa_a_matrix_mo_singlet(self.moenergies, self.TEI_MO, nocc)
             B_singlet = np.zeros(shape=(nov, nov))
             explicit_hessian = np.bmat([[A_singlet, B_singlet],
                                         [B_singlet, A_singlet]])
-            explicit_hessian -= superoverlap
         elif hamiltonian == 'tda' and spin == 'triplet':
             A_triplet = form_rpa_a_matrix_mo_triplet(self.moenergies, self.TEI_MO, nocc)
             B_triplet = np.zeros(shape=(nov, nov))
             explicit_hessian = np.bmat([[A_triplet, B_triplet],
                                         [B_triplet, A_triplet]])
-            explicit_hessian -= superoverlap
         # TODO blow up
         else:
             pass
 
+        explicit_hessian -= superoverlap
         self.explicit_hessian = explicit_hessian
 
     def invert_explicit_hessian(self):
@@ -291,9 +289,9 @@ if __name__ == '__main__':
     cphf.TEI_MO = TEI_MO
     for hamiltonian in ('rpa', 'tda'):
         for spin in ('singlet', 'triplet'):
-            print(f'hamiltonian: {hamiltonian}, spin: {spin}')
+            print('hamiltonian: {}, spin: {}'.format(hamiltonian, spin))
             cphf.run(solver='direct', hamiltonian=hamiltonian, spin=spin)
             print(len(cphf.results))
             for f, frequency in enumerate(frequencies):
-                print(f'frequency: {frequency}')
+                print('frequency: {}'.format(frequency))
                 print(cphf.results[f])

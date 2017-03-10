@@ -293,13 +293,14 @@ if __name__ == '__main__':
     cphf = CPHF(mocoeffs, fock, occupations)
     cphf.TEI_MO = tei_mo
 
-    cphf.add_operator(operator_dipole)
+    # cphf.add_operator(operator_dipole)
     cphf.add_operator(operator_angmom)
-    cphf.add_operator(operator_spnorb)
+    # cphf.add_operator(operator_spnorb)
 
-    for hamiltonian in ('rpa', ):
-        for spin in ('singlet', ):
-            print(f'hamiltonian: {hamiltonian}, spin: {spin}')
+    for hamiltonian in ('rpa', 'tda'):
+        for spin in ('singlet', 'triplet'):
+            print('hamiltonian: {}, spin: {}'.format(hamiltonian, spin))
             cphf.run(solver='direct', hamiltonian=hamiltonian, spin=spin)
-            print(len(cphf.results))
+            thresh = 1.0e-08
+            cphf.results[0][cphf.results[0] < thresh] = 0.0
             print(cphf.results[0])
