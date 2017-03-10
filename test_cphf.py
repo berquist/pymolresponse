@@ -305,6 +305,8 @@ if __name__ == '__main__':
     # cphf.add_operator(operator_angmom)
     cphf.add_operator(operator_spnorb)
 
+    cphf.set_frequencies()
+
     for hamiltonian in ('rpa', 'tda'):
         for spin in ('singlet', 'triplet'):
             print('hamiltonian: {}, spin: {}'.format(hamiltonian, spin))

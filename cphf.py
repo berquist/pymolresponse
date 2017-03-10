@@ -34,6 +34,9 @@ class Operator(object):
         if 'spinorb' in label:
             self.hsofac = (spc.alpha ** 2) / 4
 
+        self.frequencies = None
+        self.rspvecs = []
+
 
 class CPHF(object):
 
@@ -48,7 +51,7 @@ class CPHF(object):
         self.spin = 'singlet'
 
         self.operators = []
-        self.rspvecs = []
+        self.frequencies = None
         self.results = []
 
         self.TEI_MO = None
@@ -76,6 +79,8 @@ class CPHF(object):
             self.frequencies = [0.0]
         else:
             self.frequencies = frequencies
+        for operator in self.operators:
+            operator.frequences = self.frequencies
 
     def add_operator(self, operator):
         b_prefactor = 1
@@ -103,6 +108,7 @@ class CPHF(object):
             #     for (i, a) in self.indices_closed_secondary:
             #         operator_component_ai[a - nocc, i] = 0.0
             operator_component_ai = repack_matrix_to_vector(operator_component_ai)[:, np.newaxis]
+            # TODO move to Operator
             if hasattr(operator, 'hsofac'):
                 operator_component_ai *= operator.hsofac
             operator_component_ai_supervector = np.concatenate((operator_component_ai,
@@ -139,7 +145,9 @@ class CPHF(object):
             pass
 
         self.form_results()
-        self.rspvecs = []
+
+        for operator in self.operators:
+            operator.rspvecs = []
 
     def form_explicit_hessian(self, hamiltonian=None, spin=None, frequency=None):
 
@@ -196,7 +204,6 @@ class CPHF(object):
         self.explicit_hessian_inv = np.linalg.inv(self.explicit_hessian)
 
     def form_response_vectors(self):
-        rspvecs = []
         for operator in self.operators:
             rspvecs_operator = []
             for idx_operator_component in range(operator.ao_integrals.shape[0]):
@@ -214,13 +221,13 @@ class CPHF(object):
             for idx, rspvec_operator_component in enumerate(rspvecs_operator):
                 tmp[idx, ...] = rspvec_operator_component
             rspvecs_operator = tmp
-            rspvecs.append(rspvecs_operator)
-        self.rspvecs.append(rspvecs)
+            operator.rspvecs.append(rspvecs_operator)
 
     def form_results(self):
 
         self.results = []
 
+        # TODO change now that Operators keep their own rspvecs
         # self.rspvecs structure:
         # 1. list, index is for frequencies
         # 2. list, index is for operators
@@ -229,11 +236,11 @@ class CPHF(object):
         #   b -> actual matrix elements
         #   c -> 1 (always)
 
-        assert len(self.frequencies) == len(self.rspvecs)
+        for operator in self.operators:
+            assert len(self.frequencies) == len(operator.rspvecs)
         for f in range(len(self.frequencies)):
-            assert len(self.rspvecs[f]) == len(self.operators)
             for i in range(len(self.operators)):
-                assert self.rspvecs[f][i].shape == self.operators[i].mo_integrals_ai_supervector.shape
+                assert self.operators[i].rspvecs[f].shape == self.operators[i].mo_integrals_ai_supervector.shape
 
         for f in range(len(self.frequencies)):
 
@@ -241,8 +248,8 @@ class CPHF(object):
             # dim_cols -> total number of response vectors
             dim_rows = sum(self.operators[i].mo_integrals_ai_supervector.shape[0]
                            for i in range(len(self.operators)))
-            dim_cols = sum(self.rspvecs[f][i].shape[0]
-                           for i in range(len(self.rspvecs[f])))
+            dim_cols = sum(self.operators[i].rspvecs[f].shape[0]
+                           for i in range(len(self.operators)))
             assert dim_rows == dim_cols
 
             results = np.zeros(shape=(dim_rows, dim_cols))
@@ -256,14 +263,12 @@ class CPHF(object):
             row_start = 0
             for iop1, op1 in enumerate(self.operators):
                 col_start = 0
-                # Why didn't I make Operators carry their own response vectors? TODO
-                # for iop2, op2 in enumerate(self.operators):
-                for iop2, op2rsp in enumerate(self.rspvecs[f]):
-                    result_block = form_results(op1.mo_integrals_ai_supervector, op2rsp)
+                for iop2, op2 in enumerate(self.operators):
+                    result_block = form_results(op1.mo_integrals_ai_supervector, op2.rspvecs[f])
                     result_blocks.append(result_block)
                     row_starts.append(row_start)
                     col_starts.append(col_start)
-                    col_start += op2rsp.shape[0]
+                    col_start += op2.rspvecs[f].shape[0]
                 row_start += op1.mo_integrals_ai_supervector.shape[0]
 
             # Put each of the result blocks back in the main results
@@ -294,8 +299,6 @@ if __name__ == '__main__':
     mat_dipole_z = parse_int_file_2(stub + "muz.dat", dim)
 
     cphf = CPHF(C, E, occupations)
-    frequencies = (0.0, 0.02, 0.06, 0.1)
-    cphf.frequencies = frequencies
     ao_integrals_dipole = np.empty(shape=(3, dim, dim))
     ao_integrals_dipole[0, :, :] = mat_dipole_x
     ao_integrals_dipole[1, :, :] = mat_dipole_y
@@ -303,6 +306,8 @@ if __name__ == '__main__':
     operator_dipole = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False)
     operator_dipole.ao_integrals = ao_integrals_dipole
     cphf.add_operator(operator_dipole)
+    frequencies = (0.0, 0.02, 0.06, 0.1)
+    cphf.set_frequencies(frequencies)
     cphf.TEI_MO = TEI_MO
     for hamiltonian in ('rpa', 'tda'):
         for spin in ('singlet', 'triplet'):
