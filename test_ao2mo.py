@@ -52,13 +52,13 @@ def test_direct_uhf_from_rhf():
     # (xx|yy) is only in the Coulomb part, there is no ss/os
     # separation for the triplet part.
 
-    G_r = np.bmat([[A_s, B_s],
-                   [B_s, A_s]])
-    G_aa = np.bmat([[A_s_ss, B_s_ss],
-                    [B_s_ss, A_s_ss]])
+    G_r = np.asarray(np.bmat([[A_s, B_s],
+                              [B_s, A_s]]))
+    G_aa = np.asarray(np.bmat([[A_s_ss, B_s_ss],
+                               [B_s_ss, A_s_ss]]))
     G_bb = G_aa.copy()
-    G_ab = np.bmat([[A_s_os, B_s_os],
-                    [B_s_os, A_s_os]])
+    G_ab = np.asarray(np.bmat([[A_s_os, B_s_os],
+                               [B_s_os, A_s_os]]))
     G_ba = G_ab.copy()
 
     np.testing.assert_allclose(G_r, (G_aa + G_ab))
@@ -192,14 +192,14 @@ def test_direct_uhf():
     # (xx|yy) is only in the Coulomb part, there is no ss/os
     # separation for the triplet part.
 
-    G_aa = np.bmat([[A_s_ss_a, B_s_ss_a],
-                    [B_s_ss_a, A_s_ss_a]])
-    G_bb = np.bmat([[A_s_ss_b, B_s_ss_b],
-                    [B_s_ss_b, A_s_ss_b]])
-    G_ab = np.bmat([[A_s_os_a, B_s_os_a],
-                    [B_s_os_a, A_s_os_a]])
-    G_ba = np.bmat([[A_s_os_b, B_s_os_b],
-                    [B_s_os_b, A_s_os_b]])
+    G_aa = np.asarray(np.bmat([[A_s_ss_a, B_s_ss_a],
+                               [B_s_ss_a, A_s_ss_a]]))
+    G_bb = np.asarray(np.bmat([[A_s_ss_b, B_s_ss_b],
+                               [B_s_ss_b, A_s_ss_b]]))
+    G_ab = np.asarray(np.bmat([[A_s_os_a, B_s_os_a],
+                               [B_s_os_a, A_s_os_a]]))
+    G_ba = np.asarray(np.bmat([[A_s_os_b, B_s_os_b],
+                               [B_s_os_b, A_s_os_b]]))
 
     G_aa_inv = np.linalg.inv(G_aa)
     G_ab_inv = np.linalg.pinv(G_ab)
@@ -263,15 +263,18 @@ def test_direct_uhf():
     res_a = np.dot(integrals_dipole_mo_ai_a_super.T, rspvec_a) / 2
     res_b = np.dot(integrals_dipole_mo_ai_b_super.T, rspvec_b) / 2
     res_u = 2 * (res_a + res_b)
-
-    # atol = 1.0e-8
-    # rtol = 0.0
-
     print(res_u)
+
+    atol = 1.0e-5
+    rtol = 0.0
+    ref = np.array([[6.1406370,   0.0000000,   0.0000000],
+                    [0.0000000,   2.3811198,   0.0000000],
+                    [0.0000000,   0.0000000,   1.4755219]])
+
+    np.testing.assert_allclose(res_u, ref, rtol=rtol, atol=atol)
 
 
 if __name__ == '__main__':
-
-    print(__name__)
-    test_direct_uhf_from_rhf()
+    # test_direct_uhf_from_rhf()
     test_direct_uhf()
+    pass

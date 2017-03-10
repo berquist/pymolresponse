@@ -14,8 +14,7 @@ from explicit_equations import (form_rpa_a_matrix_mo_singlet,
 
 
 def repack_matrix_to_vector(mat):
-    # TODO get rid of the copy?
-    return np.reshape(mat.copy(), -1, order='F')
+    return np.reshape(mat, -1, order='F')
 
 
 def form_results(vecs_property, vecs_response):
@@ -56,7 +55,6 @@ class Operator(object):
             #     for (i, a) in self.indices_closed_secondary:
             #         operator_component_ai[a - nocc, i] = 0.0
             operator_component_ai = repack_matrix_to_vector(operator_component_ai)[:, np.newaxis]
-            # TODO move to Operator
             if hasattr(self, 'hsofac'):
                 operator_component_ai *= self.hsofac
             operator_component_ai_supervector = np.concatenate((operator_component_ai,
@@ -173,30 +171,30 @@ class CPHF(object):
         nvirt = self.occupations[1]
         nov = nocc * nvirt
 
-        superoverlap = np.bmat([[np.eye(nov), np.zeros(shape=(nov, nov))],
-                                [np.zeros(shape=(nov, nov)), -np.eye(nov)]])
+        superoverlap = np.asarray(np.bmat([[np.eye(nov), np.zeros(shape=(nov, nov))],
+                                           [np.zeros(shape=(nov, nov)), -np.eye(nov)]]))
         superoverlap = superoverlap * frequency
 
         if hamiltonian == 'rpa' and spin == 'singlet':
             A_singlet = form_rpa_a_matrix_mo_singlet(self.moenergies, self.TEI_MO, nocc)
             B_singlet = form_rpa_b_matrix_mo_singlet(self.TEI_MO, nocc)
-            explicit_hessian = np.bmat([[A_singlet, B_singlet],
-                                        [B_singlet, A_singlet]])
+            explicit_hessian = np.asarray(np.bmat([[A_singlet, B_singlet],
+                                                   [B_singlet, A_singlet]]))
         elif hamiltonian == 'rpa' and spin == 'triplet':
             A_triplet = form_rpa_a_matrix_mo_triplet(self.moenergies, self.TEI_MO, nocc)
             B_triplet = form_rpa_b_matrix_mo_triplet(self.TEI_MO, nocc)
-            explicit_hessian = np.bmat([[A_triplet, B_triplet],
-                                        [B_triplet, A_triplet]])
+            explicit_hessian = np.asarray(np.bmat([[A_triplet, B_triplet],
+                                                   [B_triplet, A_triplet]]))
         elif hamiltonian == 'tda' and spin == 'singlet':
             A_singlet = form_rpa_a_matrix_mo_singlet(self.moenergies, self.TEI_MO, nocc)
             B_singlet = np.zeros(shape=(nov, nov))
-            explicit_hessian = np.bmat([[A_singlet, B_singlet],
-                                        [B_singlet, A_singlet]])
+            explicit_hessian = np.asarray(np.bmat([[A_singlet, B_singlet],
+                                                   [B_singlet, A_singlet]]))
         elif hamiltonian == 'tda' and spin == 'triplet':
             A_triplet = form_rpa_a_matrix_mo_triplet(self.moenergies, self.TEI_MO, nocc)
             B_triplet = np.zeros(shape=(nov, nov))
-            explicit_hessian = np.bmat([[A_triplet, B_triplet],
-                                        [B_triplet, A_triplet]])
+            explicit_hessian = np.asarray(np.bmat([[A_triplet, B_triplet],
+                                                   [B_triplet, A_triplet]]))
         # TODO blow up
         else:
             pass
