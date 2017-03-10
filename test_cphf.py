@@ -9,6 +9,7 @@ def test_final_result_rhf_h2o_sto3g_rpa_singlet():
     spin = 'singlet'
 
     C = np_load('C.npz')
+    C = C[np.newaxis, ...]
     E = np_load('F_MO.npz')
     TEI_MO = np_load('TEI_MO.npz')
     # nocc_alph, nvirt_alph, nocc_beta, nvirt_beta
@@ -29,9 +30,9 @@ def test_final_result_rhf_h2o_sto3g_rpa_singlet():
     operator_dipole = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False)
     operator_dipole.ao_integrals = ao_integrals_dipole
     cphf.add_operator(operator_dipole)
-    cphf.TEI_MO = TEI_MO
+    cphf.tei_mo = TEI_MO
 
-    cphf.run(solver='direct', hamiltonian=hamiltonian, spin=spin)
+    cphf.run(solver='explicit', hamiltonian=hamiltonian, spin=spin)
 
     assert len(cphf.results) == len(frequencies)
 
@@ -66,6 +67,7 @@ def test_final_result_rhf_h2o_sto3g_rpa_triplet():
     spin = 'triplet'
 
     C = np_load('C.npz')
+    C = C[np.newaxis, ...]
     E = np_load('F_MO.npz')
     TEI_MO = np_load('TEI_MO.npz')
     # nocc_alph, nvirt_alph, nocc_beta, nvirt_beta
@@ -86,9 +88,9 @@ def test_final_result_rhf_h2o_sto3g_rpa_triplet():
     operator_dipole = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False)
     operator_dipole.ao_integrals = ao_integrals_dipole
     cphf.add_operator(operator_dipole)
-    cphf.TEI_MO = TEI_MO
+    cphf.tei_mo = TEI_MO
 
-    cphf.run(solver='direct', hamiltonian=hamiltonian, spin=spin)
+    cphf.run(solver='explicit', hamiltonian=hamiltonian, spin=spin)
 
     assert len(cphf.results) == len(frequencies)
 
@@ -123,6 +125,7 @@ def test_final_result_rhf_h2o_sto3g_tda_singlet():
     spin = 'singlet'
 
     C = np_load('C.npz')
+    C = C[np.newaxis, ...]
     E = np_load('F_MO.npz')
     TEI_MO = np_load('TEI_MO.npz')
     # nocc_alph, nvirt_alph, nocc_beta, nvirt_beta
@@ -143,9 +146,9 @@ def test_final_result_rhf_h2o_sto3g_tda_singlet():
     operator_dipole = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False)
     operator_dipole.ao_integrals = ao_integrals_dipole
     cphf.add_operator(operator_dipole)
-    cphf.TEI_MO = TEI_MO
+    cphf.tei_mo = TEI_MO
 
-    cphf.run(solver='direct', hamiltonian=hamiltonian, spin=spin)
+    cphf.run(solver='explicit', hamiltonian=hamiltonian, spin=spin)
 
     assert len(cphf.results) == len(frequencies)
 
@@ -180,6 +183,7 @@ def test_final_result_rhf_h2o_sto3g_tda_triplet():
     spin = 'triplet'
 
     C = np_load('C.npz')
+    C = C[np.newaxis, ...]
     E = np_load('F_MO.npz')
     TEI_MO = np_load('TEI_MO.npz')
     # nocc_alph, nvirt_alph, nocc_beta, nvirt_beta
@@ -200,9 +204,9 @@ def test_final_result_rhf_h2o_sto3g_tda_triplet():
     operator_dipole = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False)
     operator_dipole.ao_integrals = ao_integrals_dipole
     cphf.add_operator(operator_dipole)
-    cphf.TEI_MO = TEI_MO
+    cphf.tei_mo = TEI_MO
 
-    cphf.run(solver='direct', hamiltonian=hamiltonian, spin=spin)
+    cphf.run(solver='explicit', hamiltonian=hamiltonian, spin=spin)
 
     assert len(cphf.results) == len(frequencies)
 
@@ -310,7 +314,7 @@ if __name__ == '__main__':
     for hamiltonian in ('rpa', 'tda'):
         for spin in ('singlet', 'triplet'):
             print('hamiltonian: {}, spin: {}'.format(hamiltonian, spin))
-            cphf.run(solver='direct', hamiltonian=hamiltonian, spin=spin)
+            cphf.run(solver='explicit', hamiltonian=hamiltonian, spin=spin)
             thresh = 1.0e-10
             cphf.results[0][cphf.results[0] < thresh] = 0.0
             print(cphf.results[0])

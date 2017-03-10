@@ -11,7 +11,7 @@ from explicit_equations import (form_rpa_a_matrix_mo_singlet,
 from utils import np_load
 
 
-def test_direct_uhf_from_rhf():
+def test_explicit_uhf_from_rhf():
     from pyscf import ao2mo, gto, scf
 
     mol = gto.Mole()
@@ -142,7 +142,7 @@ def test_direct_uhf_from_rhf():
     print(res_u)
 
 
-def test_direct_uhf():
+def test_explicit_uhf():
     from pyscf import ao2mo, gto, scf
 
     mol = gto.Mole()
@@ -275,6 +275,6 @@ def test_direct_uhf():
 
 
 if __name__ == '__main__':
-    # test_direct_uhf_from_rhf()
-    test_direct_uhf()
+    # test_explicit_uhf_from_rhf()
+    test_explicit_uhf()
     pass
