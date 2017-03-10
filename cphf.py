@@ -26,12 +26,12 @@ def form_results(vecs_property, vecs_response):
 
 class Operator(object):
 
-    def __init__(self, is_imaginary=False, is_spin_dependent=False):
+    def __init__(self, label=None, is_imaginary=False, is_spin_dependent=False):
+        self.label = label
         self.is_imaginary = is_imaginary
         self.is_spin_dependent = is_spin_dependent
 
-        # dirty check for spin-orbit operator
-        if is_imaginary and is_spin_dependent:
+        if 'spinorb' in label:
             self.hsofac = (spc.alpha ** 2) / 4
 
 
@@ -300,7 +300,7 @@ if __name__ == '__main__':
     ao_integrals_dipole[0, :, :] = mat_dipole_x
     ao_integrals_dipole[1, :, :] = mat_dipole_y
     ao_integrals_dipole[2, :, :] = mat_dipole_z
-    operator_dipole = Operator(is_imaginary=False, is_spin_dependent=False)
+    operator_dipole = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False)
     operator_dipole.ao_integrals = ao_integrals_dipole
     cphf.add_operator(operator_dipole)
     cphf.TEI_MO = TEI_MO

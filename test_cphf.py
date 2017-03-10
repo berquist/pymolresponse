@@ -277,10 +277,10 @@ if __name__ == '__main__':
         chg = mol.atom_charge(atm_id)
         ao_integrals_spnorb += chg * mol.intor('cint1e_prinvxp_sph', comp=3)
 
-    operator_dipole = Operator(is_imaginary=False, is_spin_dependent=False)
-    operator_fermi = Operator(is_imaginary=False, is_spin_dependent=True)
-    operator_angmom = Operator(is_imaginary=True, is_spin_dependent=False)
-    operator_spnorb = Operator(is_imaginary=True, is_spin_dependent=True)
+    operator_dipole = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False)
+    operator_fermi = Operator(label='fermi', is_imaginary=False, is_spin_dependent=True)
+    operator_angmom = Operator(label='angmom', is_imaginary=True, is_spin_dependent=False)
+    operator_spnorb = Operator(label='spinorb', is_imaginary=True, is_spin_dependent=True)
     operator_dipole.ao_integrals = ao_integrals_dipole
     from daltools import prop
     ao_integrals_fermi1 = prop.read('FC O  01', tmpdir='/home/eric/development/pyresponse/dalton_fermi/DALTON_scratch_eric/dalton.h2o_sto3g.response_static_rpa_singlet_5672')
