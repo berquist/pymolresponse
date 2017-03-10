@@ -6,9 +6,11 @@ from __future__ import division
 import numpy as np
 import scipy.constants as spc
 
-from utils import (np_load, parse_int_file_2,
-                   form_rpa_a_matrix_mo_singlet, form_rpa_a_matrix_mo_triplet,
-                   form_rpa_b_matrix_mo_singlet, form_rpa_b_matrix_mo_triplet)
+from utils import (np_load, parse_int_file_2)
+from explicit_equations import (form_rpa_a_matrix_mo_singlet,
+                                form_rpa_a_matrix_mo_triplet,
+                                form_rpa_b_matrix_mo_singlet,
+                                form_rpa_b_matrix_mo_triplet)
 
 
 def repack_matrix_to_vector(mat):
