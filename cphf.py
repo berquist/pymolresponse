@@ -4,6 +4,7 @@ from __future__ import print_function
 from __future__ import division
 
 import numpy as np
+import scipy.constants as spc
 
 from utils import (np_load, parse_int_file_2,
                    form_rpa_a_matrix_mo_singlet, form_rpa_a_matrix_mo_triplet,
@@ -43,6 +44,10 @@ class Operator(object):
         self.is_imaginary = is_imaginary
         self.is_spin_dependent = is_spin_dependent
 
+        # dirty check for spin-orbit operator
+        if is_imaginary and is_spin_dependent:
+            self.hsofac = (spc.alpha ** 2) / 4
+
 
 class CPHF(object):
 
@@ -50,6 +55,7 @@ class CPHF(object):
         self.mocoeffs = mocoeffs
         self.moenergies = moenergies
         self.occupations = occupations
+        self.form_ranges_from_occupations()
 
         self.solver = 'direct'
         self.hamiltonian = 'rpa'
@@ -63,6 +69,22 @@ class CPHF(object):
         self.explicit_hessian = None
         self.explicit_hessian_inv = None
 
+    def form_ranges_from_occupations(self):
+        assert len(self.occupations) == 4
+        nocc_a, nvirt_a, nocc_b, nvirt_b = self.occupations
+        assert (nocc_a + nvirt_a) == (nocc_b + nvirt_b)
+        norb = nocc_a + nvirt_a
+        nelec = nocc_a + nocc_b
+        nact = abs(int(nocc_a - nocc_b))
+        nclosed = (nelec - nact) // 2
+        nsecondary = norb - (nclosed + nact)
+        range_closed = list(range(0, nclosed))
+        range_act = list(range(nclosed, nclosed + nact))
+        range_secondary = list(range(nclosed + nact, nclosed + nact + nsecondary))
+        self.indices_closed_act = [(i, t) for i in range_closed for t in range_act]
+        self.indices_closed_secondary = [(i, a) for i in range_closed for a in range_secondary]
+        self.indices_act_secondary = [(t, a) for t in range_act for a in range_secondary]
+
     def set_frequencies(self, frequencies=None):
         if not frequencies:
             self.frequencies = [0.0]
@@ -75,6 +97,7 @@ class CPHF(object):
             b_prefactor = -1
         # RHF only for now
         nocc = self.occupations[0]
+        nvirt = self.occupations[1]
         shape = operator.ao_integrals.shape
         # First dimension is the number of Cartesian components, next
         # two are the number of AOs.
@@ -87,7 +110,15 @@ class CPHF(object):
         # Cartesian directions).
         for idx in range(operator.ao_integrals.shape[0]):
             operator_component_ai = np.dot(self.mocoeffs[:, nocc:].T, np.dot(operator.ao_integrals[idx, :, :], self.mocoeffs[:, :nocc]))
+            # If the operator is a triplet operator and doing singlet
+            # response, remove inactive -> secondary excitations.
+            # Is this only true for spin-orbit operators?
+            # if operator.is_spin_dependent:
+            #     for (i, a) in self.indices_closed_secondary:
+            #         operator_component_ai[a - nocc, i] = 0.0
             operator_component_ai = repack_matrix_to_vector(operator_component_ai)[:, np.newaxis]
+            if hasattr(operator, 'hsofac'):
+                operator_component_ai *= operator.hsofac
             operator_component_ai_supervector = np.concatenate((operator_component_ai,
                                                                 operator_component_ai * b_prefactor), axis=0)
             operator_ai.append(operator_component_ai)

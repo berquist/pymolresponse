@@ -278,10 +278,17 @@ if __name__ == '__main__':
         ao_integrals_spnorb += chg * mol.intor('cint1e_prinvxp_sph', comp=3)
 
     operator_dipole = Operator(is_imaginary=False, is_spin_dependent=False)
-    # operator_fermi = Operator(is_imaginary=False, is_spin_dependent=True)
+    operator_fermi = Operator(is_imaginary=False, is_spin_dependent=True)
     operator_angmom = Operator(is_imaginary=True, is_spin_dependent=False)
     operator_spnorb = Operator(is_imaginary=True, is_spin_dependent=True)
     operator_dipole.ao_integrals = ao_integrals_dipole
+    from daltools import prop
+    ao_integrals_fermi1 = prop.read('FC O  01', tmpdir='/home/eric/development/pyresponse/dalton_fermi/DALTON_scratch_eric/dalton.h2o_sto3g.response_static_rpa_singlet_5672')
+    ao_integrals_fermi2 = prop.read('FC H  02', tmpdir='/home/eric/development/pyresponse/dalton_fermi/DALTON_scratch_eric/dalton.h2o_sto3g.response_static_rpa_singlet_5672')
+    ao_integrals_fermi3 = prop.read('FC H  03', tmpdir='/home/eric/development/pyresponse/dalton_fermi/DALTON_scratch_eric/dalton.h2o_sto3g.response_static_rpa_singlet_5672')
+    operator_fermi.ao_integrals = np.concatenate((ao_integrals_fermi1, ao_integrals_fermi2, ao_integrals_fermi3), axis=0)
+    # print(operator_fermi.ao_integrals.shape)
+    # import sys; sys.exit()
     operator_angmom.ao_integrals = ao_integrals_angmom
     operator_spnorb.ao_integrals = ao_integrals_spnorb
 
@@ -294,8 +301,9 @@ if __name__ == '__main__':
     cphf.TEI_MO = tei_mo
 
     # cphf.add_operator(operator_dipole)
-    cphf.add_operator(operator_angmom)
-    # cphf.add_operator(operator_spnorb)
+    cphf.add_operator(operator_fermi)
+    # cphf.add_operator(operator_angmom)
+    cphf.add_operator(operator_spnorb)
 
     for hamiltonian in ('rpa', 'tda'):
         for spin in ('singlet', 'triplet'):
