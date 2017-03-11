@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def form_rpa_a_matrix_mo_singlet(E_MO, TEI_MO, nocc):
+def form_rpa_a_matrix_mo_singlet_full(E_MO, TEI_MO, nocc):
     """Form the A (CIS) matrix for RPA in the molecular orbital (MO)
     basis. [singlet]
 
@@ -29,7 +29,7 @@ def form_rpa_a_matrix_mo_singlet(E_MO, TEI_MO, nocc):
     return A
 
 
-def form_rpa_a_matrix_mo_triplet(E_MO, TEI_MO, nocc):
+def form_rpa_a_matrix_mo_triplet_full(E_MO, TEI_MO, nocc):
     """Form the A (CIS) matrix for RPA in the molecular orbital (MO)
     basis. [triplet]
 
@@ -57,7 +57,7 @@ def form_rpa_a_matrix_mo_triplet(E_MO, TEI_MO, nocc):
     return A
 
 
-def form_rpa_b_matrix_mo_singlet(TEI_MO, nocc):
+def form_rpa_b_matrix_mo_singlet_full(TEI_MO, nocc):
     """Form the B matrix for RPA in the molecular orbital (MO)
     basis. [singlet]
 
@@ -82,7 +82,7 @@ def form_rpa_b_matrix_mo_singlet(TEI_MO, nocc):
     return B
 
 
-def form_rpa_b_matrix_mo_triplet(TEI_MO, nocc):
+def form_rpa_b_matrix_mo_triplet_full(TEI_MO, nocc):
 
     norb = TEI_MO.shape[0]
     nvirt = norb - nocc
@@ -101,7 +101,7 @@ def form_rpa_b_matrix_mo_triplet(TEI_MO, nocc):
     return B
 
 
-def form_rpa_a_matrix_mo_singlet_ss(E_MO, TEI_MO, nocc):
+def form_rpa_a_matrix_mo_singlet_ss_full(E_MO, TEI_MO, nocc):
 
     norb = E_MO.shape[0]
     nvirt = norb - nocc
@@ -122,7 +122,7 @@ def form_rpa_a_matrix_mo_singlet_ss(E_MO, TEI_MO, nocc):
     return A
 
 
-def form_rpa_a_matrix_mo_singlet_os(TEI_MO_xxyy, nocc_x, nocc_y):
+def form_rpa_a_matrix_mo_singlet_os_full(TEI_MO_xxyy, nocc_x, nocc_y):
 
     nvirt_x = TEI_MO_xxyy.shape[0] - nocc_x
     nvirt_y = TEI_MO_xxyy.shape[2] - nocc_y
@@ -142,7 +142,7 @@ def form_rpa_a_matrix_mo_singlet_os(TEI_MO_xxyy, nocc_x, nocc_y):
     return A
 
 
-def form_rpa_b_matrix_mo_singlet_ss(TEI_MO, nocc):
+def form_rpa_b_matrix_mo_singlet_ss_full(TEI_MO, nocc):
 
     norb = TEI_MO.shape[0]
     nvirt = norb - nocc
@@ -161,7 +161,7 @@ def form_rpa_b_matrix_mo_singlet_ss(TEI_MO, nocc):
     return B
 
 
-def form_rpa_b_matrix_mo_singlet_os(TEI_MO_xxyy, nocc_x, nocc_y):
+def form_rpa_b_matrix_mo_singlet_os_full(TEI_MO_xxyy, nocc_x, nocc_y):
 
     nvirt_x = TEI_MO_xxyy.shape[0] - nocc_x
     nvirt_y = TEI_MO_xxyy.shape[2] - nocc_y

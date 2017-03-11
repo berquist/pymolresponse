@@ -8,14 +8,15 @@ import scipy.constants as spc
 
 from utils import (form_results, np_load, parse_int_file_2,
                    repack_matrix_to_vector)
-from explicit_equations_full import (form_rpa_a_matrix_mo_singlet,
-                                     form_rpa_a_matrix_mo_singlet_ss,
-                                     form_rpa_a_matrix_mo_singlet_os,
-                                     form_rpa_a_matrix_mo_triplet,
-                                     form_rpa_b_matrix_mo_singlet,
-                                     form_rpa_b_matrix_mo_singlet_ss,
-                                     form_rpa_b_matrix_mo_singlet_os,
-                                     form_rpa_b_matrix_mo_triplet)
+from explicit_equations_full import \
+    (form_rpa_a_matrix_mo_singlet_full,
+     form_rpa_a_matrix_mo_singlet_ss_full,
+     form_rpa_a_matrix_mo_singlet_os_full,
+     form_rpa_a_matrix_mo_triplet_full,
+     form_rpa_b_matrix_mo_singlet_full,
+     form_rpa_b_matrix_mo_singlet_ss_full,
+     form_rpa_b_matrix_mo_singlet_os_full,
+     form_rpa_b_matrix_mo_triplet_full)
 from explicit_equations_partial import \
     (form_rpa_a_matrix_mo_singlet_partial,
      form_rpa_a_matrix_mo_singlet_ss_partial,
@@ -194,8 +195,10 @@ class CPHF(object):
     def form_explicit_hessian(self, hamiltonian=None, spin=None, frequency=None):
 
         # TODO blow up
-        # if not self.tei_mo:
-        #     pass
+        if not hasattr(self, 'tei_mo'):
+            pass
+        elif not self.tei_mo:
+            pass
 
         if not hamiltonian:
             hamiltonian = self.hamiltonian
@@ -203,6 +206,11 @@ class CPHF(object):
             spin = self.spin
         if not frequency:
             frequency = 0.0
+
+        if hamiltonian not in ('rpa', 'tda'):
+            pass
+        if spin not in ('singlet', 'triplet'):
+            pass
 
         self.hamiltonian = hamiltonian
         self.spin = spin
@@ -216,31 +224,48 @@ class CPHF(object):
 
         if not self.is_uhf:
 
-            if hamiltonian == 'rpa' and spin == 'singlet':
-                A_singlet = form_rpa_a_matrix_mo_singlet(self.moenergies[0, ...], self.tei_mo, nocc_alph)
-                B_singlet = form_rpa_b_matrix_mo_singlet(self.tei_mo, nocc_alph)
-                explicit_hessian = np.asarray(np.bmat([[A_singlet, B_singlet],
-                                                       [B_singlet, A_singlet]]))
-            elif hamiltonian == 'rpa' and spin == 'triplet':
-                A_triplet = form_rpa_a_matrix_mo_triplet(self.moenergies[0, ...], self.tei_mo, nocc_alph)
-                B_triplet = form_rpa_b_matrix_mo_triplet(self.tei_mo, nocc_alph)
-                explicit_hessian = np.asarray(np.bmat([[A_triplet, B_triplet],
-                                                       [B_triplet, A_triplet]]))
-            elif hamiltonian == 'tda' and spin == 'singlet':
-                A_singlet = form_rpa_a_matrix_mo_singlet(self.moenergies[0, ...], self.tei_mo, nocc_alph)
-                B_singlet = np.zeros(shape=(nov_alph, nov_alph))
-                explicit_hessian = np.asarray(np.bmat([[A_singlet, B_singlet],
-                                                       [B_singlet, A_singlet]]))
-            elif hamiltonian == 'tda' and spin == 'triplet':
-                A_triplet = form_rpa_a_matrix_mo_triplet(self.moenergies[0, ...], self.tei_mo, nocc_alph)
-                B_triplet = np.zeros(shape=(nov_alph, nov_alph))
-                explicit_hessian = np.asarray(np.bmat([[A_triplet, B_triplet],
-                                                       [B_triplet, A_triplet]]))
-            # TODO blow up
+            # Set up "function pointers".
+            if self.tei_mo_type == 'full':
+                assert len(self.tei_mo) == 1
+                tei_mo = self.tei_mo[0]
+            elif self.tei_mo_type == 'partial':
+                assert len(self.tei_mo) == 2
+                tei_mo_ovov = self.tei_mo[0]
+                tei_mo_oovv = self.tei_mo[1]
             else:
+                # TODO blow up
                 pass
 
-            self.explicit_hessian = explicit_hessian - superoverlap
+            if self.tei_mo_type == 'full':
+                if hamiltonian == 'rpa' and spin == 'singlet':
+                    A = form_rpa_a_matrix_mo_singlet_full(self.moenergies[0, ...], tei_mo, nocc_alph)
+                    B = form_rpa_b_matrix_mo_singlet_full(tei_mo, nocc_alph)
+                elif hamiltonian == 'rpa' and spin == 'triplet':
+                    A = form_rpa_a_matrix_mo_triplet_full(self.moenergies[0, ...], tei_mo, nocc_alph)
+                    B = form_rpa_b_matrix_mo_triplet_full(tei_mo, nocc_alph)
+                elif hamiltonian == 'tda' and spin == 'singlet':
+                    A = form_rpa_a_matrix_mo_singlet_full(self.moenergies[0, ...], tei_mo, nocc_alph)
+                    B = np.zeros(shape=(nov_alph, nov_alph))
+                elif hamiltonian == 'tda' and spin == 'triplet':
+                    A = form_rpa_a_matrix_mo_triplet_full(self.moenergies[0, ...], tei_mo, nocc_alph)
+                    B = np.zeros(shape=(nov_alph, nov_alph))
+            elif self.tei_mo_type == 'partial':
+                if hamiltonian == 'rpa' and spin == 'singlet':
+                    A = form_rpa_a_matrix_mo_singlet_partial(self.moenergies[0, ...], tei_mo_ovov, tei_mo_oovv)
+                    B = form_rpa_b_matrix_mo_singlet_partial(tei_mo_ovov)
+                elif hamiltonian == 'rpa' and spin == 'triplet':
+                    A = form_rpa_a_matrix_mo_triplet_partial(self.moenergies[0, ...], tei_mo_oovv)
+                    B = form_rpa_b_matrix_mo_triplet_partial(tei_mo_ovov)
+                elif hamiltonian == 'tda' and spin == 'singlet':
+                    A = form_rpa_a_matrix_mo_singlet_partial(self.moenergies[0, ...], tei_mo_ovov, tei_mo_oovv)
+                    B = np.zeros(shape=(nov_alph, nov_alph))
+                elif hamiltonian == 'tda' and spin == 'triplet':
+                    A = form_rpa_a_matrix_mo_triplet_partial(self.moenergies[0, ...], tei_mo_oovv)
+                    B = np.zeros(shape=(nov_alph, nov_alph))
+
+            G = np.asarray(np.bmat([[A, B],
+                                    [B, A]]))
+            self.explicit_hessian = G - superoverlap
 
         else:
             # For UHF there are both "operator-dependent" and
@@ -251,6 +276,7 @@ class CPHF(object):
             # pieced together when it is time ot form the response
             # vectors.
 
+            # Set up "function pointers".
             if self.tei_mo_type == 'full':
                 assert len(self.tei_mo) == 4
                 tei_mo_aaaa = self.tei_mo[0]
@@ -275,124 +301,118 @@ class CPHF(object):
             # TODO clean this up...
             if self.tei_mo_type == 'full':
                 if hamiltonian == 'rpa' and spin == 'singlet':
-                    A_s_ss_a = form_rpa_a_matrix_mo_singlet_ss(E_a, tei_mo_aaaa, nocc_alph)
-                    A_s_os_a = form_rpa_a_matrix_mo_singlet_os(tei_mo_aabb, nocc_alph, nocc_beta)
-                    B_s_ss_a = form_rpa_b_matrix_mo_singlet_ss(tei_mo_aaaa, nocc_alph)
-                    B_s_os_a = form_rpa_b_matrix_mo_singlet_os(tei_mo_aabb, nocc_alph, nocc_beta)
-                    A_s_ss_b = form_rpa_a_matrix_mo_singlet_ss(E_b, tei_mo_bbbb, nocc_beta)
-                    A_s_os_b = form_rpa_a_matrix_mo_singlet_os(tei_mo_bbaa, nocc_beta, nocc_alph)
-                    B_s_ss_b = form_rpa_b_matrix_mo_singlet_ss(tei_mo_bbbb, nocc_beta)
-                    B_s_os_b = form_rpa_b_matrix_mo_singlet_os(tei_mo_bbaa, nocc_beta, nocc_alph)
+                    A_ss_a = form_rpa_a_matrix_mo_singlet_ss_full(E_a, tei_mo_aaaa, nocc_alph)
+                    A_os_a = form_rpa_a_matrix_mo_singlet_os_full(tei_mo_aabb, nocc_alph, nocc_beta)
+                    B_ss_a = form_rpa_b_matrix_mo_singlet_ss_full(tei_mo_aaaa, nocc_alph)
+                    B_os_a = form_rpa_b_matrix_mo_singlet_os_full(tei_mo_aabb, nocc_alph, nocc_beta)
+                    A_ss_b = form_rpa_a_matrix_mo_singlet_ss_full(E_b, tei_mo_bbbb, nocc_beta)
+                    A_os_b = form_rpa_a_matrix_mo_singlet_os_full(tei_mo_bbaa, nocc_beta, nocc_alph)
+                    B_ss_b = form_rpa_b_matrix_mo_singlet_ss_full(tei_mo_bbbb, nocc_beta)
+                    B_os_b = form_rpa_b_matrix_mo_singlet_os_full(tei_mo_bbaa, nocc_beta, nocc_alph)
                 elif hamiltonian == 'rpa' and spin == 'triplet':
                     # Since the "triplet" part contains no Coulomb contribution, and
                     # (xx|yy) is only in the Coulomb part, there is no ss/os
                     # separation for the triplet part.
                     zeros_ab = np.zeros(shape=(nov_alph, nov_beta))
                     zeros_ba = zeros_ab.T
-                    A_t_ss_a = form_rpa_a_matrix_mo_triplet(E_a, tei_mo_aaaa, nocc_alph)
-                    A_t_os_a = zeros_ab
-                    B_t_ss_a = form_rpa_b_matrix_mo_triplet(tei_mo_aaaa, nocc_alph)
-                    B_t_os_a = zeros_ab
-                    A_t_ss_b = form_rpa_a_matrix_mo_triplet(E_b, tei_mo_bbbb, nocc_beta)
-                    A_t_os_b = zeros_ba
-                    B_t_ss_b = form_rpa_b_matrix_mo_triplet(tei_mo_bbbb, nocc_beta)
-                    B_t_os_b = zeros_ba
+                    A_ss_a = form_rpa_a_matrix_mo_triplet_full(E_a, tei_mo_aaaa, nocc_alph)
+                    A_os_a = zeros_ab
+                    B_ss_a = form_rpa_b_matrix_mo_triplet_full(tei_mo_aaaa, nocc_alph)
+                    B_os_a = zeros_ab
+                    A_ss_b = form_rpa_a_matrix_mo_triplet_full(E_b, tei_mo_bbbb, nocc_beta)
+                    A_os_b = zeros_ba
+                    B_ss_b = form_rpa_b_matrix_mo_triplet_full(tei_mo_bbbb, nocc_beta)
+                    B_os_b = zeros_ba
                 elif hamiltonian == 'tda' and spin == 'singlet':
                     zeros_aa = np.zeros(shape=(nov_alph, nov_alph))
                     zeros_ab = np.zeros(shape=(nov_alph, nov_beta))
                     zeros_ba = zeros_ab.T
                     zeros_bb = np.zeros(shape=(nov_beta, nov_beta))
-                    A_s_ss_a = form_rpa_a_matrix_mo_singlet_ss(E_a, tei_mo_aaaa, nocc_alph)
-                    A_s_os_a = form_rpa_a_matrix_mo_singlet_os(tei_mo_aabb, nocc_alph, nocc_beta)
-                    B_s_ss_a = zeros_aa
-                    B_s_os_a = zeros_ab
-                    A_s_ss_b = form_rpa_a_matrix_mo_singlet_ss(E_b, tei_mo_bbbb, nocc_beta)
-                    A_s_os_b = form_rpa_a_matrix_mo_singlet_os(tei_mo_bbaa, nocc_beta, nocc_alph)
-                    B_s_ss_b = zeros_bb
-                    B_s_os_b = zeros_ba
+                    A_ss_a = form_rpa_a_matrix_mo_singlet_ss_full(E_a, tei_mo_aaaa, nocc_alph)
+                    A_os_a = form_rpa_a_matrix_mo_singlet_os_full(tei_mo_aabb, nocc_alph, nocc_beta)
+                    B_ss_a = zeros_aa
+                    B_os_a = zeros_ab
+                    A_ss_b = form_rpa_a_matrix_mo_singlet_ss_full(E_b, tei_mo_bbbb, nocc_beta)
+                    A_os_b = form_rpa_a_matrix_mo_singlet_os_full(tei_mo_bbaa, nocc_beta, nocc_alph)
+                    B_ss_b = zeros_bb
+                    B_os_b = zeros_ba
                 elif hamiltonian == 'tda' and spin == 'triplet':
                     zeros_aa = np.zeros(shape=(nov_alph, nov_alph))
                     zeros_ab = np.zeros(shape=(nov_alph, nov_beta))
                     zeros_ba = zeros_ab.T
                     zeros_bb = np.zeros(shape=(nov_beta, nov_beta))
-                    A_t_ss_a = form_rpa_a_matrix_mo_triplet(E_a, tei_mo_aaaa, nocc_alph)
-                    A_t_os_a = zeros_ab
-                    B_t_ss_a = zeros_aa
-                    B_t_os_a = zeros_ab
-                    A_t_ss_b = form_rpa_a_matrix_mo_triplet(E_b, tei_mo_bbbb, nocc_beta)
-                    A_t_os_b = zeros_ba
-                    B_t_ss_b = zeros_bb
-                    B_t_os_b = zeros_ba
-                else:
-                    # TODO blow up
-                    pass
+                    A_ss_a = form_rpa_a_matrix_mo_triplet_full(E_a, tei_mo_aaaa, nocc_alph)
+                    A_os_a = zeros_ab
+                    B_ss_a = zeros_aa
+                    B_os_a = zeros_ab
+                    A_ss_b = form_rpa_a_matrix_mo_triplet_full(E_b, tei_mo_bbbb, nocc_beta)
+                    A_os_b = zeros_ba
+                    B_ss_b = zeros_bb
+                    B_os_b = zeros_ba
 
             elif self.tei_mo_type == 'partial':
                 if hamiltonian == 'rpa' and spin == 'singlet':
-                    A_s_ss_a = form_rpa_a_matrix_mo_singlet_ss_partial(E_a, tei_mo_ovov_aaaa, tei_mo_oovv_aaaa)
-                    A_s_os_a = form_rpa_a_matrix_mo_singlet_os_partial(tei_mo_ovov_aabb)
-                    B_s_ss_a = form_rpa_b_matrix_mo_singlet_ss_partial(tei_mo_ovov_aaaa)
-                    B_s_os_a = form_rpa_b_matrix_mo_singlet_os_partial(tei_mo_ovov_aabb)
-                    A_s_ss_b = form_rpa_a_matrix_mo_singlet_ss_partial(E_b, tei_mo_ovov_bbbb, tei_mo_oovv_bbbb)
-                    A_s_os_b = form_rpa_a_matrix_mo_singlet_os_partial(tei_mo_ovov_bbaa)
-                    B_s_ss_b = form_rpa_b_matrix_mo_singlet_ss_partial(tei_mo_ovov_bbbb)
-                    B_s_os_b = form_rpa_b_matrix_mo_singlet_os_partial(tei_mo_ovov_bbaa)
+                    A_ss_a = form_rpa_a_matrix_mo_singlet_ss_partial(E_a, tei_mo_ovov_aaaa, tei_mo_oovv_aaaa)
+                    A_os_a = form_rpa_a_matrix_mo_singlet_os_partial(tei_mo_ovov_aabb)
+                    B_ss_a = form_rpa_b_matrix_mo_singlet_ss_partial(tei_mo_ovov_aaaa)
+                    B_os_a = form_rpa_b_matrix_mo_singlet_os_partial(tei_mo_ovov_aabb)
+                    A_ss_b = form_rpa_a_matrix_mo_singlet_ss_partial(E_b, tei_mo_ovov_bbbb, tei_mo_oovv_bbbb)
+                    A_os_b = form_rpa_a_matrix_mo_singlet_os_partial(tei_mo_ovov_bbaa)
+                    B_ss_b = form_rpa_b_matrix_mo_singlet_ss_partial(tei_mo_ovov_bbbb)
+                    B_os_b = form_rpa_b_matrix_mo_singlet_os_partial(tei_mo_ovov_bbaa)
                 elif hamiltonian == 'rpa' and spin == 'triplet':
                     # Since the "triplet" part contains no Coulomb contribution, and
                     # (xx|yy) is only in the Coulomb part, there is no ss/os
                     # separation for the triplet part.
                     zeros_ab = np.zeros(shape=(nov_alph, nov_beta))
                     zeros_ba = zeros_ab.T
-                    A_t_ss_a = form_rpa_a_matrix_mo_triplet_partial(E_a, tei_mo_oovv_aaaa)
-                    A_t_os_a = zeros_ab
-                    B_t_ss_a = form_rpa_b_matrix_mo_triplet_partial(tei_mo_ovov_aaaa)
-                    B_t_os_a = zeros_ab
-                    A_t_ss_b = form_rpa_a_matrix_mo_triplet_partial(E_b, tei_mo_oovv_bbbb)
-                    A_t_os_b = zeros_ba
-                    B_t_ss_b = form_rpa_b_matrix_mo_triplet_partial(tei_mo_ovov_bbbb)
-                    B_t_os_b = zeros_ba
+                    A_ss_a = form_rpa_a_matrix_mo_triplet_partial(E_a, tei_mo_oovv_aaaa)
+                    A_os_a = zeros_ab
+                    B_ss_a = form_rpa_b_matrix_mo_triplet_partial(tei_mo_ovov_aaaa)
+                    B_os_a = zeros_ab
+                    A_ss_b = form_rpa_a_matrix_mo_triplet_partial(E_b, tei_mo_oovv_bbbb)
+                    A_os_b = zeros_ba
+                    B_ss_b = form_rpa_b_matrix_mo_triplet_partial(tei_mo_ovov_bbbb)
+                    B_os_b = zeros_ba
                 elif hamiltonian == 'tda' and spin == 'singlet':
                     zeros_aa = np.zeros(shape=(nov_alph, nov_alph))
                     zeros_ab = np.zeros(shape=(nov_alph, nov_beta))
                     zeros_ba = zeros_ab.T
                     zeros_bb = np.zeros(shape=(nov_beta, nov_beta))
-                    A_s_ss_a = form_rpa_a_matrix_mo_singlet_ss_partial(E_a, tei_mo_ovov_aaaa, tei_mo_oovv_aaaa)
-                    A_s_os_a = form_rpa_a_matrix_mo_singlet_os_partial(tei_mo_ovov_aabb)
-                    B_s_ss_a = zeros_aa
-                    B_s_os_a = zeros_ab
-                    A_s_ss_b = form_rpa_a_matrix_mo_singlet_ss_partial(E_b, tei_mo_ovov_bbbb, tei_mo_oovv_bbbb)
-                    A_s_os_b = form_rpa_a_matrix_mo_singlet_os_partial(tei_mo_ovov_bbaa)
-                    B_s_ss_b = zeros_bb
-                    B_s_os_b = zeros_ba
+                    A_ss_a = form_rpa_a_matrix_mo_singlet_ss_partial(E_a, tei_mo_ovov_aaaa, tei_mo_oovv_aaaa)
+                    A_os_a = form_rpa_a_matrix_mo_singlet_os_partial(tei_mo_ovov_aabb)
+                    B_ss_a = zeros_aa
+                    B_os_a = zeros_ab
+                    A_ss_b = form_rpa_a_matrix_mo_singlet_ss_partial(E_b, tei_mo_ovov_bbbb, tei_mo_oovv_bbbb)
+                    A_os_b = form_rpa_a_matrix_mo_singlet_os_partial(tei_mo_ovov_bbaa)
+                    B_ss_b = zeros_bb
+                    B_os_b = zeros_ba
                 elif hamiltonian == 'tda' and spin == 'triplet':
                     zeros_aa = np.zeros(shape=(nov_alph, nov_alph))
                     zeros_ab = np.zeros(shape=(nov_alph, nov_beta))
                     zeros_ba = zeros_ab.T
                     zeros_bb = np.zeros(shape=(nov_beta, nov_beta))
-                    A_t_ss_a = form_rpa_a_matrix_mo_triplet_partial(E_a, tei_mo_oovv_aaaa)
-                    A_t_os_a = zeros_ab
-                    B_t_ss_a = zeros_aa
-                    B_t_os_a = zeros_ab
-                    A_t_ss_b = form_rpa_a_matrix_mo_triplet_partial(E_b, tei_mo_oovv_bbbb)
-                    A_t_os_b = zeros_ba
-                    B_t_ss_b = zeros_bb
-                    B_t_os_b = zeros_ba
-                else:
-                    # TODO blow up
-                    pass
+                    A_ss_a = form_rpa_a_matrix_mo_triplet_partial(E_a, tei_mo_oovv_aaaa)
+                    A_os_a = zeros_ab
+                    B_ss_a = zeros_aa
+                    B_os_a = zeros_ab
+                    A_ss_b = form_rpa_a_matrix_mo_triplet_partial(E_b, tei_mo_oovv_bbbb)
+                    A_os_b = zeros_ba
+                    B_ss_b = zeros_bb
+                    B_os_b = zeros_ba
 
             # TODO blow up
             else:
                 pass
 
-            G_aa = np.asarray(np.bmat([[A_s_ss_a, B_s_ss_a],
-                                       [B_s_ss_a, A_s_ss_a]]))
-            G_ab = np.asarray(np.bmat([[A_s_os_a, B_s_os_a],
-                                       [B_s_os_a, A_s_os_a]]))
-            G_ba = np.asarray(np.bmat([[A_s_os_b, B_s_os_b],
-                                       [B_s_os_b, A_s_os_b]]))
-            G_bb = np.asarray(np.bmat([[A_s_ss_b, B_s_ss_b],
-                                       [B_s_ss_b, A_s_ss_b]]))
+            G_aa = np.asarray(np.bmat([[A_ss_a, B_ss_a],
+                                       [B_ss_a, A_ss_a]]))
+            G_ab = np.asarray(np.bmat([[A_os_a, B_os_a],
+                                       [B_os_a, A_os_a]]))
+            G_ba = np.asarray(np.bmat([[A_os_b, B_os_b],
+                                       [B_os_b, A_os_b]]))
+            G_bb = np.asarray(np.bmat([[A_ss_b, B_ss_b],
+                                       [B_ss_b, A_ss_b]]))
 
             self.explicit_hessian = [G_aa, G_ab, G_ba, G_bb]
 

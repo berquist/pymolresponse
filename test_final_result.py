@@ -1,7 +1,7 @@
 import numpy as np
 
-from utils import (np_load, parse_int_file_2)
-from cphf import (CPHF, Operator)
+from utils import np_load, parse_int_file_2
+from cphf import CPHF, Operator
 
 
 def test_final_result_rhf_h2o_sto3g_rpa_singlet():
@@ -31,7 +31,8 @@ def test_final_result_rhf_h2o_sto3g_rpa_singlet():
     operator_dipole = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False)
     operator_dipole.ao_integrals = ao_integrals_dipole
     cphf.add_operator(operator_dipole)
-    cphf.tei_mo = TEI_MO
+    cphf.tei_mo = (TEI_MO, )
+    cphf.tei_mo_type = 'full'
 
     cphf.run(solver='explicit', hamiltonian=hamiltonian, spin=spin)
 
@@ -90,7 +91,8 @@ def test_final_result_rhf_h2o_sto3g_rpa_triplet():
     operator_dipole = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False)
     operator_dipole.ao_integrals = ao_integrals_dipole
     cphf.add_operator(operator_dipole)
-    cphf.tei_mo = TEI_MO
+    cphf.tei_mo = (TEI_MO, )
+    cphf.tei_mo_type = 'full'
 
     cphf.run(solver='explicit', hamiltonian=hamiltonian, spin=spin)
 
@@ -149,7 +151,8 @@ def test_final_result_rhf_h2o_sto3g_tda_singlet():
     operator_dipole = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False)
     operator_dipole.ao_integrals = ao_integrals_dipole
     cphf.add_operator(operator_dipole)
-    cphf.tei_mo = TEI_MO
+    cphf.tei_mo = (TEI_MO, )
+    cphf.tei_mo_type = 'full'
 
     cphf.run(solver='explicit', hamiltonian=hamiltonian, spin=spin)
 
@@ -208,7 +211,8 @@ def test_final_result_rhf_h2o_sto3g_tda_triplet():
     operator_dipole = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False)
     operator_dipole.ao_integrals = ao_integrals_dipole
     cphf.add_operator(operator_dipole)
-    cphf.tei_mo = TEI_MO
+    cphf.tei_mo = (TEI_MO, )
+    cphf.tei_mo_type = 'full'
 
     cphf.run(solver='explicit', hamiltonian=hamiltonian, spin=spin)
 
@@ -307,7 +311,8 @@ if __name__ == '__main__':
     nvirt_a, nvirt_b = norb - nocc_a, norb - nocc_b
     occupations = [nocc_a, nvirt_a, nocc_b, nvirt_b]
     cphf = CPHF(mocoeffs, fock, occupations)
-    cphf.TEI_MO = tei_mo
+    cphf.tei_mo = (TEI_MO, )
+    cphf.tei_mo_type = 'full'
 
     # cphf.add_operator(operator_dipole)
     cphf.add_operator(operator_fermi)

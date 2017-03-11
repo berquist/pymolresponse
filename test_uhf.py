@@ -2,14 +2,16 @@ import numpy as np
 
 from cphf import CPHF, Operator
 
-from explicit_equations_full import (form_rpa_a_matrix_mo_singlet,
-                                     form_rpa_a_matrix_mo_singlet_ss,
-                                     form_rpa_a_matrix_mo_singlet_os,
-                                     form_rpa_a_matrix_mo_triplet,
-                                     form_rpa_b_matrix_mo_singlet,
-                                     form_rpa_b_matrix_mo_singlet_ss,
-                                     form_rpa_b_matrix_mo_singlet_os,
-                                     form_rpa_b_matrix_mo_triplet)
+from explicit_equations_full import \
+    (form_rpa_a_matrix_mo_singlet_full,
+     form_rpa_a_matrix_mo_singlet_ss_full,
+     form_rpa_a_matrix_mo_singlet_os_full,
+     form_rpa_a_matrix_mo_triplet_full,
+     form_rpa_b_matrix_mo_singlet_full,
+     form_rpa_b_matrix_mo_singlet_ss_full,
+     form_rpa_b_matrix_mo_singlet_os_full,
+     form_rpa_b_matrix_mo_triplet_full)
+
 from utils import np_load
 
 
@@ -42,13 +44,13 @@ def test_explicit_uhf_from_rhf_outside_solver():
 
     # Same-spin and opposite-spin contributions should add together
     # properly for restricted wavefunction.
-    A_s = form_rpa_a_matrix_mo_singlet(E_a, tei_mo, nocc_a)
-    A_s_ss = form_rpa_a_matrix_mo_singlet_ss(E_a, tei_mo, nocc_a)
-    A_s_os = form_rpa_a_matrix_mo_singlet_os(tei_mo, nocc_a, nocc_b)
+    A_s = form_rpa_a_matrix_mo_singlet_full(E_a, tei_mo, nocc_a)
+    A_s_ss = form_rpa_a_matrix_mo_singlet_ss_full(E_a, tei_mo, nocc_a)
+    A_s_os = form_rpa_a_matrix_mo_singlet_os_full(tei_mo, nocc_a, nocc_b)
     np.testing.assert_allclose(A_s, A_s_ss + A_s_os)
-    B_s = form_rpa_b_matrix_mo_singlet(tei_mo, nocc_a)
-    B_s_ss = form_rpa_b_matrix_mo_singlet_ss(tei_mo, nocc_a)
-    B_s_os = form_rpa_b_matrix_mo_singlet_os(tei_mo, nocc_a, nocc_b)
+    B_s = form_rpa_b_matrix_mo_singlet_full(tei_mo, nocc_a)
+    B_s_ss = form_rpa_b_matrix_mo_singlet_ss_full(tei_mo, nocc_a)
+    B_s_os = form_rpa_b_matrix_mo_singlet_os_full(tei_mo, nocc_a, nocc_b)
     np.testing.assert_allclose(B_s, B_s_ss + B_s_os)
     # Since the "triplet" part contains no Coulomb contribution, and
     # (xx|yy) is only in the Coulomb part, there is no ss/os
@@ -173,14 +175,14 @@ def test_explicit_uhf_outside_solver():
     nvirt_a, nvirt_b = norb - nocc_a, norb - nocc_b
     occupations = [nocc_a, nvirt_a, nocc_b, nvirt_b]
 
-    A_s_ss_a = form_rpa_a_matrix_mo_singlet_ss(E_a, tei_mo_aaaa, nocc_a)
-    A_s_os_a = form_rpa_a_matrix_mo_singlet_os(tei_mo_aabb, nocc_a, nocc_b)
-    B_s_ss_a = form_rpa_b_matrix_mo_singlet_ss(tei_mo_aaaa, nocc_a)
-    B_s_os_a = form_rpa_b_matrix_mo_singlet_os(tei_mo_aabb, nocc_a, nocc_b)
-    A_s_ss_b = form_rpa_a_matrix_mo_singlet_ss(E_b, tei_mo_bbbb, nocc_b)
-    A_s_os_b = form_rpa_a_matrix_mo_singlet_os(tei_mo_bbaa, nocc_b, nocc_a)
-    B_s_ss_b = form_rpa_b_matrix_mo_singlet_ss(tei_mo_bbbb, nocc_b)
-    B_s_os_b = form_rpa_b_matrix_mo_singlet_os(tei_mo_bbaa, nocc_b, nocc_a)
+    A_s_ss_a = form_rpa_a_matrix_mo_singlet_ss_full(E_a, tei_mo_aaaa, nocc_a)
+    A_s_os_a = form_rpa_a_matrix_mo_singlet_os_full(tei_mo_aabb, nocc_a, nocc_b)
+    B_s_ss_a = form_rpa_b_matrix_mo_singlet_ss_full(tei_mo_aaaa, nocc_a)
+    B_s_os_a = form_rpa_b_matrix_mo_singlet_os_full(tei_mo_aabb, nocc_a, nocc_b)
+    A_s_ss_b = form_rpa_a_matrix_mo_singlet_ss_full(E_b, tei_mo_bbbb, nocc_b)
+    A_s_os_b = form_rpa_a_matrix_mo_singlet_os_full(tei_mo_bbaa, nocc_b, nocc_a)
+    B_s_ss_b = form_rpa_b_matrix_mo_singlet_ss_full(tei_mo_bbbb, nocc_b)
+    B_s_os_b = form_rpa_b_matrix_mo_singlet_os_full(tei_mo_bbaa, nocc_b, nocc_a)
     # Since the "triplet" part contains no Coulomb contribution, and
     # (xx|yy) is only in the Coulomb part, there is no ss/os
     # separation for the triplet part.
