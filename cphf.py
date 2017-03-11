@@ -8,8 +8,12 @@ import scipy.constants as spc
 
 from utils import (np_load, parse_int_file_2)
 from explicit_equations import (form_rpa_a_matrix_mo_singlet,
+                                form_rpa_a_matrix_mo_singlet_ss,
+                                form_rpa_a_matrix_mo_singlet_os,
                                 form_rpa_a_matrix_mo_triplet,
                                 form_rpa_b_matrix_mo_singlet,
+                                form_rpa_b_matrix_mo_singlet_ss,
+                                form_rpa_b_matrix_mo_singlet_os,
                                 form_rpa_b_matrix_mo_triplet)
 
 
@@ -82,7 +86,7 @@ class Operator(object):
                 operator_component_ai_supervector_beta = np.concatenate((operator_component_ai_beta,
                                                                          operator_component_ai_beta * b_prefactor), axis=0)
                 operator_ai_beta.append(operator_component_ai_beta)
-                operator_ai_supervector_beta.append(operator_component_ai_supervector_beta)                
+                operator_ai_supervector_beta.append(operator_component_ai_supervector_beta)
         self.mo_integrals_ai_alph = np.stack(operator_ai_alph, axis=0)
         self.mo_integrals_ai_supervector_alph = np.stack(operator_ai_supervector_alph, axis=0)
         if is_uhf:
@@ -96,6 +100,13 @@ class CPHF(object):
         assert len(mocoeffs.shape) == 3
         assert (mocoeffs.shape[0] == 1) or (mocoeffs.shape[0] == 2)
         self.is_uhf = (mocoeffs.shape[0] == 2)
+        assert len(moenergies.shape) == 3
+        assert (moenergies.shape[0] == 1) or (moenergies.shape[0] == 2)
+        if self.is_uhf:
+            assert moenergies.shape[0] == 2
+        else:
+            assert moenergies.shape[0] == 1
+        assert moenergies.shape[1] == moenergies.shape[2]
         assert len(occupations) == 4
 
         self.mocoeffs = mocoeffs
@@ -207,22 +218,22 @@ class CPHF(object):
         if not self.is_uhf:
 
             if hamiltonian == 'rpa' and spin == 'singlet':
-                A_singlet = form_rpa_a_matrix_mo_singlet(self.moenergies, self.tei_mo, nocc_alph)
+                A_singlet = form_rpa_a_matrix_mo_singlet(self.moenergies[0, ...], self.tei_mo, nocc_alph)
                 B_singlet = form_rpa_b_matrix_mo_singlet(self.tei_mo, nocc_alph)
                 explicit_hessian = np.asarray(np.bmat([[A_singlet, B_singlet],
                                                        [B_singlet, A_singlet]]))
             elif hamiltonian == 'rpa' and spin == 'triplet':
-                A_triplet = form_rpa_a_matrix_mo_triplet(self.moenergies, self.tei_mo, nocc_alph)
+                A_triplet = form_rpa_a_matrix_mo_triplet(self.moenergies[0, ...], self.tei_mo, nocc_alph)
                 B_triplet = form_rpa_b_matrix_mo_triplet(self.tei_mo, nocc_alph)
                 explicit_hessian = np.asarray(np.bmat([[A_triplet, B_triplet],
                                                        [B_triplet, A_triplet]]))
             elif hamiltonian == 'tda' and spin == 'singlet':
-                A_singlet = form_rpa_a_matrix_mo_singlet(self.moenergies, self.tei_mo, nocc_alph)
+                A_singlet = form_rpa_a_matrix_mo_singlet(self.moenergies[0, ...], self.tei_mo, nocc_alph)
                 B_singlet = np.zeros(shape=(nov_alph, nov_alph))
                 explicit_hessian = np.asarray(np.bmat([[A_singlet, B_singlet],
                                                        [B_singlet, A_singlet]]))
             elif hamiltonian == 'tda' and spin == 'triplet':
-                A_triplet = form_rpa_a_matrix_mo_triplet(self.moenergies, self.tei_mo, nocc_alph)
+                A_triplet = form_rpa_a_matrix_mo_triplet(self.moenergies[0, ...], self.tei_mo, nocc_alph)
                 B_triplet = np.zeros(shape=(nov_alph, nov_alph))
                 explicit_hessian = np.asarray(np.bmat([[A_triplet, B_triplet],
                                                        [B_triplet, A_triplet]]))
@@ -233,13 +244,93 @@ class CPHF(object):
             self.explicit_hessian = explicit_hessian - superoverlap
 
         else:
-            # TODO UHF
-            self.explicit_hessian = []
+            # For UHF there are both "operator-dependent" and
+            # operator-indepenent parts of the orbital Hessian because
+            # the opposite-spin property gradient couples in. Here,
+            # only form the 4 blocks of the "super-Hessian" (a
+            # supermatrix of supermatrices); the equations will get
+            # pieced together when it is time ot form the response
+            # vectors.
+
+            # For now we are inefficient and assume we have all
+            # fully-transformed (aa|aa), (aa|bb), (bb|aa), and (bb|bb)
+            # integrals.
+            assert len(self.tei_mo) == 4
+            tei_mo_aaaa, tei_mo_aabb, tei_mo_bbaa, tei_mo_bbbb = self.tei_mo
+            E_a = self.moenergies[0, ...]
+            E_b = self.moenergies[1, ...]
+
+            if hamiltonian == 'rpa' and spin == 'singlet':
+                A_s_ss_a = form_rpa_a_matrix_mo_singlet_ss(E_a, tei_mo_aaaa, nocc_alph)
+                A_s_os_a = form_rpa_a_matrix_mo_singlet_os(tei_mo_aabb, nocc_alph, nocc_beta)
+                B_s_ss_a = form_rpa_b_matrix_mo_singlet_ss(tei_mo_aaaa, nocc_alph)
+                B_s_os_a = form_rpa_b_matrix_mo_singlet_os(tei_mo_aabb, nocc_alph, nocc_beta)
+                A_s_ss_b = form_rpa_a_matrix_mo_singlet_ss(E_b, tei_mo_bbbb, nocc_beta)
+                A_s_os_b = form_rpa_a_matrix_mo_singlet_os(tei_mo_bbaa, nocc_beta, nocc_alph)
+                B_s_ss_b = form_rpa_b_matrix_mo_singlet_ss(tei_mo_bbbb, nocc_beta)
+                B_s_os_b = form_rpa_b_matrix_mo_singlet_os(tei_mo_bbaa, nocc_beta, nocc_alph)
+            elif hamiltonian == 'rpa' and spin == 'triplet':
+                # Since the "triplet" part contains no Coulomb contribution, and
+                # (xx|yy) is only in the Coulomb part, there is no ss/os
+                # separation for the triplet part.
+                zeros_ab = np.zeros(shape=(nov_alph, nov_beta))
+                zeros_ba = zeros_ab.T
+                A_t_ss_a = form_rpa_a_matrix_mo_triplet(E_a, tei_mo_aaaa, nocc_alph)
+                A_t_os_a = zeros_ab
+                B_t_ss_a = form_rpa_b_matrix_mo_triplet(tei_mo_aaaa, nocc_alph)
+                B_t_os_a = zeros_ab
+                A_t_ss_b = form_rpa_a_matrix_mo_triplet(E_b, tei_mo_bbbb, nocc_beta)
+                A_t_os_b = zeros_ba
+                B_t_ss_b = form_rpa_b_matrix_mo_triplet(tei_mo_bbbb, nocc_beta)
+                B_t_os_b = zeros_ba
+            elif hamiltonian == 'tda' and spin == 'singlet':
+                zeros_aa = np.zeros(shape=(nov_alph, nov_alph))
+                zeros_ab = np.zeros(shape=(nov_alph, nov_beta))
+                zeros_ba = zeros_ab.T
+                zeros_bb = np.zeros(shape=(nov_beta, nov_beta))
+                A_s_ss_a = form_rpa_a_matrix_mo_singlet_ss(E_a, tei_mo_aaaa, nocc_alph)
+                A_s_os_a = form_rpa_a_matrix_mo_singlet_os(tei_mo_aabb, nocc_alph, nocc_beta)
+                B_s_ss_a = zeros_aa
+                B_s_os_a = zeros_ab
+                A_s_ss_b = form_rpa_a_matrix_mo_singlet_ss(E_b, tei_mo_bbbb, nocc_beta)
+                A_s_os_b = form_rpa_a_matrix_mo_singlet_os(tei_mo_bbaa, nocc_beta, nocc_alph)
+                B_s_ss_b = zeros_bb
+                B_s_os_b = zeros_ba
+            elif hamiltonian == 'tda' and spin == 'triplet':
+                zeros_aa = np.zeros(shape=(nov_alph, nov_alph))
+                zeros_ab = np.zeros(shape=(nov_alph, nov_beta))
+                zeros_ba = zeros_ab.T
+                zeros_bb = np.zeros(shape=(nov_beta, nov_beta))
+                A_t_ss_a = form_rpa_a_matrix_mo_triplet(E_a, tei_mo_aaaa, nocc_alph)
+                A_t_os_a = zeros_ab
+                B_t_ss_a = zeros_aa
+                B_t_os_a = zeros_ab
+                A_t_ss_b = form_rpa_a_matrix_mo_triplet(E_b, tei_mo_bbbb, nocc_beta)
+                A_t_os_b = zeros_ba
+                B_t_ss_b = zeros_bb
+                B_t_os_b = zeros_ba
+
+            # TODO blow up
+            else:
+                pass
+
+            G_aa = np.asarray(np.bmat([[A_s_ss_a, B_s_ss_a],
+                                       [B_s_ss_a, A_s_ss_a]]))
+            G_ab = np.asarray(np.bmat([[A_s_os_a, B_s_os_a],
+                                       [B_s_os_a, A_s_os_a]]))
+            G_ba = np.asarray(np.bmat([[A_s_os_b, B_s_os_b],
+                                       [B_s_os_b, A_s_os_b]]))
+            G_bb = np.asarray(np.bmat([[A_s_ss_b, B_s_ss_b],
+                                       [B_s_ss_b, A_s_ss_b]]))
+
+            self.explicit_hessian = [G_aa, G_ab, G_ba, G_bb]
 
     def invert_explicit_hessian(self):
         if not self.is_uhf:
             self.explicit_hessian_inv = np.linalg.inv(self.explicit_hessian)
         else:
+            assert len(self.explicit_hessian) == 4
+            self.explicit_hessian_inv = []
             for eh in self.explicit_hessian:
                 assert len(eh.shape) == 2
                 # If the block is square, the inverse can be found
@@ -250,6 +341,12 @@ class CPHF(object):
                     self.explicit_hessian_inv.append(np.linalg.pinv(eh))
 
     def form_response_vectors(self):
+        if self.is_uhf:
+            G_aa, G_ab, G_ba, G_bb = self.explicit_hessian
+            G_aa_inv, G_ab_inv, G_ba_inv, G_bb_inv = self.explicit_hessian_inv
+            # Form the operator-independent part of the response vectors.
+            left_alph = np.linalg.inv(G_aa - np.dot(G_ab, np.dot(G_bb_inv, G_ba)))
+            left_beta = np.linalg.inv(G_bb - np.dot(G_ba, np.dot(G_aa_inv, G_ab)))
         for operator in self.operators:
             if not self.is_uhf:
                 rspvecs_operator = []
@@ -272,8 +369,34 @@ class CPHF(object):
                 rspvecs_operator = tmp
                 operator.rspvecs_alph.append(rspvecs_operator)
             else:
-                # TODO UHF
-                pass
+                # Form the operator-dependent part of the response vectors.
+                rspvecs_operator_alph = []
+                rspvecs_operator_beta = []
+                for idx_operator_component in range(operator.ao_integrals.shape[0]):
+                    operator_component_alph = operator.mo_integrals_ai_supervector_alph[idx_operator_component, ...]
+                    operator_component_beta = operator.mo_integrals_ai_supervector_beta[idx_operator_component, ...]
+                    shape_alph = operator_component_alph.shape
+                    shape_beta = operator_component_beta.shape
+                    assert len(shape_alph) == len(shape_beta) == 2
+                    assert shape_alph[1] == shape_beta[1] == 1
+                    right_alph = operator_component_alph - (np.dot(G_ab, np.dot(G_bb_inv, operator_component_beta)))
+                    right_beta = operator_component_beta - (np.dot(G_ba, np.dot(G_aa_inv, operator_component_alph)))
+                    assert right_alph.shape == shape_alph
+                    assert right_beta.shape == shape_beta
+                    rspvecs_operator_alph.append(np.dot(left_alph, right_alph))
+                    rspvecs_operator_beta.append(np.dot(left_beta, right_beta))
+                tmp_alph = np.empty(shape=(len(rspvecs_operator_alph), shape_alph[0], 1),
+                                    dtype=operator_component_alph.dtype)
+                tmp_beta = np.empty(shape=(len(rspvecs_operator_beta), shape_beta[0], 1),
+                                    dtype=operator_component_beta.dtype)
+                for idx_alph, operator_component_alph in enumerate(rspvecs_operator_alph):
+                    tmp_alph[idx_alph, ...] = operator_component_alph
+                for idx_beta, operator_component_beta in enumerate(rspvecs_operator_beta):
+                    tmp_beta[idx_beta, ...] = operator_component_beta
+                rspvecs_operator_alph = tmp_alph
+                rspvecs_operator_beta = tmp_beta
+                operator.rspvecs_alph.append(rspvecs_operator_alph)
+                operator.rspvecs_beta.append(rspvecs_operator_beta)
 
     def form_results(self):
 
@@ -294,7 +417,7 @@ class CPHF(object):
                 assert len(self.frequencies) == len(operator.rspvecs_beta)
             else:
                 assert len(operator.rspvecs_beta) == 0
-                
+
         for f in range(len(self.frequencies)):
             for i in range(len(self.operators)):
                 assert self.operators[i].rspvecs_alph[f].shape == self.operators[i].mo_integrals_ai_supervector_alph.shape
@@ -325,7 +448,10 @@ class CPHF(object):
             for iop1, op1 in enumerate(self.operators):
                 col_start = 0
                 for iop2, op2 in enumerate(self.operators):
-                    result_block = form_results(op1.mo_integrals_ai_supervector_alph, op2.rspvecs_alph[f])
+                    result_block = 0.0
+                    result_block += form_results(op1.mo_integrals_ai_supervector_alph, op2.rspvecs_alph[f])
+                    if self.is_uhf:
+                        result_block += form_results(op1.mo_integrals_ai_supervector_beta, op2.rspvecs_beta[f])
                     result_blocks.append(result_block)
                     row_starts.append(row_start)
                     col_starts.append(col_start)
@@ -340,8 +466,11 @@ class CPHF(object):
                 rs, cs = row_starts[idx], col_starts[idx]
                 results[rs:rs+nr, cs:cs+nc] = result_block
 
-            # The 2 is because of the supervector part.
-            results = 4 * results / 2
+            # The / 2 is because of the supervector part.
+            if self.is_uhf:
+                results = 2 * results / 2
+            else:
+                results = 4 * results / 2
             self.results.append(results)
 
 
@@ -351,6 +480,7 @@ if __name__ == '__main__':
     C = np_load('C.npz')
     C = C[np.newaxis, ...]
     E = np_load('F_MO.npz')
+    E = E[np.newaxis, ...]
     TEI_MO = np_load('TEI_MO.npz')
     # nocc_alph, nvirt_alph, nocc_beta, nvirt_beta
     occupations = [5, 2, 5, 2]

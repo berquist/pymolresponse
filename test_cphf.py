@@ -11,6 +11,7 @@ def test_final_result_rhf_h2o_sto3g_rpa_singlet():
     C = np_load('C.npz')
     C = C[np.newaxis, ...]
     E = np_load('F_MO.npz')
+    E = E[np.newaxis, ...]
     TEI_MO = np_load('TEI_MO.npz')
     # nocc_alph, nvirt_alph, nocc_beta, nvirt_beta
     occupations = [5, 2, 5, 2]
@@ -69,6 +70,7 @@ def test_final_result_rhf_h2o_sto3g_rpa_triplet():
     C = np_load('C.npz')
     C = C[np.newaxis, ...]
     E = np_load('F_MO.npz')
+    E = E[np.newaxis, ...]
     TEI_MO = np_load('TEI_MO.npz')
     # nocc_alph, nvirt_alph, nocc_beta, nvirt_beta
     occupations = [5, 2, 5, 2]
@@ -127,6 +129,7 @@ def test_final_result_rhf_h2o_sto3g_tda_singlet():
     C = np_load('C.npz')
     C = C[np.newaxis, ...]
     E = np_load('F_MO.npz')
+    E = E[np.newaxis, ...]
     TEI_MO = np_load('TEI_MO.npz')
     # nocc_alph, nvirt_alph, nocc_beta, nvirt_beta
     occupations = [5, 2, 5, 2]
@@ -185,6 +188,7 @@ def test_final_result_rhf_h2o_sto3g_tda_triplet():
     C = np_load('C.npz')
     C = C[np.newaxis, ...]
     E = np_load('F_MO.npz')
+    E = E[np.newaxis, ...]
     TEI_MO = np_load('TEI_MO.npz')
     # nocc_alph, nvirt_alph, nocc_beta, nvirt_beta
     occupations = [5, 2, 5, 2]
@@ -297,7 +301,8 @@ if __name__ == '__main__':
     operator_spnorb.ao_integrals = ao_integrals_spnorb
 
     # In the future, we want the full Fock matrices in the MO basis.
-    fock = np.diag(moenergies)
+    fock = np.diag(moenergies)[np.newaxis, ...]
+    mocoeffs = mocoeffs[np.newaxis, ...]
     nocc_a, nocc_b = mol.nelec
     nvirt_a, nvirt_b = norb - nocc_a, norb - nocc_b
     occupations = [nocc_a, nvirt_a, nocc_b, nvirt_b]

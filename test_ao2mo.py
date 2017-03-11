@@ -1,5 +1,7 @@
 import numpy as np
 
+from cphf import CPHF, Operator
+
 from explicit_equations import (form_rpa_a_matrix_mo_singlet,
                                 form_rpa_a_matrix_mo_singlet_ss,
                                 form_rpa_a_matrix_mo_singlet_os,
@@ -79,16 +81,6 @@ def test_explicit_uhf_from_rhf():
     left_alph = np.linalg.inv(G_aa - np.dot(G_ab, np.dot(G_bb_inv, G_ba)))
     left_beta = np.linalg.inv(G_bb - np.dot(G_ba, np.dot(G_aa_inv, G_ab)))
 
-    from pyscf import gto
-    mol = gto.Mole()
-    mol.verbose = 5
-    with open('water.xyz') as fh:
-        mol.atom = fh.read()
-    mol.unit = 'Bohr'
-    mol.basis = 'sto-3g'
-    mol.symmetry = False
-    mol.build()
-
     integrals_dipole_ao = mol.intor('cint1e_r_sph', comp=3)
 
     integrals_dipole_mo_ai_r = []
@@ -140,6 +132,11 @@ def test_explicit_uhf_from_rhf():
 
     print(res_r)
     print(res_u)
+
+
+ref_water_cation_HF_STO3G = np.array([[6.1406370,   0.0000000,   0.0000000],
+                                      [0.0000000,   2.3811198,   0.0000000],
+                                      [0.0000000,   0.0000000,   1.4755219]])
 
 
 def test_explicit_uhf():
@@ -214,19 +211,9 @@ def test_explicit_uhf():
     assert G_ba_inv.shape == (2 * nov_aa, 2 * nov_bb)
     assert G_bb_inv.shape == (2 * nov_bb, 2 * nov_bb)
 
-    # Form the operator_dependent part of the response vectors.
+    # Form the operator-independent part of the response vectors.
     left_a = np.linalg.inv(G_aa - np.dot(G_ab, np.dot(G_bb_inv, G_ba)))
     left_b = np.linalg.inv(G_bb - np.dot(G_ba, np.dot(G_aa_inv, G_ab)))
-
-    from pyscf import gto
-    mol = gto.Mole()
-    mol.verbose = 5
-    with open('water.xyz') as fh:
-        mol.atom = fh.read()
-    mol.unit = 'Bohr'
-    mol.basis = 'sto-3g'
-    mol.symmetry = False
-    mol.build()
 
     integrals_dipole_ao = mol.intor('cint1e_r_sph', comp=3)
 
@@ -267,14 +254,74 @@ def test_explicit_uhf():
 
     atol = 1.0e-5
     rtol = 0.0
-    ref = np.array([[6.1406370,   0.0000000,   0.0000000],
-                    [0.0000000,   2.3811198,   0.0000000],
-                    [0.0000000,   0.0000000,   1.4755219]])
 
-    np.testing.assert_allclose(res_u, ref, rtol=rtol, atol=atol)
+    np.testing.assert_allclose(res_u, ref_water_cation_HF_STO3G, rtol=rtol, atol=atol)
 
+
+def test_uhf():
+    from pyscf import ao2mo, gto, scf
+
+    mol = gto.Mole()
+    mol.verbose = 5
+    with open('water.xyz') as fh:
+        mol.atom = fh.read()
+    mol.unit = 'Bohr'
+    mol.basis = 'sto-3g'
+    mol.symmetry = False
+
+    mol.charge = 1
+    mol.spin = 1
+
+    mol.build()
+
+    mf = scf.UHF(mol)
+    mf.kernel()
+    C = mf.mo_coeff
+    C_a = C[0, ...]
+    C_b = C[1, ...]
+    E_a = np.diag(mf.mo_energy[0, ...])
+    E_b = np.diag(mf.mo_energy[1, ...])
+    assert C_a.shape == C_b.shape
+    assert E_a.shape == E_b.shape
+    E = np.stack((E_a, E_b), axis=0)
+    norb = C_a.shape[1]
+    C_aaaa = (C_a, C_a, C_a, C_a)
+    C_aabb = (C_a, C_a, C_b, C_b)
+    C_bbaa = (C_b, C_b, C_a, C_a)
+    C_bbbb = (C_b, C_b, C_b, C_b)
+    tei_mo_aaaa = ao2mo.general(mol, C_aaaa, aosym='s1', compact=False, verbose=5).reshape(norb, norb, norb, norb)
+    tei_mo_aabb = ao2mo.general(mol, C_aabb, aosym='s1', compact=False, verbose=5).reshape(norb, norb, norb, norb)
+    tei_mo_bbaa = ao2mo.general(mol, C_bbaa, aosym='s1', compact=False, verbose=5).reshape(norb, norb, norb, norb)
+    tei_mo_bbbb = ao2mo.general(mol, C_bbbb, aosym='s1', compact=False, verbose=5).reshape(norb, norb, norb, norb)
+
+    integrals_dipole_ao = mol.intor('cint1e_r_sph', comp=3)
+
+    nocc_a, nocc_b = mol.nelec
+    nvirt_a, nvirt_b = norb - nocc_a, norb - nocc_b
+    occupations = [nocc_a, nvirt_a, nocc_b, nvirt_b]
+
+    cphf = CPHF(C, E, occupations)
+
+    cphf.tei_mo = (tei_mo_aaaa, tei_mo_aabb, tei_mo_bbaa, tei_mo_bbbb)
+
+    operator_dipole = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False)
+    operator_dipole.ao_integrals = integrals_dipole_ao
+    cphf.add_operator(operator_dipole)
+
+    cphf.set_frequencies()
+
+    cphf.run(solver='explicit', hamiltonian='rpa', spin='singlet')
+    assert len(cphf.frequencies) == len(cphf.results) == 1
+    res = cphf.results[0]
+    print(res)
+
+    atol = 1.0e-5
+    rtol = 0.0
+
+    np.testing.assert_allclose(res, ref_water_cation_HF_STO3G, rtol=rtol, atol=atol)
 
 if __name__ == '__main__':
     # test_explicit_uhf_from_rhf()
-    test_explicit_uhf()
+    # test_explicit_uhf()
+    test_uhf()
     pass
