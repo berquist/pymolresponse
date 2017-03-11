@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def form_rpa_a_matrix_mo_singlet(E_MO, TEI_MO_iajb, TEI_MO_ijab):
+def form_rpa_a_matrix_mo_singlet_partial(E_MO, TEI_MO_iajb, TEI_MO_ijab):
     """Form the A (CIS) matrix for RPA in the molecular orbital (MO)
     basis. [singlet]
 
@@ -37,7 +37,7 @@ def form_rpa_a_matrix_mo_singlet(E_MO, TEI_MO_iajb, TEI_MO_ijab):
     return A
 
 
-def form_rpa_a_matrix_mo_triplet(E_MO, TEI_MO_ijab):
+def form_rpa_a_matrix_mo_triplet_partial(E_MO, TEI_MO_ijab):
     """Form the A (CIS) matrix for RPA in the molecular orbital (MO)
     basis. [triplet]
 
@@ -72,7 +72,7 @@ def form_rpa_a_matrix_mo_triplet(E_MO, TEI_MO_ijab):
     return A
 
 
-def form_rpa_b_matrix_mo_singlet(TEI_MO_iajb):
+def form_rpa_b_matrix_mo_singlet_partial(TEI_MO_iajb):
     """Form the B matrix for RPA in the molecular orbital (MO)
     basis. [singlet]
 
@@ -101,7 +101,7 @@ def form_rpa_b_matrix_mo_singlet(TEI_MO_iajb):
     return B
 
 
-def form_rpa_b_matrix_mo_triplet(TEI_MO_iajb):
+def form_rpa_b_matrix_mo_triplet_partial(TEI_MO_iajb):
 
     shape_iajb = TEI_MO_iajb.shape
     assert len(shape_iajb) == 4
@@ -124,7 +124,7 @@ def form_rpa_b_matrix_mo_triplet(TEI_MO_iajb):
     return B
 
 
-def form_rpa_a_matrix_mo_singlet_ss(E_MO, TEI_MO_iajb, TEI_MO_ijab):
+def form_rpa_a_matrix_mo_singlet_ss_partial(E_MO, TEI_MO_iajb, TEI_MO_ijab):
 
     shape_iajb = TEI_MO_iajb.shape
     shape_ijab = TEI_MO_ijab.shape
@@ -153,7 +153,7 @@ def form_rpa_a_matrix_mo_singlet_ss(E_MO, TEI_MO_iajb, TEI_MO_ijab):
     return A
 
 
-def form_rpa_a_matrix_mo_singlet_os(TEI_MO_iajb_xxyy):
+def form_rpa_a_matrix_mo_singlet_os_partial(TEI_MO_iajb_xxyy):
 
     shape = TEI_MO_iajb_xxyy.shape
     assert len(shape) == 4
@@ -174,7 +174,7 @@ def form_rpa_a_matrix_mo_singlet_os(TEI_MO_iajb_xxyy):
     return A
 
 
-def form_rpa_b_matrix_mo_singlet_ss(TEI_MO_iajb):
+def form_rpa_b_matrix_mo_singlet_ss_partial(TEI_MO_iajb):
 
     shape_iajb = TEI_MO_iajb.shape
     assert len(shape_iajb) == 4
@@ -197,7 +197,7 @@ def form_rpa_b_matrix_mo_singlet_ss(TEI_MO_iajb):
     return B
 
 
-def form_rpa_b_matrix_mo_singlet_os(TEI_MO_iajb_xxyy):
+def form_rpa_b_matrix_mo_singlet_os_partial(TEI_MO_iajb_xxyy):
 
     shape = TEI_MO_iajb_xxyy.shape
     assert len(shape) == 4

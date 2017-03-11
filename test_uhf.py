@@ -295,6 +295,7 @@ def test_explicit_uhf():
     cphf = CPHF(C, E, occupations)
 
     cphf.tei_mo = (tei_mo_aaaa, tei_mo_aabb, tei_mo_bbaa, tei_mo_bbbb)
+    cphf.tei_mo_type = 'full'
 
     operator_dipole = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False)
     operator_dipole.ao_integrals = integrals_dipole_ao

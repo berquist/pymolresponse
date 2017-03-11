@@ -16,6 +16,15 @@ from explicit_equations_full import (form_rpa_a_matrix_mo_singlet,
                                      form_rpa_b_matrix_mo_singlet_ss,
                                      form_rpa_b_matrix_mo_singlet_os,
                                      form_rpa_b_matrix_mo_triplet)
+from explicit_equations_partial import \
+    (form_rpa_a_matrix_mo_singlet_partial,
+     form_rpa_a_matrix_mo_singlet_ss_partial,
+     form_rpa_a_matrix_mo_singlet_os_partial,
+     form_rpa_a_matrix_mo_triplet_partial,
+     form_rpa_b_matrix_mo_singlet_partial,
+     form_rpa_b_matrix_mo_singlet_ss_partial,
+     form_rpa_b_matrix_mo_singlet_os_partial,
+     form_rpa_b_matrix_mo_triplet_partial)
 
 
 class Operator(object):
@@ -112,6 +121,7 @@ class CPHF(object):
         self.results = []
 
         self.tei_mo = None
+        self.tei_mo_type = 'partial'
         self.explicit_hessian = None
         self.explicit_hessian_inv = None
 
@@ -241,63 +251,135 @@ class CPHF(object):
             # pieced together when it is time ot form the response
             # vectors.
 
-            # For now we are inefficient and assume we have all
-            # fully-transformed (aa|aa), (aa|bb), (bb|aa), and (bb|bb)
-            # integrals.
-            assert len(self.tei_mo) == 4
-            tei_mo_aaaa, tei_mo_aabb, tei_mo_bbaa, tei_mo_bbbb = self.tei_mo
+            if self.tei_mo_type == 'full':
+                assert len(self.tei_mo) == 4
+                tei_mo_aaaa = self.tei_mo[0]
+                tei_mo_aabb = self.tei_mo[1]
+                tei_mo_bbaa = self.tei_mo[2]
+                tei_mo_bbbb = self.tei_mo[3]
+            elif self.tei_mo_type == 'partial':
+                assert len(self.tei_mo) == 6
+                tei_mo_ovov_aaaa = self.tei_mo[0]
+                tei_mo_ovov_aabb = self.tei_mo[1]
+                tei_mo_ovov_bbaa = self.tei_mo[2]
+                tei_mo_ovov_bbbb = self.tei_mo[3]
+                tei_mo_oovv_aaaa = self.tei_mo[4]
+                tei_mo_oovv_bbbb = self.tei_mo[5]
+            else:
+                # TODO blow up
+                pass
+                
             E_a = self.moenergies[0, ...]
             E_b = self.moenergies[1, ...]
 
-            if hamiltonian == 'rpa' and spin == 'singlet':
-                A_s_ss_a = form_rpa_a_matrix_mo_singlet_ss(E_a, tei_mo_aaaa, nocc_alph)
-                A_s_os_a = form_rpa_a_matrix_mo_singlet_os(tei_mo_aabb, nocc_alph, nocc_beta)
-                B_s_ss_a = form_rpa_b_matrix_mo_singlet_ss(tei_mo_aaaa, nocc_alph)
-                B_s_os_a = form_rpa_b_matrix_mo_singlet_os(tei_mo_aabb, nocc_alph, nocc_beta)
-                A_s_ss_b = form_rpa_a_matrix_mo_singlet_ss(E_b, tei_mo_bbbb, nocc_beta)
-                A_s_os_b = form_rpa_a_matrix_mo_singlet_os(tei_mo_bbaa, nocc_beta, nocc_alph)
-                B_s_ss_b = form_rpa_b_matrix_mo_singlet_ss(tei_mo_bbbb, nocc_beta)
-                B_s_os_b = form_rpa_b_matrix_mo_singlet_os(tei_mo_bbaa, nocc_beta, nocc_alph)
-            elif hamiltonian == 'rpa' and spin == 'triplet':
-                # Since the "triplet" part contains no Coulomb contribution, and
-                # (xx|yy) is only in the Coulomb part, there is no ss/os
-                # separation for the triplet part.
-                zeros_ab = np.zeros(shape=(nov_alph, nov_beta))
-                zeros_ba = zeros_ab.T
-                A_t_ss_a = form_rpa_a_matrix_mo_triplet(E_a, tei_mo_aaaa, nocc_alph)
-                A_t_os_a = zeros_ab
-                B_t_ss_a = form_rpa_b_matrix_mo_triplet(tei_mo_aaaa, nocc_alph)
-                B_t_os_a = zeros_ab
-                A_t_ss_b = form_rpa_a_matrix_mo_triplet(E_b, tei_mo_bbbb, nocc_beta)
-                A_t_os_b = zeros_ba
-                B_t_ss_b = form_rpa_b_matrix_mo_triplet(tei_mo_bbbb, nocc_beta)
-                B_t_os_b = zeros_ba
-            elif hamiltonian == 'tda' and spin == 'singlet':
-                zeros_aa = np.zeros(shape=(nov_alph, nov_alph))
-                zeros_ab = np.zeros(shape=(nov_alph, nov_beta))
-                zeros_ba = zeros_ab.T
-                zeros_bb = np.zeros(shape=(nov_beta, nov_beta))
-                A_s_ss_a = form_rpa_a_matrix_mo_singlet_ss(E_a, tei_mo_aaaa, nocc_alph)
-                A_s_os_a = form_rpa_a_matrix_mo_singlet_os(tei_mo_aabb, nocc_alph, nocc_beta)
-                B_s_ss_a = zeros_aa
-                B_s_os_a = zeros_ab
-                A_s_ss_b = form_rpa_a_matrix_mo_singlet_ss(E_b, tei_mo_bbbb, nocc_beta)
-                A_s_os_b = form_rpa_a_matrix_mo_singlet_os(tei_mo_bbaa, nocc_beta, nocc_alph)
-                B_s_ss_b = zeros_bb
-                B_s_os_b = zeros_ba
-            elif hamiltonian == 'tda' and spin == 'triplet':
-                zeros_aa = np.zeros(shape=(nov_alph, nov_alph))
-                zeros_ab = np.zeros(shape=(nov_alph, nov_beta))
-                zeros_ba = zeros_ab.T
-                zeros_bb = np.zeros(shape=(nov_beta, nov_beta))
-                A_t_ss_a = form_rpa_a_matrix_mo_triplet(E_a, tei_mo_aaaa, nocc_alph)
-                A_t_os_a = zeros_ab
-                B_t_ss_a = zeros_aa
-                B_t_os_a = zeros_ab
-                A_t_ss_b = form_rpa_a_matrix_mo_triplet(E_b, tei_mo_bbbb, nocc_beta)
-                A_t_os_b = zeros_ba
-                B_t_ss_b = zeros_bb
-                B_t_os_b = zeros_ba
+            # TODO clean this up...
+            if self.tei_mo_type == 'full':
+                if hamiltonian == 'rpa' and spin == 'singlet':
+                    A_s_ss_a = form_rpa_a_matrix_mo_singlet_ss(E_a, tei_mo_aaaa, nocc_alph)
+                    A_s_os_a = form_rpa_a_matrix_mo_singlet_os(tei_mo_aabb, nocc_alph, nocc_beta)
+                    B_s_ss_a = form_rpa_b_matrix_mo_singlet_ss(tei_mo_aaaa, nocc_alph)
+                    B_s_os_a = form_rpa_b_matrix_mo_singlet_os(tei_mo_aabb, nocc_alph, nocc_beta)
+                    A_s_ss_b = form_rpa_a_matrix_mo_singlet_ss(E_b, tei_mo_bbbb, nocc_beta)
+                    A_s_os_b = form_rpa_a_matrix_mo_singlet_os(tei_mo_bbaa, nocc_beta, nocc_alph)
+                    B_s_ss_b = form_rpa_b_matrix_mo_singlet_ss(tei_mo_bbbb, nocc_beta)
+                    B_s_os_b = form_rpa_b_matrix_mo_singlet_os(tei_mo_bbaa, nocc_beta, nocc_alph)
+                elif hamiltonian == 'rpa' and spin == 'triplet':
+                    # Since the "triplet" part contains no Coulomb contribution, and
+                    # (xx|yy) is only in the Coulomb part, there is no ss/os
+                    # separation for the triplet part.
+                    zeros_ab = np.zeros(shape=(nov_alph, nov_beta))
+                    zeros_ba = zeros_ab.T
+                    A_t_ss_a = form_rpa_a_matrix_mo_triplet(E_a, tei_mo_aaaa, nocc_alph)
+                    A_t_os_a = zeros_ab
+                    B_t_ss_a = form_rpa_b_matrix_mo_triplet(tei_mo_aaaa, nocc_alph)
+                    B_t_os_a = zeros_ab
+                    A_t_ss_b = form_rpa_a_matrix_mo_triplet(E_b, tei_mo_bbbb, nocc_beta)
+                    A_t_os_b = zeros_ba
+                    B_t_ss_b = form_rpa_b_matrix_mo_triplet(tei_mo_bbbb, nocc_beta)
+                    B_t_os_b = zeros_ba
+                elif hamiltonian == 'tda' and spin == 'singlet':
+                    zeros_aa = np.zeros(shape=(nov_alph, nov_alph))
+                    zeros_ab = np.zeros(shape=(nov_alph, nov_beta))
+                    zeros_ba = zeros_ab.T
+                    zeros_bb = np.zeros(shape=(nov_beta, nov_beta))
+                    A_s_ss_a = form_rpa_a_matrix_mo_singlet_ss(E_a, tei_mo_aaaa, nocc_alph)
+                    A_s_os_a = form_rpa_a_matrix_mo_singlet_os(tei_mo_aabb, nocc_alph, nocc_beta)
+                    B_s_ss_a = zeros_aa
+                    B_s_os_a = zeros_ab
+                    A_s_ss_b = form_rpa_a_matrix_mo_singlet_ss(E_b, tei_mo_bbbb, nocc_beta)
+                    A_s_os_b = form_rpa_a_matrix_mo_singlet_os(tei_mo_bbaa, nocc_beta, nocc_alph)
+                    B_s_ss_b = zeros_bb
+                    B_s_os_b = zeros_ba
+                elif hamiltonian == 'tda' and spin == 'triplet':
+                    zeros_aa = np.zeros(shape=(nov_alph, nov_alph))
+                    zeros_ab = np.zeros(shape=(nov_alph, nov_beta))
+                    zeros_ba = zeros_ab.T
+                    zeros_bb = np.zeros(shape=(nov_beta, nov_beta))
+                    A_t_ss_a = form_rpa_a_matrix_mo_triplet(E_a, tei_mo_aaaa, nocc_alph)
+                    A_t_os_a = zeros_ab
+                    B_t_ss_a = zeros_aa
+                    B_t_os_a = zeros_ab
+                    A_t_ss_b = form_rpa_a_matrix_mo_triplet(E_b, tei_mo_bbbb, nocc_beta)
+                    A_t_os_b = zeros_ba
+                    B_t_ss_b = zeros_bb
+                    B_t_os_b = zeros_ba
+                else:
+                    # TODO blow up
+                    pass
+
+            elif self.tei_mo_type == 'partial':
+                if hamiltonian == 'rpa' and spin == 'singlet':
+                    A_s_ss_a = form_rpa_a_matrix_mo_singlet_ss_partial(E_a, tei_mo_ovov_aaaa, tei_mo_oovv_aaaa)
+                    A_s_os_a = form_rpa_a_matrix_mo_singlet_os_partial(tei_mo_ovov_aabb)
+                    B_s_ss_a = form_rpa_b_matrix_mo_singlet_ss_partial(tei_mo_ovov_aaaa)
+                    B_s_os_a = form_rpa_b_matrix_mo_singlet_os_partial(tei_mo_ovov_aabb)
+                    A_s_ss_b = form_rpa_a_matrix_mo_singlet_ss_partial(E_b, tei_mo_ovov_bbbb, tei_mo_oovv_bbbb)
+                    A_s_os_b = form_rpa_a_matrix_mo_singlet_os_partial(tei_mo_ovov_bbaa)
+                    B_s_ss_b = form_rpa_b_matrix_mo_singlet_ss_partial(tei_mo_ovov_bbbb)
+                    B_s_os_b = form_rpa_b_matrix_mo_singlet_os_partial(tei_mo_ovov_bbaa)
+                elif hamiltonian == 'rpa' and spin == 'triplet':
+                    # Since the "triplet" part contains no Coulomb contribution, and
+                    # (xx|yy) is only in the Coulomb part, there is no ss/os
+                    # separation for the triplet part.
+                    zeros_ab = np.zeros(shape=(nov_alph, nov_beta))
+                    zeros_ba = zeros_ab.T
+                    A_t_ss_a = form_rpa_a_matrix_mo_triplet_partial(E_a, tei_mo_oovv_aaaa)
+                    A_t_os_a = zeros_ab
+                    B_t_ss_a = form_rpa_b_matrix_mo_triplet_partial(tei_mo_ovov_aaaa)
+                    B_t_os_a = zeros_ab
+                    A_t_ss_b = form_rpa_a_matrix_mo_triplet_partial(E_b, tei_mo_oovv_bbbb)
+                    A_t_os_b = zeros_ba
+                    B_t_ss_b = form_rpa_b_matrix_mo_triplet_partial(tei_mo_ovov_bbbb)
+                    B_t_os_b = zeros_ba
+                elif hamiltonian == 'tda' and spin == 'singlet':
+                    zeros_aa = np.zeros(shape=(nov_alph, nov_alph))
+                    zeros_ab = np.zeros(shape=(nov_alph, nov_beta))
+                    zeros_ba = zeros_ab.T
+                    zeros_bb = np.zeros(shape=(nov_beta, nov_beta))
+                    A_s_ss_a = form_rpa_a_matrix_mo_singlet_ss_partial(E_a, tei_mo_ovov_aaaa, tei_mo_oovv_aaaa)
+                    A_s_os_a = form_rpa_a_matrix_mo_singlet_os_partial(tei_mo_ovov_aabb)
+                    B_s_ss_a = zeros_aa
+                    B_s_os_a = zeros_ab
+                    A_s_ss_b = form_rpa_a_matrix_mo_singlet_ss_partial(E_b, tei_mo_ovov_bbbb, tei_mo_oovv_bbbb)
+                    A_s_os_b = form_rpa_a_matrix_mo_singlet_os_partial(tei_mo_ovov_bbaa)
+                    B_s_ss_b = zeros_bb
+                    B_s_os_b = zeros_ba
+                elif hamiltonian == 'tda' and spin == 'triplet':
+                    zeros_aa = np.zeros(shape=(nov_alph, nov_alph))
+                    zeros_ab = np.zeros(shape=(nov_alph, nov_beta))
+                    zeros_ba = zeros_ab.T
+                    zeros_bb = np.zeros(shape=(nov_beta, nov_beta))
+                    A_t_ss_a = form_rpa_a_matrix_mo_triplet_partial(E_a, tei_mo_oovv_aaaa)
+                    A_t_os_a = zeros_ab
+                    B_t_ss_a = zeros_aa
+                    B_t_os_a = zeros_ab
+                    A_t_ss_b = form_rpa_a_matrix_mo_triplet_partial(E_b, tei_mo_oovv_bbbb)
+                    A_t_os_b = zeros_ba
+                    B_t_ss_b = zeros_bb
+                    B_t_os_b = zeros_ba
+                else:
+                    # TODO blow up
+                    pass
 
             # TODO blow up
             else:
