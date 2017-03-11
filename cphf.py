@@ -6,7 +6,8 @@ from __future__ import division
 import numpy as np
 import scipy.constants as spc
 
-from utils import (np_load, parse_int_file_2)
+from utils import (form_results, np_load, parse_int_file_2,
+                   repack_matrix_to_vector)
 from explicit_equations import (form_rpa_a_matrix_mo_singlet,
                                 form_rpa_a_matrix_mo_singlet_ss,
                                 form_rpa_a_matrix_mo_singlet_os,
@@ -15,18 +16,6 @@ from explicit_equations import (form_rpa_a_matrix_mo_singlet,
                                 form_rpa_b_matrix_mo_singlet_ss,
                                 form_rpa_b_matrix_mo_singlet_os,
                                 form_rpa_b_matrix_mo_triplet)
-
-
-def repack_matrix_to_vector(mat):
-    return np.reshape(mat, -1, order='F')
-
-
-def form_results(vecs_property, vecs_response):
-    assert vecs_property.shape[1:] == vecs_response.shape[1:]
-    assert len(vecs_property.shape) == 3
-    assert vecs_property.shape[2] == 1
-    results = np.dot(vecs_property[:, :, 0], vecs_response[:, :, 0].T)
-    return results
 
 
 class Operator(object):

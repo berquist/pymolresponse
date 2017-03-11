@@ -13,7 +13,7 @@ from explicit_equations import (form_rpa_a_matrix_mo_singlet,
 from utils import np_load
 
 
-def test_explicit_uhf_from_rhf():
+def test_explicit_uhf_from_rhf_outside_solver():
     from pyscf import ao2mo, gto, scf
 
     mol = gto.Mole()
@@ -134,12 +134,12 @@ def test_explicit_uhf_from_rhf():
     print(res_u)
 
 
-ref_water_cation_HF_STO3G = np.array([[6.1406370,   0.0000000,   0.0000000],
-                                      [0.0000000,   2.3811198,   0.0000000],
-                                      [0.0000000,   0.0000000,   1.4755219]])
+ref_water_cation_UHF_HF_STO3G = np.array([[6.1406370,   0.0000000,   0.0000000],
+                                          [0.0000000,   2.3811198,   0.0000000],
+                                          [0.0000000,   0.0000000,   1.4755219]])
 
 
-def test_explicit_uhf():
+def test_explicit_uhf_outside_solver():
     from pyscf import ao2mo, gto, scf
 
     mol = gto.Mole()
@@ -255,10 +255,10 @@ def test_explicit_uhf():
     atol = 1.0e-5
     rtol = 0.0
 
-    np.testing.assert_allclose(res_u, ref_water_cation_HF_STO3G, rtol=rtol, atol=atol)
+    np.testing.assert_allclose(res_u, ref_water_cation_UHF_HF_STO3G, rtol=rtol, atol=atol)
 
 
-def test_uhf():
+def test_explicit_uhf():
     from pyscf import ao2mo, gto, scf
 
     mol = gto.Mole()
@@ -318,10 +318,7 @@ def test_uhf():
     atol = 1.0e-5
     rtol = 0.0
 
-    np.testing.assert_allclose(res, ref_water_cation_HF_STO3G, rtol=rtol, atol=atol)
+    np.testing.assert_allclose(res, ref_water_cation_UHF_HF_STO3G, rtol=rtol, atol=atol)
 
 if __name__ == '__main__':
-    # test_explicit_uhf_from_rhf()
-    # test_explicit_uhf()
-    test_uhf()
     pass
