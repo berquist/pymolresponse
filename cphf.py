@@ -320,19 +320,15 @@ class CPHF(object):
         else:
             assert len(self.explicit_hessian) == 4
             self.explicit_hessian_inv = []
-            for eh in self.explicit_hessian:
-                assert len(eh.shape) == 2
-                # If the block is square, the inverse can be found
-                # exactly.
-                if eh.shape[0] == eh.shape[1]:
-                    self.explicit_hessian_inv.append(np.linalg.inv(eh))
-                else:
-                    self.explicit_hessian_inv.append(np.linalg.pinv(eh))
+            # The inverse of the opposite-spin blocks is not necessary.
+            G_aa, _, _, G_bb = self.explicit_hessian
+            self.explicit_hessian_inv.append(np.linalg.inv(G_aa))
+            self.explicit_hessian_inv.append(np.linalg.inv(G_bb))
 
     def form_response_vectors(self):
         if self.is_uhf:
             G_aa, G_ab, G_ba, G_bb = self.explicit_hessian
-            G_aa_inv, G_ab_inv, G_ba_inv, G_bb_inv = self.explicit_hessian_inv
+            G_aa_inv, G_bb_inv = self.explicit_hessian_inv
             # Form the operator-independent part of the response vectors.
             left_alph = np.linalg.inv(G_aa - np.dot(G_ab, np.dot(G_bb_inv, G_ba)))
             left_beta = np.linalg.inv(G_bb - np.dot(G_ba, np.dot(G_aa_inv, G_ab)))

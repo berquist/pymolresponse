@@ -67,17 +67,13 @@ def test_explicit_uhf_from_rhf_outside_solver():
 
     G_r_inv = np.linalg.inv(G_r)
     G_aa_inv = np.linalg.inv(G_aa)
-    G_ab_inv = np.linalg.inv(G_ab)
-    G_ba_inv = np.linalg.inv(G_ba)
     G_bb_inv = np.linalg.inv(G_bb)
 
     assert G_r_inv.shape == (2*nocc_a*nvirt_a, 2*nocc_a*nvirt_a)
     assert G_aa_inv.shape == (2*nocc_a*nvirt_a, 2*nocc_a*nvirt_a)
-    assert G_ab_inv.shape == (2*nocc_a*nvirt_b, 2*nocc_a*nvirt_b)
-    assert G_ba_inv.shape == (2*nocc_b*nvirt_a, 2*nocc_b*nvirt_a)
     assert G_bb_inv.shape == (2*nocc_b*nvirt_b, 2*nocc_b*nvirt_b)
 
-    # Form the operator_dependent part of the response vectors.
+    # Form the operator-independent part of the response vectors.
     left_alph = np.linalg.inv(G_aa - np.dot(G_ab, np.dot(G_bb_inv, G_ba)))
     left_beta = np.linalg.inv(G_bb - np.dot(G_ba, np.dot(G_aa_inv, G_ab)))
 
@@ -199,16 +195,12 @@ def test_explicit_uhf_outside_solver():
                                [B_s_os_b, A_s_os_b]]))
 
     G_aa_inv = np.linalg.inv(G_aa)
-    G_ab_inv = np.linalg.pinv(G_ab)
-    G_ba_inv = np.linalg.pinv(G_ba)
     G_bb_inv = np.linalg.inv(G_bb)
 
     nov_aa = nocc_a * nvirt_a
     nov_bb = nocc_b * nvirt_b
 
     assert G_aa_inv.shape == (2 * nov_aa, 2 * nov_aa)
-    assert G_ab_inv.shape == (2 * nov_bb, 2 * nov_aa)
-    assert G_ba_inv.shape == (2 * nov_aa, 2 * nov_bb)
     assert G_bb_inv.shape == (2 * nov_bb, 2 * nov_bb)
 
     # Form the operator-independent part of the response vectors.
