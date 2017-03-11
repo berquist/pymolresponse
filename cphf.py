@@ -8,14 +8,14 @@ import scipy.constants as spc
 
 from utils import (form_results, np_load, parse_int_file_2,
                    repack_matrix_to_vector)
-from explicit_equations import (form_rpa_a_matrix_mo_singlet,
-                                form_rpa_a_matrix_mo_singlet_ss,
-                                form_rpa_a_matrix_mo_singlet_os,
-                                form_rpa_a_matrix_mo_triplet,
-                                form_rpa_b_matrix_mo_singlet,
-                                form_rpa_b_matrix_mo_singlet_ss,
-                                form_rpa_b_matrix_mo_singlet_os,
-                                form_rpa_b_matrix_mo_triplet)
+from explicit_equations_full import (form_rpa_a_matrix_mo_singlet,
+                                     form_rpa_a_matrix_mo_singlet_ss,
+                                     form_rpa_a_matrix_mo_singlet_os,
+                                     form_rpa_a_matrix_mo_triplet,
+                                     form_rpa_b_matrix_mo_singlet,
+                                     form_rpa_b_matrix_mo_singlet_ss,
+                                     form_rpa_b_matrix_mo_singlet_os,
+                                     form_rpa_b_matrix_mo_triplet)
 
 
 class Operator(object):
