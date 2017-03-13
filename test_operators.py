@@ -4,7 +4,7 @@ from utils import dalton_label_to_operator
 def run_dalton_label_to_operator(dalton_label, operator_label, slice_idx, is_imaginary, is_spin_dependent):
     operator = dalton_label_to_operator(dalton_label)
     assert operator.label == operator_label
-    # TODO slice_idx
+    assert operator.slice_idx == slice_idx
     assert operator.is_imaginary == is_imaginary
     assert operator.is_spin_dependent == is_spin_dependent
     return

@@ -50,28 +50,28 @@ def dalton_label_to_operator(label):
     if 'diplen' in label:
         operator_label = 'dipole'
         _coord = label[0]
-        slice_ = coord1_to_slice[_coord]
+        slice_idx = coord1_to_slice[_coord]
         is_imaginary = False
         is_spin_dependent = False
     # dipole velocity
     elif 'dipvel' in label:
         operator_label = 'dipvel'
         _coord = label[0]
-        slice_ = coord1_to_slice[_coord]
+        slice_idx = coord1_to_slice[_coord]
         is_imaginary = True
         is_spin_dependent = False
     # angular momentum
     elif 'angmom' in label:
         operator_label = 'angmom'
         _coord = label[0]
-        slice_ = coord1_to_slice[_coord]
+        slice_idx = coord1_to_slice[_coord]
         is_imaginary = True
         is_spin_dependent = False
     # spin-orbit
     elif 'spnorb' in label:
         operator_label = 'spinorb'
         _coord = label[0]
-        slice_ = coord1_to_slice[_coord]
+        slice_idx = coord1_to_slice[_coord]
         is_imaginary = True
         is_spin_dependent = True
         _nelec = label[1]
@@ -86,7 +86,7 @@ def dalton_label_to_operator(label):
     elif 'fc' in label:
         operator_label = 'fermi'
         _atomid = label[6:6+2]
-        slice_ = int(_atomid) - 1
+        slice_idx = int(_atomid) - 1
         is_imaginary = False
         is_spin_dependent = True
     # spin-dipole
@@ -97,7 +97,7 @@ def dalton_label_to_operator(label):
         _atomid = (int(_coord_atom) - 1) // 3
         _coord_1 = (int(_coord_atom) - 1) % 3
         _coord_2 = slice_to_coord1[_coord_1] + _coord
-        slice_ = (6 * _atomid) + coord2_to_slice[_coord_2]
+        slice_idx = (6 * _atomid) + coord2_to_slice[_coord_2]
         is_imaginary = False
         is_spin_dependent = True
     # TODO SD+FC?
@@ -113,6 +113,7 @@ def dalton_label_to_operator(label):
         label=operator_label,
         is_imaginary=is_imaginary,
         is_spin_dependent=is_spin_dependent,
+        slice_idx=slice_idx,
     )
 
     return operator

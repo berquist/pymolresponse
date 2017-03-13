@@ -30,8 +30,11 @@ from explicit_equations_partial import \
 
 class Operator(object):
 
-    def __init__(self, label='', is_imaginary=False, is_spin_dependent=False):
+    def __init__(self, label='', is_imaginary=False, is_spin_dependent=False, slice_idx=-1):
         self.label = label
+        # TODO In general, this is not used outside of referencing a
+        # specific operator component from DALTON.
+        self.slice_idx = slice_idx
         self.is_imaginary = is_imaginary
         self.is_spin_dependent = is_spin_dependent
 
