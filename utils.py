@@ -33,6 +33,11 @@ def repack_matrix_to_vector(mat):
     return np.reshape(mat, -1, order='F')
 
 
+def clean_dalton_label(original_label):
+    cleaned_label = original_label.lower().replace(' ', '_')
+    return cleaned_label
+
+
 def dalton_label_to_operator(label):
 
     from cphf import Operator
@@ -78,7 +83,7 @@ def dalton_label_to_operator(label):
         if _nelec in ('1', '2'):
             operator_label += _nelec
         # combined one- and two-electron
-        elif _nelec == ' ':
+        elif _nelec in (' ', '_'):
             operator_label += 'c'
         else:
             pass
@@ -117,3 +122,79 @@ def dalton_label_to_operator(label):
     )
 
     return operator
+
+
+def get_reference_value_from_file(filename, hamiltonian, spin, frequency, label_1, label_2):
+    # TODO need to pass the frequency as a string identical to the one
+    # found in the file, can't pass a float due to fp error; how to
+    # get around this?
+    found = False
+    with open(filename) as fh:
+        for line in fh:
+            tokens = line.split()
+            # no comments allowed for now
+            assert len(tokens) == 6
+            l_hamiltonian, l_spin, l_frequency, l_label_1, l_label_2, l_val = tokens
+            if (l_hamiltonian == hamiltonian) and \
+               (l_spin == spin) and \
+               (l_frequency == frequency) and \
+               (l_label_1 == label_1) and \
+               (l_label_2 == label_2):
+                ref = float(l_val)
+                found = True
+
+    if not found:
+        # TODO blow up, "Could not find reference value"
+        pass
+
+    return ref
+
+
+def read_file_occupations(filename):
+    with open(filename) as fh:
+        contents = fh.read().strip()
+    tokens = contents.split()
+    assert len(tokens) == 4
+    nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = [int(x) for x in tokens]    
+    return [nocc_alph, nvirt_alph, nocc_beta, nvirt_beta]
+
+
+def read_file_1(filename):
+    elements = []
+    with open(filename) as fh:
+        n_elem = int(next(fh))
+        for line in fh:
+            elements.append(float(line))
+    assert len(elements) == n_elem
+    return np.array(elements, dtype=float)
+
+
+def read_file_2(filename):
+    elements = []
+    with open(filename) as fh:
+        n_rows, n_cols = [int(x) for x in next(fh).split()]
+        for line in fh:
+            elements.append(float(line))
+    assert len(elements) == (n_rows * n_cols)
+    # The last index is the fast index (cols).
+    return np.reshape(np.array(elements, dtype=float), (n_rows, n_cols))
+
+
+def read_file_3(filename):
+    elements = []
+    with open(filename) as fh:
+        n_slices, n_rows, n_cols = [int(x) for x in next(fh).split()]
+        for line in fh:
+            elements.append(float(line))
+    assert len(elements) == (n_rows * n_cols * n_slices)
+    return np.reshape(np.array(elements, dtype=float), (n_slices, n_rows, n_cols))
+
+
+def read_file_4(filename):
+    elements = []
+    with open(filename) as fh:
+        n_d1, n_d2, n_d3, n_d4 = [int(x) for x in next(fh).split()]
+        for line in fh:
+            elements.append(float(line))
+    assert len(elements) == (n_d1 * n_d2 * n_d3 * n_d4)
+    return np.reshape(np.array(elements, dtype=float), (n_d1, n_d2, n_d3, n_d4))

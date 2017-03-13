@@ -2,6 +2,7 @@ import numpy as np
 
 from utils import np_load, parse_int_file_2
 from cphf import CPHF, Operator
+from test_runners import run_as_many_tests_as_possible_rhf_disk, run_as_many_tests_as_possible_uhf_disk
 
 
 def test_final_result_rhf_h2o_sto3g_rpa_singlet():
@@ -243,6 +244,19 @@ def test_final_result_rhf_h2o_sto3g_tda_triplet():
 
     return
 
+
+def test_as_many_as_possible_rhf_disk():
+
+    run_as_many_tests_as_possible_rhf_disk('r_lih_hf_sto-3g')
+
+    return
+
+
+def test_as_many_as_possible_uhf_disk():
+
+    run_as_many_tests_as_possible_uhf_disk('u_lih_cation_hf_sto-3g')
+
+    return
 
 def getargs():
     """Get command-line arguments."""

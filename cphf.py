@@ -72,7 +72,7 @@ class Operator(object):
             # Is this only true for spin-orbit operators?
             # if self.is_spin_dependent:
             #     for (i, a) in self.indices_closed_secondary:
-            #         operator_component_ai[a - nocc, i] = 0.0
+            #         operator_component_ai_alph[a - nocc_alph, i] = 0.0
             operator_component_ai_alph = repack_matrix_to_vector(operator_component_ai_alph)[:, np.newaxis]
             if hasattr(self, 'hsofac'):
                 operator_component_ai_alph *= self.hsofac
@@ -82,6 +82,9 @@ class Operator(object):
             operator_ai_supervector_alph.append(operator_component_ai_supervector_alph)
             if is_uhf:
                 operator_component_ai_beta = np.dot(C_beta[:, nocc_beta:].T, np.dot(self.ao_integrals[idx, ...], C_beta[:, :nocc_beta]))
+                # if self.is_spin_dependent:
+                #     for (i, a) in self.indices_closed_secondary:
+                #         operator_component_ai_beta[a - nocc_beta, i] = 0.0
                 operator_component_ai_beta = repack_matrix_to_vector(operator_component_ai_beta)[:, np.newaxis]
                 if hasattr(self, 'hsofac'):
                     operator_component_ai_beta *= self.hsofac
@@ -160,6 +163,9 @@ class CPHF(object):
         assert len(shape) == 3
         assert shape[0] >= 1
         assert shape[1] == shape[2]
+        operator.indices_closed_act = self.indices_closed_act
+        operator.indices_closed_secondary = self.indices_closed_secondary
+        operator.indices_act_secondary = self.indices_act_secondary
         # Form the property gradient.
         operator.form_rhs(self.mocoeffs, self.occupations)
         self.operators.append(operator)
@@ -220,6 +226,7 @@ class CPHF(object):
 
         nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
         nov_alph = nocc_alph * nvirt_alph
+        nov_beta = nocc_beta * nvirt_beta
 
         superoverlap = np.asarray(np.bmat([[np.eye(nov_alph), np.zeros(shape=(nov_alph, nov_alph))],
                                            [np.zeros(shape=(nov_alph, nov_alph)), -np.eye(nov_alph)]]))
