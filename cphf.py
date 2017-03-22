@@ -30,13 +30,14 @@ from explicit_equations_partial import \
 
 class Operator(object):
 
-    def __init__(self, label='', is_imaginary=False, is_spin_dependent=False, slice_idx=-1):
+    def __init__(self, label='', is_imaginary=False, is_spin_dependent=False, triplet=False, slice_idx=-1, **kwargs):
         self.label = label
+        self.is_imaginary = is_imaginary
+        self.is_spin_dependent = is_spin_dependent
+        self.triplet = triplet
         # TODO In general, this is not used outside of referencing a
         # specific operator component from DALTON.
         self.slice_idx = slice_idx
-        self.is_imaginary = is_imaginary
-        self.is_spin_dependent = is_spin_dependent
 
         if 'spinorb' in label:
             self.hsofac = (spc.alpha ** 2) / 4
@@ -70,9 +71,9 @@ class Operator(object):
             # If the operator is a triplet operator and doing singlet
             # response, remove inactive -> secondary excitations.
             # Is this only true for spin-orbit operators?
-            # if self.is_spin_dependent:
-            #     for (i, a) in self.indices_closed_secondary:
-            #         operator_component_ai_alph[a - nocc_alph, i] = 0.0
+            if self.triplet:
+                for (i, a) in self.indices_closed_secondary:
+                    operator_component_ai_alph[a - nocc_alph, i] = 0.0
             operator_component_ai_alph = repack_matrix_to_vector(operator_component_ai_alph)[:, np.newaxis]
             if hasattr(self, 'hsofac'):
                 operator_component_ai_alph *= self.hsofac
@@ -82,9 +83,9 @@ class Operator(object):
             operator_ai_supervector_alph.append(operator_component_ai_supervector_alph)
             if is_uhf:
                 operator_component_ai_beta = np.dot(C_beta[:, nocc_beta:].T, np.dot(self.ao_integrals[idx, ...], C_beta[:, :nocc_beta]))
-                # if self.is_spin_dependent:
-                #     for (i, a) in self.indices_closed_secondary:
-                #         operator_component_ai_beta[a - nocc_beta, i] = 0.0
+                if self.triplet:
+                    for (i, a) in self.indices_closed_secondary:
+                        operator_component_ai_beta[a - nocc_beta, i] = 0.0
                 operator_component_ai_beta = repack_matrix_to_vector(operator_component_ai_beta)[:, np.newaxis]
                 if hasattr(self, 'hsofac'):
                     operator_component_ai_beta *= self.hsofac
@@ -101,7 +102,7 @@ class Operator(object):
 
 class CPHF(object):
 
-    def __init__(self, mocoeffs, moenergies, occupations):
+    def __init__(self, mocoeffs, moenergies, occupations, **kwargs):
         assert len(mocoeffs.shape) == 3
         assert (mocoeffs.shape[0] == 1) or (mocoeffs.shape[0] == 2)
         self.is_uhf = (mocoeffs.shape[0] == 2)
@@ -170,7 +171,7 @@ class CPHF(object):
         operator.form_rhs(self.mocoeffs, self.occupations)
         self.operators.append(operator)
 
-    def run(self, solver=None, hamiltonian=None, spin=None):
+    def run(self, solver=None, hamiltonian=None, spin=None, **kwargs):
 
         if not solver:
             solver = self.solver
@@ -546,9 +547,11 @@ class CPHF(object):
                 col_start = 0
                 for iop2, op2 in enumerate(self.operators):
                     result_block = 0.0
-                    result_block += form_results(op1.mo_integrals_ai_supervector_alph, op2.rspvecs_alph[f])
+                    result_block_alph = form_results(op1.mo_integrals_ai_supervector_alph, op2.rspvecs_alph[f])
+                    result_block += result_block_alph
                     if self.is_uhf:
-                        result_block += form_results(op1.mo_integrals_ai_supervector_beta, op2.rspvecs_beta[f])
+                        result_block_beta = form_results(op1.mo_integrals_ai_supervector_beta, op2.rspvecs_beta[f])
+                        result_block += result_block_beta
                     result_blocks.append(result_block)
                     row_starts.append(row_start)
                     col_starts.append(col_start)

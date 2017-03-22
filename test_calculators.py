@@ -1,6 +1,17 @@
+import os.path
 import numpy as np
 
-from cphf import CPHF
+from daltools import sirifc
+from daltools import mol as dalmol
+
+from cclib.parser import utils
+from cclib.io import ccopen
+
+import pyscf
+
+from cphf import Operator, CPHF
+from utils import get_reference_value_from_file, occupations_from_sirifc
+from ao2mo import perform_tei_ao2mo_rhf_partial, perform_tei_ao2mo_uhf_partial
 from utils import read_file_3, read_file_2, read_file_occupations, read_file_4, dalton_label_to_operator
 
 
@@ -75,8 +86,6 @@ def calculate_disk_uhf(testcase, hamiltonian, spin, frequency, label_1, label_2)
 
     occupations = read_file_occupations(testcase + '/' + 'occupations')
     nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = occupations
-    # assert nocc_alph == nocc_beta
-    # assert nvirt_alph == nvirt_beta
     norb = nocc_alph + nvirt_alph
     C = read_file_3(testcase + '/' + 'C')
     assert C.shape[0] == 2
@@ -146,3 +155,191 @@ def calculate_disk_uhf(testcase, hamiltonian, spin, frequency, label_1, label_2)
     assert diff < thresh
 
     return bl
+
+
+def calculate_rhf(dalton_tmpdir, hamiltonian, spin, operator_label, source_moenergies, source_mocoeffs):
+
+    assert operator_label in ('dipole', 'angmom', 'spinorb',)
+    assert source_moenergies in ('pyscf', 'dalton',)
+    assert source_mocoeffs in ('pyscf', 'dalton',)
+
+    dalton_molecule = dalmol.readin(os.path.join(dalton_tmpdir, 'DALTON.BAS'))
+    lines = []
+    for atom in dalton_molecule:
+        label = atom['label'][0]
+        center = atom['center'][0]
+        center_str = ' '.join(['{:f}'.format(pos) for pos in center])
+        line = '{:3} {}'.format(label, center_str)
+        lines.append(line)
+    lines = '\n'.join(lines)
+
+    # PySCF molecule setup, needed for generating the TEIs in the MO
+    # basis.
+    mol = pyscf.gto.Mole()
+    verbose = 1
+    mol.verbose = verbose
+    mol.atom = lines
+    mol.unit = 'Bohr'
+    # TODO read basis from DALTON molecule
+    mol.basis = 'sto-3g'
+    mol.symmetry = False
+    # TODO read charge from DALTON molecule?
+    mol.charge = 0
+    # TODO read spin from DALTON molecule?
+    mol.spin = 0
+
+    mol.build()
+
+    SIRIFC = os.path.join(dalton_tmpdir, 'SIRIFC')
+    ifc = sirifc.sirifc(SIRIFC)
+    occupations = occupations_from_sirifc(ifc)
+
+    if source_moenergies == 'pyscf' or source_mocoeffs == 'pyscf':
+        mf = pyscf.scf.RHF(mol)
+        mf.kernel()
+
+    if source_moenergies == 'pyscf':
+        E = np.diag(mf.mo_energy)[np.newaxis, ...]
+    elif source_moenergies == 'dalton':
+        job = ccopen(os.path.join(dalton_tmpdir, 'DALTON.OUT'))
+        data = job.parse()
+        E = np.diag([utils.convertor(x, 'eV', 'hartree')
+                     for x in data.moenergies[0]])[np.newaxis, ...]
+    else:
+        pass
+
+    if source_mocoeffs == 'pyscf':
+        C = mf.mo_coeff[np.newaxis, ...]
+    elif source_mocoeffs == 'dalton':
+        C = ifc.cmo[0][np.newaxis, ...]
+    else:
+        pass
+
+    cphf = CPHF(C, E, occupations)
+
+    cphf.tei_mo = perform_tei_ao2mo_rhf_partial(mol, C)
+    cphf.tei_mo_type = 'partial'
+
+    if operator_label == 'dipole':
+        operator_dipole = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False, triplet=False)
+        integrals_dipole_ao = mol.intor('cint1e_r_sph', comp=3)
+        operator_dipole.ao_integrals = integrals_dipole_ao
+        cphf.add_operator(operator_dipole)
+    elif operator_label == 'angmom':
+        operator_angmom = Operator(label='angmom', is_imaginary=True, is_spin_dependent=False, triplet=False)
+        integrals_angmom_ao = mol.intor('cint1e_cg_irxp_sph', comp=3)
+        operator_angmom.ao_integrals = integrals_angmom_ao
+        cphf.add_operator(operator_angmom)
+    elif operator_label == 'spinorb':
+        operator_spinorb = Operator(label='spinorb', is_imaginary=True, is_spin_dependent=False, triplet=False)
+        integrals_spinorb_ao = 0
+        for atm_id in range(mol.natm):
+            mol.set_rinv_orig(mol.atom_coord(atm_id))
+            chg = mol.atom_charge(atm_id)
+            integrals_spinorb_ao += chg * mol.intor('cint1e_prinvxp_sph', comp=3)
+        operator_spinorb.ao_integrals = integrals_spinorb_ao
+        cphf.add_operator(operator_spinorb)
+    else:
+        pass
+
+    cphf.set_frequencies()
+
+    cphf.run(solver='explicit', hamiltonian=hamiltonian, spin=spin)
+
+    return cphf.results[0]
+
+
+def calculate_uhf(dalton_tmpdir, hamiltonian, spin, operator_label, source_moenergies, source_mocoeffs):
+
+    assert operator_label in ('dipole', 'angmom', 'spinorb',)
+    assert source_moenergies in ('pyscf', 'dalton',)
+    assert source_mocoeffs in ('pyscf', 'dalton',)
+
+    dalton_molecule = dalmol.readin(os.path.join(dalton_tmpdir, 'DALTON.BAS'))
+    lines = []
+    for atom in dalton_molecule:
+        label = atom['label'][0]
+        center = atom['center'][0]
+        center_str = ' '.join(['{:f}'.format(pos) for pos in center])
+        line = '{:3} {}'.format(label, center_str)
+        lines.append(line)
+    lines = '\n'.join(lines)
+
+    # PySCF molecule setup, needed for generating the TEIs in the MO
+    # basis.
+    mol = pyscf.gto.Mole()
+    verbose = 1
+    mol.verbose = verbose
+    mol.atom = lines
+    mol.unit = 'Bohr'
+    # TODO read basis from DALTON molecule
+    mol.basis = 'sto-3g'
+    mol.symmetry = False
+    # TODO read charge from DALTON molecule?
+    mol.charge = 1
+    # TODO read spin from DALTON molecule?
+    mol.spin = 1
+
+    mol.build()
+
+    SIRIFC = os.path.join(dalton_tmpdir, 'SIRIFC')
+    ifc = sirifc.sirifc(SIRIFC)
+    occupations = occupations_from_sirifc(ifc)
+
+    if source_moenergies == 'pyscf' or source_mocoeffs == 'pyscf':
+        mf = pyscf.scf.UHF(mol)
+        mf.kernel()
+
+    if source_moenergies == 'pyscf':
+        E_alph = np.diag(mf.mo_energy[0, ...])
+        E_beta = np.diag(mf.mo_energy[1, ...])
+        E = np.stack((E_alph, E_beta), axis=0)
+    elif source_moenergies == 'dalton':
+        job = ccopen(os.path.join(dalton_tmpdir, 'DALTON.OUT'))
+        data = job.parse()
+        E = np.diag([utils.convertor(x, 'eV', 'hartree')
+                     for x in data.moenergies[0]])[np.newaxis, ...]
+        E = np.concatenate((E, E), axis=0)
+    else:
+        pass
+
+    if source_mocoeffs == 'pyscf':
+        C = mf.mo_coeff
+    elif source_mocoeffs == 'dalton':
+        C = ifc.cmo[0][np.newaxis, ...]
+        C = np.concatenate((C, C), axis=0)
+    else:
+        pass
+
+    cphf = CPHF(C, E, occupations)
+
+    cphf.tei_mo = perform_tei_ao2mo_uhf_partial(mol, C)
+    cphf.tei_mo_type = 'partial'
+
+    if operator_label == 'dipole':
+        operator_dipole = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False, triplet=False)
+        integrals_dipole_ao = mol.intor('cint1e_r_sph', comp=3)
+        operator_dipole.ao_integrals = integrals_dipole_ao
+        cphf.add_operator(operator_dipole)
+    elif operator_label == 'angmom':
+        operator_angmom = Operator(label='angmom', is_imaginary=True, is_spin_dependent=False, triplet=False)
+        integrals_angmom_ao = mol.intor('cint1e_cg_irxp_sph', comp=3)
+        operator_angmom.ao_integrals = integrals_angmom_ao
+        cphf.add_operator(operator_angmom)
+    elif operator_label == 'spinorb':
+        operator_spinorb = Operator(label='spinorb', is_imaginary=True, is_spin_dependent=False, triplet=False)
+        integrals_spinorb_ao = 0
+        for atm_id in range(mol.natm):
+            mol.set_rinv_orig(mol.atom_coord(atm_id))
+            chg = mol.atom_charge(atm_id)
+            integrals_spinorb_ao += chg * mol.intor('cint1e_prinvxp_sph', comp=3)
+        operator_spinorb.ao_integrals = integrals_spinorb_ao
+        cphf.add_operator(operator_spinorb)
+    else:
+        pass
+
+    cphf.set_frequencies()
+
+    cphf.run(solver='explicit', hamiltonian=hamiltonian, spin=spin)
+
+    return cphf.results[0]

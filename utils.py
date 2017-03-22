@@ -1,5 +1,7 @@
 import numpy as np
 
+from itertools import accumulate
+
 
 def form_results(vecs_property, vecs_response):
     assert vecs_property.shape[1:] == vecs_response.shape[1:]
@@ -198,3 +200,59 @@ def read_file_4(filename):
             elements.append(float(line))
     assert len(elements) == (n_d1 * n_d2 * n_d3 * n_d4)
     return np.reshape(np.array(elements, dtype=float), (n_d1, n_d2, n_d3, n_d4))
+
+
+def occupations_from_pyscf_mol(mol, C):
+    norb = C.shape[-1]
+    nocc_a, nocc_b = mol.nelec
+    nvirt_a, nvirt_b = norb - nocc_a, norb - nocc_b
+    occupations = (nocc_a, nvirt_a, nocc_b, nvirt_b)
+    return occupations
+
+
+def occupations_from_sirifc(ifc):
+    nocc_a, nocc_b = ifc.nisht + ifc.nasht, ifc.nisht
+    norb = ifc.norbt
+    nvirt_a, nvirt_b = norb - nocc_a, norb - nocc_b
+    occupations = (nocc_a, nvirt_a, nocc_b, nvirt_b)
+    return occupations
+
+
+class Splitter:
+    def __init__(self, widths):
+        self.start_indices = [0] + list(accumulate(widths))[:-1]
+        self.end_indices = list(accumulate(widths))
+
+    def split(self, line):
+        elements = [line[start:end].strip()
+                    for (start, end) in zip(self.start_indices, self.end_indices)]
+        for i in range(1, len(elements)):
+            if elements[-1] == '':
+                elements.pop()
+            else:
+                break
+        return elements
+
+
+def fix_mocoeffs_shape(mocoeffs):
+    shape = mocoeffs.shape
+    assert len(shape) in (2, 3)
+    if len(shape) == 2:
+        mocoeffs_new = mocoeffs[np.newaxis, ...]
+    else:
+        mocoeffs_new = mocoeffs
+    return mocoeffs_new
+
+
+def read_dalton_propfile(tmpdir):
+    proplist = []
+    with open(os.path.join(tmpdir, 'DALTON.PROP')) as propfile:
+        proplines = propfile.readlines()
+    splitter = Splitter([5, 3, 4, 11, 23, 9, 9, 9, 9, 23, 23, 23, 4, 4, 4])
+    for line in proplines:
+        sline = splitter.split(line)
+        # print(sline)
+        proplist.append(sline)
+    return proplist
+
+

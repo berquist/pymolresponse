@@ -10,3 +10,4 @@
 ## Python dependencies
 
 * [pytest](http://doc.pytest.org/en/latest/)
+* [daltools](https://github.com/vahtras/daltools)

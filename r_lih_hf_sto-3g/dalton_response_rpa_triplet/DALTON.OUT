@@ -1,0 +1,3482 @@
+
+
+     ************************************************************************
+     *************** Dalton - An Electronic Structure Program ***************
+     ************************************************************************
+
+    This is output from DALTON release Dalton2016.2 (2016)
+         ( Web site: http://daltonprogram.org )
+
+   ----------------------------------------------------------------------------
+
+    NOTE:
+     
+    Dalton is an experimental code for the evaluation of molecular
+    properties using (MC)SCF, DFT, CI, and CC wave functions.
+    The authors accept no responsibility for the performance of
+    the code or for the correctness of the results.
+     
+    The code (in whole or part) is provided under a licence and
+    is not to be reproduced for further distribution without
+    the written permission of the authors or their representatives.
+     
+    See the home page "http://daltonprogram.org" for further information.
+     
+    If results obtained with this code are published,
+    the appropriate citations would be both of:
+     
+       K. Aidas, C. Angeli, K. L. Bak, V. Bakken, R. Bast,
+       L. Boman, O. Christiansen, R. Cimiraglia, S. Coriani,
+       P. Dahle, E. K. Dalskov, U. Ekstroem,
+       T. Enevoldsen, J. J. Eriksen, P. Ettenhuber, B. Fernandez,
+       L. Ferrighi, H. Fliegl, L. Frediani, K. Hald, A. Halkier,
+       C. Haettig, H. Heiberg, T. Helgaker, A. C. Hennum,
+       H. Hettema, E. Hjertenaes, S. Hoest, I.-M. Hoeyvik,
+       M. F. Iozzi, B. Jansik, H. J. Aa. Jensen, D. Jonsson,
+       P. Joergensen, J. Kauczor, S. Kirpekar,
+       T. Kjaergaard, W. Klopper, S. Knecht, R. Kobayashi, H. Koch,
+       J. Kongsted, A. Krapp, K. Kristensen, A. Ligabue,
+       O. B. Lutnaes, J. I. Melo, K. V. Mikkelsen, R. H. Myhre,
+       C. Neiss, C. B. Nielsen, P. Norman, J. Olsen,
+       J. M. H. Olsen, A. Osted, M. J. Packer, F. Pawlowski,
+       T. B. Pedersen, P. F. Provasi, S. Reine, Z. Rinkevicius,
+       T. A. Ruden, K. Ruud, V. Rybkin, P. Salek, C. C. M. Samson,
+       A. Sanchez de Meras, T. Saue, S. P. A. Sauer,
+       B. Schimmelpfennig, K. Sneskov, A. H. Steindal,
+       K. O. Sylvester-Hvid, P. R. Taylor, A. M. Teale,
+       E. I. Tellgren, D. P. Tew, A. J. Thorvaldsen, L. Thoegersen,
+       O. Vahtras, M. A. Watson, D. J. D. Wilson, M. Ziolkowski
+       and H. Agren,
+       "The Dalton quantum chemistry program system",
+       WIREs Comput. Mol. Sci. 2014, 4:269–284 (doi: 10.1002/wcms.1172)
+     
+    and
+     
+       Dalton, a Molecular Electronic Structure Program,
+       Release Dalton2016.2 (2016), see http://daltonprogram.org
+   ----------------------------------------------------------------------------
+
+    Authors in alphabetical order (major contribution(s) in parenthesis):
+
+  Kestutis Aidas,           Vilnius University,           Lithuania   (QM/MM)
+  Celestino Angeli,         University of Ferrara,        Italy       (NEVPT2)
+  Keld L. Bak,              UNI-C,                        Denmark     (AOSOPPA, non-adiabatic coupling, magnetic properties)
+  Vebjoern Bakken,          University of Oslo,           Norway      (DALTON; geometry optimizer, symmetry detection)
+  Radovan Bast,             UiT The Arctic U. of Norway,  Norway      (DALTON installation and execution frameworks)
+  Pablo Baudin,             University of Valencia,       Spain       (Cholesky excitation energies)
+  Linus Boman,              NTNU,                         Norway      (Cholesky decomposition and subsystems)
+  Ove Christiansen,         Aarhus University,            Denmark     (CC module)
+  Renzo Cimiraglia,         University of Ferrara,        Italy       (NEVPT2)
+  Sonia Coriani,            University of Trieste,        Italy       (CC module, MCD in RESPONS)
+  Janusz Cukras,            University of Trieste,        Italy       (MChD in RESPONS)
+  Paal Dahle,               University of Oslo,           Norway      (Parallelization)
+  Erik K. Dalskov,          UNI-C,                        Denmark     (SOPPA)
+  Thomas Enevoldsen,        Univ. of Southern Denmark,    Denmark     (SOPPA)
+  Janus J. Eriksen,         Aarhus University,            Denmark     (Polarizable embedding model, TDA)
+  Rasmus Faber,             University of Copenhagen,     Denmark     (Vib.avg. NMR with SOPPA, parallel AO-SOPPA)
+  Berta Fernandez,          U. of Santiago de Compostela, Spain       (doublet spin, ESR in RESPONS)
+  Lara Ferrighi,            Aarhus University,            Denmark     (PCM Cubic response)
+  Heike Fliegl,             University of Oslo,           Norway      (CCSD(R12))
+  Luca Frediani,            UiT The Arctic U. of Norway,  Norway      (PCM)
+  Bin Gao,                  UiT The Arctic U. of Norway,  Norway      (Gen1Int library)
+  Christof Haettig,         Ruhr-University Bochum,       Germany     (CC module)
+  Kasper Hald,              Aarhus University,            Denmark     (CC module)
+  Asger Halkier,            Aarhus University,            Denmark     (CC module)
+  Frederik Beyer Hansen,    University of Copenhagen,     Denmark     (Parallel AO-SOPPA)
+  Erik D. Hedegaard,        Univ. of Southern Denmark,    Denmark     (Polarizable embedding model, QM/MM)
+  Hanne Heiberg,            University of Oslo,           Norway      (geometry analysis, selected one-electron integrals)
+  Trygve Helgaker,          University of Oslo,           Norway      (DALTON; ABACUS, ERI, DFT modules, London, and much more)
+  Alf Christian Hennum,     University of Oslo,           Norway      (Parity violation)
+  Hinne Hettema,            University of Auckland,       New Zealand (quadratic response in RESPONS; SIRIUS supersymmetry)
+  Eirik Hjertenaes,         NTNU,                         Norway      (Cholesky decomposition)
+  Maria Francesca Iozzi,    University of Oslo,           Norway      (RPA)
+  Brano Jansik              Technical Univ. of Ostrava    Czech Rep.  (DFT cubic response)
+  Hans Joergen Aa. Jensen,  Univ. of Southern Denmark,    Denmark     (DALTON; SIRIUS, RESPONS, ABACUS modules, London, and much more)
+  Dan Jonsson,              UiT The Arctic U. of Norway,  Norway      (cubic response in RESPONS module)
+  Poul Joergensen,          Aarhus University,            Denmark     (RESPONS, ABACUS, and CC modules)
+  Maciej Kaminski,          University of Warsaw,         Poland      (CPPh in RESPONS)
+  Joanna Kauczor,           Linkoeping University,        Sweden      (Complex polarization propagator (CPP) module)
+  Sheela Kirpekar,          Univ. of Southern Denmark,    Denmark     (Mass-velocity & Darwin integrals)
+  Wim Klopper,              KIT Karlsruhe,                Germany     (R12 code in CC, SIRIUS, and ABACUS modules)
+  Stefan Knecht,            ETH Zurich,                   Switzerland (Parallel CI and MCSCF)
+  Rika Kobayashi,           Australian National Univ.,    Australia   (DIIS in CC, London in MCSCF)
+  Henrik Koch,              NTNU,                         Norway      (CC module, Cholesky decomposition)
+  Jacob Kongsted,           Univ. of Southern Denmark,    Denmark     (Polarizable embedding model, QM/MM)
+  Andrea Ligabue,           University of Modena,         Italy       (CTOCD, AOSOPPA)
+  Nanna H. List             Univ. of Southern Denmark,    Denmark     (Polarizable embedding model)
+  Ola B. Lutnaes,           University of Oslo,           Norway      (DFT Hessian)
+  Juan I. Melo,             University of Buenos Aires,   Argentina   (LRESC, Relativistic Effects on NMR Shieldings)
+  Kurt V. Mikkelsen,        University of Copenhagen,     Denmark     (MC-SCRF and QM/MM)
+  Rolf H. Myhre,            NTNU,                         Norway      (Cholesky, subsystems and ECC2)
+  Christian Neiss,          Univ. Erlangen-Nuernberg,     Germany     (CCSD(R12))
+  Christian B. Nielsen,     University of Copenhagen,     Denmark     (QM/MM)
+  Patrick Norman,           Linkoeping University,        Sweden      (Cubic response and complex frequency response in RESPONS)
+  Jeppe Olsen,              Aarhus University,            Denmark     (SIRIUS CI/density modules)
+  Jogvan Magnus H. Olsen,   Univ. of Southern Denmark,    Denmark     (Polarizable embedding model, QM/MM)
+  Anders Osted,             Copenhagen University,        Denmark     (QM/MM)
+  Martin J. Packer,         University of Sheffield,      UK          (SOPPA)
+  Filip Pawlowski,          Kazimierz Wielki University,  Poland      (CC3)
+  Morten N. Pedersen,       Univ. of Southern Denmark,    Denmark     (Polarizable embedding model)
+  Thomas B. Pedersen,       University of Oslo,           Norway      (Cholesky decomposition)
+  Patricio F. Provasi,      University of Northeastern,   Argentina   (Analysis of coupling constants in localized orbitals)
+  Zilvinas Rinkevicius,     KTH Stockholm,                Sweden      (open-shell DFT, ESR)
+  Elias Rudberg,            KTH Stockholm,                Sweden      (DFT grid and basis info)
+  Torgeir A. Ruden,         University of Oslo,           Norway      (Numerical derivatives in ABACUS)
+  Kenneth Ruud,             UiT The Arctic U. of Norway,  Norway      (DALTON; ABACUS magnetic properties and much more)
+  Pawel Salek,              KTH Stockholm,                Sweden      (DALTON; DFT code)
+  Claire C. M. Samson       University of Karlsruhe       Germany     (Boys localization, r12 integrals in ERI)
+  Alfredo Sanchez de Meras, University of Valencia,       Spain       (CC module, Cholesky decomposition)
+  Trond Saue,               Paul Sabatier University,     France      (direct Fock matrix construction)
+  Stephan P. A. Sauer,      University of Copenhagen,     Denmark     (SOPPA(CCSD), SOPPA prop., AOSOPPA, vibrational g-factors)
+  Bernd Schimmelpfennig,    Forschungszentrum Karlsruhe,  Germany     (AMFI module)
+  Kristian Sneskov,         Aarhus University,            Denmark     (Polarizable embedding model, QM/MM)
+  Arnfinn H. Steindal,      UiT The Arctic U. of Norway,  Norway      (parallel QM/MM, Polarizable embedding model)
+  Casper Steinmann,         Univ. of Southern Denmark,    Denmark     (QFIT, Polarizable embedding model)
+  K. O. Sylvester-Hvid,     University of Copenhagen,     Denmark     (MC-SCRF)
+  Peter R. Taylor,          VLSCI/Univ. of Melbourne,     Australia   (Symmetry handling ABACUS, integral transformation)
+  Andrew M. Teale,          University of Nottingham,     England     (DFT-AC, DFT-D)
+  David P. Tew,             University of Bristol,        England     (CCSD(R12))
+  Olav Vahtras,             KTH Stockholm,                Sweden      (triplet response, spin-orbit, ESR, TDDFT, open-shell DFT)
+  David J. Wilson,          La Trobe University,          Australia   (DFT Hessian and DFT magnetizabilities)
+  Hans Agren,               KTH Stockholm,                Sweden      (SIRIUS module, RESPONS, MC-SCRF solvation model)
+ --------------------------------------------------------------------------------
+
+     Date and time (Linux)  : Sun Feb 19 20:56:35 2017
+     Host name              : copper                                  
+
+ * Work memory size             :    64000000 =  488.28 megabytes.
+
+ * Directories for basis set searches:
+   1) /home/eric/Chemistry/libresponse/test_jobs/r_lih_hf_sto-3g
+   2) /home/eric/opt/apps/dalton/2016.2-g6.3.1-openblas-omp/dalton/basis
+
+
+Compilation information
+-----------------------
+
+ Who compiled             | eric
+ Host                     | copper
+ System                   | Linux-4.9.6-1-ARCH
+ CMake generator          | Unix Makefiles
+ Processor                | x86_64
+ 64-bit integers          | OFF
+ MPI                      | OFF
+ Fortran compiler         | /usr/bin/gfortran
+ Fortran compiler version | GNU Fortran (GCC) 6.3.1 20170109
+ C compiler               | /usr/bin/gcc
+ C compiler version       | gcc (GCC) 6.3.1 20170109
+ C++ compiler             | /usr/bin/g++
+ C++ compiler version     | g++ (GCC) 6.3.1 20170109
+ BLAS                     | /lib64/libopenblas.so
+ LAPACK                   | /lib64/liblapack.so
+ Static linking           | OFF
+ Last Git revision        | 7db4647eac203e51aae7da3cbc289f55146b30e9
+ Configuration time       | 2017-02-06 10:48:14.292909
+
+ * OpenMP run using 4 threads.
+
+
+   Content of the .dal input file
+ ----------------------------------
+
+BASIS
+STO-3G
+---
+---
+Atomtypes=2 Angstrom Charge=0 Nosymmetry
+Charge=3.0 Atoms=1
+Li  0.0000  0.0000  0.0000
+Charge=1.0 Atoms=1
+H   0.0000  0.0000  1.5949
+
+**DALTON INPUT
+.RUN ALL
+**WAVE FUNCTIONS
+.HF
+*SCF IN
+.THRESH
+1.0D-07
+.MAX DIIS ITERATIONS
+200
+.NOQCSCF
+*DFT INPUT
+.ULTRAF
+*ORBITAL INPUT
+.PUNCHOUTPUTORBITALS
+**INTEGRAL
+.KINENE
+.1ELPOT
+.DIPLEN
+.DIPVEL
+.ANGMOM
+.SPIN-ORBIT
+.ELGDIA
+.FC
+.SD
+.SD+FC
+.PSO
+.PROPRI
+**RESPONSE
+*LINEAR
+.THCLR
+1.0D-6
+# .FREQUE
+# 3
+# 0.0 0.07735713 0.45563352
+.DIPLEN
+.DIPMAG
+.DIPVEL
+.FERMI
+.SPIN-D
+.SPIN-O
+.PROPRT
+X1SPNORB
+.PROPRT
+Y1SPNORB
+.PROPRT
+Z1SPNORB
+.TRIPLET
+**END OF DALTON INPUT
+
+
+       *******************************************************************
+       *********** Output from DALTON general input processing ***********
+       *******************************************************************
+
+ --------------------------------------------------------------------------------
+   Overall default print level:    0
+   Print level for DALTON.STAT:    1
+
+    HERMIT 1- and 2-electron integral sections will be executed
+    "Old" integral transformation used (limited to max 255 basis functions)
+    Wave function sections will be executed (SIRIUS module)
+    Dynamic molecular response properties section will be executed (RESPONSE module)
+    Static molecular property section will be executed (ABACUS module)
+ --------------------------------------------------------------------------------
+
+
+   ****************************************************************************
+   *************** Output of molecule and basis set information ***************
+   ****************************************************************************
+
+
+    The two title cards from your ".mol" input:
+    ------------------------------------------------------------------------
+ 1: ---                                                                     
+ 2: ---                                                                     
+    ------------------------------------------------------------------------
+
+  Coordinates are entered in Angstrom and converted to atomic units.
+          - Conversion factor : 1 bohr = 0.52917721 A
+
+  Atomic type no.    1
+  --------------------
+  Nuclear charge:   3.00000
+  Number of symmetry independent centers:    1
+  Number of basis sets to read;    2
+  Basis set file used for this atomic type with Z =   3 :
+     "/home/eric/opt/apps/dalton/2016.2-g6.3.1-openblas-omp/dalton/basis/STO-3G"
+
+  Atomic type no.    2
+  --------------------
+  Nuclear charge:   1.00000
+  Number of symmetry independent centers:    1
+  Number of basis sets to read;    2
+  Basis set file used for this atomic type with Z =   1 :
+     "/home/eric/opt/apps/dalton/2016.2-g6.3.1-openblas-omp/dalton/basis/STO-3G"
+
+
+                         SYMGRP: Point group information
+                         -------------------------------
+
+@    Point group: C1 
+
+
+                                 Isotopic Masses
+                                 ---------------
+
+                           Li          7.016005
+                           H           1.007825
+
+                       Total mass:     8.023830 amu
+                       Natural abundance:  92.486 %
+
+ Center-of-mass coordinates (a.u.):    0.000000    0.000000    0.378561
+
+
+  Atoms and basis sets
+  --------------------
+
+  Number of atom types :    2
+  Total number of atoms:    2
+
+  Basis set used is "STO-3G" from the basis set library.
+
+  label    atoms   charge   prim   cont     basis
+  ----------------------------------------------------------------------
+  Li          1    3.0000    15     5      [6s3p|2s1p]                                        
+  H           1    1.0000     3     1      [3s|1s]                                            
+  ----------------------------------------------------------------------
+  total:      2    4.0000    18     6
+  ----------------------------------------------------------------------
+
+  Threshold for neglecting AO integrals:  1.00D-12
+
+
+  Cartesian Coordinates (a.u.)
+  ----------------------------
+
+  Total number of coordinates:    6
+  Li      :     1  x   0.0000000000    2  y   0.0000000000    3  z   0.0000000000
+  H       :     4  x   0.0000000000    5  y   0.0000000000    6  z   3.0139241968
+
+
+   Interatomic separations (in Angstrom):
+   --------------------------------------
+
+            Li          H     
+            ------      ------
+ Li    :    0.000000
+ H     :    1.594900    0.000000
+
+
+  Max    interatomic separation is    1.5949 Angstrom (    3.0139 Bohr)
+  between atoms    2 and    1, "H     " and "Li    ".
+
+  Min HX interatomic separation is    1.5949 Angstrom (    3.0139 Bohr)
+
+
+  Bond distances (Angstrom):
+  --------------------------
+
+                  atom 1     atom 2       distance
+                  ------     ------       --------
+  bond distance:  H          Li           1.594900
+
+
+
+
+ Principal moments of inertia (u*A**2) and principal axes
+ --------------------------------------------------------
+
+   IA       0.000000          0.000000    0.000000    1.000000
+   IB       2.241611          0.000000    1.000000    0.000000
+   IC       2.241611          1.000000    0.000000    0.000000
+
+
+ Rotational constants
+ --------------------
+
+@    The molecule is linear.
+
+               B =       225453.50 MHz     (    7.520319 cm-1)
+
+
+@  Nuclear repulsion energy :    0.995380044141 Hartree
+
+
+                     .---------------------------------------.
+                     | Starting in Integral Section (HERMIT) |
+                     `---------------------------------------'
+
+
+
+ ***************************************************************************************
+ ****************** Output from **INTEGRALS input processing (HERMIT) ******************
+ ***************************************************************************************
+
+
+
+    *************************************************************************
+    ****************** Output from HERMIT input processing ******************
+    *************************************************************************
+
+
+ Default print level:        1
+
+ * Nuclear model: Point charge
+
+ Calculation of one- and two-electron Hamiltonian integrals.
+
+ Calculate two-electron spin-orbit integrals
+
+ The following one-electron property integrals are calculated as requested:
+          - overlap integrals
+          - dipole length integrals
+          - dipole velocity integrals
+          - electronic kinetic energy
+          - spatial spin-orbit integrals
+          - Fermi contact integrals
+            (Dirac delta function integrals)
+          - paramagnetic spin-orbit integrals
+            (nuclear moment - electron orbit coupling)
+          - spin-dipole integrals
+            (electron spin - nuclear moment coupling)
+          - spin-dipole + Fermi contact integrals
+            (electron spin - nuclear magnetic field coupling)
+          - electronic angular momentum around the origin
+          - Diamagnetic one-electron spin-orbit (no-London)
+          - Potential energy Hamiltonian integrals
+
+ All one-electron property integrals are printed.
+
+ Center of mass  (bohr):      0.000000000000      0.000000000000      0.378560880975
+ Operator center (bohr):      0.000000000000      0.000000000000      0.000000000000
+ Gauge origin    (bohr):      0.000000000000      0.000000000000      0.000000000000
+ Dipole origin   (bohr):      0.000000000000      0.000000000000      0.000000000000
+
+ Integrals for all indirect spin-spin coupling and/or shielding tensors are calculated.
+
+
+     ************************************************************************
+     ************************** Output from HERINT **************************
+     ************************************************************************
+
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: HUCKOVLP !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       1       1.00000000
+       2       0.24113665     1.00000000
+       3       0.00000000     0.00000000     1.00000000
+       4       0.00000000     0.00000000     0.00000000     1.00000000
+       6       0.06724498     0.39654496     0.00000000     0.00000000
+       7       0.99916351     0.26711663     0.00000000     0.00000000
+       8      -0.02226873     0.94090660     0.00000000     0.00000000
+       9       0.00000000     0.00000000     0.91244515     0.00000000
+      10       0.00000000     0.00000000     0.00000000     0.91244515
+      12       0.08445613     0.46841460     0.00000000     0.00000000
+
+               Column   5     Column   6     Column   7     Column   8
+       5       1.00000000
+       6       0.51386406     1.00000000
+       7       0.00000000     0.07738068     1.00000000
+       8       0.00000000     0.37269803    -0.00000006     1.00000000
+      11       0.91244515     0.45412897     0.00000000     0.00000000
+      12       0.54529039     0.99165347     0.09607926     0.44582132
+
+               Column   9     Column  10     Column  11     Column  12
+       9       1.00000000
+      10       0.00000000     1.00000000
+      11       0.00000000     0.00000000     1.00000000
+      12       0.00000000     0.00000000     0.49810261     1.00000000
+    ==== End of matrix output ====
+
+
+                         +-------------------------------+
+                         ! Integrals of operator: HUCKEL !
+                         +-------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       1       1.00000000
+       2       0.24113665     1.00000000
+       3       0.00000000     0.00000000     1.00000000
+       4       0.00000000     0.00000000     0.00000000     1.00000000
+       6       0.06724498     0.39654496     0.00000000     0.00000000
+       7       0.99916351     0.26711663     0.00000000     0.00000000
+       8      -0.02226873     0.94090660     0.00000000     0.00000000
+       9       0.00000000     0.00000000     0.91244515     0.00000000
+      10       0.00000000     0.00000000     0.00000000     0.91244515
+      12       0.08445613     0.46841460     0.00000000     0.00000000
+
+               Column   5     Column   6     Column   7     Column   8
+       5       1.00000000
+       6       0.51386406     1.00000000
+       7       0.00000000     0.07738068    -2.47770000
+       8       0.00000000     0.37269803     0.00000000    -0.19630000
+      11       0.91244515     0.45412897     0.00000000     0.00000000
+      12       0.54529039     0.99165347     0.00000000     0.00000000
+
+               Column   9     Column  10     Column  11     Column  12
+       9      -0.13000000
+      10       0.00000000    -0.13000000
+      11       0.00000000     0.00000000    -0.13000000
+      12       0.00000000     0.00000000     0.00000000    -0.50000000
+    ==== End of matrix output ====
+
+
+                         +--------------------------------+
+                         ! Integrals of operator: OVERLAP !
+                         +--------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       1       1.00000000
+       2       0.24113665     1.00000000
+       3       0.00000000     0.00000000     1.00000000
+       4       0.00000000     0.00000000     0.00000000     1.00000000
+       6       0.06724498     0.39654496     0.00000000     0.00000000
+
+               Column   5     Column   6
+       5       1.00000000
+       6       0.51386406     1.00000000
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: HJPOPOVL !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4     Column   5
+       1       1.00000000     0.24113665     0.00000000     0.00000000     0.00000000
+       2       0.24113665     1.00000000     0.00000000     0.00000000     0.00000000
+       3       0.00000000     0.00000000     1.00000000     0.00000000     0.00000000
+       4       0.00000000     0.00000000     0.00000000     1.00000000     0.00000000
+       5       0.00000000     0.00000000     0.00000000     0.00000000     1.00000000
+       6       0.11013604     0.16981735     0.00000000     0.00000000     0.29597541
+
+               Column   6
+       1       0.02435392
+       2       0.62327258
+       5       0.73175271
+       6       1.00000000
+    ==== End of matrix output ====
+
+
+                         +--------------------------------+
+                         ! Integrals of operator: XDIPLEN !
+                         +--------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       3       0.14723998     1.80329832     0.00000000
+       6       0.00000000     0.00000000     0.32886291     0.00000000
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                         +--------------------------------+
+                         ! Integrals of operator: YDIPLEN !
+                         +--------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       4       0.14723998     1.80329832     0.00000000     0.00000000
+       6       0.00000000     0.00000000     0.00000000     0.32886291
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                         +--------------------------------+
+                         ! Integrals of operator: ZDIPLEN !
+                         +--------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       5       0.14723998     1.80329832     0.00000000     0.00000000
+       6       0.03670043     0.93924815     0.00000000     0.00000000
+
+               Column   5     Column   6
+       6       1.43158651     3.01392420
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: XXQUADRU !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       1       0.06900875
+       2       0.05710301     1.94457020
+       3       0.00000000     0.00000000     1.17501638
+       4       0.00000000     0.00000000     0.00000000     2.35003276
+       6       0.02020584     0.87576876     0.00000000     0.00000000
+
+               Column   5     Column   6
+       5       2.35003276
+       6       1.26388751     2.59569689
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: XYQUADRU !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       4       0.00000000     0.00000000    -0.58750819     0.00000000
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: XZQUADRU !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       5       0.00000000     0.00000000    -0.58750819     0.00000000
+       6       0.00000000     0.00000000    -0.15918649     0.00000000
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: YYQUADRU !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       1       0.06900875
+       2       0.05710301     1.94457020
+       3       0.00000000     0.00000000     2.35003276
+       4       0.00000000     0.00000000     0.00000000     1.17501638
+       6       0.02020584     0.87576876     0.00000000     0.00000000
+
+               Column   5     Column   6
+       5       2.35003276
+       6       1.26388751     2.59569689
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: YZQUADRU !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       5       0.00000000     0.00000000     0.00000000    -0.58750819
+       6       0.00000000     0.00000000     0.00000000    -0.15918649
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: ZZQUADRU !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       1       0.06900875
+       2       0.05710301     1.94457020
+       3       0.00000000     0.00000000     2.35003276
+       4       0.00000000     0.00000000     0.00000000     2.35003276
+       6       0.01286076     0.30960094     0.00000000     0.00000000
+
+               Column   5     Column   6
+       5       1.17501638
+       6       0.31837299     0.32476213
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: KINENERG !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       1       3.57678642
+       2      -0.02023738     0.10216337
+       3       0.00000000     0.00000000     0.31968167
+       4       0.00000000     0.00000000     0.00000000     0.31968167
+       6      -0.01578598     0.04249673     0.00000000     0.00000000
+
+               Column   5     Column   6
+       5       0.31968167
+       6       0.12942842     0.76003186
+    ==== End of matrix output ====
+
+
+                         +--------------------------------+
+                         ! Integrals of operator: XDIPVEL !
+                         +--------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       3      -0.35912885    -0.23195889     0.00000000
+       6       0.00000000     0.00000000     0.17049668     0.00000000
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                         +--------------------------------+
+                         ! Integrals of operator: YDIPVEL !
+                         +--------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       4      -0.35912885    -0.23195889     0.00000000     0.00000000
+       6       0.00000000     0.00000000     0.00000000     0.17049668
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                         +--------------------------------+
+                         ! Integrals of operator: ZDIPVEL !
+                         +--------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       5      -0.35912885    -0.23195889     0.00000000     0.00000000
+       6      -0.07590260    -0.13224203     0.00000000     0.00000000
+
+               Column   5     Column   6
+       6      -0.09859894     0.00000000
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: POTENERG !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       1       8.31467472
+       2       1.04434645     1.49858578
+       3       0.00000000     0.00000000     1.45595867
+       4       0.00000000     0.00000000     0.00000000     1.45595867
+       5       0.01620165     0.12244540     0.00000000     0.00000000
+       6       0.28978587     0.73886397     0.00000000     0.00000000
+
+               Column   5     Column   6
+       5       1.55435320
+       6       0.97028723     2.21933386
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: X1SPNORB !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       4      -0.03952338    -0.01624905     0.00000000     0.00000000
+       5       0.00000000     0.00000000     0.00000000    -0.47570600
+       6       0.00000000     0.00000000     0.00000000    -0.12195032
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: Y1SPNORB !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       3       0.03952338     0.01624905     0.00000000
+       5       0.00000000     0.00000000     0.47570600     0.00000000
+       6       0.00000000     0.00000000     0.12195032     0.00000000
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: Z1SPNORB !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       4       0.00000000     0.00000000    -0.50439911     0.00000000
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: FC Li 01 !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       1      33.79670975
+       2       1.15119388     0.03921232
+       6       0.31873910     0.01085699     0.00000000     0.00000000
+
+               Column   5     Column   6
+       6       0.00000000     0.00300605
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: FC H  02 !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       1       0.00000032
+       2       0.00008308     0.02153482
+       5       0.00014455     0.03746606     0.00000000     0.00000000
+       6       0.00103012     0.26700040     0.00000000     0.00000000
+
+               Column   5     Column   6
+       5       0.06518307
+       6       0.46452461     3.31041630
+    ==== End of matrix output ====
+
+
+                         +--------------------------------+
+                         ! Integrals of operator: PSO 001 !
+                         +--------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       5       0.00000000     0.00000000     0.00000000    -0.15904080
+       6       0.00000000     0.00000000     0.00000000    -0.04065011
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                         +--------------------------------+
+                         ! Integrals of operator: PSO 002 !
+                         +--------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       5       0.00000000     0.00000000     0.15904080     0.00000000
+       6       0.00000000     0.00000000     0.04065011     0.00000000
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                         +--------------------------------+
+                         ! Integrals of operator: PSO 003 !
+                         +--------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       4       0.00000000     0.00000000    -0.15904080     0.00000000
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                         +--------------------------------+
+                         ! Integrals of operator: PSO 004 !
+                         +--------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       4      -0.03952338    -0.01624905     0.00000000     0.00000000
+       5       0.00000000     0.00000000     0.00000000     0.00141641
+       6       0.00000000     0.00000000     0.00000000     0.00000000
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                         +--------------------------------+
+                         ! Integrals of operator: PSO 005 !
+                         +--------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       3       0.03952338     0.01624905     0.00000000
+       5       0.00000000     0.00000000    -0.00141641     0.00000000
+       6       0.00000000     0.00000000    -0.00000000     0.00000000
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                         +--------------------------------+
+                         ! Integrals of operator: PSO 006 !
+                         +--------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       4       0.00000000     0.00000000    -0.02727669     0.00000000
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: SD 001 x !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       1       0.00000000
+       2       0.00000000    -0.00000000
+       3       0.00000000     0.00000000     0.12738019
+       4       0.00000000     0.00000000     0.00000000    -0.06369009
+       6      -0.00955357    -0.01126821     0.00000000     0.00000000
+
+               Column   5     Column   6
+       5      -0.06369009
+       6      -0.02241824    -0.03427328
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: SD 001 y !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       4       0.00000000     0.00000000     0.09553514     0.00000000
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: SD 001 z !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       5       0.00000000     0.00000000     0.09553514     0.00000000
+       6       0.00000000     0.00000000     0.01827901     0.00000000
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: SD 002 x !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       4       0.00000000     0.00000000     0.09553514     0.00000000
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: SD 002 y !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       1       0.00000000
+       2       0.00000000    -0.00000000
+       3       0.00000000     0.00000000    -0.06369009
+       4       0.00000000     0.00000000     0.00000000     0.12738019
+       6      -0.00955357    -0.01126821     0.00000000     0.00000000
+
+               Column   5     Column   6
+       5      -0.06369009
+       6      -0.02241824    -0.03427328
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: SD 002 z !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       5       0.00000000     0.00000000     0.00000000     0.09553514
+       6       0.00000000     0.00000000     0.00000000     0.01827901
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: SD 003 x !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       5       0.00000000     0.00000000     0.09553514     0.00000000
+       6       0.00000000     0.00000000     0.01827901     0.00000000
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: SD 003 y !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       5       0.00000000     0.00000000     0.00000000     0.09553514
+       6       0.00000000     0.00000000     0.00000000     0.01827901
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: SD 003 z !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       1       0.00000000
+       2       0.00000000    -0.00000000
+       3       0.00000000     0.00000000    -0.06369009
+       4       0.00000000     0.00000000     0.00000000    -0.06369009
+       6       0.01910715     0.02253641     0.00000000     0.00000000
+
+               Column   5     Column   6
+       5       0.12738019
+       6       0.04483648     0.06854656
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: SD 004 x !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       1      -0.03656826
+       2      -0.00876813    -0.00861979
+       3       0.00000000     0.00000000     0.00522518
+       4       0.00000000     0.00000000     0.00000000    -0.01646382
+       5      -0.00527167    -0.00443005     0.00000000     0.00000000
+       6      -0.00515993    -0.00425458     0.00000000     0.00000000
+
+               Column   5     Column   6
+       5      -0.01362258
+       6      -0.00677256     0.00000000
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: SD 004 y !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       4       0.00000000     0.00000000     0.01084450     0.00000000
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: SD 004 z !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       3      -0.00534395    -0.02316308     0.00000000
+       5       0.00000000     0.00000000    -0.01890580     0.00000000
+       6       0.00000000     0.00000000    -0.02309661     0.00000000
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: SD 005 x !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       4       0.00000000     0.00000000     0.01084450     0.00000000
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: SD 005 y !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       1      -0.03656826
+       2      -0.00876813    -0.00861979
+       3       0.00000000     0.00000000    -0.01646382
+       4       0.00000000     0.00000000     0.00000000     0.00522518
+       5      -0.00527167    -0.00443005     0.00000000     0.00000000
+       6      -0.00515993    -0.00425458     0.00000000     0.00000000
+
+               Column   5     Column   6
+       5      -0.01362258
+       6      -0.00677256     0.00000000
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: SD 005 z !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       4      -0.00534395    -0.02316308     0.00000000     0.00000000
+       5       0.00000000     0.00000000     0.00000000    -0.01890580
+       6       0.00000000     0.00000000     0.00000000    -0.02309661
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: SD 006 x !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       3      -0.00534395    -0.02316308     0.00000000
+       5       0.00000000     0.00000000    -0.01890580     0.00000000
+       6       0.00000000     0.00000000    -0.02309661     0.00000000
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: SD 006 y !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       4      -0.00534395    -0.02316308     0.00000000     0.00000000
+       5       0.00000000     0.00000000     0.00000000    -0.01890580
+       6       0.00000000     0.00000000     0.00000000    -0.02309661
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: SD 006 z !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       1       0.07313651
+       2       0.01753626     0.01723958
+       3       0.00000000     0.00000000     0.01123864
+       4       0.00000000     0.00000000     0.00000000     0.01123864
+       5       0.01054334     0.00886011     0.00000000     0.00000000
+       6       0.01031985     0.00850915     0.00000000     0.00000000
+
+               Column   5     Column   6
+       5       0.02724517
+       6       0.01354513     0.00000000
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: SDC001 x !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       1      33.79670975
+       2       1.15119388     0.03921232
+       3       0.00000000     0.00000000     0.12738019
+       4       0.00000000     0.00000000     0.00000000    -0.06369009
+       6       0.30918552    -0.00041122     0.00000000     0.00000000
+
+               Column   5     Column   6
+       5      -0.06369009
+       6      -0.02241824    -0.03126723
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: SDC001 y !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       4       0.00000000     0.00000000     0.09553514     0.00000000
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: SDC001 z !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       5       0.00000000     0.00000000     0.09553514     0.00000000
+       6       0.00000000     0.00000000     0.01827901     0.00000000
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: SDC002 x !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       4       0.00000000     0.00000000     0.09553514     0.00000000
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: SDC002 y !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       1      33.79670975
+       2       1.15119388     0.03921232
+       3       0.00000000     0.00000000    -0.06369009
+       4       0.00000000     0.00000000     0.00000000     0.12738019
+       6       0.30918552    -0.00041122     0.00000000     0.00000000
+
+               Column   5     Column   6
+       5      -0.06369009
+       6      -0.02241824    -0.03126723
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: SDC002 z !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       5       0.00000000     0.00000000     0.00000000     0.09553514
+       6       0.00000000     0.00000000     0.00000000     0.01827901
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: SDC003 x !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       5       0.00000000     0.00000000     0.09553514     0.00000000
+       6       0.00000000     0.00000000     0.01827901     0.00000000
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: SDC003 y !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       5       0.00000000     0.00000000     0.00000000     0.09553514
+       6       0.00000000     0.00000000     0.00000000     0.01827901
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: SDC003 z !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       1      33.79670975
+       2       1.15119388     0.03921232
+       3       0.00000000     0.00000000    -0.06369009
+       4       0.00000000     0.00000000     0.00000000    -0.06369009
+       6       0.33784625     0.03339340     0.00000000     0.00000000
+
+               Column   5     Column   6
+       5       0.12738019
+       6       0.04483648     0.07155261
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: SDC004 x !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       1      -0.03656794
+       2      -0.00868505     0.01291503
+       3       0.00000000     0.00000000     0.00522518
+       4       0.00000000     0.00000000     0.00000000    -0.01646382
+       5      -0.00512712     0.03303601     0.00000000     0.00000000
+       6      -0.00412981     0.26274582     0.00000000     0.00000000
+
+               Column   5     Column   6
+       5       0.05156049
+       6       0.45775205     3.31041630
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: SDC004 y !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       4       0.00000000     0.00000000     0.01084450     0.00000000
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: SDC004 z !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       3      -0.00534395    -0.02316308     0.00000000
+       5       0.00000000     0.00000000    -0.01890580     0.00000000
+       6       0.00000000     0.00000000    -0.02309661     0.00000000
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: SDC005 x !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       4       0.00000000     0.00000000     0.01084450     0.00000000
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: SDC005 y !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       1      -0.03656794
+       2      -0.00868505     0.01291503
+       3       0.00000000     0.00000000    -0.01646382
+       4       0.00000000     0.00000000     0.00000000     0.00522518
+       5      -0.00512712     0.03303601     0.00000000     0.00000000
+       6      -0.00412981     0.26274582     0.00000000     0.00000000
+
+               Column   5     Column   6
+       5       0.05156049
+       6       0.45775205     3.31041630
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: SDC005 z !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       4      -0.00534395    -0.02316308     0.00000000     0.00000000
+       5       0.00000000     0.00000000     0.00000000    -0.01890580
+       6       0.00000000     0.00000000     0.00000000    -0.02309661
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: SDC006 x !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       3      -0.00534395    -0.02316308     0.00000000
+       5       0.00000000     0.00000000    -0.01890580     0.00000000
+       6       0.00000000     0.00000000    -0.02309661     0.00000000
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: SDC006 y !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       4      -0.00534395    -0.02316308     0.00000000     0.00000000
+       5       0.00000000     0.00000000     0.00000000    -0.01890580
+       6       0.00000000     0.00000000     0.00000000    -0.02309661
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: SDC006 z !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       1       0.07313683
+       2       0.01761934     0.03877440
+       3       0.00000000     0.00000000     0.01123864
+       4       0.00000000     0.00000000     0.00000000     0.01123864
+       5       0.01068789     0.04632617     0.00000000     0.00000000
+       6       0.01134997     0.27550955     0.00000000     0.00000000
+
+               Column   5     Column   6
+       5       0.09242824
+       6       0.47806974     3.31041630
+    ==== End of matrix output ====
+
+
+                         +--------------------------------+
+                         ! Integrals of operator: XANGMOM !
+                         +--------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       5       0.00000000     0.00000000     0.00000000     1.00000000
+       6       0.00000000     0.00000000     0.00000000     0.51386406
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                         +--------------------------------+
+                         ! Integrals of operator: YANGMOM !
+                         +--------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       5       0.00000000     0.00000000    -1.00000000     0.00000000
+       6       0.00000000     0.00000000    -0.51386406     0.00000000
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                         +--------------------------------+
+                         ! Integrals of operator: ZANGMOM !
+                         +--------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       4       0.00000000     0.00000000     1.00000000     0.00000000
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: D1-SO XX !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       1       2.65843992
+       2       0.31939996     0.42554706
+       3       0.00000000     0.00000000     0.24881551
+       4       0.00000000     0.00000000     0.00000000     0.51846478
+       5      -0.00916608    -0.01081819     0.00000000     0.00000000
+       6       0.08592149     0.21823061     0.00000000     0.00000000
+
+               Column   5     Column   6
+       5       0.50272760
+       6       0.29893323     0.87136129
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: D1-SO XY !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       4       0.00000000     0.00000000    -0.13482464     0.00000000
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: D1-SO XZ !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       3       0.00697649     0.03304096     0.00000000
+       5       0.00000000     0.00000000    -0.11399088     0.00000000
+       6       0.00000000     0.00000000    -0.02469148     0.00000000
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: D1-SO YX !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       4       0.00000000     0.00000000    -0.13482464     0.00000000
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: D1-SO YY !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       1       2.65843992
+       2       0.31939996     0.42554706
+       3       0.00000000     0.00000000     0.51846478
+       4       0.00000000     0.00000000     0.00000000     0.24881551
+       5      -0.00916608    -0.01081819     0.00000000     0.00000000
+       6       0.08592149     0.21823061     0.00000000     0.00000000
+
+               Column   5     Column   6
+       5       0.50272760
+       6       0.29893323     0.87136129
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: D1-SO YZ !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       4       0.00697649     0.03304096     0.00000000     0.00000000
+       5       0.00000000     0.00000000     0.00000000    -0.11399088
+       6       0.00000000     0.00000000     0.00000000    -0.02469148
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: D1-SO ZX !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       3      -0.00112433    -0.02818174     0.00000000
+       5       0.00000000     0.00000000    -0.16318814     0.00000000
+       6       0.00000000     0.00000000    -0.10312984     0.00000000
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: D1-SO ZY !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       4      -0.00112433    -0.02818174     0.00000000     0.00000000
+       5       0.00000000     0.00000000     0.00000000    -0.16318814
+       6       0.00000000     0.00000000     0.00000000    -0.10312984
+
+               Column   5     Column   6
+    ==== End of matrix output ====
+
+
+                        +---------------------------------+
+                        ! Integrals of operator: D1-SO ZZ !
+                        +---------------------------------+
+
+ Symmetry of operator:  A  ( 1)
+
+               Column   1     Column   2     Column   3     Column   4
+       1       2.66600169
+       2       0.32561445     0.47158737
+       3       0.00000000     0.00000000     0.53929854
+       4       0.00000000     0.00000000     0.00000000     0.53929854
+       5       0.00224867     0.05636347     0.00000000     0.00000000
+       6       0.08169380     0.17720527     0.00000000     0.00000000
+
+               Column   5     Column   6
+       5       0.32637629
+       6       0.20625968     0.47661128
+    ==== End of matrix output ====
+
+ Threshold for neglecting two-electron integrals:  1.00D-12
+ HERMIT - Number of two-electron integrals written:          83 ( 35.9% )
+ HERMIT - Megabytes written:                              0.007
+
+
+   Two-electron spin-orbit integrals
+   =================================
+   Spin-orbit 2-electron CPU  time      0. seconds
+   Spin-orbit 2-electron wall time      0. seconds
+  Total CPU  time used in HERMIT:   0.01 seconds
+  Total wall time used in HERMIT:   0.01 seconds
+
+
+                        .----------------------------------.
+                        | End of Integral Section (HERMIT) |
+                        `----------------------------------'
+
+
+
+                   .--------------------------------------------.
+                   | Starting in Wave Function Section (SIRIUS) |
+                   `--------------------------------------------'
+
+
+
+ Settings for DFT calculation:
+ -----------------------------
+
+     Default thresholds:                                       1.00D-09    1.00D-10    2.00D-12
+     Default threshold for number of electrons:                1.00D-03
+     DFT radial quadrature accuracy and ang. expansion order:              2.00D-15  64
+
+ *** Output from Huckel module :
+
+     Using EWMO model:          T
+     Using EHT  model:          F
+     Number of Huckel orbitals each symmetry:    6
+
+ EWMO - Energy Weighted Maximum Overlap - is a Huckel type method,
+        which normally is better than Extended Huckel Theory.
+ Reference: Linderberg and Ohrn, Propagators in Quantum Chemistry (Wiley, 1973)
+
+ Huckel EWMO eigenvalues for symmetry :  1
+           -2.483511      -0.580537      -0.169653      -0.130000      -0.130000
+           -0.070299
+
+ **********************************************************************
+ *SIRIUS* a direct, restricted step, second order MCSCF program       *
+ **********************************************************************
+
+ 
+     Date and time (Linux)  : Sun Feb 19 20:56:35 2017
+     Host name              : copper                                  
+
+ Title lines from ".mol" input file:
+     ---                                                                     
+     ---                                                                     
+
+ Print level on unit LUPRI =   2 is   0
+ Print level on unit LUW4  =   2 is   5
+
+@    Restricted, closed shell Hartree-Fock calculation.
+
+@    Time-dependent Hartree-Fock calculation (random phase approximation).
+
+ Initial molecular orbitals are obtained according to
+ ".MOSTART EWMO  " input option
+
+     Wave function specification
+     ============================
+@    Wave function type        --- HF ---
+@    Number of closed shell electrons           4
+@    Number of electrons in active shells       0
+@    Total charge of the molecule               0
+
+@    Spin multiplicity and 2 M_S                1         0
+@    Total number of symmetries                 1 (point group: C1 )
+@    Reference state symmetry                   1 (irrep name : A  )
+
+     Orbital specifications
+     ======================
+@    Abelian symmetry species          All |    1
+@                                          |  A  
+                                       --- |  ---
+@    Occupied SCF orbitals               2 |    2
+@    Secondary orbitals                  4 |    4
+@    Total number of orbitals            6 |    6
+@    Number of basis functions           6 |    6
+
+     Maximum number of Fock   iterations      0
+     Maximum number of DIIS   iterations    200
+     Maximum number of QC-SCF iterations      0
+     Threshold for SCF convergence     1.00D-07
+
+
+ ***********************************************
+ ***** DIIS acceleration of SCF iterations *****
+ ***********************************************
+
+ C1-DIIS algorithm; max error vectors =    8
+
+ Iter      Total energy        Error norm    Delta(E)  DIIS dim.
+ -----------------------------------------------------------------------------
+     (Precalculated two-electron integrals are transformed to P-supermatrix elements.
+      Threshold for discarding integrals :  1.00D-12 )
+@  1    -7.80828089195        5.56444D-01   -7.81D+00    1
+      Virial theorem: -V/T =      1.948046
+@      MULPOP Li      0.47; H      -0.47; 
+   1  Level shift: doubly occupied orbital energies shifted by -2.00D-01
+ -----------------------------------------------------------------------------
+@  2    -7.85831882320        1.50209D-01   -5.00D-02    2
+      Virial theorem: -V/T =      1.979699
+@      MULPOP Li      0.11; H      -0.11; 
+   2  Level shift: doubly occupied orbital energies shifted by -1.00D-01
+ -----------------------------------------------------------------------------
+@  3    -7.86198219053        1.64714D-02   -3.66D-03    3
+      Virial theorem: -V/T =      1.987378
+@      MULPOP Li     -0.00; H       0.00; 
+   3  Level shift: doubly occupied orbital energies shifted by -2.50D-02
+ -----------------------------------------------------------------------------
+@  4    -7.86202691350        4.58016D-04   -4.47D-05    4
+      Virial theorem: -V/T =      1.988157
+@      MULPOP Li     -0.02; H       0.02; 
+ -----------------------------------------------------------------------------
+@  5    -7.86202695648        8.49866D-05   -4.30D-08    5
+      Virial theorem: -V/T =      1.988168
+@      MULPOP Li     -0.02; H       0.02; 
+ -----------------------------------------------------------------------------
+@  6    -7.86202696095        2.83331D-05   -4.47D-09    6
+      Virial theorem: -V/T =      1.988165
+@      MULPOP Li     -0.02; H       0.02; 
+ -----------------------------------------------------------------------------
+@  7    -7.86202696148        1.52929D-08   -5.36D-10    7
+
+@ *** DIIS converged in   7 iterations !
+@     Converged SCF energy, gradient:     -7.862026961483    1.53D-08
+    - total time used in SIRFCK :              0.00 seconds
+
+
+ *** SCF orbital energy analysis ***
+
+ Number of electrons :    4
+ Orbital occupations :    2
+
+ Sym       Hartree-Fock orbital energies
+
+1 A      -2.34864418    -0.28570474     0.07826185     0.16393843     0.16393843
+          0.54912927
+
+    E(LUMO) :     0.07826185 au (symmetry 1)
+  - E(HOMO) :    -0.28570474 au (symmetry 1)
+  ------------------------------------------
+    gap     :     0.36396659 au
+
+ --- Writing SIRIFC interface file
+
+ CPU and wall time for SCF :       0.007       0.003
+
+
+                       .-----------------------------------.
+                       | --- Final results from SIRIUS --- |
+                       `-----------------------------------'
+
+
+@    Spin multiplicity:           1
+@    Spatial symmetry:            1 ( irrep  A   in C1  )
+@    Total charge of molecule:    0
+
+@    Final HF energy:              -7.862026961483                 
+@    Nuclear repulsion:             0.995380044141
+@    Electronic energy:            -8.857407005624
+
+@    Final gradient norm:           0.000000015293
+
+ 
+     Date and time (Linux)  : Sun Feb 19 20:56:35 2017
+     Host name              : copper                                  
+
+File label for MO orbitals:  19Feb17   FOCKDIIS
+
+ (Only coefficients > 0.0100 are printed.)
+
+ Molecular orbitals for symmetry species 1  (A  )
+ ------------------------------------------------
+
+    Orbital         1        2        3        4        5        6
+   1 Li  :1s    -0.9912   0.1674   0.2100   0.0000   0.0000  -0.0928
+   2 Li  :1s    -0.0327  -0.4548  -0.7996  -0.0000  -0.0000   0.7047
+   3 Li  :2px   -0.0000  -0.0000  -0.0000   0.9971   0.0761   0.0000
+   4 Li  :2py   -0.0000  -0.0000  -0.0000  -0.0761   0.9971   0.0000
+   5 Li  :2pz    0.0063  -0.3462   0.6121   0.0000  -0.0000   0.9810
+   6 H   :1s    -0.0045  -0.5488   0.1398   0.0000   0.0000  -1.1874
+
+ "NEWORB " orbitals punched.
+
+
+  Total CPU  time used in SIRIUS :   0.01 seconds
+  Total wall time used in SIRIUS :   0.01 seconds
+
+ 
+     Date and time (Linux)  : Sun Feb 19 20:56:35 2017
+     Host name              : copper                                  
+
+
+                     .---------------------------------------.
+                     | End of Wave Function Section (SIRIUS) |
+                     `---------------------------------------'
+
+
+
+                 .------------------------------------------------.
+                 | Starting in Dynamic Property Section (RESPONS) |
+                 `------------------------------------------------'
+
+
+ ------------------------------------------------------------------------------
+  RESPONSE  -  an MCSCF, MC-srDFT, DFT, and SOPPA response property program
+ ------------------------------------------------------------------------------
+
+
+ -------- OUTPUT FROM RESPONSE INPUT PROCESSING --------
+
+
+
+
+ Linear Response calculation
+ ---------------------------
+
+ Print level                                    : IPRLR  =   2
+ Maximum number of iterations                   : MAXITL =  60
+ Threshold for relative convergence             : THCLR  = 1.000D-06
+ Maximum iterations in optimal orbital algorithm: MAXITO =   5
+
+  1 B-frequencies  0.000000D+00
+
+   35 second order properties calculated with symmetry no.    1 and labels:
+
+          XDIPLEN 
+          YDIPLEN 
+          ZDIPLEN 
+          XANGMOM 
+          YANGMOM 
+          ZANGMOM 
+          XDIPVEL 
+          YDIPVEL 
+          ZDIPVEL 
+          FC Li 01
+          FC H  02
+          SD 001 x
+          SD 001 y
+          SD 001 z
+          SD 002 x
+          SD 002 y
+          SD 002 z
+          SD 003 x
+          SD 003 y
+          SD 003 z
+          SD 004 x
+          SD 004 y
+          SD 004 z
+          SD 005 x
+          SD 005 y
+          SD 005 z
+          SD 006 x
+          SD 006 y
+          SD 006 z
+          X SPNORB
+          Y SPNORB
+          Z SPNORB
+          X1SPNORB
+          Y1SPNORB
+          Z1SPNORB
+
+ Integral transformation: Total CPU and WALL times (sec)       0.010       0.000
+
+ Sorting integrals to Dirac format: Total CPU and WALL times (sec)       0.000       0.001
+
+
+   SCF energy         :       -7.862026961483483
+ -- inactive part     :       -8.857407005624182
+ -- nuclear repulsion :        0.995380044140699
+
+
+                     ***************************************
+                     *** RHF response calculation (TDHF) ***
+                     ***************************************
+
+ ----------------------------------------------------------------
+ ----- Linear response calculation
+ ----- Symmetry of excitation/property operator(s)    1  ( A  )
+ ----------------------------------------------------------------
+
+ Number of excitations of this symmetry            0
+ Number of response properties of this symmetry   35
+ Number of C6/C8 properties of this symmetry       0
+
+
+ Perturbation symmetry.     KSYMOP:       1
+ Perturbation spin symmetry.TRPLET:       T
+ Orbital variables.         KZWOPT:       8
+ Configuration variables.   KZCONF:       0
+ Total number of variables. KZVAR :       8
+
+
+ RSPLR -- linear response calculation for symmetry 1  ( A  )
+ RSPLR -- operator label : XDIPLEN 
+ RSPLR -- operator spin  :   0
+ RSPLR -- frequencies :   0.000000
+ FREQ 2    0.0000000000000000     
+
+
+
+ ---  SOLVING SETS OF LINEAR EQUATIONS FOR LINEAR RESPONSE PROPERTIES ---
+
+ Operator symmetry = 1  ( A  ); triplet =   T
+
+
+ *** THE REQUESTED    1 SOLUTION VECTORS CONVERGED
+
+ Convergence of RSP solution vectors, threshold = 1.00D-06
+ ---------------------------------------------------------------
+ (dimension of paired reduced space:    4)
+ RSP solution vector no.    1; norm of residual   1.44D-16
+
+ *** RSPCTL MICROITERATIONS CONVERGED
+
+
+ RSPLR -- linear response calculation for symmetry 1  ( A  )
+ RSPLR -- operator label : YDIPLEN 
+ RSPLR -- operator spin  :   0
+ RSPLR -- frequencies :   0.000000
+ FREQ 2    0.0000000000000000     
+
+
+
+ ---  SOLVING SETS OF LINEAR EQUATIONS FOR LINEAR RESPONSE PROPERTIES ---
+
+ Operator symmetry = 1  ( A  ); triplet =   T
+
+
+ *** THE REQUESTED    1 SOLUTION VECTORS CONVERGED
+
+ Convergence of RSP solution vectors, threshold = 1.00D-06
+ ---------------------------------------------------------------
+ (dimension of paired reduced space:    4)
+ RSP solution vector no.    1; norm of residual   1.89D-16
+
+ *** RSPCTL MICROITERATIONS CONVERGED
+
+
+ RSPLR -- linear response calculation for symmetry 1  ( A  )
+ RSPLR -- operator label : ZDIPLEN 
+ RSPLR -- operator spin  :   0
+ RSPLR -- frequencies :   0.000000
+ FREQ 2    0.0000000000000000     
+
+
+
+ ---  SOLVING SETS OF LINEAR EQUATIONS FOR LINEAR RESPONSE PROPERTIES ---
+
+ Operator symmetry = 1  ( A  ); triplet =   T
+
+
+ *** THE REQUESTED    1 SOLUTION VECTORS CONVERGED
+
+ Convergence of RSP solution vectors, threshold = 1.00D-06
+ ---------------------------------------------------------------
+ (dimension of paired reduced space:    8)
+ RSP solution vector no.    1; norm of residual   1.19D-16
+
+ *** RSPCTL MICROITERATIONS CONVERGED
+
+
+ RSPLR -- linear response calculation for symmetry 1  ( A  )
+ RSPLR -- operator label : XANGMOM 
+ RSPLR -- operator spin  :   0
+ RSPLR -- frequencies :   0.000000
+ FREQ 2    0.0000000000000000     
+
+
+
+ ---  SOLVING SETS OF LINEAR EQUATIONS FOR LINEAR RESPONSE PROPERTIES ---
+
+ Operator symmetry = 1  ( A  ); triplet =   T
+
+
+ *** THE REQUESTED    1 SOLUTION VECTORS CONVERGED
+
+ Convergence of RSP solution vectors, threshold = 1.00D-06
+ ---------------------------------------------------------------
+ (dimension of paired reduced space:    4)
+ RSP solution vector no.    1; norm of residual   5.96D-17
+
+ *** RSPCTL MICROITERATIONS CONVERGED
+
+
+ RSPLR -- linear response calculation for symmetry 1  ( A  )
+ RSPLR -- operator label : YANGMOM 
+ RSPLR -- operator spin  :   0
+ RSPLR -- frequencies :   0.000000
+ FREQ 2    0.0000000000000000     
+
+
+
+ ---  SOLVING SETS OF LINEAR EQUATIONS FOR LINEAR RESPONSE PROPERTIES ---
+
+ Operator symmetry = 1  ( A  ); triplet =   T
+
+
+ *** THE REQUESTED    1 SOLUTION VECTORS CONVERGED
+
+ Convergence of RSP solution vectors, threshold = 1.00D-06
+ ---------------------------------------------------------------
+ (dimension of paired reduced space:    4)
+ RSP solution vector no.    1; norm of residual   1.46D-16
+
+ *** RSPCTL MICROITERATIONS CONVERGED
+
+
+ RSPLR -- linear response calculation for symmetry 1  ( A  )
+ RSPLR -- operator label : ZANGMOM 
+ RSPLR -- operator spin  :   0
+ RSPLR -- frequencies :   0.000000
+ FREQ 2    0.0000000000000000     
+  --- RSPCTL skipped because norm of
+      property vector ZANGMOM  is only   6.3717809305501155E-016
+
+
+ RSPLR -- linear response calculation for symmetry 1  ( A  )
+ RSPLR -- operator label : XDIPVEL 
+ RSPLR -- operator spin  :   0
+ RSPLR -- frequencies :   0.000000
+ FREQ 2    0.0000000000000000     
+
+
+
+ ---  SOLVING SETS OF LINEAR EQUATIONS FOR LINEAR RESPONSE PROPERTIES ---
+
+ Operator symmetry = 1  ( A  ); triplet =   T
+
+
+ *** THE REQUESTED    1 SOLUTION VECTORS CONVERGED
+
+ Convergence of RSP solution vectors, threshold = 1.00D-06
+ ---------------------------------------------------------------
+ (dimension of paired reduced space:    4)
+ RSP solution vector no.    1; norm of residual   2.99D-16
+
+ *** RSPCTL MICROITERATIONS CONVERGED
+
+
+ RSPLR -- linear response calculation for symmetry 1  ( A  )
+ RSPLR -- operator label : YDIPVEL 
+ RSPLR -- operator spin  :   0
+ RSPLR -- frequencies :   0.000000
+ FREQ 2    0.0000000000000000     
+
+
+
+ ---  SOLVING SETS OF LINEAR EQUATIONS FOR LINEAR RESPONSE PROPERTIES ---
+
+ Operator symmetry = 1  ( A  ); triplet =   T
+
+
+ *** THE REQUESTED    1 SOLUTION VECTORS CONVERGED
+
+ Convergence of RSP solution vectors, threshold = 1.00D-06
+ ---------------------------------------------------------------
+ (dimension of paired reduced space:    4)
+ RSP solution vector no.    1; norm of residual   2.88D-16
+
+ *** RSPCTL MICROITERATIONS CONVERGED
+
+
+ RSPLR -- linear response calculation for symmetry 1  ( A  )
+ RSPLR -- operator label : ZDIPVEL 
+ RSPLR -- operator spin  :   0
+ RSPLR -- frequencies :   0.000000
+ FREQ 2    0.0000000000000000     
+
+
+
+ ---  SOLVING SETS OF LINEAR EQUATIONS FOR LINEAR RESPONSE PROPERTIES ---
+
+ Operator symmetry = 1  ( A  ); triplet =   T
+
+
+ *** THE REQUESTED    1 SOLUTION VECTORS CONVERGED
+
+ Convergence of RSP solution vectors, threshold = 1.00D-06
+ ---------------------------------------------------------------
+ (dimension of paired reduced space:    8)
+ RSP solution vector no.    1; norm of residual   5.47D-16
+
+ *** RSPCTL MICROITERATIONS CONVERGED
+
+
+ RSPLR -- linear response calculation for symmetry 1  ( A  )
+ RSPLR -- operator label : FC Li 01
+ RSPLR -- operator spin  :   0
+ RSPLR -- frequencies :   0.000000
+ FREQ 2    0.0000000000000000     
+
+
+
+ ---  SOLVING SETS OF LINEAR EQUATIONS FOR LINEAR RESPONSE PROPERTIES ---
+
+ Operator symmetry = 1  ( A  ); triplet =   T
+
+
+ *** THE REQUESTED    1 SOLUTION VECTORS CONVERGED
+
+ Convergence of RSP solution vectors, threshold = 1.00D-06
+ ---------------------------------------------------------------
+ (dimension of paired reduced space:    8)
+ RSP solution vector no.    1; norm of residual   6.49D-16
+
+ *** RSPCTL MICROITERATIONS CONVERGED
+
+
+ RSPLR -- linear response calculation for symmetry 1  ( A  )
+ RSPLR -- operator label : FC H  02
+ RSPLR -- operator spin  :   0
+ RSPLR -- frequencies :   0.000000
+ FREQ 2    0.0000000000000000     
+
+
+
+ ---  SOLVING SETS OF LINEAR EQUATIONS FOR LINEAR RESPONSE PROPERTIES ---
+
+ Operator symmetry = 1  ( A  ); triplet =   T
+
+
+ *** THE REQUESTED    1 SOLUTION VECTORS CONVERGED
+
+ Convergence of RSP solution vectors, threshold = 1.00D-06
+ ---------------------------------------------------------------
+ (dimension of paired reduced space:    8)
+ RSP solution vector no.    1; norm of residual   9.38D-17
+
+ *** RSPCTL MICROITERATIONS CONVERGED
+
+
+ RSPLR -- linear response calculation for symmetry 1  ( A  )
+ RSPLR -- operator label : SD 001 x
+ RSPLR -- operator spin  :   0
+ RSPLR -- frequencies :   0.000000
+ FREQ 2    0.0000000000000000     
+
+
+
+ ---  SOLVING SETS OF LINEAR EQUATIONS FOR LINEAR RESPONSE PROPERTIES ---
+
+ Operator symmetry = 1  ( A  ); triplet =   T
+
+
+ *** THE REQUESTED    1 SOLUTION VECTORS CONVERGED
+
+ Convergence of RSP solution vectors, threshold = 1.00D-06
+ ---------------------------------------------------------------
+ (dimension of paired reduced space:    8)
+ RSP solution vector no.    1; norm of residual   1.15D-16
+
+ *** RSPCTL MICROITERATIONS CONVERGED
+
+
+ RSPLR -- linear response calculation for symmetry 1  ( A  )
+ RSPLR -- operator label : SD 001 y
+ RSPLR -- operator spin  :   0
+ RSPLR -- frequencies :   0.000000
+ FREQ 2    0.0000000000000000     
+  --- RSPCTL skipped because norm of
+      property vector SD 001 y is only   6.0872899441512646E-017
+
+
+ RSPLR -- linear response calculation for symmetry 1  ( A  )
+ RSPLR -- operator label : SD 001 z
+ RSPLR -- operator spin  :   0
+ RSPLR -- frequencies :   0.000000
+ FREQ 2    0.0000000000000000     
+
+
+
+ ---  SOLVING SETS OF LINEAR EQUATIONS FOR LINEAR RESPONSE PROPERTIES ---
+
+ Operator symmetry = 1  ( A  ); triplet =   T
+
+
+ *** THE REQUESTED    1 SOLUTION VECTORS CONVERGED
+
+ Convergence of RSP solution vectors, threshold = 1.00D-06
+ ---------------------------------------------------------------
+ (dimension of paired reduced space:    4)
+ RSP solution vector no.    1; norm of residual   1.27D-16
+
+ *** RSPCTL MICROITERATIONS CONVERGED
+
+
+ RSPLR -- linear response calculation for symmetry 1  ( A  )
+ RSPLR -- operator label : SD 002 x
+ RSPLR -- operator spin  :   0
+ RSPLR -- frequencies :   0.000000
+ FREQ 2    0.0000000000000000     
+  --- RSPCTL skipped because norm of
+      property vector SD 002 x is only   6.0872899441512646E-017
+
+
+ RSPLR -- linear response calculation for symmetry 1  ( A  )
+ RSPLR -- operator label : SD 002 y
+ RSPLR -- operator spin  :   0
+ RSPLR -- frequencies :   0.000000
+ FREQ 2    0.0000000000000000     
+
+
+
+ ---  SOLVING SETS OF LINEAR EQUATIONS FOR LINEAR RESPONSE PROPERTIES ---
+
+ Operator symmetry = 1  ( A  ); triplet =   T
+
+
+ *** THE REQUESTED    1 SOLUTION VECTORS CONVERGED
+
+ Convergence of RSP solution vectors, threshold = 1.00D-06
+ ---------------------------------------------------------------
+ (dimension of paired reduced space:    8)
+ RSP solution vector no.    1; norm of residual   1.15D-16
+
+ *** RSPCTL MICROITERATIONS CONVERGED
+
+
+ RSPLR -- linear response calculation for symmetry 1  ( A  )
+ RSPLR -- operator label : SD 002 z
+ RSPLR -- operator spin  :   0
+ RSPLR -- frequencies :   0.000000
+ FREQ 2    0.0000000000000000     
+
+
+
+ ---  SOLVING SETS OF LINEAR EQUATIONS FOR LINEAR RESPONSE PROPERTIES ---
+
+ Operator symmetry = 1  ( A  ); triplet =   T
+
+
+ *** THE REQUESTED    1 SOLUTION VECTORS CONVERGED
+
+ Convergence of RSP solution vectors, threshold = 1.00D-06
+ ---------------------------------------------------------------
+ (dimension of paired reduced space:    4)
+ RSP solution vector no.    1; norm of residual   1.62D-16
+
+ *** RSPCTL MICROITERATIONS CONVERGED
+
+
+ RSPLR -- linear response calculation for symmetry 1  ( A  )
+ RSPLR -- operator label : SD 003 x
+ RSPLR -- operator spin  :   0
+ RSPLR -- frequencies :   0.000000
+ FREQ 2    0.0000000000000000     
+
+
+
+ ---  SOLVING SETS OF LINEAR EQUATIONS FOR LINEAR RESPONSE PROPERTIES ---
+
+ Operator symmetry = 1  ( A  ); triplet =   T
+
+
+ *** THE REQUESTED    1 SOLUTION VECTORS CONVERGED
+
+ Convergence of RSP solution vectors, threshold = 1.00D-06
+ ---------------------------------------------------------------
+ (dimension of paired reduced space:    4)
+ RSP solution vector no.    1; norm of residual   1.27D-16
+
+ *** RSPCTL MICROITERATIONS CONVERGED
+
+
+ RSPLR -- linear response calculation for symmetry 1  ( A  )
+ RSPLR -- operator label : SD 003 y
+ RSPLR -- operator spin  :   0
+ RSPLR -- frequencies :   0.000000
+ FREQ 2    0.0000000000000000     
+
+
+
+ ---  SOLVING SETS OF LINEAR EQUATIONS FOR LINEAR RESPONSE PROPERTIES ---
+
+ Operator symmetry = 1  ( A  ); triplet =   T
+
+
+ *** THE REQUESTED    1 SOLUTION VECTORS CONVERGED
+
+ Convergence of RSP solution vectors, threshold = 1.00D-06
+ ---------------------------------------------------------------
+ (dimension of paired reduced space:    4)
+ RSP solution vector no.    1; norm of residual   1.62D-16
+
+ *** RSPCTL MICROITERATIONS CONVERGED
+
+
+ RSPLR -- linear response calculation for symmetry 1  ( A  )
+ RSPLR -- operator label : SD 003 z
+ RSPLR -- operator spin  :   0
+ RSPLR -- frequencies :   0.000000
+ FREQ 2    0.0000000000000000     
+
+
+
+ ---  SOLVING SETS OF LINEAR EQUATIONS FOR LINEAR RESPONSE PROPERTIES ---
+
+ Operator symmetry = 1  ( A  ); triplet =   T
+
+
+ *** THE REQUESTED    1 SOLUTION VECTORS CONVERGED
+
+ Convergence of RSP solution vectors, threshold = 1.00D-06
+ ---------------------------------------------------------------
+ (dimension of paired reduced space:    8)
+ RSP solution vector no.    1; norm of residual   1.72D-16
+
+ *** RSPCTL MICROITERATIONS CONVERGED
+
+
+ RSPLR -- linear response calculation for symmetry 1  ( A  )
+ RSPLR -- operator label : SD 004 x
+ RSPLR -- operator spin  :   0
+ RSPLR -- frequencies :   0.000000
+ FREQ 2    0.0000000000000000     
+
+
+
+ ---  SOLVING SETS OF LINEAR EQUATIONS FOR LINEAR RESPONSE PROPERTIES ---
+
+ Operator symmetry = 1  ( A  ); triplet =   T
+
+
+ *** THE REQUESTED    1 SOLUTION VECTORS CONVERGED
+
+ Convergence of RSP solution vectors, threshold = 1.00D-06
+ ---------------------------------------------------------------
+ (dimension of paired reduced space:    8)
+ RSP solution vector no.    1; norm of residual   2.02D-16
+
+ *** RSPCTL MICROITERATIONS CONVERGED
+
+
+ RSPLR -- linear response calculation for symmetry 1  ( A  )
+ RSPLR -- operator label : SD 004 y
+ RSPLR -- operator spin  :   0
+ RSPLR -- frequencies :   0.000000
+ FREQ 2    0.0000000000000000     
+  --- RSPCTL skipped because norm of
+      property vector SD 004 y is only   6.9098796425612916E-018
+
+
+ RSPLR -- linear response calculation for symmetry 1  ( A  )
+ RSPLR -- operator label : SD 004 z
+ RSPLR -- operator spin  :   0
+ RSPLR -- frequencies :   0.000000
+ FREQ 2    0.0000000000000000     
+
+
+
+ ---  SOLVING SETS OF LINEAR EQUATIONS FOR LINEAR RESPONSE PROPERTIES ---
+
+ Operator symmetry = 1  ( A  ); triplet =   T
+
+
+ *** THE REQUESTED    1 SOLUTION VECTORS CONVERGED
+
+ Convergence of RSP solution vectors, threshold = 1.00D-06
+ ---------------------------------------------------------------
+ (dimension of paired reduced space:    4)
+ RSP solution vector no.    1; norm of residual   1.45D-16
+
+ *** RSPCTL MICROITERATIONS CONVERGED
+
+
+ RSPLR -- linear response calculation for symmetry 1  ( A  )
+ RSPLR -- operator label : SD 005 x
+ RSPLR -- operator spin  :   0
+ RSPLR -- frequencies :   0.000000
+ FREQ 2    0.0000000000000000     
+  --- RSPCTL skipped because norm of
+      property vector SD 005 x is only   6.9098796425612916E-018
+
+
+ RSPLR -- linear response calculation for symmetry 1  ( A  )
+ RSPLR -- operator label : SD 005 y
+ RSPLR -- operator spin  :   0
+ RSPLR -- frequencies :   0.000000
+ FREQ 2    0.0000000000000000     
+
+
+
+ ---  SOLVING SETS OF LINEAR EQUATIONS FOR LINEAR RESPONSE PROPERTIES ---
+
+ Operator symmetry = 1  ( A  ); triplet =   T
+
+
+ *** THE REQUESTED    1 SOLUTION VECTORS CONVERGED
+
+ Convergence of RSP solution vectors, threshold = 1.00D-06
+ ---------------------------------------------------------------
+ (dimension of paired reduced space:    8)
+ RSP solution vector no.    1; norm of residual   2.03D-16
+
+ *** RSPCTL MICROITERATIONS CONVERGED
+
+
+ RSPLR -- linear response calculation for symmetry 1  ( A  )
+ RSPLR -- operator label : SD 005 z
+ RSPLR -- operator spin  :   0
+ RSPLR -- frequencies :   0.000000
+ FREQ 2    0.0000000000000000     
+
+
+
+ ---  SOLVING SETS OF LINEAR EQUATIONS FOR LINEAR RESPONSE PROPERTIES ---
+
+ Operator symmetry = 1  ( A  ); triplet =   T
+
+
+ *** THE REQUESTED    1 SOLUTION VECTORS CONVERGED
+
+ Convergence of RSP solution vectors, threshold = 1.00D-06
+ ---------------------------------------------------------------
+ (dimension of paired reduced space:    4)
+ RSP solution vector no.    1; norm of residual   1.79D-16
+
+ *** RSPCTL MICROITERATIONS CONVERGED
+
+
+ RSPLR -- linear response calculation for symmetry 1  ( A  )
+ RSPLR -- operator label : SD 006 x
+ RSPLR -- operator spin  :   0
+ RSPLR -- frequencies :   0.000000
+ FREQ 2    0.0000000000000000     
+
+
+
+ ---  SOLVING SETS OF LINEAR EQUATIONS FOR LINEAR RESPONSE PROPERTIES ---
+
+ Operator symmetry = 1  ( A  ); triplet =   T
+
+
+ *** THE REQUESTED    1 SOLUTION VECTORS CONVERGED
+
+ Convergence of RSP solution vectors, threshold = 1.00D-06
+ ---------------------------------------------------------------
+ (dimension of paired reduced space:    4)
+ RSP solution vector no.    1; norm of residual   1.45D-16
+
+ *** RSPCTL MICROITERATIONS CONVERGED
+
+
+ RSPLR -- linear response calculation for symmetry 1  ( A  )
+ RSPLR -- operator label : SD 006 y
+ RSPLR -- operator spin  :   0
+ RSPLR -- frequencies :   0.000000
+ FREQ 2    0.0000000000000000     
+
+
+
+ ---  SOLVING SETS OF LINEAR EQUATIONS FOR LINEAR RESPONSE PROPERTIES ---
+
+ Operator symmetry = 1  ( A  ); triplet =   T
+
+
+ *** THE REQUESTED    1 SOLUTION VECTORS CONVERGED
+
+ Convergence of RSP solution vectors, threshold = 1.00D-06
+ ---------------------------------------------------------------
+ (dimension of paired reduced space:    4)
+ RSP solution vector no.    1; norm of residual   1.79D-16
+
+ *** RSPCTL MICROITERATIONS CONVERGED
+
+
+ RSPLR -- linear response calculation for symmetry 1  ( A  )
+ RSPLR -- operator label : SD 006 z
+ RSPLR -- operator spin  :   0
+ RSPLR -- frequencies :   0.000000
+ FREQ 2    0.0000000000000000     
+
+
+
+ ---  SOLVING SETS OF LINEAR EQUATIONS FOR LINEAR RESPONSE PROPERTIES ---
+
+ Operator symmetry = 1  ( A  ); triplet =   T
+
+
+ *** THE REQUESTED    1 SOLUTION VECTORS CONVERGED
+
+ Convergence of RSP solution vectors, threshold = 1.00D-06
+ ---------------------------------------------------------------
+ (dimension of paired reduced space:    8)
+ RSP solution vector no.    1; norm of residual   2.15D-16
+
+ *** RSPCTL MICROITERATIONS CONVERGED
+
+
+ RSPLR -- linear response calculation for symmetry 1  ( A  )
+ RSPLR -- operator label : X SPNORB
+ RSPLR -- operator spin  :   1
+ RSPLR -- frequencies :   0.000000
+ FREQ 2    0.0000000000000000     
+
+
+
+ ---  SOLVING SETS OF LINEAR EQUATIONS FOR LINEAR RESPONSE PROPERTIES ---
+
+ Operator symmetry = 1  ( A  ); triplet =   T
+
+
+ *** THE REQUESTED    1 SOLUTION VECTORS CONVERGED
+
+ Convergence of RSP solution vectors, threshold = 1.00D-06
+ ---------------------------------------------------------------
+ (dimension of paired reduced space:    4)
+ RSP solution vector no.    1; norm of residual   2.92D-16
+
+ *** RSPCTL MICROITERATIONS CONVERGED
+
+
+ RSPLR -- linear response calculation for symmetry 1  ( A  )
+ RSPLR -- operator label : Y SPNORB
+ RSPLR -- operator spin  :   1
+ RSPLR -- frequencies :   0.000000
+ FREQ 2    0.0000000000000000     
+
+
+
+ ---  SOLVING SETS OF LINEAR EQUATIONS FOR LINEAR RESPONSE PROPERTIES ---
+
+ Operator symmetry = 1  ( A  ); triplet =   T
+
+
+ *** THE REQUESTED    1 SOLUTION VECTORS CONVERGED
+
+ Convergence of RSP solution vectors, threshold = 1.00D-06
+ ---------------------------------------------------------------
+ (dimension of paired reduced space:    4)
+ RSP solution vector no.    1; norm of residual   2.60D-16
+
+ *** RSPCTL MICROITERATIONS CONVERGED
+
+
+ RSPLR -- linear response calculation for symmetry 1  ( A  )
+ RSPLR -- operator label : Z SPNORB
+ RSPLR -- operator spin  :   1
+ RSPLR -- frequencies :   0.000000
+ FREQ 2    0.0000000000000000     
+  --- RSPCTL skipped because norm of
+      property vector Z SPNORB is only   4.1411844352509335E-021
+
+
+ RSPLR -- linear response calculation for symmetry 1  ( A  )
+ RSPLR -- operator label : X1SPNORB
+ RSPLR -- operator spin  :   0
+ RSPLR -- frequencies :   0.000000
+ FREQ 2    0.0000000000000000     
+
+
+
+ ---  SOLVING SETS OF LINEAR EQUATIONS FOR LINEAR RESPONSE PROPERTIES ---
+
+ Operator symmetry = 1  ( A  ); triplet =   T
+
+
+ *** THE REQUESTED    1 SOLUTION VECTORS CONVERGED
+
+ Convergence of RSP solution vectors, threshold = 1.00D-06
+ ---------------------------------------------------------------
+ (dimension of paired reduced space:    4)
+ RSP solution vector no.    1; norm of residual   7.01D-17
+
+ *** RSPCTL MICROITERATIONS CONVERGED
+
+
+ RSPLR -- linear response calculation for symmetry 1  ( A  )
+ RSPLR -- operator label : Y1SPNORB
+ RSPLR -- operator spin  :   0
+ RSPLR -- frequencies :   0.000000
+ FREQ 2    0.0000000000000000     
+
+
+
+ ---  SOLVING SETS OF LINEAR EQUATIONS FOR LINEAR RESPONSE PROPERTIES ---
+
+ Operator symmetry = 1  ( A  ); triplet =   T
+
+
+ *** THE REQUESTED    1 SOLUTION VECTORS CONVERGED
+
+ Convergence of RSP solution vectors, threshold = 1.00D-06
+ ---------------------------------------------------------------
+ (dimension of paired reduced space:    4)
+ RSP solution vector no.    1; norm of residual   4.79D-17
+
+ *** RSPCTL MICROITERATIONS CONVERGED
+
+
+ RSPLR -- linear response calculation for symmetry 1  ( A  )
+ RSPLR -- operator label : Z1SPNORB
+ RSPLR -- operator spin  :   0
+ RSPLR -- frequencies :   0.000000
+ FREQ 2    0.0000000000000000     
+  --- RSPCTL skipped because norm of
+      property vector Z1SPNORB is only   4.2786405527957370E-021
+
+
+           Final output of second order properties from linear response
+           ------------------------------------------------------------
+
+
+@ Spin symmetry of operators: triplet
+
+ Note that minus the linear response function: - << A; B >>(omega) is printed.
+ The results are of quadratic accuracy using Sellers formula.
+
+@ FREQUENCY INDEPENDENT SECOND ORDER PROPERTIES
+
+@ -<< XDIPLEN  ; XDIPLEN  >> =  2.455561123037D+01
+@ -<< XDIPLEN  ; YDIPLEN  >> = -3.130450074173D-15
+@ -<< XDIPLEN  ; ZDIPLEN  >> = -1.865149835542D-14
+@ -<< XDIPLEN  ; XANGMOM  >> =  6.056384584075D-17
+@ -<< XDIPLEN  ; YANGMOM  >> = -1.448918203914D-18
+@ -<< XDIPLEN  ; ZANGMOM  >> =  0.000000000000D+00
+@ -<< XDIPLEN  ; XDIPVEL  >> = -4.305839728907D-16
+@ -<< XDIPLEN  ; YDIPVEL  >> =  2.084756173158D-17
+@ -<< XDIPLEN  ; ZDIPVEL  >> = -1.138609783122D-30
+@ -<< XDIPLEN  ; FC Li 01 >> =  1.984045320721D-14
+@ -<< XDIPLEN  ; FC H  02 >> = -2.931988434132D-14
+@ -<< XDIPLEN  ; SD 001 x >> =  6.107541517557D-16
+@ -<< XDIPLEN  ; SD 001 y >> =  0.000000000000D+00
+@ -<< XDIPLEN  ; SD 001 z >> =  1.080428447955D+00
+@ -<< XDIPLEN  ; SD 002 x >> =  0.000000000000D+00
+@ -<< XDIPLEN  ; SD 002 y >> =  2.878072022844D-16
+@ -<< XDIPLEN  ; SD 002 z >> = -1.115571114676D-16
+@ -<< XDIPLEN  ; SD 003 x >> =  1.080428447955D+00
+@ -<< XDIPLEN  ; SD 003 y >> = -1.115571114676D-16
+@ -<< XDIPLEN  ; SD 003 z >> = -8.985613540401D-16
+@ -<< XDIPLEN  ; SD 004 x >> = -4.587424513297D-17
+@ -<< XDIPLEN  ; SD 004 y >> =  0.000000000000D+00
+@ -<< XDIPLEN  ; SD 004 z >> = -7.261075636450D-01
+@ -<< XDIPLEN  ; SD 005 x >> =  0.000000000000D+00
+@ -<< XDIPLEN  ; SD 005 y >> = -8.253299758689D-17
+@ -<< XDIPLEN  ; SD 005 z >> =  6.091647350492D-17
+@ -<< XDIPLEN  ; SD 006 x >> = -7.261075636450D-01
+@ -<< XDIPLEN  ; SD 006 y >> =  6.091647350492D-17
+@ -<< XDIPLEN  ; SD 006 z >> =  1.284072427198D-16
+@ -<< XDIPLEN  ; X SPNORB >> = -4.052100676092D-22
+@ -<< XDIPLEN  ; Y SPNORB >> =  9.590279589777D-21
+@ -<< XDIPLEN  ; Z SPNORB >> =  0.000000000000D+00
+@ -<< XDIPLEN  ; X1SPNORB >> = -4.241424902552D-22
+@ -<< XDIPLEN  ; Y1SPNORB >> =  4.933978428251D-21
+@ -<< XDIPLEN  ; Z1SPNORB >> =  0.000000000000D+00
+@ -<< YDIPLEN  ; YDIPLEN  >> =  2.455561123037D+01
+@ -<< YDIPLEN  ; ZDIPLEN  >> = -2.278417315746D-14
+@ -<< YDIPLEN  ; XANGMOM  >> = -2.275430033586D-15
+@ -<< YDIPLEN  ; YANGMOM  >> =  1.421142496370D-16
+@ -<< YDIPLEN  ; ZANGMOM  >> =  0.000000000000D+00
+@ -<< YDIPLEN  ; XDIPVEL  >> =  2.932153536142D-17
+@ -<< YDIPLEN  ; YDIPVEL  >> =  2.714737374028D-16
+@ -<< YDIPLEN  ; ZDIPVEL  >> = -3.656907630154D-30
+@ -<< YDIPLEN  ; FC Li 01 >> =  4.697771309761D-14
+@ -<< YDIPLEN  ; FC H  02 >> = -2.751092004268D-14
+@ -<< YDIPLEN  ; SD 001 x >> =  5.577595539485D-16
+@ -<< YDIPLEN  ; SD 001 y >> =  0.000000000000D+00
+@ -<< YDIPLEN  ; SD 001 z >> = -1.284470855475D-16
+@ -<< YDIPLEN  ; SD 002 x >> =  0.000000000000D+00
+@ -<< YDIPLEN  ; SD 002 y >> =  9.451115467720D-16
+@ -<< YDIPLEN  ; SD 002 z >> =  1.080428447955D+00
+@ -<< YDIPLEN  ; SD 003 x >> = -1.284470855475D-16
+@ -<< YDIPLEN  ; SD 003 y >> =  1.080428447955D+00
+@ -<< YDIPLEN  ; SD 003 z >> = -1.502871100720D-15
+@ -<< YDIPLEN  ; SD 004 x >> = -1.908362449966D-17
+@ -<< YDIPLEN  ; SD 004 y >> =  0.000000000000D+00
+@ -<< YDIPLEN  ; SD 004 z >> =  1.218320401467D-16
+@ -<< YDIPLEN  ; SD 005 x >> =  0.000000000000D+00
+@ -<< YDIPLEN  ; SD 005 y >> =  2.488595267300D-17
+@ -<< YDIPLEN  ; SD 005 z >> = -7.261075636450D-01
+@ -<< YDIPLEN  ; SD 006 x >> =  1.218320401467D-16
+@ -<< YDIPLEN  ; SD 006 y >> = -7.261075636450D-01
+@ -<< YDIPLEN  ; SD 006 z >> = -5.802328173355D-18
+@ -<< YDIPLEN  ; X SPNORB >> = -4.799160054705D-22
+@ -<< YDIPLEN  ; Y SPNORB >> = -4.316006196282D-22
+@ -<< YDIPLEN  ; Z SPNORB >> =  0.000000000000D+00
+@ -<< YDIPLEN  ; X1SPNORB >> = -7.198073573555D-23
+@ -<< YDIPLEN  ; Y1SPNORB >> =  3.136708665898D-22
+@ -<< YDIPLEN  ; Z1SPNORB >> =  0.000000000000D+00
+@ -<< ZDIPLEN  ; ZDIPLEN  >> =  2.578443322489D+01
+@ -<< ZDIPLEN  ; XANGMOM  >> =  3.106139814308D-30
+@ -<< ZDIPLEN  ; YANGMOM  >> =  5.176899690513D-31
+@ -<< ZDIPLEN  ; ZANGMOM  >> =  0.000000000000D+00
+@ -<< ZDIPLEN  ; XDIPVEL  >> = -3.574525976783D-31
+@ -<< ZDIPLEN  ; YDIPVEL  >> =  2.218671295934D-31
+@ -<< ZDIPLEN  ; ZDIPVEL  >> =  1.596222992982D-15
+@ -<< ZDIPLEN  ; FC Li 01 >> = -3.195547046295D+01
+@ -<< ZDIPLEN  ; FC H  02 >> =  5.084414596580D+01
+@ -<< ZDIPLEN  ; SD 001 x >> = -5.403428373034D-01
+@ -<< ZDIPLEN  ; SD 001 y >> =  0.000000000000D+00
+@ -<< ZDIPLEN  ; SD 001 z >> = -6.487282762451D-16
+@ -<< ZDIPLEN  ; SD 002 x >> =  0.000000000000D+00
+@ -<< ZDIPLEN  ; SD 002 y >> = -5.403428373034D-01
+@ -<< ZDIPLEN  ; SD 002 z >> = -7.997821107919D-16
+@ -<< ZDIPLEN  ; SD 003 x >> = -6.487282762451D-16
+@ -<< ZDIPLEN  ; SD 003 y >> = -7.997821107919D-16
+@ -<< ZDIPLEN  ; SD 003 z >> =  1.080685674607D+00
+@ -<< ZDIPLEN  ; SD 004 x >> =  1.411725934630D-01
+@ -<< ZDIPLEN  ; SD 004 y >> =  0.000000000000D+00
+@ -<< ZDIPLEN  ; SD 004 z >> =  4.575957130295D-16
+@ -<< ZDIPLEN  ; SD 005 x >> =  0.000000000000D+00
+@ -<< ZDIPLEN  ; SD 005 y >> =  1.411725934630D-01
+@ -<< ZDIPLEN  ; SD 005 z >> =  5.649709022803D-16
+@ -<< ZDIPLEN  ; SD 006 x >> =  4.575957130295D-16
+@ -<< ZDIPLEN  ; SD 006 y >> =  5.649709022803D-16
+@ -<< ZDIPLEN  ; SD 006 z >> = -2.823451869260D-01
+@ -<< ZDIPLEN  ; X SPNORB >> = -9.356935032545D-36
+@ -<< ZDIPLEN  ; Y SPNORB >> =  5.195685030635D-36
+@ -<< ZDIPLEN  ; Z SPNORB >> =  0.000000000000D+00
+@ -<< ZDIPLEN  ; X1SPNORB >> = -7.899322037526D-36
+@ -<< ZDIPLEN  ; Y1SPNORB >> = -9.403954806578D-37
+@ -<< ZDIPLEN  ; Z1SPNORB >> =  0.000000000000D+00
+@ -<< XANGMOM  ; XANGMOM  >> =  7.791795647273D+00
+@ -<< XANGMOM  ; YANGMOM  >> =  7.318697110297D-16
+@ -<< XANGMOM  ; ZANGMOM  >> =  0.000000000000D+00
+@ -<< XANGMOM  ; XDIPVEL  >> = -1.410783775961D-16
+@ -<< XANGMOM  ; YDIPVEL  >> =  1.695177419131D+00
+@ -<< XANGMOM  ; ZDIPVEL  >> =  1.263244407558D-15
+@ -<< XANGMOM  ; FC Li 01 >> = -3.303355040613D-30
+@ -<< XANGMOM  ; FC H  02 >> =  1.312713850094D-30
+@ -<< XANGMOM  ; SD 001 x >> =  4.816028567183D-32
+@ -<< XANGMOM  ; SD 001 y >> =  0.000000000000D+00
+@ -<< XANGMOM  ; SD 001 z >> =  6.743039129836D-18
+@ -<< XANGMOM  ; SD 002 x >> =  0.000000000000D+00
+@ -<< XANGMOM  ; SD 002 y >> =  7.125940794233D-33
+@ -<< XANGMOM  ; SD 002 z >> = -4.308199253361D-17
+@ -<< XANGMOM  ; SD 003 x >> =  6.743039129836D-18
+@ -<< XANGMOM  ; SD 003 y >> = -4.308199253361D-17
+@ -<< XANGMOM  ; SD 003 z >> = -5.219270149289D-32
+@ -<< XANGMOM  ; SD 004 x >> = -8.010664862436D-33
+@ -<< XANGMOM  ; SD 004 y >> =  0.000000000000D+00
+@ -<< XANGMOM  ; SD 004 z >> = -4.514927616537D-18
+@ -<< XANGMOM  ; SD 005 x >> =  0.000000000000D+00
+@ -<< XANGMOM  ; SD 005 y >> =  1.279539706802D-32
+@ -<< XANGMOM  ; SD 005 z >> =  6.465110507409D-18
+@ -<< XANGMOM  ; SD 006 x >> = -4.514927616537D-18
+@ -<< XANGMOM  ; SD 006 y >> =  6.465110507409D-18
+@ -<< XANGMOM  ; SD 006 z >> =  1.285859164432D-32
+@ -<< XANGMOM  ; X SPNORB >> = -4.845843159526D-06
+@ -<< XANGMOM  ; Y SPNORB >> = -2.471855095168D-22
+@ -<< XANGMOM  ; Z SPNORB >> =  0.000000000000D+00
+@ -<< XANGMOM  ; X1SPNORB >> = -3.815901822589D-05
+@ -<< XANGMOM  ; Y1SPNORB >> = -3.559540577530D-21
+@ -<< XANGMOM  ; Z1SPNORB >> =  0.000000000000D+00
+@ -<< YANGMOM  ; YANGMOM  >> =  7.791795647273D+00
+@ -<< YANGMOM  ; ZANGMOM  >> =  0.000000000000D+00
+@ -<< YANGMOM  ; XDIPVEL  >> = -1.695177419131D+00
+@ -<< YANGMOM  ; YDIPVEL  >> =  1.590975822106D-16
+@ -<< YANGMOM  ; ZDIPVEL  >> =  1.056243736424D-16
+@ -<< YANGMOM  ; FC Li 01 >> = -9.614242282381D-31
+@ -<< YANGMOM  ; FC H  02 >> = -1.848892746612D-30
+@ -<< YANGMOM  ; SD 001 x >> = -3.148895459073D-32
+@ -<< YANGMOM  ; SD 001 y >> =  0.000000000000D+00
+@ -<< YANGMOM  ; SD 001 z >> =  4.331931041603D-17
+@ -<< YANGMOM  ; SD 002 x >> =  0.000000000000D+00
+@ -<< YANGMOM  ; SD 002 y >> =  2.545838645237D-32
+@ -<< YANGMOM  ; SD 002 z >> =  4.060753746788D-18
+@ -<< YANGMOM  ; SD 003 x >> =  4.331931041603D-17
+@ -<< YANGMOM  ; SD 003 y >> =  4.060753746788D-18
+@ -<< YANGMOM  ; SD 003 z >> =  1.036150310080D-31
+@ -<< YANGMOM  ; SD 004 x >> =  5.874086330381D-33
+@ -<< YANGMOM  ; SD 004 y >> =  0.000000000000D+00
+@ -<< YANGMOM  ; SD 004 z >> = -6.247636372298D-18
+@ -<< YANGMOM  ; SD 005 x >> =  0.000000000000D+00
+@ -<< YANGMOM  ; SD 005 y >> =  5.537048590113D-33
+@ -<< YANGMOM  ; SD 005 z >> = -4.506624510281D-18
+@ -<< YANGMOM  ; SD 006 x >> = -6.247636372298D-18
+@ -<< YANGMOM  ; SD 006 y >> = -4.506624510281D-18
+@ -<< YANGMOM  ; SD 006 z >> = -6.524087686612D-33
+@ -<< YANGMOM  ; X SPNORB >> = -5.195600930192D-22
+@ -<< YANGMOM  ; Y SPNORB >> = -4.845843159526D-06
+@ -<< YANGMOM  ; Z SPNORB >> =  0.000000000000D+00
+@ -<< YANGMOM  ; X1SPNORB >> = -3.266949666702D-21
+@ -<< YANGMOM  ; Y1SPNORB >> = -3.815901822589D-05
+@ -<< YANGMOM  ; Z1SPNORB >> =  0.000000000000D+00
+@ -<< ZANGMOM  ; ZANGMOM  >> =  0.000000000000D+00
+@ -<< ZANGMOM  ; XDIPVEL  >> =  3.436897774642D-16
+@ -<< ZANGMOM  ; YDIPVEL  >> = -1.851396343141D-16
+@ -<< ZANGMOM  ; ZDIPVEL  >> = -1.697050274135D-31
+@ -<< ZANGMOM  ; FC Li 01 >> = -1.926785388447D-45
+@ -<< ZANGMOM  ; FC H  02 >> = -7.006492321624D-46
+@ -<< ZANGMOM  ; SD 001 x >> = -9.579188720970D-48
+@ -<< ZANGMOM  ; SD 001 y >> =  0.000000000000D+00
+@ -<< ZANGMOM  ; SD 001 z >> = -1.232595164408D-32
+@ -<< ZANGMOM  ; SD 002 x >> =  0.000000000000D+00
+@ -<< ZANGMOM  ; SD 002 y >> = -1.094764425254D-47
+@ -<< ZANGMOM  ; SD 002 z >> =  0.000000000000D+00
+@ -<< ZANGMOM  ; SD 003 x >> = -1.232595164408D-32
+@ -<< ZANGMOM  ; SD 003 y >> =  0.000000000000D+00
+@ -<< ZANGMOM  ; SD 003 z >> = -1.368455531567D-47
+@ -<< ZANGMOM  ; SD 004 x >> = -5.473822126269D-48
+@ -<< ZANGMOM  ; SD 004 y >> =  0.000000000000D+00
+@ -<< ZANGMOM  ; SD 004 z >> =  5.777789833162D-33
+@ -<< ZANGMOM  ; SD 005 x >> =  0.000000000000D+00
+@ -<< ZANGMOM  ; SD 005 y >> = -5.815936009161D-48
+@ -<< ZANGMOM  ; SD 005 z >> = -3.851859888774D-33
+@ -<< ZANGMOM  ; SD 006 x >> =  5.777789833162D-33
+@ -<< ZANGMOM  ; SD 006 y >> = -3.851859888774D-33
+@ -<< ZANGMOM  ; SD 006 z >> =  1.642146637881D-47
+@ -<< ZANGMOM  ; X SPNORB >> =  5.250712065715D-22
+@ -<< ZANGMOM  ; Y SPNORB >> =  8.185136874870D-22
+@ -<< ZANGMOM  ; Z SPNORB >> =  0.000000000000D+00
+@ -<< ZANGMOM  ; X1SPNORB >> =  4.083286203027D-21
+@ -<< ZANGMOM  ; Y1SPNORB >> =  4.423130040468D-21
+@ -<< ZANGMOM  ; Z1SPNORB >> =  0.000000000000D+00
+@ -<< XDIPVEL  ; XDIPVEL  >> =  6.197373039084D-01
+@ -<< XDIPVEL  ; YDIPVEL  >> = -3.218357267434D-17
+@ -<< XDIPVEL  ; ZDIPVEL  >> = -1.897068926212D-17
+@ -<< XDIPVEL  ; FC Li 01 >> =  1.074668908968D-31
+@ -<< XDIPVEL  ; FC H  02 >> = -2.341930812375D-31
+@ -<< XDIPVEL  ; SD 001 x >> =  1.516669831205D-32
+@ -<< XDIPVEL  ; SD 001 y >> =  0.000000000000D+00
+@ -<< XDIPVEL  ; SD 001 z >> = -9.531536638349D-18
+@ -<< XDIPVEL  ; SD 002 x >> =  0.000000000000D+00
+@ -<< XDIPVEL  ; SD 002 y >> =  5.118760680317D-33
+@ -<< XDIPVEL  ; SD 002 z >> = -1.440548427790D-19
+@ -<< XDIPVEL  ; SD 003 x >> = -9.531536638349D-18
+@ -<< XDIPVEL  ; SD 003 y >> = -1.440548427790D-19
+@ -<< XDIPVEL  ; SD 003 z >> = -3.599081583574D-32
+@ -<< XDIPVEL  ; SD 004 x >> = -1.251854463852D-33
+@ -<< XDIPVEL  ; SD 004 y >> =  0.000000000000D+00
+@ -<< XDIPVEL  ; SD 004 z >> =  2.803198739319D-18
+@ -<< XDIPVEL  ; SD 005 x >> =  0.000000000000D+00
+@ -<< XDIPVEL  ; SD 005 y >> = -7.824090399073D-34
+@ -<< XDIPVEL  ; SD 005 z >> =  1.157302590714D-18
+@ -<< XDIPVEL  ; SD 006 x >> =  2.803198739319D-18
+@ -<< XDIPVEL  ; SD 006 y >> =  1.157302590714D-18
+@ -<< XDIPVEL  ; SD 006 z >> = -2.347227119722D-34
+@ -<< XDIPVEL  ; X SPNORB >> =  1.637154308996D-22
+@ -<< XDIPVEL  ; Y SPNORB >> =  1.473652183039D-06
+@ -<< XDIPVEL  ; Z SPNORB >> =  0.000000000000D+00
+@ -<< XDIPVEL  ; X1SPNORB >> =  8.045219966345D-22
+@ -<< XDIPVEL  ; Y1SPNORB >> =  7.929620084297D-06
+@ -<< XDIPVEL  ; Z1SPNORB >> =  0.000000000000D+00
+@ -<< YDIPVEL  ; YDIPVEL  >> =  6.197373039084D-01
+@ -<< YDIPVEL  ; ZDIPVEL  >> =  2.881770523630D-16
+@ -<< YDIPVEL  ; FC Li 01 >> = -1.170965406187D-31
+@ -<< YDIPVEL  ; FC H  02 >> = -4.468157470978D-32
+@ -<< YDIPVEL  ; SD 001 x >> =  2.872644882675D-32
+@ -<< YDIPVEL  ; SD 001 y >> =  0.000000000000D+00
+@ -<< YDIPVEL  ; SD 001 z >> =  1.590261484470D-18
+@ -<< YDIPVEL  ; SD 002 x >> =  0.000000000000D+00
+@ -<< YDIPVEL  ; SD 002 y >> =  2.181115662019D-32
+@ -<< YDIPVEL  ; SD 002 z >> =  4.229180565692D-18
+@ -<< YDIPVEL  ; SD 003 x >> =  1.590261484470D-18
+@ -<< YDIPVEL  ; SD 003 y >> =  4.229180565692D-18
+@ -<< YDIPVEL  ; SD 003 z >> = -4.535565019032D-32
+@ -<< YDIPVEL  ; SD 004 x >> = -6.162975822039D-33
+@ -<< YDIPVEL  ; SD 004 y >> =  0.000000000000D+00
+@ -<< YDIPVEL  ; SD 004 z >> = -1.084832087963D-18
+@ -<< YDIPVEL  ; SD 005 x >> =  0.000000000000D+00
+@ -<< YDIPVEL  ; SD 005 y >> = -2.302088136650D-33
+@ -<< YDIPVEL  ; SD 005 z >> = -1.102590997448D-17
+@ -<< YDIPVEL  ; SD 006 x >> = -1.084832087963D-18
+@ -<< YDIPVEL  ; SD 006 y >> = -1.102590997448D-17
+@ -<< YDIPVEL  ; SD 006 z >> =  4.495466555737D-33
+@ -<< YDIPVEL  ; X SPNORB >> = -1.473652183039D-06
+@ -<< YDIPVEL  ; Y SPNORB >> = -5.716489497718D-23
+@ -<< YDIPVEL  ; Z SPNORB >> =  0.000000000000D+00
+@ -<< YDIPVEL  ; X1SPNORB >> = -7.929620084297D-06
+@ -<< YDIPVEL  ; Y1SPNORB >> = -7.495651978754D-22
+@ -<< YDIPVEL  ; Z1SPNORB >> =  0.000000000000D+00
+@ -<< ZDIPVEL  ; ZDIPVEL  >> =  7.805265986909D-01
+@ -<< ZDIPVEL  ; FC Li 01 >> = -1.036008395724D-15
+@ -<< ZDIPVEL  ; FC H  02 >> =  1.915586944803D-15
+@ -<< ZDIPVEL  ; SD 001 x >> = -3.086865230501D-17
+@ -<< ZDIPVEL  ; SD 001 y >> =  0.000000000000D+00
+@ -<< ZDIPVEL  ; SD 001 z >> = -2.773339119918D-32
+@ -<< ZDIPVEL  ; SD 002 x >> =  0.000000000000D+00
+@ -<< ZDIPVEL  ; SD 002 y >> = -3.086865230501D-17
+@ -<< ZDIPVEL  ; SD 002 z >> = -6.471124613141D-32
+@ -<< ZDIPVEL  ; SD 003 x >> = -2.773339119918D-32
+@ -<< ZDIPVEL  ; SD 003 y >> = -6.471124613141D-32
+@ -<< ZDIPVEL  ; SD 003 z >> =  5.082927500203D-17
+@ -<< ZDIPVEL  ; SD 004 x >> =  6.718816228779D-18
+@ -<< ZDIPVEL  ; SD 004 y >> =  0.000000000000D+00
+@ -<< ZDIPVEL  ; SD 004 z >> =  2.311115933265D-33
+@ -<< ZDIPVEL  ; SD 005 x >> =  0.000000000000D+00
+@ -<< ZDIPVEL  ; SD 005 y >> =  6.718816228779D-18
+@ -<< ZDIPVEL  ; SD 005 z >> =  4.314083075427D-32
+@ -<< ZDIPVEL  ; SD 006 x >> =  2.311115933265D-33
+@ -<< ZDIPVEL  ; SD 006 y >> =  4.314083075427D-32
+@ -<< ZDIPVEL  ; SD 006 z >> = -1.309977452406D-17
+@ -<< ZDIPVEL  ; X SPNORB >> = -5.006238168010D-22
+@ -<< ZDIPVEL  ; Y SPNORB >> = -1.400431916055D-22
+@ -<< ZDIPVEL  ; Z SPNORB >> =  0.000000000000D+00
+@ -<< ZDIPVEL  ; X1SPNORB >> = -6.129434310861D-21
+@ -<< ZDIPVEL  ; Y1SPNORB >> = -3.711305478153D-22
+@ -<< ZDIPVEL  ; Z1SPNORB >> =  0.000000000000D+00
+@ -<< FC Li 01 ; FC Li 01 >> =  1.359261338822D+02
+@ -<< FC Li 01 ; FC H  02 >> = -5.753300728544D+01
+@ -<< FC Li 01 ; SD 001 x >> =  8.309957228242D-01
+@ -<< FC Li 01 ; SD 001 y >> =  0.000000000000D+00
+@ -<< FC Li 01 ; SD 001 z >> =  5.734653704898D-16
+@ -<< FC Li 01 ; SD 002 x >> =  0.000000000000D+00
+@ -<< FC Li 01 ; SD 002 y >> =  8.309957228242D-01
+@ -<< FC Li 01 ; SD 002 z >> =  2.106208476148D-15
+@ -<< FC Li 01 ; SD 003 x >> =  5.734653704898D-16
+@ -<< FC Li 01 ; SD 003 y >> =  2.106208476148D-15
+@ -<< FC Li 01 ; SD 003 z >> = -1.661991445648D+00
+@ -<< FC Li 01 ; SD 004 x >> = -1.657654540550D-01
+@ -<< FC Li 01 ; SD 004 y >> =  0.000000000000D+00
+@ -<< FC Li 01 ; SD 004 z >> = -4.525297959371D-16
+@ -<< FC Li 01 ; SD 005 x >> =  0.000000000000D+00
+@ -<< FC Li 01 ; SD 005 y >> = -1.657654540550D-01
+@ -<< FC Li 01 ; SD 005 z >> = -1.342449503918D-15
+@ -<< FC Li 01 ; SD 006 x >> = -4.525297959371D-16
+@ -<< FC Li 01 ; SD 006 y >> = -1.342449503918D-15
+@ -<< FC Li 01 ; SD 006 z >> =  3.315309081100D-01
+@ -<< FC Li 01 ; X SPNORB >> =  2.186419492529D-35
+@ -<< FC Li 01 ; Y SPNORB >> = -7.643652016222D-36
+@ -<< FC Li 01 ; Z SPNORB >> =  0.000000000000D+00
+@ -<< FC Li 01 ; X1SPNORB >> = -9.215875710447D-36
+@ -<< FC Li 01 ; Y1SPNORB >> = -1.316553672921D-36
+@ -<< FC Li 01 ; Z1SPNORB >> =  0.000000000000D+00
+@ -<< FC H  02 ; FC H  02 >> =  1.111489846119D+02
+@ -<< FC H  02 ; SD 001 x >> = -8.159407954834D-01
+@ -<< FC H  02 ; SD 001 y >> =  0.000000000000D+00
+@ -<< FC H  02 ; SD 001 z >> = -1.058274710952D-15
+@ -<< FC H  02 ; SD 002 x >> =  0.000000000000D+00
+@ -<< FC H  02 ; SD 002 y >> = -8.159407954834D-01
+@ -<< FC H  02 ; SD 002 z >> = -9.477434327727D-16
+@ -<< FC H  02 ; SD 003 x >> = -1.058274710952D-15
+@ -<< FC H  02 ; SD 003 y >> = -9.477434327727D-16
+@ -<< FC H  02 ; SD 003 z >> =  1.631881590967D+00
+@ -<< FC H  02 ; SD 004 x >> =  3.690531422024D-01
+@ -<< FC H  02 ; SD 004 y >> =  0.000000000000D+00
+@ -<< FC H  02 ; SD 004 z >> =  7.015777790863D-16
+@ -<< FC H  02 ; SD 005 x >> =  0.000000000000D+00
+@ -<< FC H  02 ; SD 005 y >> =  3.690531422024D-01
+@ -<< FC H  02 ; SD 005 z >> =  6.240218702769D-16
+@ -<< FC H  02 ; SD 006 x >> =  7.015777790863D-16
+@ -<< FC H  02 ; SD 006 y >> =  6.240218702769D-16
+@ -<< FC H  02 ; SD 006 z >> = -7.381062844047D-01
+@ -<< FC H  02 ; X SPNORB >> = -1.372977401760D-35
+@ -<< FC H  02 ; Y SPNORB >> =  1.066173376196D-35
+@ -<< FC H  02 ; Z SPNORB >> =  0.000000000000D+00
+@ -<< FC H  02 ; X1SPNORB >> =  5.266214691684D-36
+@ -<< FC H  02 ; Y1SPNORB >> =  7.523163845263D-36
+@ -<< FC H  02 ; Z1SPNORB >> =  0.000000000000D+00
+@ -<< SD 001 x ; SD 001 x >> =  1.784941864539D-02
+@ -<< SD 001 x ; SD 001 y >> =  0.000000000000D+00
+@ -<< SD 001 x ; SD 001 z >> =  2.067040791346D-17
+@ -<< SD 001 x ; SD 002 x >> =  0.000000000000D+00
+@ -<< SD 001 x ; SD 002 y >> =  1.784941864539D-02
+@ -<< SD 001 x ; SD 002 z >> =  1.783514600460D-17
+@ -<< SD 001 x ; SD 003 x >> =  2.067040791346D-17
+@ -<< SD 001 x ; SD 003 y >> =  1.783514600460D-17
+@ -<< SD 001 x ; SD 003 z >> = -3.569883729078D-02
+@ -<< SD 001 x ; SD 004 x >> = -9.479539177648D-04
+@ -<< SD 001 x ; SD 004 y >> =  0.000000000000D+00
+@ -<< SD 001 x ; SD 004 z >> = -1.559074172958D-17
+@ -<< SD 001 x ; SD 005 x >> =  0.000000000000D+00
+@ -<< SD 001 x ; SD 005 y >> = -9.479539177648D-04
+@ -<< SD 001 x ; SD 005 z >> = -1.359696597792D-17
+@ -<< SD 001 x ; SD 006 x >> = -1.559074172958D-17
+@ -<< SD 001 x ; SD 006 y >> = -1.359696597792D-17
+@ -<< SD 001 x ; SD 006 z >> =  1.895907835529D-03
+@ -<< SD 001 x ; X SPNORB >> =  2.611801510733D-37
+@ -<< SD 001 x ; Y SPNORB >> = -8.963144425020D-38
+@ -<< SD 001 x ; Z SPNORB >> =  0.000000000000D+00
+@ -<< SD 001 x ; X1SPNORB >> = -4.026068151566D-37
+@ -<< SD 001 x ; Y1SPNORB >> =  7.640713280345D-38
+@ -<< SD 001 x ; Z1SPNORB >> =  0.000000000000D+00
+@ -<< SD 001 y ; SD 001 y >> =  0.000000000000D+00
+@ -<< SD 001 y ; SD 001 z >> =  8.200909011325D-18
+@ -<< SD 001 y ; SD 002 x >> =  0.000000000000D+00
+@ -<< SD 001 y ; SD 002 y >> =  6.551246938631D-33
+@ -<< SD 001 y ; SD 002 z >> =  7.121362959504D-18
+@ -<< SD 001 y ; SD 003 x >> =  8.200909011325D-18
+@ -<< SD 001 y ; SD 003 y >> =  7.121362959504D-18
+@ -<< SD 001 y ; SD 003 z >> = -1.310249387726D-32
+@ -<< SD 001 y ; SD 004 x >> = -8.442478948847D-35
+@ -<< SD 001 y ; SD 004 y >> =  0.000000000000D+00
+@ -<< SD 001 y ; SD 004 z >> = -5.724834218630D-18
+@ -<< SD 001 y ; SD 005 x >> =  0.000000000000D+00
+@ -<< SD 001 y ; SD 005 y >> = -8.442478948847D-35
+@ -<< SD 001 y ; SD 005 z >> = -4.774870066621D-18
+@ -<< SD 001 y ; SD 006 x >> = -5.724834218630D-18
+@ -<< SD 001 y ; SD 006 y >> = -4.774870066621D-18
+@ -<< SD 001 y ; SD 006 z >> =  1.688495789768D-34
+@ -<< SD 001 y ; X SPNORB >> =  5.510129769479D-39
+@ -<< SD 001 y ; Y SPNORB >> =  6.318282135670D-38
+@ -<< SD 001 y ; Z SPNORB >> =  0.000000000000D+00
+@ -<< SD 001 y ; X1SPNORB >> =  0.000000000000D+00
+@ -<< SD 001 y ; Y1SPNORB >> =  7.640713280345D-38
+@ -<< SD 001 y ; Z1SPNORB >> =  0.000000000000D+00
+@ -<< SD 001 z ; SD 001 z >> =  4.771376581114D-02
+@ -<< SD 001 z ; SD 002 x >> =  0.000000000000D+00
+@ -<< SD 001 z ; SD 002 y >> =  6.427681994449D-18
+@ -<< SD 001 z ; SD 002 z >> = -4.897473304796D-18
+@ -<< SD 001 z ; SD 003 x >> =  4.771376581114D-02
+@ -<< SD 001 z ; SD 003 y >> = -4.897473304796D-18
+@ -<< SD 001 z ; SD 003 z >> = -2.709808990791D-17
+@ -<< SD 001 z ; SD 004 x >> = -1.956641061816D-18
+@ -<< SD 001 z ; SD 004 y >> =  0.000000000000D+00
+@ -<< SD 001 z ; SD 004 z >> = -3.194936564367D-02
+@ -<< SD 001 z ; SD 005 x >> =  0.000000000000D+00
+@ -<< SD 001 z ; SD 005 y >> = -3.573378933435D-18
+@ -<< SD 001 z ; SD 005 z >> =  2.891134484372D-18
+@ -<< SD 001 z ; SD 006 x >> = -3.194936564367D-02
+@ -<< SD 001 z ; SD 006 y >> =  2.891134484372D-18
+@ -<< SD 001 z ; SD 006 z >> =  5.530019995250D-18
+@ -<< SD 001 z ; X SPNORB >> = -1.541972298138D-23
+@ -<< SD 001 z ; Y SPNORB >> =  4.061662054785D-22
+@ -<< SD 001 z ; Z SPNORB >> =  0.000000000000D+00
+@ -<< SD 001 z ; X1SPNORB >> = -1.323583258128D-23
+@ -<< SD 001 z ; Y1SPNORB >> = -1.763981139157D-23
+@ -<< SD 001 z ; Z1SPNORB >> =  0.000000000000D+00
+@ -<< SD 002 x ; SD 002 x >> =  0.000000000000D+00
+@ -<< SD 002 x ; SD 002 y >> =  6.551246938631D-33
+@ -<< SD 002 x ; SD 002 z >> =  7.121362959504D-18
+@ -<< SD 002 x ; SD 003 x >> =  8.200909011325D-18
+@ -<< SD 002 x ; SD 003 y >> =  7.121362959504D-18
+@ -<< SD 002 x ; SD 003 z >> = -1.310249387726D-32
+@ -<< SD 002 x ; SD 004 x >> = -8.442478948847D-35
+@ -<< SD 002 x ; SD 004 y >> =  0.000000000000D+00
+@ -<< SD 002 x ; SD 004 z >> = -5.724834218630D-18
+@ -<< SD 002 x ; SD 005 x >> =  0.000000000000D+00
+@ -<< SD 002 x ; SD 005 y >> = -8.442478948847D-35
+@ -<< SD 002 x ; SD 005 z >> = -4.774870066621D-18
+@ -<< SD 002 x ; SD 006 x >> = -5.724834218630D-18
+@ -<< SD 002 x ; SD 006 y >> = -4.774870066621D-18
+@ -<< SD 002 x ; SD 006 z >> =  1.688495789768D-34
+@ -<< SD 002 x ; X SPNORB >> =  5.510129769479D-39
+@ -<< SD 002 x ; Y SPNORB >> =  6.318282135670D-38
+@ -<< SD 002 x ; Z SPNORB >> =  0.000000000000D+00
+@ -<< SD 002 x ; X1SPNORB >> =  0.000000000000D+00
+@ -<< SD 002 x ; Y1SPNORB >> =  7.640713280345D-38
+@ -<< SD 002 x ; Z1SPNORB >> =  0.000000000000D+00
+@ -<< SD 002 y ; SD 002 y >> =  1.784941864539D-02
+@ -<< SD 002 y ; SD 002 z >> =  3.423696402725D-17
+@ -<< SD 002 y ; SD 003 x >> =  6.427681994449D-18
+@ -<< SD 002 y ; SD 003 y >> =  3.423696402725D-17
+@ -<< SD 002 y ; SD 003 z >> = -3.569883729078D-02
+@ -<< SD 002 y ; SD 004 x >> = -9.479539177648D-04
+@ -<< SD 002 y ; SD 004 y >> =  0.000000000000D+00
+@ -<< SD 002 y ; SD 004 z >> = -6.041001596334D-18
+@ -<< SD 002 y ; SD 005 x >> =  0.000000000000D+00
+@ -<< SD 002 y ; SD 005 y >> = -9.479539177648D-04
+@ -<< SD 002 y ; SD 005 z >> = -2.504663441518D-17
+@ -<< SD 002 y ; SD 006 x >> = -6.041001596334D-18
+@ -<< SD 002 y ; SD 006 y >> = -2.504663441518D-17
+@ -<< SD 002 y ; SD 006 z >> =  1.895907835529D-03
+@ -<< SD 002 y ; X SPNORB >> =  2.534659693961D-37
+@ -<< SD 002 y ; Y SPNORB >> = -2.273846884872D-37
+@ -<< SD 002 y ; Z SPNORB >> =  0.000000000000D+00
+@ -<< SD 002 y ; X1SPNORB >> = -3.247303144147D-37
+@ -<< SD 002 y ; Y1SPNORB >> = -9.183549615799D-38
+@ -<< SD 002 y ; Z1SPNORB >> =  0.000000000000D+00
+@ -<< SD 002 z ; SD 002 z >> =  4.771376581114D-02
+@ -<< SD 002 z ; SD 003 x >> = -5.898299302129D-18
+@ -<< SD 002 z ; SD 003 y >> =  4.771376581114D-02
+@ -<< SD 002 z ; SD 003 z >> = -5.207211003186D-17
+@ -<< SD 002 z ; SD 004 x >> = -1.073989537761D-18
+@ -<< SD 002 z ; SD 004 y >> =  0.000000000000D+00
+@ -<< SD 002 z ; SD 004 z >> =  5.477320065509D-18
+@ -<< SD 002 z ; SD 005 x >> =  0.000000000000D+00
+@ -<< SD 002 z ; SD 005 y >> =  7.878338597691D-19
+@ -<< SD 002 z ; SD 005 z >> = -3.194936564367D-02
+@ -<< SD 002 z ; SD 006 x >> =  5.477320065509D-18
+@ -<< SD 002 z ; SD 006 y >> = -3.194936564367D-02
+@ -<< SD 002 z ; SD 006 z >> =  2.861556779915D-19
+@ -<< SD 002 z ; X SPNORB >> = -4.481194631486D-24
+@ -<< SD 002 z ; Y SPNORB >> = -1.964551218404D-23
+@ -<< SD 002 z ; Z SPNORB >> =  0.000000000000D+00
+@ -<< SD 002 z ; X1SPNORB >> =  2.133440585834D-22
+@ -<< SD 002 z ; Y1SPNORB >> =  3.244862658785D-23
+@ -<< SD 002 z ; Z1SPNORB >> =  0.000000000000D+00
+@ -<< SD 003 x ; SD 003 x >> =  4.771376581114D-02
+@ -<< SD 003 x ; SD 003 y >> = -4.897473304796D-18
+@ -<< SD 003 x ; SD 003 z >> = -2.709808990791D-17
+@ -<< SD 003 x ; SD 004 x >> = -1.956641061816D-18
+@ -<< SD 003 x ; SD 004 y >> =  0.000000000000D+00
+@ -<< SD 003 x ; SD 004 z >> = -3.194936564367D-02
+@ -<< SD 003 x ; SD 005 x >> =  0.000000000000D+00
+@ -<< SD 003 x ; SD 005 y >> = -3.573378933435D-18
+@ -<< SD 003 x ; SD 005 z >> =  2.891134484372D-18
+@ -<< SD 003 x ; SD 006 x >> = -3.194936564367D-02
+@ -<< SD 003 x ; SD 006 y >> =  2.891134484372D-18
+@ -<< SD 003 x ; SD 006 z >> =  5.530019995250D-18
+@ -<< SD 003 x ; X SPNORB >> = -1.541972298138D-23
+@ -<< SD 003 x ; Y SPNORB >> =  4.061662054785D-22
+@ -<< SD 003 x ; Z SPNORB >> =  0.000000000000D+00
+@ -<< SD 003 x ; X1SPNORB >> = -1.323583258128D-23
+@ -<< SD 003 x ; Y1SPNORB >> = -1.763981139157D-23
+@ -<< SD 003 x ; Z1SPNORB >> =  0.000000000000D+00
+@ -<< SD 003 y ; SD 003 y >> =  4.771376581114D-02
+@ -<< SD 003 y ; SD 003 z >> = -5.207211003186D-17
+@ -<< SD 003 y ; SD 004 x >> = -1.073989537761D-18
+@ -<< SD 003 y ; SD 004 y >> =  0.000000000000D+00
+@ -<< SD 003 y ; SD 004 z >> =  5.477320065509D-18
+@ -<< SD 003 y ; SD 005 x >> =  0.000000000000D+00
+@ -<< SD 003 y ; SD 005 y >> =  7.878338597691D-19
+@ -<< SD 003 y ; SD 005 z >> = -3.194936564367D-02
+@ -<< SD 003 y ; SD 006 x >> =  5.477320065509D-18
+@ -<< SD 003 y ; SD 006 y >> = -3.194936564367D-02
+@ -<< SD 003 y ; SD 006 z >> =  2.861556779915D-19
+@ -<< SD 003 y ; X SPNORB >> = -4.481194631486D-24
+@ -<< SD 003 y ; Y SPNORB >> = -1.964551218404D-23
+@ -<< SD 003 y ; Z SPNORB >> =  0.000000000000D+00
+@ -<< SD 003 y ; X1SPNORB >> =  2.133440585834D-22
+@ -<< SD 003 y ; Y1SPNORB >> =  3.244862658785D-23
+@ -<< SD 003 y ; Z1SPNORB >> =  0.000000000000D+00
+@ -<< SD 003 z ; SD 003 z >> =  7.139767458155D-02
+@ -<< SD 003 z ; SD 004 x >> =  1.895907835530D-03
+@ -<< SD 003 z ; SD 004 y >> =  0.000000000000D+00
+@ -<< SD 003 z ; SD 004 z >> =  2.163174332591D-17
+@ -<< SD 003 z ; SD 005 x >> =  0.000000000000D+00
+@ -<< SD 003 z ; SD 005 y >> =  1.895907835530D-03
+@ -<< SD 003 z ; SD 005 z >> =  3.864360039310D-17
+@ -<< SD 003 z ; SD 006 x >> =  2.163174332591D-17
+@ -<< SD 003 z ; SD 006 y >> =  3.864360039310D-17
+@ -<< SD 003 z ; SD 006 z >> = -3.791815671058D-03
+@ -<< SD 003 z ; X SPNORB >> = -5.407274013783D-37
+@ -<< SD 003 z ; Y SPNORB >> =  3.056285312138D-37
+@ -<< SD 003 z ; Z SPNORB >> =  0.000000000000D+00
+@ -<< SD 003 z ; X1SPNORB >> =  3.232609464761D-37
+@ -<< SD 003 z ; Y1SPNORB >> =  3.306077861688D-37
+@ -<< SD 003 z ; Z1SPNORB >> =  0.000000000000D+00
+@ -<< SD 004 x ; SD 004 x >> =  1.545774629983D-03
+@ -<< SD 004 x ; SD 004 y >> =  0.000000000000D+00
+@ -<< SD 004 x ; SD 004 z >> =  1.001209437266D-18
+@ -<< SD 004 x ; SD 005 x >> =  0.000000000000D+00
+@ -<< SD 004 x ; SD 005 y >> =  1.545774629983D-03
+@ -<< SD 004 x ; SD 005 z >> =  2.106396724750D-19
+@ -<< SD 004 x ; SD 006 x >> =  1.001209437266D-18
+@ -<< SD 004 x ; SD 006 y >> =  2.106396724750D-19
+@ -<< SD 004 x ; SD 006 z >> = -3.091549259967D-03
+@ -<< SD 004 x ; X SPNORB >> = -1.134168377551D-38
+@ -<< SD 004 x ; Y SPNORB >> =  2.534659693961D-38
+@ -<< SD 004 x ; Z SPNORB >> =  0.000000000000D+00
+@ -<< SD 004 x ; X1SPNORB >> =  5.069319387921D-38
+@ -<< SD 004 x ; Y1SPNORB >> =  4.775445800216D-39
+@ -<< SD 004 x ; Z1SPNORB >> =  0.000000000000D+00
+@ -<< SD 004 y ; SD 004 y >> =  0.000000000000D+00
+@ -<< SD 004 y ; SD 004 z >> = -6.498444428848D-19
+@ -<< SD 004 y ; SD 005 x >> =  0.000000000000D+00
+@ -<< SD 004 y ; SD 005 y >> = -9.583330834675D-36
+@ -<< SD 004 y ; SD 005 z >> = -5.420109403680D-19
+@ -<< SD 004 y ; SD 006 x >> = -6.498444428848D-19
+@ -<< SD 004 y ; SD 006 y >> = -5.420109403680D-19
+@ -<< SD 004 y ; SD 006 z >> =  1.916666166934D-35
+@ -<< SD 004 y ; X SPNORB >> =  6.887662211849D-40
+@ -<< SD 004 y ; Y SPNORB >> =  7.851934921508D-39
+@ -<< SD 004 y ; Z SPNORB >> =  0.000000000000D+00
+@ -<< SD 004 y ; X1SPNORB >> =  0.000000000000D+00
+@ -<< SD 004 y ; Y1SPNORB >> =  6.244813738743D-39
+@ -<< SD 004 y ; Z1SPNORB >> =  0.000000000000D+00
+@ -<< SD 004 z ; SD 004 z >> =  2.147095354483D-02
+@ -<< SD 004 z ; SD 005 x >> =  0.000000000000D+00
+@ -<< SD 004 z ; SD 005 y >> =  2.085231318002D-18
+@ -<< SD 004 z ; SD 005 z >> = -1.642762262243D-18
+@ -<< SD 004 z ; SD 006 x >> =  2.147095354483D-02
+@ -<< SD 004 z ; SD 006 y >> = -1.642762262243D-18
+@ -<< SD 004 z ; SD 006 z >> = -3.086440755268D-18
+@ -<< SD 004 z ; X SPNORB >> =  1.041607639077D-23
+@ -<< SD 004 z ; Y SPNORB >> = -2.829504660932D-22
+@ -<< SD 004 z ; Z SPNORB >> =  0.000000000000D+00
+@ -<< SD 004 z ; X1SPNORB >> =  1.325322269393D-23
+@ -<< SD 004 z ; Y1SPNORB >> = -5.645989747514D-23
+@ -<< SD 004 z ; Z1SPNORB >> =  0.000000000000D+00
+@ -<< SD 005 x ; SD 005 x >> =  0.000000000000D+00
+@ -<< SD 005 x ; SD 005 y >> = -9.583330834675D-36
+@ -<< SD 005 x ; SD 005 z >> = -5.420109403680D-19
+@ -<< SD 005 x ; SD 006 x >> = -6.498444428848D-19
+@ -<< SD 005 x ; SD 006 y >> = -5.420109403680D-19
+@ -<< SD 005 x ; SD 006 z >> =  1.916666166934D-35
+@ -<< SD 005 x ; X SPNORB >> =  6.887662211849D-40
+@ -<< SD 005 x ; Y SPNORB >> =  7.851934921508D-39
+@ -<< SD 005 x ; Z SPNORB >> =  0.000000000000D+00
+@ -<< SD 005 x ; X1SPNORB >> =  0.000000000000D+00
+@ -<< SD 005 x ; Y1SPNORB >> =  6.244813738743D-39
+@ -<< SD 005 x ; Z1SPNORB >> =  0.000000000000D+00
+@ -<< SD 005 y ; SD 005 y >> =  1.545774629983D-03
+@ -<< SD 005 y ; SD 005 z >> = -1.089049213294D-18
+@ -<< SD 005 y ; SD 006 x >> =  2.085231318002D-18
+@ -<< SD 005 y ; SD 006 y >> = -1.089049213294D-18
+@ -<< SD 005 y ; SD 006 z >> = -3.091549259967D-03
+@ -<< SD 005 y ; X SPNORB >> = -3.177508167066D-38
+@ -<< SD 005 y ; Y SPNORB >> =  8.862125379246D-39
+@ -<< SD 005 y ; Z SPNORB >> =  0.000000000000D+00
+@ -<< SD 005 y ; X1SPNORB >> =  2.938735877056D-39
+@ -<< SD 005 y ; Y1SPNORB >> = -4.040761830952D-39
+@ -<< SD 005 y ; Z1SPNORB >> =  0.000000000000D+00
+@ -<< SD 005 z ; SD 005 z >> =  2.147095354483D-02
+@ -<< SD 005 z ; SD 006 x >> = -3.297158238884D-18
+@ -<< SD 005 z ; SD 006 y >> =  2.147095354483D-02
+@ -<< SD 005 z ; SD 006 z >> =  8.784095408198D-19
+@ -<< SD 005 z ; X SPNORB >> = -5.753642977906D-25
+@ -<< SD 005 z ; Y SPNORB >> =  1.267332419425D-23
+@ -<< SD 005 z ; Z SPNORB >> =  0.000000000000D+00
+@ -<< SD 005 z ; X1SPNORB >> = -1.045463303382D-22
+@ -<< SD 005 z ; Y1SPNORB >> = -2.179866054702D-23
+@ -<< SD 005 z ; Z1SPNORB >> =  0.000000000000D+00
+@ -<< SD 006 x ; SD 006 x >> =  2.147095354483D-02
+@ -<< SD 006 x ; SD 006 y >> = -1.642762262243D-18
+@ -<< SD 006 x ; SD 006 z >> = -3.086440755268D-18
+@ -<< SD 006 x ; X SPNORB >> =  1.041607639077D-23
+@ -<< SD 006 x ; Y SPNORB >> = -2.829504660932D-22
+@ -<< SD 006 x ; Z SPNORB >> =  0.000000000000D+00
+@ -<< SD 006 x ; X1SPNORB >> =  1.325322269393D-23
+@ -<< SD 006 x ; Y1SPNORB >> = -5.645989747514D-23
+@ -<< SD 006 x ; Z1SPNORB >> =  0.000000000000D+00
+@ -<< SD 006 y ; SD 006 y >> =  2.147095354483D-02
+@ -<< SD 006 y ; SD 006 z >> =  8.784095408198D-19
+@ -<< SD 006 y ; X SPNORB >> = -5.753642977906D-25
+@ -<< SD 006 y ; Y SPNORB >> =  1.267332419425D-23
+@ -<< SD 006 y ; Z SPNORB >> =  0.000000000000D+00
+@ -<< SD 006 y ; X1SPNORB >> = -1.045463303382D-22
+@ -<< SD 006 y ; Y1SPNORB >> = -2.179866054702D-23
+@ -<< SD 006 y ; Z1SPNORB >> =  0.000000000000D+00
+@ -<< SD 006 z ; SD 006 z >> =  6.183098519933D-03
+@ -<< SD 006 z ; X SPNORB >> = -2.295887403950D-39
+@ -<< SD 006 z ; Y SPNORB >> = -3.508115953235D-38
+@ -<< SD 006 z ; Z SPNORB >> =  0.000000000000D+00
+@ -<< SD 006 z ; X1SPNORB >> = -9.991701981989D-38
+@ -<< SD 006 z ; Y1SPNORB >> = -4.481572212510D-38
+@ -<< SD 006 z ; Z1SPNORB >> =  0.000000000000D+00
+@ -<< X SPNORB ; X SPNORB >> =  3.714649793085D-12
+@ -<< X SPNORB ; Y SPNORB >> =  2.593459967689D-28
+@ -<< X SPNORB ; Z SPNORB >> =  0.000000000000D+00
+@ -<< X SPNORB ; X1SPNORB >> =  2.310959498398D-11
+@ -<< X SPNORB ; Y1SPNORB >> =  2.448577912516D-27
+@ -<< X SPNORB ; Z1SPNORB >> =  0.000000000000D+00
+@ -<< Y SPNORB ; Y SPNORB >> =  3.714649793085D-12
+@ -<< Y SPNORB ; Z SPNORB >> =  0.000000000000D+00
+@ -<< Y SPNORB ; X1SPNORB >> =  1.278150795015D-27
+@ -<< Y SPNORB ; Y1SPNORB >> =  2.310959498398D-11
+@ -<< Y SPNORB ; Z1SPNORB >> =  0.000000000000D+00
+@ -<< Z SPNORB ; Z SPNORB >> =  0.000000000000D+00
+@ -<< Z SPNORB ; X1SPNORB >> = -4.003694661154D-27
+@ -<< Z SPNORB ; Y1SPNORB >> =  1.245026206350D-26
+@ -<< Z SPNORB ; Z1SPNORB >> =  0.000000000000D+00
+@ -<< X1SPNORB ; X1SPNORB >> =  1.874295694912D-10
+@ -<< X1SPNORB ; Y1SPNORB >> =  1.791442486398D-26
+@ -<< X1SPNORB ; Z1SPNORB >> =  0.000000000000D+00
+@ -<< Y1SPNORB ; Y1SPNORB >> =  1.874295694912D-10
+@ -<< Y1SPNORB ; Z1SPNORB >> =  0.000000000000D+00
+@ -<< Z1SPNORB ; Z1SPNORB >> =  0.000000000000D+00
+
+
+ Time used in linear response calculation is      0.02 CPU seconds for symmetry 1
+
+  Total CPU  time used in RESPONSE:   0.03 seconds
+  Total wall time used in RESPONSE:   0.02 seconds
+
+
+                   .-------------------------------------------.
+                   | End of Dynamic Property Section (RESPONS) |
+                   `-------------------------------------------'
+
+
+ Center of mass dipole origin  :    0.000000    0.000000    0.378561
+
+ Center of mass gauge origin   :    0.000000    0.000000    0.378561
+
+
+                 .------------------------------------------------.
+                 | Starting in Static Property Section (ABACUS) - |
+                 `------------------------------------------------'
+
+
+ 
+     Date and time (Linux)  : Sun Feb 19 20:56:35 2017
+     Host name              : copper                                  
+
+
+   ***************************************************************************
+   ************************ FINAL RESULTS from ABACUS ************************
+   ***************************************************************************
+
+
+ 
+     Date and time (Linux)  : Sun Feb 19 20:56:35 2017
+     Host name              : copper                                  
+
+
+                             Molecular geometry (au)
+                             -----------------------
+
+ Li         0.0000000000            0.0000000000            0.0000000000
+ H          0.0000000000            0.0000000000            3.0139241968
+
+
+
+
+
+                        Molecular wave function and energy
+                        ----------------------------------
+
+     Spatial symmetry   1 ( A   )
+     Spin multiplicity  1
+     2 * M_S            0
+     State number       1
+     Total charge       0
+
+     Total energy         -7.8620269615 au (Hartrees)
+                          -213.93663632 eV
+                            -20641.7486 kJ/mol
+                             -4933.4963 kcal/mol
+
+
+                   Scalar Breit-Pauli relativistic corrections
+                   -------------------------------------------
+
+     Darwin correction:                          0.0020618194 au
+     Mass-velocity correction:                  -0.0024424462 au
+
+     Total relativistic correction:             -0.0003806267 au ( 0.0048%)
+     Non-relativistic + relativistic energy:    -7.8624075882 au
+
+
+
+      (Note that these corrections are NOT included in the results below.)
+
+
+                                  Dipole moment
+                                  -------------
+
+                 au               Debye          C m (/(10**-30)
+              1.911079           4.857478          16.202804
+
+
+                             Dipole moment components
+                             ------------------------
+
+                 au               Debye          C m (/(10**-30)
+
+      x     -0.00000000        -0.00000000        -0.00000000
+      y     -0.00000000        -0.00000000        -0.00000000
+      z     -1.91107912        -4.85747830       -16.20280355
+
+
+   Units:   1 a.u. =   2.54175 Debye 
+            1 a.u. =   8.47835 (10**-30) C m (SI)
+
+
+
+
+   Interatomic separations (in Angstrom):
+   --------------------------------------
+
+            Li          H     
+            ------      ------
+ Li    :    0.000000
+ H     :    1.594900    0.000000
+
+
+  Max    interatomic separation is    1.5949 Angstrom (    3.0139 Bohr)
+  between atoms    2 and    1, "H     " and "Li    ".
+
+  Min HX interatomic separation is    1.5949 Angstrom (    3.0139 Bohr)
+
+
+  Bond distances (Angstrom):
+  --------------------------
+
+                  atom 1     atom 2       distance
+                  ------     ------       --------
+  bond distance:  H          Li           1.594900
+
+
+
+
+ CPU time statistics for ABACUS
+ ------------------------------
+
+
+
+
+  Total CPU  time used in ABACUS:   0.00 seconds
+  Total wall time used in ABACUS:   0.00 seconds
+
+
+                   .-------------------------------------------.
+                   | End of Static Property Section (ABACUS) - |
+                   `-------------------------------------------'
+
+  Total CPU  time used in DALTON:   0.07 seconds
+  Total wall time used in DALTON:   0.05 seconds
+
+ 
+     Date and time (Linux)  : Sun Feb 19 20:56:35 2017
+     Host name              : copper                                  
