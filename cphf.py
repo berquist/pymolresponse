@@ -30,7 +30,7 @@ from explicit_equations_partial import \
 
 class Operator(object):
 
-    def __init__(self, label='', is_imaginary=False, is_spin_dependent=False, triplet=False, slice_idx=-1, **kwargs):
+    def __init__(self, label='', is_imaginary=False, is_spin_dependent=False, triplet=False, slice_idx=-1, *args, **kwargs):
         self.label = label
         self.is_imaginary = is_imaginary
         self.is_spin_dependent = is_spin_dependent
@@ -106,7 +106,7 @@ class Operator(object):
 
 class CPHF(object):
 
-    def __init__(self, mocoeffs, moenergies, occupations, **kwargs):
+    def __init__(self, mocoeffs, moenergies, occupations, *args, **kwargs):
         assert len(mocoeffs.shape) == 3
         assert (mocoeffs.shape[0] == 1) or (mocoeffs.shape[0] == 2)
         self.is_uhf = (mocoeffs.shape[0] == 2)
@@ -430,12 +430,14 @@ class CPHF(object):
             G_bb = np.asarray(np.bmat([[A_ss_b, B_ss_b],
                                        [B_ss_b, A_ss_b]]))
 
-            self.explicit_hessian = [G_aa, G_ab, G_ba, G_bb]
+            self.explicit_hessian = (G_aa, G_ab, G_ba, G_bb)
 
     def invert_explicit_hessian(self):
         if not self.is_uhf:
+            # TODO check self.explicit_hessian type
             self.explicit_hessian_inv = np.linalg.inv(self.explicit_hessian)
         else:
+            # TODO check self.explicit_hessian type
             assert len(self.explicit_hessian) == 4
             self.explicit_hessian_inv = []
             # The inverse of the opposite-spin blocks is not necessary.

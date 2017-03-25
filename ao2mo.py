@@ -3,6 +3,30 @@ import pyscf
 from utils import fix_mocoeffs_shape, occupations_from_pyscf_mol
 
 
+def perform_tei_ao2mo_rhf_full(pyscfmol, C, verbose=1):
+    C = fix_mocoeffs_shape(C)
+    norb = C.shape[-1]
+    tei_mo = pyscf.ao2mo.full(pyscfmol, C[0, ...], aosym='s1', compact=False, verbose=verbose).reshape(norb, norb, norb, norb)
+    return tei_mo
+
+
+def perform_tei_ao2mo_uhf_full(pyscfmol, C, verbose=1):
+    C = fix_mocoeffs_shape(C)
+    norb = C.shape[-1]
+    C_a = C[0, ...]
+    C_b = C[1, ...]
+    C_aaaa = (C_a, C_a, C_a, C_a)
+    C_aabb = (C_a, C_a, C_b, C_b)
+    C_bbaa = (C_b, C_b, C_a, C_a)
+    C_bbbb = (C_b, C_b, C_b, C_b)
+    tei_mo_aaaa = pyscf.ao2mo.general(pyscfmol, C_aaaa, aosym='s1', compact=False, verbose=verbose).reshape(norb, norb, norb, norb)
+    tei_mo_aabb = pyscf.ao2mo.general(pyscfmol, C_aabb, aosym='s1', compact=False, verbose=verbose).reshape(norb, norb, norb, norb)
+    tei_mo_bbaa = pyscf.ao2mo.general(pyscfmol, C_bbaa, aosym='s1', compact=False, verbose=verbose).reshape(norb, norb, norb, norb)
+    tei_mo_bbbb = pyscf.ao2mo.general(pyscfmol, C_bbbb, aosym='s1', compact=False, verbose=verbose).reshape(norb, norb, norb, norb)
+    tei_mo = (tei_mo_aaaa, tei_mo_aabb, tei_mo_bbaa, tei_mo_bbbb)
+    return tei_mo
+
+
 def perform_tei_ao2mo_rhf_partial(pyscfmol, C, verbose=1):
     C = fix_mocoeffs_shape(C)
     occupations = occupations_from_pyscf_mol(pyscfmol, C)

@@ -2,6 +2,8 @@ import numpy as np
 
 from cphf import CPHF, Operator
 
+from ao2mo import (perform_tei_ao2mo_rhf_full, perform_tei_ao2mo_uhf_full)
+
 from explicit_equations_full import \
     (form_rpa_a_matrix_mo_singlet_full,
      form_rpa_a_matrix_mo_singlet_ss_full,
@@ -12,7 +14,7 @@ from explicit_equations_full import \
      form_rpa_b_matrix_mo_singlet_os_full,
      form_rpa_b_matrix_mo_triplet_full)
 
-from utils import np_load
+from utils import (np_load, occupations_from_pyscf_mol)
 
 
 def test_explicit_uhf_from_rhf_outside_solver():
@@ -32,15 +34,14 @@ def test_explicit_uhf_from_rhf_outside_solver():
     mocoeffs = mf.mo_coeff
     moenergies = mf.mo_energy
     norb = mocoeffs.shape[1]
-    tei_mo = ao2mo.full(mol, mocoeffs, aosym='s1', compact=False).reshape(norb, norb, norb, norb)
+    tei_mo = perform_tei_ao2mo_rhf_full(mol, mocoeffs)
 
     C_a = mocoeffs
     C_b = C_a.copy()
     E_a = np.diag(moenergies)
     E_b = E_a.copy()
-    nocc_a, nocc_b = mol.nelec
-    nvirt_a, nvirt_b = norb - nocc_a, norb - nocc_b
-    occupations = [nocc_a, nvirt_a, nocc_b, nvirt_b]
+    occupations = occupations_from_pyscf_mol(mol, mocoeffs)
+    nocc_a, nvirt_a, nocc_b, nvirt_b = occupations
 
     # Same-spin and opposite-spin contributions should add together
     # properly for restricted wavefunction.
@@ -161,19 +162,12 @@ def test_explicit_uhf_outside_solver():
     E_b = np.diag(mf.mo_energy[1, ...])
     assert C_a.shape == C_b.shape
     assert E_a.shape == E_b.shape
-    norb = C_a.shape[1]
-    C_aaaa = (C_a, C_a, C_a, C_a)
-    C_aabb = (C_a, C_a, C_b, C_b)
-    C_bbaa = (C_b, C_b, C_a, C_a)
-    C_bbbb = (C_b, C_b, C_b, C_b)
-    tei_mo_aaaa = ao2mo.general(mol, C_aaaa, aosym='s1', compact=False, verbose=5).reshape(norb, norb, norb, norb)
-    tei_mo_aabb = ao2mo.general(mol, C_aabb, aosym='s1', compact=False, verbose=5).reshape(norb, norb, norb, norb)
-    tei_mo_bbaa = ao2mo.general(mol, C_bbaa, aosym='s1', compact=False, verbose=5).reshape(norb, norb, norb, norb)
-    tei_mo_bbbb = ao2mo.general(mol, C_bbbb, aosym='s1', compact=False, verbose=5).reshape(norb, norb, norb, norb)
 
-    nocc_a, nocc_b = mol.nelec
-    nvirt_a, nvirt_b = norb - nocc_a, norb - nocc_b
-    occupations = [nocc_a, nvirt_a, nocc_b, nvirt_b]
+    tei_mo = perform_tei_ao2mo_uhf_full(mol, mf.mo_coeff, verbose=5)
+    tei_mo_aaaa, tei_mo_aabb, tei_mo_bbaa, tei_mo_bbbb = tei_mo
+
+    occupations = occupations_from_pyscf_mol(mol, mf.mo_coeff)
+    nocc_a, nvirt_a, nocc_b, nvirt_b = occupations
 
     A_s_ss_a = form_rpa_a_matrix_mo_singlet_ss_full(E_a, tei_mo_aaaa, nocc_a)
     A_s_os_a = form_rpa_a_matrix_mo_singlet_os_full(tei_mo_aabb, nocc_a, nocc_b)
@@ -271,32 +265,18 @@ def test_explicit_uhf():
     mf = scf.UHF(mol)
     mf.kernel()
     C = mf.mo_coeff
-    C_a = C[0, ...]
-    C_b = C[1, ...]
     E_a = np.diag(mf.mo_energy[0, ...])
     E_b = np.diag(mf.mo_energy[1, ...])
-    assert C_a.shape == C_b.shape
     assert E_a.shape == E_b.shape
     E = np.stack((E_a, E_b), axis=0)
-    norb = C_a.shape[1]
-    C_aaaa = (C_a, C_a, C_a, C_a)
-    C_aabb = (C_a, C_a, C_b, C_b)
-    C_bbaa = (C_b, C_b, C_a, C_a)
-    C_bbbb = (C_b, C_b, C_b, C_b)
-    tei_mo_aaaa = ao2mo.general(mol, C_aaaa, aosym='s1', compact=False, verbose=5).reshape(norb, norb, norb, norb)
-    tei_mo_aabb = ao2mo.general(mol, C_aabb, aosym='s1', compact=False, verbose=5).reshape(norb, norb, norb, norb)
-    tei_mo_bbaa = ao2mo.general(mol, C_bbaa, aosym='s1', compact=False, verbose=5).reshape(norb, norb, norb, norb)
-    tei_mo_bbbb = ao2mo.general(mol, C_bbbb, aosym='s1', compact=False, verbose=5).reshape(norb, norb, norb, norb)
 
     integrals_dipole_ao = mol.intor('cint1e_r_sph', comp=3)
 
-    nocc_a, nocc_b = mol.nelec
-    nvirt_a, nvirt_b = norb - nocc_a, norb - nocc_b
-    occupations = [nocc_a, nvirt_a, nocc_b, nvirt_b]
+    occupations = occupations_from_pyscf_mol(mol, C)
 
     cphf = CPHF(C, E, occupations)
 
-    cphf.tei_mo = (tei_mo_aaaa, tei_mo_aabb, tei_mo_bbaa, tei_mo_bbbb)
+    cphf.tei_mo = perform_tei_ao2mo_uhf_full(mol, C)
     cphf.tei_mo_type = 'full'
 
     operator_dipole = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False)
