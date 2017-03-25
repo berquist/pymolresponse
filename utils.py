@@ -42,6 +42,8 @@ def clean_dalton_label(original_label):
 
 def dalton_label_to_operator(label):
 
+    label = clean_dalton_label(label)
+
     from cphf import Operator
 
     coord1_to_slice = {
@@ -115,6 +117,13 @@ def dalton_label_to_operator(label):
         is_imaginary = True
         # TODO is this correct?
         is_spin_dependent = False
+        # FIXME
+        slice_idx=None
+    else:
+        operator_label = ''
+        is_imaginary = None
+        is_spin_dependent = None
+        slice_idx = None
 
     operator = Operator(
         label=operator_label,

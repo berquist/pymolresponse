@@ -46,7 +46,11 @@ class Operator(object):
         self.rspvecs_alph = []
         self.rspvecs_beta = []
 
+    def __str__(self):
+        return 'Operator(label="{label}", is_imaginary={is_imaginary}, is_spin_dependent={is_spin_dependent}, triplet={triplet}, slice_idx={slice_idx})'.format(label=self.label, is_imaginary=self.is_imaginary, is_spin_dependent=self.is_spin_dependent, triplet=self.triplet, slice_idx=self.slice_idx)
+
     def form_rhs(self, C, occupations):
+        assert hasattr(self, 'ao_integrals')
         if len(C.shape) == 2:
             C = C[np.newaxis, ...]
         assert len(C.shape) == 3
@@ -160,6 +164,7 @@ class CPHF(object):
     def add_operator(self, operator):
         # First dimension is the number of Cartesian components, next
         # two are the number of AOs.
+        assert hasattr(operator, 'ao_integrals')
         shape = operator.ao_integrals.shape
         assert len(shape) == 3
         assert shape[0] >= 1

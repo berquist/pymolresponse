@@ -157,9 +157,10 @@ def calculate_disk_uhf(testcase, hamiltonian, spin, frequency, label_1, label_2)
     return bl
 
 
-def calculate_rhf(dalton_tmpdir, hamiltonian, spin, operator_label, source_moenergies, source_mocoeffs):
+def calculate_rhf(dalton_tmpdir, hamiltonian=None, spin=None, operator_label=None, operator=None, source_moenergies=None, source_mocoeffs=None, source_operator=None):
 
-    assert operator_label in ('dipole', 'angmom', 'spinorb',)
+    if operator_label:
+        assert operator_label in ('dipole', 'angmom', 'spinorb',)
     assert source_moenergies in ('pyscf', 'dalton',)
     assert source_mocoeffs in ('pyscf', 'dalton',)
 
@@ -220,25 +221,30 @@ def calculate_rhf(dalton_tmpdir, hamiltonian, spin, operator_label, source_moene
     cphf.tei_mo = perform_tei_ao2mo_rhf_partial(mol, C)
     cphf.tei_mo_type = 'partial'
 
-    if operator_label == 'dipole':
-        operator_dipole = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False, triplet=False)
-        integrals_dipole_ao = mol.intor('cint1e_r_sph', comp=3)
-        operator_dipole.ao_integrals = integrals_dipole_ao
-        cphf.add_operator(operator_dipole)
-    elif operator_label == 'angmom':
-        operator_angmom = Operator(label='angmom', is_imaginary=True, is_spin_dependent=False, triplet=False)
-        integrals_angmom_ao = mol.intor('cint1e_cg_irxp_sph', comp=3)
-        operator_angmom.ao_integrals = integrals_angmom_ao
-        cphf.add_operator(operator_angmom)
-    elif operator_label == 'spinorb':
-        operator_spinorb = Operator(label='spinorb', is_imaginary=True, is_spin_dependent=False, triplet=False)
-        integrals_spinorb_ao = 0
-        for atm_id in range(mol.natm):
-            mol.set_rinv_orig(mol.atom_coord(atm_id))
-            chg = mol.atom_charge(atm_id)
-            integrals_spinorb_ao += chg * mol.intor('cint1e_prinvxp_sph', comp=3)
-        operator_spinorb.ao_integrals = integrals_spinorb_ao
-        cphf.add_operator(operator_spinorb)
+    if operator:
+        cphf.add_operator(operator)
+    elif operator_label:
+        if operator_label == 'dipole':
+            operator_dipole = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False, triplet=False)
+            integrals_dipole_ao = mol.intor('cint1e_r_sph', comp=3)
+            operator_dipole.ao_integrals = integrals_dipole_ao
+            cphf.add_operator(operator_dipole)
+        elif operator_label == 'angmom':
+            operator_angmom = Operator(label='angmom', is_imaginary=True, is_spin_dependent=False, triplet=False)
+            integrals_angmom_ao = mol.intor('cint1e_cg_irxp_sph', comp=3)
+            operator_angmom.ao_integrals = integrals_angmom_ao
+            cphf.add_operator(operator_angmom)
+        elif operator_label == 'spinorb':
+            operator_spinorb = Operator(label='spinorb', is_imaginary=True, is_spin_dependent=False, triplet=False)
+            integrals_spinorb_ao = 0
+            for atm_id in range(mol.natm):
+                mol.set_rinv_orig(mol.atom_coord(atm_id))
+                chg = mol.atom_charge(atm_id)
+                integrals_spinorb_ao += chg * mol.intor('cint1e_prinvxp_sph', comp=3)
+            operator_spinorb.ao_integrals = integrals_spinorb_ao
+            cphf.add_operator(operator_spinorb)
+        else:
+            pass
     else:
         pass
 
@@ -249,9 +255,10 @@ def calculate_rhf(dalton_tmpdir, hamiltonian, spin, operator_label, source_moene
     return cphf.results[0]
 
 
-def calculate_uhf(dalton_tmpdir, hamiltonian, spin, operator_label, source_moenergies, source_mocoeffs):
+def calculate_uhf(dalton_tmpdir, hamiltonian=None, spin=None, operator_label=None, operator=None, source_moenergies=None, source_mocoeffs=None, source_operator=None):
 
-    assert operator_label in ('dipole', 'angmom', 'spinorb',)
+    if operator_label:
+        assert operator_label in ('dipole', 'angmom', 'spinorb',)
     assert source_moenergies in ('pyscf', 'dalton',)
     assert source_mocoeffs in ('pyscf', 'dalton',)
 
@@ -316,25 +323,30 @@ def calculate_uhf(dalton_tmpdir, hamiltonian, spin, operator_label, source_moene
     cphf.tei_mo = perform_tei_ao2mo_uhf_partial(mol, C)
     cphf.tei_mo_type = 'partial'
 
-    if operator_label == 'dipole':
-        operator_dipole = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False, triplet=False)
-        integrals_dipole_ao = mol.intor('cint1e_r_sph', comp=3)
-        operator_dipole.ao_integrals = integrals_dipole_ao
-        cphf.add_operator(operator_dipole)
-    elif operator_label == 'angmom':
-        operator_angmom = Operator(label='angmom', is_imaginary=True, is_spin_dependent=False, triplet=False)
-        integrals_angmom_ao = mol.intor('cint1e_cg_irxp_sph', comp=3)
-        operator_angmom.ao_integrals = integrals_angmom_ao
-        cphf.add_operator(operator_angmom)
-    elif operator_label == 'spinorb':
-        operator_spinorb = Operator(label='spinorb', is_imaginary=True, is_spin_dependent=False, triplet=False)
-        integrals_spinorb_ao = 0
-        for atm_id in range(mol.natm):
-            mol.set_rinv_orig(mol.atom_coord(atm_id))
-            chg = mol.atom_charge(atm_id)
-            integrals_spinorb_ao += chg * mol.intor('cint1e_prinvxp_sph', comp=3)
-        operator_spinorb.ao_integrals = integrals_spinorb_ao
-        cphf.add_operator(operator_spinorb)
+    if operator:
+        cphf.add_operator(operator)
+    elif operator_label:
+        if operator_label == 'dipole':
+            operator_dipole = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False, triplet=False)
+            integrals_dipole_ao = mol.intor('cint1e_r_sph', comp=3)
+            operator_dipole.ao_integrals = integrals_dipole_ao
+            cphf.add_operator(operator_dipole)
+        elif operator_label == 'angmom':
+            operator_angmom = Operator(label='angmom', is_imaginary=True, is_spin_dependent=False, triplet=False)
+            integrals_angmom_ao = mol.intor('cint1e_cg_irxp_sph', comp=3)
+            operator_angmom.ao_integrals = integrals_angmom_ao
+            cphf.add_operator(operator_angmom)
+        elif operator_label == 'spinorb':
+            operator_spinorb = Operator(label='spinorb', is_imaginary=True, is_spin_dependent=False, triplet=False)
+            integrals_spinorb_ao = 0
+            for atm_id in range(mol.natm):
+                mol.set_rinv_orig(mol.atom_coord(atm_id))
+                chg = mol.atom_charge(atm_id)
+                integrals_spinorb_ao += chg * mol.intor('cint1e_prinvxp_sph', comp=3)
+            operator_spinorb.ao_integrals = integrals_spinorb_ao
+            cphf.add_operator(operator_spinorb)
+        else:
+            pass
     else:
         pass
 
