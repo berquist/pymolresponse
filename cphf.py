@@ -209,11 +209,8 @@ class CPHF(object):
 
     def form_explicit_hessian(self, hamiltonian=None, spin=None, frequency=None):
 
-        # TODO blow up
-        if not hasattr(self, 'tei_mo'):
-            pass
-        elif not self.tei_mo:
-            pass
+        assert hasattr(self, 'tei_mo')
+        assert len(self.tei_mo) in (1, 2, 4, 6)
 
         if not hamiltonian:
             hamiltonian = self.hamiltonian
@@ -222,10 +219,8 @@ class CPHF(object):
         if not frequency:
             frequency = 0.0
 
-        if hamiltonian not in ('rpa', 'tda'):
-            pass
-        if spin not in ('singlet', 'triplet'):
-            pass
+        assert hamiltonian in ('rpa', 'tda')
+        assert spin in ('singlet', 'triplet')
 
         self.hamiltonian = hamiltonian
         self.spin = spin
@@ -234,9 +229,11 @@ class CPHF(object):
         nov_alph = nocc_alph * nvirt_alph
         nov_beta = nocc_beta * nvirt_beta
 
-        superoverlap = np.asarray(np.bmat([[np.eye(nov_alph), np.zeros(shape=(nov_alph, nov_alph))],
+        superoverlap_alph = np.asarray(np.bmat([[np.eye(nov_alph), np.zeros(shape=(nov_alph, nov_alph))],
                                            [np.zeros(shape=(nov_alph, nov_alph)), -np.eye(nov_alph)]]))
-        superoverlap = superoverlap * frequency
+        superoverlap_alph = superoverlap_alph * frequency
+
+        assert self.tei_mo_type in ('full', 'partial')
 
         if not self.is_uhf:
 
@@ -248,9 +245,6 @@ class CPHF(object):
                 assert len(self.tei_mo) == 2
                 tei_mo_ovov = self.tei_mo[0]
                 tei_mo_oovv = self.tei_mo[1]
-            else:
-                # TODO blow up
-                pass
 
             if self.tei_mo_type == 'full':
                 if hamiltonian == 'rpa' and spin == 'singlet':
@@ -281,7 +275,7 @@ class CPHF(object):
 
             G = np.asarray(np.bmat([[A, B],
                                     [B, A]]))
-            self.explicit_hessian = G - superoverlap
+            self.explicit_hessian = G - superoverlap_alph
 
         else:
             # For UHF there are both "operator-dependent" and
@@ -308,7 +302,6 @@ class CPHF(object):
                 tei_mo_oovv_aaaa = self.tei_mo[4]
                 tei_mo_oovv_bbbb = self.tei_mo[5]
             else:
-                # TODO blow up
                 pass
                 
             E_a = self.moenergies[0, ...]
@@ -417,9 +410,9 @@ class CPHF(object):
                     B_ss_b = zeros_bb
                     B_os_b = zeros_ba
 
-            # TODO blow up
-            else:
-                pass
+            superoverlap_beta = np.asarray(np.bmat([[np.eye(nov_beta), np.zeros(shape=(nov_beta, nov_beta))],
+                                               [np.zeros(shape=(nov_beta, nov_beta)), -np.eye(nov_beta)]]))
+            superoverlap_beta = superoverlap_beta * frequency
 
             G_aa = np.asarray(np.bmat([[A_ss_a, B_ss_a],
                                        [B_ss_a, A_ss_a]]))
@@ -430,9 +423,15 @@ class CPHF(object):
             G_bb = np.asarray(np.bmat([[A_ss_b, B_ss_b],
                                        [B_ss_b, A_ss_b]]))
 
-            self.explicit_hessian = (G_aa, G_ab, G_ba, G_bb)
+            self.explicit_hessian = (
+                G_aa - superoverlap_alph,
+                G_ab,
+                G_ba,
+                G_bb - superoverlap_beta,
+            )
 
     def invert_explicit_hessian(self):
+        assert hasattr(self, 'explicit_hessian')
         if not self.is_uhf:
             # TODO check self.explicit_hessian type
             self.explicit_hessian_inv = np.linalg.inv(self.explicit_hessian)
