@@ -291,7 +291,7 @@ if __name__ == '__main__':
     mocoeffs = mf.mo_coeff
     moenergies = mf.mo_energy
     norb = mocoeffs.shape[1]
-    tei_mo = ao2mo.full(mol, mocoeffs, aosym='s1', compact=False).reshape(norb, norb, norb, norb)
+    tei_mo = ao2mo.full(mol, mocoeffs, aosym='s4', compact=False).reshape(norb, norb, norb, norb)
 
     ao_integrals_dipole = mol.intor('cint1e_r_sph', comp=3)
     # 'cg' stands for common gauge
