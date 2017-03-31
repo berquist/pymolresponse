@@ -253,6 +253,11 @@ def fix_mocoeffs_shape(mocoeffs):
     return mocoeffs_new
 
 
+def fix_moenergies_shape(moenergies):
+    shape = moenergies.shape
+    return moenergies_new
+
+
 def read_dalton_propfile(tmpdir):
     proplist = []
     with open(os.path.join(tmpdir, 'DALTON.PROP')) as propfile:

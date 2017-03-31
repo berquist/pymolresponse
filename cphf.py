@@ -158,8 +158,9 @@ class CPHF(object):
             self.frequencies = [0.0]
         else:
             self.frequencies = frequencies
-        for operator in self.operators:
-            operator.frequencies = self.frequencies
+        if hasattr(self, 'operators'):
+            for operator in self.operators:
+                operator.frequencies = self.frequencies
 
     def add_operator(self, operator):
         # First dimension is the number of Cartesian components, next
