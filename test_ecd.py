@@ -9,8 +9,7 @@ import utils
 from ecd import ECD
 
 
-def molecule_BC2H4_cation_HF_STO3G():
-    verbose = 0
+def molecule_BC2H4_cation_HF_STO3G(verbose=0):
 
     mol = pyscf.gto.Mole()
     mol.verbose = verbose
@@ -25,8 +24,8 @@ def molecule_BC2H4_cation_HF_STO3G():
     return mol
 
 
-def molecule_BC2H4_neutral_radical_HF_STO3G():
-    mol = molecule_BC2H4_cation_HF_STO3G()
+def molecule_BC2H4_neutral_radical_HF_STO3G(verbose=0):
+    mol = molecule_BC2H4_cation_HF_STO3G(verbose)
     mol.charge = 0
     mol.spin = 1
     return mol
@@ -47,11 +46,11 @@ def test_ECD_RPA_singlet_BC2H4_cation_HF_STO3G():
     ecd_dipvel_rpa.run()
     ecd_dipvel_rpa.form_results()
 
-    ref = BC2H4_cation_STO3G_RPA_nwchem
+    ref = BC2H4_cation_HF_STO3G_RPA_singlet_nwchem
     nroots = ref['nroots']
 
     print('excitation energies')
-    ref_etenergies = np.array(BC2H4_cation_STO3G_RPA_nwchem['etenergies'])
+    ref_etenergies = np.array(BC2H4_cation_HF_STO3G_RPA_singlet_nwchem['etenergies'])
     res_etenergies = ecd_dipvel_rpa.solver.eigvals.real[:nroots]
     print('ref, res')
     for ref, res in zip(ref_etenergies, res_etenergies):
@@ -62,7 +61,7 @@ def test_ECD_RPA_singlet_BC2H4_cation_HF_STO3G():
         assert abs_diff < thresh
 
     print('dipole (length) oscillator strengths')
-    ref_etoscslen = np.array(BC2H4_cation_STO3G_RPA_nwchem['etoscslen'])
+    ref_etoscslen = np.array(BC2H4_cation_HF_STO3G_RPA_singlet_nwchem['etoscslen'])
     res_etoscslen = ecd_dipvel_rpa.solver.operators[1].total_oscillator_strengths[:nroots]
     print('ref, res')
     for ref, res in zip(ref_etoscslen, res_etoscslen):
@@ -77,11 +76,11 @@ def test_ECD_RPA_singlet_BC2H4_cation_HF_STO3G():
 
     # TODO
     print('TODO dipole (velocity) oscillator strengths')
-    # print(np.array(BC2H4_cation_STO3G_RPA_nwchem['etoscsvel']))
+    # print(np.array(BC2H4_cation_HF_STO3G_RPA_singlet_nwchem['etoscsvel']))
     # print(ecd_dipvel_rpa.solver.operators[2].total_oscillator_strengths[:nroots])
 
     print('rotatory strengths (length)')
-    ref_etrotstrlen = np.array(BC2H4_cation_STO3G_RPA_nwchem['etrotstrlen'])
+    ref_etrotstrlen = np.array(BC2H4_cation_HF_STO3G_RPA_singlet_nwchem['etrotstrlen'])
     res_etrotstrlen = ecd_dipvel_rpa.rotational_strengths_diplen[:nroots]
     print('ref, res')
     for ref, res in zip(ref_etrotstrlen, res_etrotstrlen):
@@ -94,7 +93,7 @@ def test_ECD_RPA_singlet_BC2H4_cation_HF_STO3G():
         assert abs_diff < thresh
 
     print('rotatory strengths (velocity)')
-    ref_etrotstrvel = np.array(BC2H4_cation_STO3G_RPA_nwchem['etrotstrvel'])
+    ref_etrotstrvel = np.array(BC2H4_cation_HF_STO3G_RPA_singlet_nwchem['etrotstrvel'])
     res_etrotstrvel = ecd_dipvel_rpa.rotational_strengths_dipvel[:nroots]
     print('ref, res')
     for ref, res in zip(ref_etrotstrvel, res_etrotstrvel):
@@ -119,7 +118,7 @@ def test_ECD_RPA_singlet_BC2H4_cation_HF_STO3G():
 #     return
 
 
-BC2H4_cation_STO3G_RPA_nwchem = {
+BC2H4_cation_HF_STO3G_RPA_singlet_nwchem = {
     'etenergies': [
         0.116938283,
         0.153688860,
@@ -195,7 +194,7 @@ BC2H4_cation_STO3G_RPA_nwchem = {
     'nroots': 10,
 }
 
-BC2H4_neutral_radical_HF_STO3G_RPA_nwchem = {
+BC2H4_neutral_radical_HF_STO3G_RPA_singlet_nwchem = {
     'etenergies': [
     ],
     'etoscslen': [

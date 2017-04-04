@@ -204,13 +204,13 @@ class CPHF(object):
 
         self.form_results()
 
-        for operator in self.operators:
-            operator.rspvecs_alph = []
-            operator.rspvecs_beta = []
+        # for operator in self.operators:
+        #     operator.rspvecs_alph = []
+        #     operator.rspvecs_beta = []
 
     def form_explicit_hessian(self, hamiltonian=None, spin=None, frequency=None):
 
-        assert hasattr(self, 'tei_mo')
+        assert self.tei_mo is not None
         assert len(self.tei_mo) in (1, 2, 4, 6)
 
         if not hamiltonian:

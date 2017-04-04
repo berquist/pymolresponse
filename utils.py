@@ -270,3 +270,19 @@ def read_dalton_propfile(tmpdir):
     return proplist
 
 
+def tensor_printer(tensor):
+    print(tensor)
+    eigvals = np.linalg.eigvals(tensor)
+    # or should this be the trace of the matrix?
+    iso = np.average(eigvals)
+    # anisotropic = 0.e0;
+    # for(int j1=0;j1 < 9; j1++)
+    #   anisotropic += statpol[j1]*statpol[j1];
+    # anisotropic = sqrt(fabs(1.5e0 * (anisotropic - 3*isotropic * isotropic)));
+    # aniso = np.sum(tensor ** 2)
+    aniso = 0.0
+    print(eigvals)
+    print(iso)
+    # print(np.trace(tensor) / tensor.shape[0])
+    # print(aniso)
+    return (eigvals, iso, aniso)

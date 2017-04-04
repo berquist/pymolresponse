@@ -1,0 +1,30 @@
+geometry units angstrom noautoz nocenter
+symmetry c1
+C     -0.0008286620   -0.0004493055   -0.0003241160
+H      0.0005419438   -0.0005510523    1.0881223132
+B      0.7614042004    0.0000912434   -1.2402303969
+H      1.5507850082   -0.3250641117   -2.0682935236
+C     -0.5677515230    0.9696516240   -0.9682785376
+H     -0.6787643958    2.0262293122   -0.6791165638
+H     -1.3308161697    0.6715931113   -1.7152165963
+end
+
+charge 1
+
+basis
+  * library sto-3g
+end
+
+dft
+  xc hfexch
+  direct
+end
+
+property
+  center arb 0.0 0.0 0.0
+  response 1 0.128347
+  orbeta
+  convergence 1e-8
+end
+
+task dft property
