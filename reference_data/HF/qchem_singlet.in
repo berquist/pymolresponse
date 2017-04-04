@@ -1,0 +1,19 @@
+$rem
+method hf
+basis sto-3g
+scf_convergence 10
+thresh 14
+symmetry false
+sym_ignore true
+cis_singlets true
+cis_triplets false
+cis_n_roots 10
+cis_dynamic_mem true
+rpa true
+$end
+
+$molecule
+0 1
+H 0.000 0.000 0.917
+F 0.000 0.000 0.000
+$end

@@ -1,7 +1,7 @@
 import numpy as np
 import scipy as sp
 
-from cphf import CPHF
+from cphf import Operator, CPHF
 from utils import form_results
 
 from explicit_equations_full import \
@@ -155,52 +155,74 @@ class TDHF(CPHF):
         pass
 
     def diagonalize_explicit_hessian(self):
+        nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
+        nov_alph = nocc_alph * nvirt_alph
+        nov_beta = nocc_beta * nvirt_beta
         if not self.is_uhf:
             eigvals, eigvecs = sp.linalg.eig(self.explicit_hessian)
+            # Sort from lowest to highest eigenvalue (excitation
+            # energy).
             idx = eigvals.argsort()
             self.eigvals = eigvals[idx]
             # Each eigenvector is a column vector.
             self.eigvecs = eigvecs[:, idx]
-            # for x in self.eigvals.real * 27.2114:
-            #     print(x)
+            # Fix the ordering of everything. The first eigenvectors
+            # are those with negative excitation energies.
+            self.eigvals = self.eigvals[nov_alph:]
+            self.eigvecs = self.eigvecs[:, nov_alph:]
         else:
             # TODO UHF
             pass
 
+    @staticmethod
+    def norm_xy(z, nocc, nvirt):
+        x, y = z.reshape(2, nvirt, nocc)
+        norm = 2 * (np.linalg.norm(x)**2 - np.linalg.norm(y)**2)
+        norm = 1 / np.sqrt(norm)
+        return (x*norm).flatten(), (y*norm).flatten()
+
     def form_results(self):
-        # def norm_xy(z):
-        #     x, y = z.reshape(2,nvir,nocc)
-        #     norm = 2 * (np.linalg.norm(x)**2 - np.linalg.norm(y)**2)
-        #     norm = 1 / numpy.sqrt(norm)
-        #     return x*norm, y*norm
-        if len(self.operators) > 0:
-            nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
-            nov_alph = nocc_alph * nvirt_alph
-            nov_beta = nocc_beta * nvirt_beta
+        nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
+        nov_alph = nocc_alph * nvirt_alph
+        nov_beta = nocc_beta * nvirt_beta
+        self.eigvecs_normed = self.eigvecs.copy()
+        for idx in range(nov_alph):
+            print('=' * 78)
+            eigvec = self.eigvecs[:, idx]
+            x_normed, y_normed = TDHF.norm_xy(self.eigvecs[:, idx], nocc_alph, nvirt_alph)
+            eigvec_normed = np.concatenate((x_normed.flatten(), y_normed.flatten()), axis=0)
+            self.eigvecs_normed[:, idx] = eigvec_normed
+            eigval = self.eigvals[idx].real
+            print(' State: {}'.format(idx + 1))
+            print(' Excitation energy [a.u.]: {}'.format(eigval))
+            print(' Excitation energy [eV]  : {}'.format(eigval * 27.2114))
             # contract the components of every operator with every
             # eigenvector
-            dim = self.eigvecs.shape[1]
             for operator in self.operators:
-                for idx in range(dim):
-                    norm = 2 * (np.linalg.norm(self.eigvecs[:nov_alph, idx])**2 - \
-                                np.linalg.norm(self.eigvecs[nov_alph:, idx])**2)
-                    norm = (1 / np.sqrt(norm))
-                    print('-' * 78)
-                    eigvec = self.eigvecs[:, idx]
-                    eigvec_normed = self.eigvecs[:, idx] * norm
-                    # print(eigvec)
-                    # print(eigvec_normed)
-                    integrals = operator.mo_integrals_ai_supervector_alph[:, :, 0]
-                    res = np.dot(integrals, eigvec)
-                    # TODO why the -2?
-                    res_normed = -2 * np.dot(integrals, eigvec_normed)
-                    eigval = self.eigvals[idx].real
-                    print(' State: {}'.format(idx + 1))
-                    print(' Excitation energy [a.u.]: {}'.format(eigval))
-                    print(' Excitation energy [eV]  : {}'.format(eigval * 27.2114))
-                    print(' Transition moment: {}'.format(res_normed))
-                    print(' Oscillator strength: {}'.format((2 / 3) * eigval * res_normed ** 2))
-                    print(' Oscillator strength (total): {}'.format((2 / 3) * eigval * np.dot(res_normed, res_normed)))
+                print('-' * 78)
+                print(' Operator: {}'.format(operator.label))
+                integrals = operator.mo_integrals_ai_supervector_alph[:, :, 0]
+                # TODO why the 2?
+                res_normed = 2 * np.dot(integrals, eigvec_normed)
+                transition_moment = res_normed
+                oscillator_strength = (2 / 3) * eigval * transition_moment ** 2
+                total_oscillator_strength = (2 / 3) * eigval * np.dot(transition_moment, transition_moment)
+                print(' Transition moment: {}'.format(transition_moment))
+                print(' Oscillator strength: {}'.format(oscillator_strength))
+                print(' Oscillator strength (total): {}'.format(total_oscillator_strength))
+                if not hasattr(operator, 'transition_moments'):
+                    operator.transition_moments = []
+                if not hasattr(operator, 'oscillator_strengths'):
+                    operator.oscillator_strengths = []
+                if not hasattr(operator, 'total_oscillator_strengths'):
+                    operator.total_oscillator_strengths = []
+                operator.transition_moments.append(transition_moment)
+                operator.oscillator_strengths.append(oscillator_strength)
+                operator.total_oscillator_strengths.append(total_oscillator_strength)
+        for operator in self.operators:
+            operator.transition_moments = np.array(operator.transition_moments)
+            operator.oscillator_strengths = np.array(operator.oscillator_strengths)
+            operator.total_oscillator_strengths = np.array(operator.total_oscillator_strengths)
 
 
 class TDA(TDHF):
@@ -257,87 +279,62 @@ class TDA(TDHF):
             # TODO UHF
             pass
 
+    def diagonalize_explicit_hessian(self):
+        nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
+        nov_alph = nocc_alph * nvirt_alph
+        nov_beta = nocc_beta * nvirt_beta
+        if not self.is_uhf:
+            eigvals, eigvecs = sp.linalg.eig(self.explicit_hessian)
+            # Sort from lowest to highest eigenvalue (excitation
+            # energy).
+            idx = eigvals.argsort()
+            self.eigvals = eigvals[idx]
+            # Each eigenvector is a column vector.
+            self.eigvecs = eigvecs[:, idx]
+        else:
+            # TODO UHF
+            pass
+
+
     def form_results(self):
-        if len(self.operators) > 0:
-            # Contract the components of every operator with every
+        nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
+        nov_alph = nocc_alph * nvirt_alph
+        nov_beta = nocc_beta * nvirt_beta
+        self.eigvecs_normed = self.eigvecs.copy()
+        for idx in range(nov_alph):
+            print('=' * 78)
+            norm = (1 / np.sqrt(2))
+            eigvec = self.eigvecs[:, idx]
+            eigvec_normed = self.eigvecs[:, idx] * norm
+            self.eigvecs_normed[:, idx] = eigvec_normed
+            eigval = self.eigvals[idx].real
+            print(' State: {}'.format(idx + 1))
+            print(' Excitation energy [a.u.]: {}'.format(eigval))
+            print(' Excitation energy [eV]  : {}'.format(eigval * 27.2114))
+            # contract the components of every operator with every
             # eigenvector
-            dim = self.eigvecs.shape[1]
             for operator in self.operators:
-                for idx in range(dim):
-                    print('-' * 78)
-                    norm = (1 / np.sqrt(2))
-                    eigvec = self.eigvecs[:, idx]
-                    eigvec_normed = self.eigvecs[:, idx] * norm
-                    # print(eigvec)
-                    # print(eigvec_normed)
-                    integrals = operator.mo_integrals_ai_alph[:, :, 0]
-                    res = np.dot(integrals, eigvec)
-                    # TODO why the -2?
-                    res_normed = -2 * np.dot(integrals, eigvec_normed)
-                    eigval = self.eigvals[idx].real
-                    print(' State: {}'.format(idx + 1))
-                    print(' Excitation energy [a.u.]: {}'.format(eigval))
-                    print(' Excitation energy [eV]  : {}'.format(eigval * 27.2114))
-                    print(' Transition moment: {}'.format(res_normed))
-                    print(' Oscillator strength: {}'.format((2 / 3) * eigval * res_normed ** 2))
-                    print(' Oscillator strength (total): {}'.format((2 / 3) * eigval * np.dot(res_normed, res_normed)))
-
-if __name__ == '__main__':
-    import pyscf
-
-    mol = pyscf.gto.Mole()
-    mol.verbose = 1
-    mol.output = None
-
-    mol.atom = [
-        ['H' , (0. , 0. , .917)],
-        ['F' , (0. , 0. , 0.)], ]
-    mol.basis = 'sto-3g'
-    mol.build()
-
-    mf = pyscf.scf.RHF(mol)
-    mf.scf()
-
-    import utils
-    C = utils.fix_mocoeffs_shape(mf.mo_coeff)
-    E = np.diag(mf.mo_energy)[np.newaxis, ...]
-    # print(E.shape)
-    # import sys
-    # sys.exit()
-    occupations = utils.occupations_from_pyscf_mol(mol, C)
-    tda = TDA(C, E, occupations)
-    tdhf = TDHF(C, E, occupations)
-    import ao2mo
-    tei_mo = ao2mo.perform_tei_ao2mo_rhf_partial(mol, C, mol.verbose)
-    tda.tei_mo = tei_mo
-    tda.tei_mo_type = 'partial'
-    tdhf.tei_mo = tei_mo
-    tdhf.tei_mo_type = 'partial'
-
-    from cphf import Operator
-    operator_dipole = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False, triplet=False)
-    integrals_dipole_ao = mol.intor('cint1e_r_sph', comp=3)
-    operator_dipole.ao_integrals = integrals_dipole_ao
-
-    tda.add_operator(operator_dipole)
-    tdhf.add_operator(operator_dipole)
-
-    print('=' * 78)
-    print(' dipole')
-    print('-' * 78)
-    print('TDA using TDA()')
-    tda.run(solver='explicit', hamiltonian='tda', spin='singlet')
-    print('TDA using TDHF()')
-    tdhf.run(solver='explicit', hamiltonian='tda', spin='singlet')
-    print('RPA using TDHF()')
-    tdhf.run(solver='explicit', hamiltonian='rpa', spin='singlet')
-    # print('=' * 78)
-    # print(' angular momentum')
-    # print('-' * 78)
-    # print('RPA using TDHF()')
-    # tdhf.operators = []
-    # operator_angmom = Operator(label='angmom', is_imaginary=True, is_spin_dependent=False, triplet=False)
-    # integrals_angmom_ao = mol.intor('cint1e_cg_irxp_sph', comp=3)
-    # operator_angmom.ao_integrals = integrals_angmom_ao
-    # tdhf.add_operator(operator_angmom)
-    # tdhf.run(solver='explicit', hamiltonian='rpa', spin='singlet')
+                print('-' * 78)
+                print(' Operator: {}'.format(operator.label))
+                integrals = operator.mo_integrals_ai_alph[:, :, 0]
+                # TODO why the 2?
+                res_normed = 2 * np.dot(integrals, eigvec_normed)
+                transition_moment = res_normed
+                oscillator_strength = (2 / 3) * eigval * transition_moment ** 2
+                total_oscillator_strength = (2 / 3) * eigval * np.dot(transition_moment, transition_moment)
+                print(' Transition moment: {}'.format(transition_moment))
+                print(' Oscillator strength: {}'.format(oscillator_strength))
+                print(' Oscillator strength (total): {}'.format(total_oscillator_strength))
+                if not hasattr(operator, 'transition_moments'):
+                    operator.transition_moments = []
+                if not hasattr(operator, 'oscillator_strengths'):
+                    operator.oscillator_strengths = []
+                if not hasattr(operator, 'total_oscillator_strengths'):
+                    operator.total_oscillator_strengths = []
+                operator.transition_moments.append(transition_moment)
+                operator.oscillator_strengths.append(oscillator_strength)
+                operator.total_oscillator_strengths.append(total_oscillator_strength)
+        for operator in self.operators:
+            operator.transition_moments = np.array(operator.transition_moments)
+            operator.oscillator_strengths = np.array(operator.oscillator_strengths)
+            operator.total_oscillator_strengths = np.array(operator.total_oscillator_strengths)
