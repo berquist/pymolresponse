@@ -7,6 +7,7 @@ import scipy.constants as spc
 import pyscf
 
 import utils
+
 from optrot import ORD
 from test_ecd import molecule_BC2H4_cation_HF_STO3G
 
@@ -51,6 +52,7 @@ BC2H4_cation_HF_STO3G_RPA_singlet_nwchem = {
 def test_ORD_RPA_singlet_BC2H4_cation_HF_STO3G():
 
     ref = BC2H4_cation_HF_STO3G_RPA_singlet_nwchem
+
     pyscfmol = molecule_BC2H4_cation_HF_STO3G(0)
     pyscfmol.build()
 
@@ -105,4 +107,7 @@ def test_ORD_RPA_singlet_BC2H4_cation_HF_STO3G():
     # for idxf, frequency in enumerate(frequencies):
     #     print(sum(prefac * ecd.rotational_strengths_diplen / ((frequency ** 2) * (ecd.solver.eigvals.real ** 2))))
 
-test_ORD_RPA_singlet_BC2H4_cation_HF_STO3G()
+    return
+
+if __name__ == '__main__':
+    test_ORD_RPA_singlet_BC2H4_cation_HF_STO3G()

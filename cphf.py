@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 from __future__ import print_function
 from __future__ import division
 
@@ -210,8 +208,10 @@ class CPHF(object):
 
     def form_explicit_hessian(self, hamiltonian=None, spin=None, frequency=None):
 
+        assert hasattr(self, 'tei_mo')
         assert self.tei_mo is not None
         assert len(self.tei_mo) in (1, 2, 4, 6)
+        assert self.tei_mo_type in ('full', 'partial')
 
         if not hamiltonian:
             hamiltonian = self.hamiltonian
@@ -233,8 +233,6 @@ class CPHF(object):
         superoverlap_alph = np.asarray(np.bmat([[np.eye(nov_alph), np.zeros(shape=(nov_alph, nov_alph))],
                                            [np.zeros(shape=(nov_alph, nov_alph)), -np.eye(nov_alph)]]))
         superoverlap_alph = superoverlap_alph * frequency
-
-        assert self.tei_mo_type in ('full', 'partial')
 
         if not self.is_uhf:
 

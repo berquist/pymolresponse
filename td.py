@@ -53,12 +53,6 @@ class TDHF(CPHF):
         self.frequencies = []
         self.results = []
 
-    def set_frequencies(self, frequencies=None):
-        pass
-
-    # def add_operator(self, operator):
-    #     pass
-
     def run(self, solver=None, hamiltonian=None, spin=None, **kwargs):
 
         if not solver:
@@ -75,7 +69,6 @@ class TDHF(CPHF):
 
         if solver == 'explicit':
             self.form_explicit_hessian(hamiltonian, spin, None)
-            # self.invert_explicit_hessian()
             self.diagonalize_explicit_hessian()
         # Nothing else implemented yet.
         else:
@@ -86,7 +79,9 @@ class TDHF(CPHF):
     def form_explicit_hessian(self, hamiltonian=None, spin=None, frequency=None):
 
         assert hasattr(self, 'tei_mo')
+        assert self.tei_mo is not None
         assert len(self.tei_mo) in (1, 2, 4, 6)
+        assert self.tei_mo_type in ('full', 'partial')
 
         if not hamiltonian:
             hamiltonian = self.hamiltonian
@@ -102,8 +97,6 @@ class TDHF(CPHF):
         nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
         nov_alph = nocc_alph * nvirt_alph
         nov_beta = nocc_beta * nvirt_beta
-
-        assert self.tei_mo_type in ('full', 'partial')
 
         if not self.is_uhf:
 
@@ -150,9 +143,6 @@ class TDHF(CPHF):
         else:
             # TODO UHF
             pass
-
-    def invert_explicit_hessian(self):
-        pass
 
     def diagonalize_explicit_hessian(self):
         nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
@@ -231,8 +221,11 @@ class TDA(TDHF):
         super(TDA, self).__init__(mocoeffs, moenergies, occupations, *args, **kwargs)
 
     def form_explicit_hessian(self, hamiltonian=None, spin=None, frequency=None):
+
         assert hasattr(self, 'tei_mo')
+        assert self.tei_mo is not None
         assert len(self.tei_mo) in (1, 2, 4, 6)
+        assert self.tei_mo_type in ('full', 'partial')
 
         if not hamiltonian:
             hamiltonian = self.hamiltonian
@@ -248,8 +241,6 @@ class TDA(TDHF):
         nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
         nov_alph = nocc_alph * nvirt_alph
         nov_beta = nocc_beta * nvirt_beta
-
-        assert self.tei_mo_type in ('full', 'partial')
 
         if not self.is_uhf:
 
