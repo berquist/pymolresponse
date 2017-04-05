@@ -2,13 +2,14 @@
 
 Molecular frequency-dependent response properties for arbitrary operators.
 
+[![build status](http://img.shields.io/travis/cclib/cclib/master.svg?style=flat)](https://travis-ci.org/berquist/pyresponse)
+[![license](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg?style=flat)](https://github.com/berquist/pyresponse/blob/master/LICENSE)
+
 Currently, the goal is to provide:
 
 1. a pedagogical example of a working molecular orbital response program as an almost direct translation from equations to code,
 2. an implementation that gives "exact" results for testing, and
 3. an example of testing and documenting scientific code using modern software development tools.
-
-[![license](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg?style=flat)](https://github.com/berquist/pyresponse/blob/master/LICENSE)
 
 # Requirements
 
@@ -18,7 +19,8 @@ Currently, the goal is to provide:
 ## Python dependencies
 
 * [pytest](http://doc.pytest.org/en/latest/) (for testing)
-* [daltools](https://github.com/vahtras/daltools) (for testing)
+* [daltools](https://github.com/vahtras/daltools) (for testing?)
+* [cclib](https://github.com/cclib/cclib) (for ?)
 * [periodictable](https://github.com/pkienzle/periodictable) (for calculating the center of mass)
 
 # Testing
@@ -45,14 +47,13 @@ Currently, the goal is to provide:
 
 ## Desired features that don't fix the caveats
 
-* Open-ended response: see [Ringholm, Jonsson, and Ruud)(http://dx.doi.org/10.1002/jcc.23533).
+* Open-ended response: see [Ringholm, Jonsson, and Ruud](http://dx.doi.org/10.1002/jcc.23533).
 * Finite-difference for testing and higher-order response.
 * Independence from pyscf, requires molecule/basis set handling, AO integral engine, and RHF/UHF solver.
 * Interface to [PyQuante](https://github.com/berquist/pyquante) and/or [pyquante2](https://github.com/rpmuller/pyquante2).
 * Interface to [Psi4](https://github.com/psi4/psi4) (through Python, not C++).
 * Sphinx-based documentation.
 * Jupyter Notebook-based tutorials.
-* Automated builds and testing with Travis CI.
 
 # References
 
