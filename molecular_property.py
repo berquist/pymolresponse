@@ -38,10 +38,10 @@ class MolecularProperty(object):
 class ResponseProperty(MolecularProperty):
 
     def __init__(self, pyscfmol, mocoeffs, moenergies, occupations, hamiltonian, spin, frequencies=[0.0], *args, **kwargs):
-        # super(ResponseProperty, self).__init__(pyscfmol, mocoeffs, moenergies, occupations, hamiltonian, spin, frequencies, *args, **kwargs)
         super().__init__(pyscfmol, mocoeffs, moenergies, occupations, hamiltonian, spin, *args, **kwargs)
 
-        # Don't allow a single number.
+        # Don't allow a single number; force one of the basic
+        # iterables.
         assert isinstance(frequencies, (list, tuple, np.ndarray))
         self.frequencies = frequencies
 
@@ -58,7 +58,6 @@ class ResponseProperty(MolecularProperty):
 class TransitionProperty(MolecularProperty):
 
     def __init__(self, pyscfmol, mocoeffs, moenergies, occupations, hamiltonian, spin, *args, **kwargs):
-        # super(TransitionProperty, self).__init__(pyscfmol, mocoeffs, moenergies, occupations, hamiltonian, spin, *args, **kwargs)
         super().__init__(pyscfmol, mocoeffs, moenergies, occupations, hamiltonian, spin, *args, **kwargs)
 
         if 'solver' in kwargs:

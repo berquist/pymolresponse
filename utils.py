@@ -1,3 +1,5 @@
+import os.path
+
 import numpy as np
 
 from itertools import accumulate
@@ -118,7 +120,7 @@ def dalton_label_to_operator(label):
         # TODO is this correct?
         is_spin_dependent = False
         # FIXME
-        slice_idx=None
+        slice_idx = None
     else:
         operator_label = ''
         is_imaginary = None
@@ -253,9 +255,10 @@ def fix_mocoeffs_shape(mocoeffs):
     return mocoeffs_new
 
 
-def fix_moenergies_shape(moenergies):
-    shape = moenergies.shape
-    return moenergies_new
+# TODO
+# def fix_moenergies_shape(moenergies):
+#     shape = moenergies.shape
+#     return moenergies_new
 
 
 def read_dalton_propfile(tmpdir):

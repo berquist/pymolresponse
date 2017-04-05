@@ -8,17 +8,15 @@ from explicit_equations_full import \
     (form_rpa_a_matrix_mo_singlet_full,
      form_rpa_a_matrix_mo_singlet_ss_full,
      form_rpa_a_matrix_mo_singlet_os_full,
-     form_rpa_a_matrix_mo_triplet_full,
      form_rpa_b_matrix_mo_singlet_full,
      form_rpa_b_matrix_mo_singlet_ss_full,
-     form_rpa_b_matrix_mo_singlet_os_full,
-     form_rpa_b_matrix_mo_triplet_full)
+     form_rpa_b_matrix_mo_singlet_os_full)
 
 from utils import (np_load, occupations_from_pyscf_mol)
 
 
 def test_explicit_uhf_from_rhf_outside_solver():
-    from pyscf import ao2mo, gto, scf
+    from pyscf import gto, scf
 
     mol = gto.Mole()
     mol.verbose = 5
@@ -133,13 +131,14 @@ def test_explicit_uhf_from_rhf_outside_solver():
     print(res_u)
 
 
+# pylint: disable=bad-whitespace
 ref_water_cation_UHF_HF_STO3G = np.array([[6.1406370,   0.0000000,   0.0000000],
                                           [0.0000000,   2.3811198,   0.0000000],
                                           [0.0000000,   0.0000000,   1.4755219]])
 
 
 def test_explicit_uhf_outside_solver():
-    from pyscf import ao2mo, gto, scf
+    from pyscf import gto, scf
 
     mol = gto.Mole()
     mol.verbose = 5

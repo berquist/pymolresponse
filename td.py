@@ -136,6 +136,7 @@ class TDHF(CPHF):
                     A = form_rpa_a_matrix_mo_triplet_partial(self.moenergies[0, ...], tei_mo_oovv)
                     B = np.zeros(shape=(nov_alph, nov_alph))
 
+            # pylint: disable=bad-whitespace
             G = np.asarray(np.bmat([[ A,  B],
                                     [-B, -A]]))
             self.explicit_hessian = G

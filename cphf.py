@@ -49,6 +49,7 @@ class Operator(object):
 
     def form_rhs(self, C, occupations):
         assert hasattr(self, 'ao_integrals')
+        assert isinstance(self.ao_integrals, np.ndarray)
         if len(C.shape) == 2:
             C = C[np.newaxis, ...]
         assert len(C.shape) == 3
@@ -68,6 +69,7 @@ class Operator(object):
         operator_ai_supervector_beta = []
         # Loop over the operator components (usually multiple
         # Cartesian directions).
+        # pylint: disable=no-member
         for idx in range(self.ao_integrals.shape[0]):
             operator_component_ai_alph = np.dot(C_alph[:, nocc_alph:].T, np.dot(self.ao_integrals[idx, ...], C_alph[:, :nocc_alph]))
             # If the operator is a triplet operator and doing singlet
@@ -231,7 +233,7 @@ class CPHF(object):
         nov_beta = nocc_beta * nvirt_beta
 
         superoverlap_alph = np.asarray(np.bmat([[np.eye(nov_alph), np.zeros(shape=(nov_alph, nov_alph))],
-                                           [np.zeros(shape=(nov_alph, nov_alph)), -np.eye(nov_alph)]]))
+                                                [np.zeros(shape=(nov_alph, nov_alph)), -np.eye(nov_alph)]]))
         superoverlap_alph = superoverlap_alph * frequency
 
         if not self.is_uhf:
@@ -302,7 +304,7 @@ class CPHF(object):
                 tei_mo_oovv_bbbb = self.tei_mo[5]
             else:
                 pass
-                
+
             E_a = self.moenergies[0, ...]
             E_b = self.moenergies[1, ...]
 
@@ -410,7 +412,7 @@ class CPHF(object):
                     B_os_b = zeros_ba
 
             superoverlap_beta = np.asarray(np.bmat([[np.eye(nov_beta), np.zeros(shape=(nov_beta, nov_beta))],
-                                               [np.zeros(shape=(nov_beta, nov_beta)), -np.eye(nov_beta)]]))
+                                                    [np.zeros(shape=(nov_beta, nov_beta)), -np.eye(nov_beta)]]))
             superoverlap_beta = superoverlap_beta * frequency
 
             G_aa = np.asarray(np.bmat([[A_ss_a, B_ss_a],

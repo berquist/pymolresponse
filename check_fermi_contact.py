@@ -47,8 +47,7 @@ for testcase in testcases:
                     operator=operator,
                     source_moenergies='dalton',
                     source_mocoeffs='dalton')[slice_idx, slice_idx],
-                      'dalton', 'dalton'
-                )
+                      'dalton', 'dalton')
             print(calculator(
                 dalton_tmpdir,
                 hamiltonian=hamiltonian,
@@ -56,8 +55,7 @@ for testcase in testcases:
                 operator=operator,
                 source_moenergies='pyscf',
                 source_mocoeffs='dalton')[slice_idx, slice_idx],
-                  'pyscf', 'dalton'
-            )
+                  'pyscf', 'dalton')
             # DALTON MO energies can't be used in UHF calculations.
             if calculator == calculate_rhf:
                 print(calculator(
@@ -67,8 +65,7 @@ for testcase in testcases:
                     operator=operator,
                     source_moenergies='dalton',
                     source_mocoeffs='pyscf')[slice_idx, slice_idx],
-                      'dalton', 'pyscf'
-                )
+                      'dalton', 'pyscf')
             print(calculator(
                 dalton_tmpdir,
                 hamiltonian=hamiltonian,
@@ -76,5 +73,4 @@ for testcase in testcases:
                 operator=operator,
                 source_moenergies='pyscf',
                 source_mocoeffs='pyscf')[slice_idx, slice_idx],
-                  'pyscf', 'pyscf'
-            )
+                  'pyscf', 'pyscf')

@@ -204,6 +204,7 @@ def calculate_rhf(dalton_tmpdir, hamiltonian=None, spin=None, operator_label=Non
     elif source_moenergies == 'dalton':
         job = ccopen(os.path.join(dalton_tmpdir, 'DALTON.OUT'))
         data = job.parse()
+        # pylint: disable=no-member
         E = np.diag([utils.convertor(x, 'eV', 'hartree')
                      for x in data.moenergies[0]])[np.newaxis, ...]
     else:
@@ -304,6 +305,7 @@ def calculate_uhf(dalton_tmpdir, hamiltonian=None, spin=None, operator_label=Non
     elif source_moenergies == 'dalton':
         job = ccopen(os.path.join(dalton_tmpdir, 'DALTON.OUT'))
         data = job.parse()
+        # pylint: disable=no-member
         E = np.diag([utils.convertor(x, 'eV', 'hartree')
                      for x in data.moenergies[0]])[np.newaxis, ...]
         E = np.concatenate((E, E), axis=0)

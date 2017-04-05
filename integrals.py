@@ -62,6 +62,7 @@ def parse_aoproper(integralfilename):
             # top: b'1 A  15 ANTISYMMXDIPVEL  \x00\x00\x00\xa8\x00\x00\x00'
             # end: b'\xa8\x00\x00\x00 \x00\x00\x00' -> (168, 32)
             integrals_as_bytes = record[32:-8]
+            # pylint: disable=no-member
             integrals_tril = np.fromstring(integrals_as_bytes, dtype=np.double)
             # positive solution to x = n*(n+1)/2
             nbasis = int(0.5 * (-1 + np.sqrt(1 + (8 * len(integrals_tril)))))
