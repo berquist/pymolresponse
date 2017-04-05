@@ -1,6 +1,7 @@
 import numpy as np
 
-from cphf import CPHF, Operator
+from cphf import CPHF
+from operators import Operator
 
 from explicit_equations_partial import \
     (form_rpa_a_matrix_mo_singlet_partial,

@@ -9,7 +9,8 @@ from cclib.io import ccopen
 
 import pyscf
 
-from cphf import Operator, CPHF
+from operators import Operator
+from cphf import CPHF
 from utils import get_reference_value_from_file, occupations_from_sirifc
 from ao2mo import perform_tei_ao2mo_rhf_partial, perform_tei_ao2mo_uhf_partial
 from utils import read_file_3, read_file_2, read_file_occupations, read_file_4, dalton_label_to_operator

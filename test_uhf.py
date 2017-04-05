@@ -1,6 +1,7 @@
 import numpy as np
 
-from cphf import CPHF, Operator
+from cphf import CPHF
+from operators import Operator
 
 from ao2mo import (perform_tei_ao2mo_rhf_full, perform_tei_ao2mo_uhf_full)
 

@@ -3,7 +3,7 @@ from __future__ import division
 
 import numpy as np
 
-from cphf import Operator
+from operators import Operator
 from molecular_property import TransitionProperty
 
 

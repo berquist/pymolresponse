@@ -1,7 +1,8 @@
 import numpy as np
 import scipy as sp
 
-from cphf import Operator, CPHF
+from cphf import CPHF
+from operators import Operator
 from utils import form_results
 
 from explicit_equations_full import \
