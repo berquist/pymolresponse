@@ -29,10 +29,14 @@ class MolecularProperty(object):
             self.solver.tei_mo = tei_mo_func(self.pyscfmol, self.mocoeffs, self.pyscfmol.verbose)
             self.solver.tei_mo_type = 'partial'
 
-    def run(self):
+    def run(self, hamiltonian=None, spin=None):
         assert hasattr(self, 'solver')
         assert self.solver is not None
-        self.solver.run(solver='explicit', hamiltonian=self.hamiltonian, spin=self.spin)
+        if not hamiltonian:
+            hamiltonian = self.hamiltonian
+        if not spin:
+            spin = self.spin
+        self.solver.run(solver='explicit', hamiltonian=hamiltonian, spin=spin)
 
 
 class ResponseProperty(MolecularProperty):

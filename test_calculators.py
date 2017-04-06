@@ -161,6 +161,7 @@ def calculate_disk_uhf(testcase, hamiltonian, spin, frequency, label_1, label_2)
 def calculate_rhf(dalton_tmpdir, hamiltonian=None, spin=None, operator_label=None, operator=None, source_moenergies=None, source_mocoeffs=None, source_operator=None):
 
     if operator_label:
+        # TODO add dipvel
         assert operator_label in ('dipole', 'angmom', 'spinorb',)
     assert source_moenergies in ('pyscf', 'dalton',)
     assert source_mocoeffs in ('pyscf', 'dalton',)
@@ -260,6 +261,7 @@ def calculate_rhf(dalton_tmpdir, hamiltonian=None, spin=None, operator_label=Non
 def calculate_uhf(dalton_tmpdir, hamiltonian=None, spin=None, operator_label=None, operator=None, source_moenergies=None, source_mocoeffs=None, source_operator=None):
 
     if operator_label:
+        # TODO add dipvel
         assert operator_label in ('dipole', 'angmom', 'spinorb',)
     assert source_moenergies in ('pyscf', 'dalton',)
     assert source_mocoeffs in ('pyscf', 'dalton',)
