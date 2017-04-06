@@ -298,7 +298,7 @@ def calculate_uhf(dalton_tmpdir, hamiltonian=None, spin=None, operator_label=Non
     occupations = occupations_from_sirifc(ifc)
 
     if source_moenergies == 'pyscf' or source_mocoeffs == 'pyscf':
-        mf = pyscf.scf.UHF(mol)
+        mf = pyscf.scf.uhf.UHF(mol)
         mf.kernel()
 
     if source_moenergies == 'pyscf':

@@ -9,7 +9,7 @@ import pyscf
 import utils
 
 from optrot import ORD
-from test_ecd import molecule_BC2H4_cation_HF_STO3G
+from molecules import molecule_BC2H4_cation_HF_STO3G
 
 
 BC2H4_cation_HF_STO3G_RPA_singlet_nwchem = {

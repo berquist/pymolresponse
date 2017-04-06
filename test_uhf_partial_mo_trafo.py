@@ -32,7 +32,7 @@ def test_explicit_uhf_outside_solver():
 
     mol.build()
 
-    mf = scf.UHF(mol)
+    mf = scf.uhf.UHF(mol)
     mf.kernel()
     C_a = mf.mo_coeff[0, ...]
     C_b = mf.mo_coeff[1, ...]
@@ -157,7 +157,7 @@ def test_explicit_uhf():
 
     mol.build()
 
-    mf = scf.UHF(mol)
+    mf = scf.uhf.UHF(mol)
     mf.kernel()
     C = mf.mo_coeff
     C_a = C[0, ...]
