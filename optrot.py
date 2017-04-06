@@ -12,7 +12,7 @@ from utils import tensor_printer
 class ORD(ResponseProperty):
 
     def __init__(self, pyscfmol, mocoeffs, moenergies, occupations, hamiltonian, spin, frequencies, do_dipvel=False, *args, **kwargs):
-        super(ORD, self).__init__(pyscfmol, mocoeffs, moenergies, occupations, hamiltonian, spin, frequencies, do_dipvel, *args, **kwargs)
+        super().__init__(pyscfmol, mocoeffs, moenergies, occupations, hamiltonian, spin, frequencies, *args, **kwargs)
         self.do_dipvel = do_dipvel
 
     def form_operators(self):

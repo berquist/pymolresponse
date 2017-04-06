@@ -138,7 +138,7 @@ def test_ECD_RPA_singlet_BC2H4_cation_HF_STO3G():
     mf.scf()
 
     C = utils.fix_mocoeffs_shape(mf.mo_coeff)
-    E = np.diag(mf.mo_energy)[np.newaxis, ...]
+    E = utils.fix_moenergies_shape(mf.mo_energy)
     occupations = utils.occupations_from_pyscf_mol(mol, C)
 
     ecd_dipvel_rpa = ECD(mol, C, E, occupations, hamiltonian='rpa', spin='singlet', do_dipvel=True)

@@ -255,10 +255,34 @@ def fix_mocoeffs_shape(mocoeffs):
     return mocoeffs_new
 
 
-# TODO
-# def fix_moenergies_shape(moenergies):
-#     shape = moenergies.shape
-#     return moenergies_new
+def fix_moenergies_shape(moenergies):
+    shape = moenergies.shape
+    ls = len(shape)
+    assert ls in (1, 2, 3)
+    if ls == 1:
+        # It's a vector.
+        moenergies_new = np.diag(moenergies)[np.newaxis, ...]
+    elif ls == 2:
+        # If it's a square matrix, assume it's already diagonal. If it
+        # isn't a square matrix, then it probably has one or two
+        # columns, one for each spin case.
+        if shape[0] == shape[1]:
+            moenergies_new = moenergies[np.newaxis, ...]
+        else:
+            assert shape[0] in (1, 2)
+            if shape[0] == 1:
+                # (1, norb)
+                moenergies_new = np.diag(moenergies[:, 0])[np.newaxis, ...]
+            else:
+                # (2, norb)
+                moenergies_alph = np.diag(moenergies[0, :])[np.newaxis, ...]
+                moenergies_beta = np.diag(moenergies[1, :])[np.newaxis, ...]
+                moenergies_new = np.concatenate((moenergies_alph, moenergies_beta), axis=0)
+    else:
+        assert shape[0] in (1, 2)
+        assert shape[1] == shape[2]
+        moenergies_new = moenergies
+    return moenergies_new
 
 
 def read_dalton_propfile(tmpdir):

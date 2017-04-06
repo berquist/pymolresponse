@@ -294,6 +294,8 @@ if __name__ == '__main__':
 
     from pyscf import ao2mo, gto, scf
 
+    import utils
+
     mol = gto.Mole()
     mol.verbose = 5
     with open('water.xyz') as fh:
@@ -305,9 +307,11 @@ if __name__ == '__main__':
 
     mf = scf.RHF(mol)
     mf.kernel()
-    mocoeffs = mf.mo_coeff
-    moenergies = mf.mo_energy
-    norb = mocoeffs.shape[1]
+
+    # In the future, we want the full Fock matrices in the MO basis.
+    fock = utils.fix_moenergies_shape(mf.mo_energy)
+    mocoeffs = utils.fix_mocoeffs_shape(mf.mo_coeff)
+    norb = mocoeffs.shape[-1]
     tei_mo = ao2mo.full(mol, mocoeffs, aosym='s4', compact=False).reshape(norb, norb, norb, norb)
 
     ao_integrals_dipole = mol.intor('cint1e_r_sph', comp=3)
@@ -335,9 +339,6 @@ if __name__ == '__main__':
     operator_angmom.ao_integrals = ao_integrals_angmom
     operator_spnorb.ao_integrals = ao_integrals_spnorb
 
-    # In the future, we want the full Fock matrices in the MO basis.
-    fock = np.diag(moenergies)[np.newaxis, ...]
-    mocoeffs = mocoeffs[np.newaxis, ...]
     nocc_a, nocc_b = mol.nelec
     nvirt_a, nvirt_b = norb - nocc_a, norb - nocc_b
     occupations = [nocc_a, nvirt_a, nocc_b, nvirt_b]
