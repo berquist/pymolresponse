@@ -27,6 +27,7 @@ Currently, the goal is to provide:
 * Because the dimensioning of all arrays is based around the ov/vo space, methods that have non-zero contributions from the oo space (specifically derivatives of GIAOs/London orbitals w.r.t. the B-field) are not currently possible.
 * No iterative schemes are implemented, only "exact" methods involving explicit construction of the full orbital Hessian and then inverting it (for response) or diagonalizing it (for excitation energies/transition moments/residues). Better have lots of memory!
 * Linear response and single residues only.
+* _unrestricted diagonalization-based properties are not implemented/working_
 
 # Desired features (in no specific order)
 
