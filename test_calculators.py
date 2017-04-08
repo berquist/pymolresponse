@@ -1,8 +1,11 @@
 import os.path
 import numpy as np
 
-from daltools import sirifc
-from daltools import mol as dalmol
+try:
+    from daltools import sirifc
+    from daltools import mol as dalmol
+except:
+    pass
 
 from cclib.parser import utils
 from cclib.io import ccopen

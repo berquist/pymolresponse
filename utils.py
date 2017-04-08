@@ -2,7 +2,26 @@ import os.path
 
 import numpy as np
 
-from itertools import accumulate
+# Define for any Python version <= 3.3,
+# See https://github.com/kachayev/fn.py/commit/391824c43fb388e0eca94e568ff62cc35b543ecb
+import sys
+if sys.version_info.major == 2 or sys.version_info.minor <= 3:
+    import operator
+    def accumulate(iterable, func=operator.add):
+        """Return running totals"""
+        # accumulate([1,2,3,4,5]) --> 1 3 6 10 15
+        # accumulate([1,2,3,4,5], operator.mul) --> 1 2 6 24 120
+        it = iter(iterable)
+        try:
+            total = next(it)
+        except StopIteration:
+            return
+        yield total
+        for element in it:
+            total = func(total, element)
+            yield total
+else:
+    from itertools import accumulate
 
 
 def form_results(vecs_property, vecs_response):
