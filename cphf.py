@@ -3,8 +3,8 @@ from __future__ import division
 
 import numpy as np
 
-from utils import (form_results, np_load, parse_int_file_2,
-                   repack_matrix_to_vector)
+from utils import (form_results, form_vec_energy_differences, np_load,
+                   parse_int_file_2, repack_matrix_to_vector)
 from explicit_equations_full import \
     (form_rpa_a_matrix_mo_singlet_full,
      form_rpa_a_matrix_mo_singlet_ss_full,
@@ -123,6 +123,7 @@ class CPHF(object):
         else:
             pass
 
+        self.form_uncoupled_results()
         self.form_results()
 
         # for operator in self.operators:
@@ -423,6 +424,91 @@ class CPHF(object):
                 rspvecs_operator_beta = tmp_beta
                 operator.rspvecs_alph.append(rspvecs_operator_alph)
                 operator.rspvecs_beta.append(rspvecs_operator_beta)
+
+    def form_uncoupled_results(self):
+
+        # We avoid the formation of the full Hessian, but the energy
+        # differences on the diagonal are still needed. Form them
+        # here. The dynamic frequency contribution will be handled
+        # inside the main loop.
+        nocc_a, _, nocc_b, _ = self.occupations
+        moene_alph = np.diag(self.moenergies[0, ...])
+        moene_occ_alph = moene_alph[:nocc_a]
+        moene_virt_alph = moene_alph[nocc_a:]
+        ediff_alph = form_vec_energy_differences(moene_occ_alph, moene_virt_alph)
+        ediff_supervector_alph = np.concatenate((ediff_alph, ediff_alph))
+        ediff_supervector_alph_static = ediff_supervector_alph[..., np.newaxis]
+        nov_alph = len(ediff_alph)
+        if self.is_uhf:
+            moene_beta = np.diag(self.moenergies[1, ...])
+            moene_occ_beta = moene_beta[:nocc_b]
+            moene_virt_beta = moene_beta[nocc_b:]
+            ediff_beta = form_vec_energy_differences(moene_occ_beta, moene_virt_beta)
+            ediff_supervector_beta = np.concatenate((ediff_beta, ediff_beta))
+            ediff_supervector_beta_static = ediff_supervector_beta[..., np.newaxis]
+            nov_beta = len(ediff_beta)
+
+        self.uncoupled_results = []
+
+        for f in range(len(self.frequencies)):
+
+            frequency = self.frequencies[f]
+            ediff_supervector_alph = ediff_supervector_alph_static.copy()
+            ediff_supervector_alph[:nov_alph, ...] = ediff_supervector_alph_static[:nov_alph, ...] - frequency
+            ediff_supervector_alph[nov_alph:, ...] = ediff_supervector_alph_static[nov_alph:, ...] + frequency
+            if self.is_uhf:
+                ediff_supervector_beta = ediff_supervector_beta_static.copy()
+                ediff_supervector_beta[:nov_beta, ...] = ediff_supervector_beta_static[:nov_beta, ...] - frequency
+                ediff_supervector_beta[nov_beta:, ...] = ediff_supervector_beta_static[nov_beta:, ...] + frequency
+
+            # dim_rows -> (number of operators) * (number of components for each operator)
+            # dim_cols -> total number of response vectors
+            dim_rows = sum(self.operators[i].mo_integrals_ai_supervector_alph.shape[0]
+                           for i in range(len(self.operators)))
+            dim_cols = dim_rows
+
+            # FIXME
+            results = np.zeros(shape=(dim_rows, dim_cols),
+                               dtype=self.operators[0].mo_integrals_ai_supervector_alph.dtype)
+
+            # Form the result blocks between each pair of
+            # operators. Ignore any potential symmetry in the final
+            # result matrix for now.
+            result_blocks = []
+            row_starts = []
+            col_starts = []
+            row_start = 0
+            for iop1, op1 in enumerate(self.operators):
+                col_start = 0
+                for iop2, op2 in enumerate(self.operators):
+                    result_block = 0.0
+                    result_block_alph = form_results(op1.mo_integrals_ai_supervector_alph,
+                                                     op2.mo_integrals_ai_supervector_alph / ediff_supervector_alph)
+                    result_block += result_block_alph
+                    if self.is_uhf:
+                        result_block_beta = form_results(op1.mo_integrals_ai_supervector_beta,
+                                                         op2.mo_integrals_ai_supervector_beta / ediff_supervector_beta)
+                        result_block += result_block_beta
+                    result_blocks.append(result_block)
+                    row_starts.append(row_start)
+                    col_starts.append(col_start)
+                    col_start += op2.mo_integrals_ai_supervector_alph.shape[0]
+                row_start += op1.mo_integrals_ai_supervector_alph.shape[0]
+
+            # Put each of the result blocks back in the main results
+            # matrix.
+            assert len(row_starts) == len(col_starts) == len(result_blocks)
+            for idx, result_block in enumerate(result_blocks):
+                nr, nc = result_block.shape
+                rs, cs = row_starts[idx], col_starts[idx]
+                results[rs:rs+nr, cs:cs+nc] = result_block
+
+            # The / 2 is because of the supervector part.
+            if self.is_uhf:
+                results = 2 * results / 2
+            else:
+                results = 4 * results / 2
+            self.uncoupled_results.append(results)
 
     def form_results(self):
 

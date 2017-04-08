@@ -313,3 +313,15 @@ def tensor_printer(tensor):
     # print(np.trace(tensor) / tensor.shape[0])
     # print(aniso)
     return (eigvals, iso, aniso)
+
+
+def form_vec_energy_differences(moene_occ, moene_virt):
+    nocc = len(moene_occ)
+    nvirt = len(moene_virt)
+    nov = nocc * nvirt
+    ediff = np.zeros(nov)
+    for i in range(nocc):
+        for a in range(nvirt):
+            ia = (i * nvirt) + a
+            ediff[ia] = moene_virt[a] - moene_occ[i]
+    return ediff
