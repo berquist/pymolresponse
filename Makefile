@@ -4,4 +4,7 @@ pylint:
 	pylint *.py
 
 pytest:
-	OMP_NUM_THREADS=1 pytest -v test_*.py
+	pytest -v test_*.py
+
+nosetest:
+	nosetests -v test_*.py

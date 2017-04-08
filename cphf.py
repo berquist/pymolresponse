@@ -3,9 +3,9 @@ from __future__ import division
 
 import numpy as np
 
-from utils import (form_results, form_vec_energy_differences, np_load,
+from .utils import (form_results, form_vec_energy_differences, np_load,
                    parse_int_file_2, repack_matrix_to_vector)
-from explicit_equations_full import \
+from .explicit_equations_full import \
     (form_rpa_a_matrix_mo_singlet_full,
      form_rpa_a_matrix_mo_singlet_ss_full,
      form_rpa_a_matrix_mo_singlet_os_full,
@@ -14,7 +14,7 @@ from explicit_equations_full import \
      form_rpa_b_matrix_mo_singlet_ss_full,
      form_rpa_b_matrix_mo_singlet_os_full,
      form_rpa_b_matrix_mo_triplet_full)
-from explicit_equations_partial import \
+from .explicit_equations_partial import \
     (form_rpa_a_matrix_mo_singlet_partial,
      form_rpa_a_matrix_mo_singlet_ss_partial,
      form_rpa_a_matrix_mo_singlet_os_partial,

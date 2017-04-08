@@ -4,9 +4,9 @@ from __future__ import division
 import numpy as np
 import scipy.constants as spc
 
-from operators import Operator
-from molecular_property import ResponseProperty
-from utils import tensor_printer
+from .operators import Operator
+from .molecular_property import ResponseProperty
+from .utils import tensor_printer
 
 
 class ORD(ResponseProperty):

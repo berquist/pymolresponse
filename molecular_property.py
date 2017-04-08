@@ -1,8 +1,8 @@
 import numpy as np
 
-import ao2mo
-from cphf import CPHF
-from td import TDHF, TDA
+from . import ao2mo
+from .cphf import CPHF
+from .td import TDHF, TDA
 
 
 class MolecularProperty(object):

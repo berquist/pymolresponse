@@ -1,11 +1,11 @@
 import numpy as np
 
-from cphf import CPHF
-from operators import Operator
+from .cphf import CPHF
+from .operators import Operator
 
-from ao2mo import (perform_tei_ao2mo_rhf_full, perform_tei_ao2mo_uhf_full)
+from .ao2mo import (perform_tei_ao2mo_rhf_full, perform_tei_ao2mo_uhf_full)
 
-from explicit_equations_full import \
+from .explicit_equations_full import \
     (form_rpa_a_matrix_mo_singlet_full,
      form_rpa_a_matrix_mo_singlet_ss_full,
      form_rpa_a_matrix_mo_singlet_os_full,
@@ -13,7 +13,7 @@ from explicit_equations_full import \
      form_rpa_b_matrix_mo_singlet_ss_full,
      form_rpa_b_matrix_mo_singlet_os_full)
 
-from utils import (np_load, occupations_from_pyscf_mol)
+from .utils import (np_load, occupations_from_pyscf_mol)
 
 
 def test_explicit_uhf_from_rhf_outside_solver():

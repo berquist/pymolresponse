@@ -5,10 +5,10 @@ import numpy as np
 
 import pyscf
 
-import ao2mo
-import utils
+from . import ao2mo
+from . import utils
 
-from td import TDA, TDHF
+from .td import TDA, TDHF
 
 
 def test_HF_both_singlet_HF_STO3G():

@@ -1,7 +1,7 @@
 import numpy as np
-from utils import get_reference_value_from_file, clean_dalton_label, dalton_label_to_operator
-from test_calculators import calculate_rhf, calculate_uhf
-from integrals import parse_aoproper
+from .utils import get_reference_value_from_file, clean_dalton_label, dalton_label_to_operator
+from .test_calculators import calculate_rhf, calculate_uhf
+from .integrals import parse_aoproper
 
 frequency = '0.000000e+00'
 

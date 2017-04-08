@@ -3,8 +3,8 @@ from __future__ import division
 
 import numpy as np
 
-from operators import Operator
-from molecular_property import TransitionProperty
+from .operators import Operator
+from .molecular_property import TransitionProperty
 
 
 class ECD(TransitionProperty):

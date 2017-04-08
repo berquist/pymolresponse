@@ -1,5 +1,5 @@
-from utils import get_reference_value_from_file
-from test_calculators import calculate_rhf, calculate_uhf
+from .utils import get_reference_value_from_file
+from .test_calculators import calculate_rhf, calculate_uhf
 
 frequency = '0.000000e+00'
 

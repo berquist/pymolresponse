@@ -5,9 +5,9 @@ import numpy as np
 
 import pyscf
 
-import utils
+from . import utils
 
-from ecd import ECD
+from .ecd import ECD
 
 
 BC2H4_cation_HF_STO3G_RPA_singlet_nwchem = {

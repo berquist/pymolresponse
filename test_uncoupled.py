@@ -2,10 +2,10 @@ import numpy as np
 
 import pyscf
 
-import utils
-from cphf import CPHF
-from operators import Operator
-import ao2mo
+from . import utils
+from .cphf import CPHF
+from .operators import Operator
+from . import ao2mo
 
 
 def mol_atom(symbol='He', charge=0, spin=0, basis='sto-3g', verbose=0):

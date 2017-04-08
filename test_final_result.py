@@ -1,9 +1,9 @@
 import numpy as np
 
-from utils import np_load, parse_int_file_2
-from cphf import CPHF
-from operators import Operator
-from test_runners import run_as_many_tests_as_possible_rhf_disk, run_as_many_tests_as_possible_uhf_disk
+from .utils import np_load, parse_int_file_2
+from .cphf import CPHF
+from .operators import Operator
+from .test_runners import run_as_many_tests_as_possible_rhf_disk, run_as_many_tests_as_possible_uhf_disk
 
 
 def test_final_result_rhf_h2o_sto3g_rpa_singlet():

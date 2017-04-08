@@ -1,7 +1,7 @@
 import numpy as np
 import scipy.constants as spc
 
-from utils import repack_matrix_to_vector
+from .utils import repack_matrix_to_vector
 
 
 class Operator(object):

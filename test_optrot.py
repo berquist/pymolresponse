@@ -6,10 +6,10 @@ import scipy.constants as spc
 
 import pyscf
 
-import utils
+from . import utils
 
-from optrot import ORD
-from test_ecd import molecule_BC2H4_cation_HF_STO3G
+from .optrot import ORD
+from .test_ecd import molecule_BC2H4_cation_HF_STO3G
 
 
 BC2H4_cation_HF_STO3G_RPA_singlet_nwchem = {

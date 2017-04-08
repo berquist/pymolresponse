@@ -1,4 +1,4 @@
-from utils import dalton_label_to_operator
+from .utils import dalton_label_to_operator
 
 
 def run_dalton_label_to_operator(dalton_label, operator_label, slice_idx, is_imaginary, is_spin_dependent):
@@ -14,7 +14,7 @@ def run_dalton_label_to_operator(dalton_label, operator_label, slice_idx, is_ima
 
 def run_as_many_tests_as_possible_rhf_disk(testcase):
 
-    from test_calculators import calculate_disk_rhf
+    from .test_calculators import calculate_disk_rhf
 
     thresh = 5.0e-3
 
@@ -56,7 +56,7 @@ def run_as_many_tests_as_possible_rhf_disk(testcase):
 
 def run_as_many_tests_as_possible_uhf_disk(testcase):
 
-    from test_calculators import calculate_disk_uhf
+    from .test_calculators import calculate_disk_uhf
 
     thresh = 1.0e-1
 

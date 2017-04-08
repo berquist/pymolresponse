@@ -1,6 +1,6 @@
 import pyscf
 
-from utils import fix_mocoeffs_shape, occupations_from_pyscf_mol
+from .utils import fix_mocoeffs_shape, occupations_from_pyscf_mol
 
 
 def perform_tei_ao2mo_rhf_full(pyscfmol, C, verbose=1):
