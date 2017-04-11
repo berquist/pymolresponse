@@ -216,4 +216,5 @@ def test_ECD_RPA_singlet_BC2H4_cation_HF_STO3G():
 
 
 if __name__ == '__main__':
-    test_ECD_RPA_singlet_BC2H4_cation_HF_STO3G()
+    # test_ECD_RPA_singlet_BC2H4_cation_HF_STO3G()
+    pass

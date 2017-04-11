@@ -360,3 +360,12 @@ if __name__ == '__main__':
             thresh = 1.0e-10
             cphf.results[0][cphf.results[0] < thresh] = 0.0
             print(cphf.results[0])
+
+if __name__ == '__main__':
+    # test_final_result_rhf_h2o_sto3g_rpa_singlet()
+    # test_final_result_rhf_h2o_sto3g_rpa_triplet()
+    # test_final_result_rhf_h2o_sto3g_tda_singlet()
+    # test_final_result_rhf_h2o_sto3g_tda_triplet()
+    # test_as_many_as_possible_rhf_disk()
+    # test_as_many_as_possible_uhf_disk()
+    pass

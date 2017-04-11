@@ -216,5 +216,6 @@ def test_explicit_uhf():
 
 
 if __name__ == '__main__':
-    pass
     # test_explicit_uhf_outside_solver()
+    # test_explicit_uhf()
+    pass

@@ -110,4 +110,5 @@ def test_ORD_RPA_singlet_BC2H4_cation_HF_STO3G():
     return
 
 if __name__ == '__main__':
-    test_ORD_RPA_singlet_BC2H4_cation_HF_STO3G()
+    # test_ORD_RPA_singlet_BC2H4_cation_HF_STO3G()
+    pass

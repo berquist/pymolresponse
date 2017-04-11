@@ -108,3 +108,7 @@ HF_neutral_singlet_HF_STO3G_RPA_qchem = {
         0.0686085799,
     ],
 }
+
+if __name__ == '__main__':
+    # test_HF_both_singlet_HF_STO3G()
+    pass
