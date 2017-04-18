@@ -42,3 +42,20 @@ def molecule_LiH_cation_HF_STO3G(verbose=0):
     mol.spin = 1
 
     return mol
+
+
+def molecule_0w4a_dication_HF_321G(verbose=0):
+
+    mol = pyscf.gto.Mole()
+    mol.verbose = verbose
+    mol.output = None
+
+    with open('0w4a.xyz') as fh:
+        next(fh)
+        next(fh)
+        mol.atom = fh.read()
+    mol.basis = '3-21g'
+    mol.charge = 2
+    mol.spin = 1
+
+    return mol

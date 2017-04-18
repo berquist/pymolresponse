@@ -99,7 +99,7 @@ def parse_aoproper(integralfilename):
 
 if __name__ == '__main__':
     dalton_integrals = parse_aoproper('r_lih_hf_sto-3g/dalton_response_rpa_singlet/AOPROPER')
-    from utils import dalton_label_to_operator
+    from .utils import dalton_label_to_operator
     labels = dalton_integrals.keys()
     for label in labels:
         print(dalton_label_to_operator(label))

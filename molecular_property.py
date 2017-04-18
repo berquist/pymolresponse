@@ -8,12 +8,18 @@ from .td import TDHF, TDA
 class MolecularProperty(object):
 
     def __init__(self, pyscfmol, mocoeffs, moenergies, occupations, hamiltonian, spin, *args, **kwargs):
+        # TODO add more type assertions (pyscfmol)
+        assert isinstance(mocoeffs, np.ndarray)
+        assert isinstance(moenergies, np.ndarray)
+        assert isinstance(occupations, (np.ndarray, tuple, list))
+        assert isinstance(hamiltonian, str)
+        assert isinstance(spin, str)
         self.pyscfmol = pyscfmol
         self.mocoeffs = mocoeffs
         self.moenergies = moenergies
-        self.occupations = occupations
-        self.hamiltonian = hamiltonian
-        self.spin = spin
+        self.occupations = np.asarray(occupations)
+        self.hamiltonian = hamiltonian.lower()
+        self.spin = spin.lower()
 
         self.solver = None
 

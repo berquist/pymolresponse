@@ -19,6 +19,7 @@ Currently, the goal is to provide:
 
 * [pytest](http://doc.pytest.org/en/latest/) (for testing)
 * [daltools](https://github.com/vahtras/daltools) (for testing)
+* [periodictable](https://github.com/pkienzle/periodictable) (for calculating the center of mass)
 
 # Caveats
 

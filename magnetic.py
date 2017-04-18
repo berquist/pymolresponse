@@ -4,6 +4,7 @@ from __future__ import division
 import numpy as np
 import scipy.constants as spc
 
+from . import helpers
 from .operators import Operator
 from .molecular_property import ResponseProperty
 from .utils import tensor_printer
@@ -38,13 +39,37 @@ class Magnetizability(ResponseProperty):
 
 class ElectronicGTensor(ResponseProperty):
 
-    def __init__(self, pyscfmol, mocoeffs, moenergies, occupations, hamiltonian, spin, *args, **kwargs):
+    def __init__(self, pyscfmol, mocoeffs, moenergies, occupations, hamiltonian, spin, gauge_origin='ecc', *args, **kwargs):
         super().__init__(pyscfmol, mocoeffs, moenergies, occupations, hamiltonian, spin, frequencies=[0.0], *args, **kwargs)
+
+        assert isinstance(gauge_origin, (str, list, tuple, np.ndarray))
+        if isinstance(gauge_origin, str):
+            coords = pyscfmol.atom_coords()
+            charges = pyscfmol.atom_charges()
+            is_uhf = mocoeffs.shape[0] == 2
+            if is_uhf:
+                Ca = mocoeffs[0, ...]
+                Cb = mocoeffs[1, ...]
+                nocc_a, _, nocc_b, _ = occupations
+                Da = np.dot(Ca[:, :nocc_a], Ca[:, :nocc_a].T)
+                Db = np.dot(Cb[:, :nocc_b], Cb[:, :nocc_b].T)
+                D = Da + Db
+            else:
+                C = mocoeffs[0, ...]
+                nocc_a, _, _, _ = occupations
+                D = 2 * np.dot(C[:, :nocc_a], C[:, :nocc_a].T)
+            self.gauge_origin = helpers.calculate_origin_pyscf(gauge_origin, coords, charges, D, pyscfmol, do_print=True)
+        else:
+            assert len(gauge_origin) == 3
+            if isinstance(gauge_origin, np.ndarray):
+                assert gauge_origin.flatten().shape == (3,)
+            self.gauge_origin = np.asarray(gauge_origin)
 
     def form_operators(self):
 
         # angular momentum
         operator_angmom = Operator(label='angmom', is_imaginary=True, is_spin_dependent=False, triplet=False)
+        self.pyscfmol.set_common_orig(self.gauge_origin)
         integrals_angmom_ao = self.pyscfmol.intor('cint1e_cg_irxp_sph', comp=3)
         operator_angmom.ao_integrals = integrals_angmom_ao
         self.solver.add_operator(operator_angmom)
@@ -73,10 +98,10 @@ class ElectronicGTensor(ResponseProperty):
     def form_results(self):
 
         operator_angmom = self.solver.operators[0]
-        angmom_grad_alph = operator_angmom.mo_integrals_ai_supervector_alph
-        print(angmom_grad_alph[0, :, 0])
-        angmom_resp_alph = operator_angmom.rspvecs_alph[0]
-        angmom_resp_beta = operator_angmom.rspvecs_beta[0]
+        # angmom_grad_alph = operator_angmom.mo_integrals_ai_supervector_alph
+        # print(angmom_grad_alph[0, :, 0])
+        # angmom_resp_alph = operator_angmom.rspvecs_alph[0]
+        # angmom_resp_beta = operator_angmom.rspvecs_beta[0]
         # print(angmom_resp_alph.shape)
         # print(np.linalg.norm(angmom_resp_alph[0, :, 0]))
         # print(angmom_resp_beta.shape)
@@ -101,8 +126,14 @@ class ElectronicGTensor(ResponseProperty):
         block_8 = results[6:9, 3:6] # spinorb_eff/spinorb
         block_9 = results[6:9, 6:9] # spinorb_eff/spinorb_eff
 
-        res_1 = block_2
-        res_2 = block_3 - block_2
+        nalph, nbeta = self.pyscfmol.nelec
+        exact_spin = 0.5 * (nalph - nbeta)
+        res_1 = block_2 / exact_spin
+        res_2 = (block_3 - block_2) / exact_spin
         res = res_1 + res_2
-        tensor_printer(res_1)
-        # tensor_printer(res * 1e6)
+
+        # principal values are sqrt(eigvals(g.T * g)
+        prin_1 = np.sqrt(np.linalg.eigvals(np.dot(res_1.T, res_1)))
+
+        self.g_oz_soc_1 = res_1
+        self.g_oz_soc_1_eig = prin_1

@@ -4,6 +4,10 @@ from __future__ import division
 import scipy.constants as spc
 
 
+## Dipole
+
+convfac_au_to_debye = 2.541746230211
+
 ## Electronic circular dichroism (ECD)
 
 # ESUECD =  ECHARGE*XTANG*CCM*1D36*ECHARGE*HBAR/EMASS

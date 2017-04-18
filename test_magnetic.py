@@ -6,11 +6,13 @@ import scipy.constants as spc
 
 import pyscf
 
+from . import molecules
 from . import utils
 
 from .magnetic import Magnetizability, ElectronicGTensor
-from molecules import molecule_BC2H4_neutral_radical_HF_STO3G
 
+
+# These were generated using DALTON.
 ref_magnetizability_rhf = np.array([[9.491770490066, -0.000297478459, -2.237615614426],
                                     [-0.000297478459, 51.486607258336, 0.010790985557],
                                     [-2.237615614426, 0.010790985557, 11.943759880337]])
@@ -92,20 +94,74 @@ def test_magnetizability_uhf():
 
     return
 
-# def test_electronicgtensor():
 
-#     mol = pyscf.gto.Mole()
-#     mol.verbose = 5
-#     mol.output = None
-#     with open('0w4a.xyz') as fh:
-#         next(fh)
-#         next(fh)
-#         mol.atom = fh.read()
-#     mol.basis = '3-21g'
-#     mol.charge = 2
-#     mol.spin = 1
+# These were generated with this program.
+ref_electronicgtensor_tiny = np.array([[1.15894158e-05, 0.0, 0.0],
+                                       [0.0, 1.15894158e-05, 0.0],
+                                       [0.0, 0.0, 0.0]])
+ref_electronicgtensor_small = np.array([[2.68449088e-03, -7.88488679e-04, -1.71222252e-04],
+                                        [-6.68698723e-04, 2.61494786e-03, -4.68601905e-05],
+                                        [-1.67939714e-04, 1.02402038e-05, 4.19142287e-03]])
+ref_electronicgtensor_large = np.array([[0.30798458, -0.07215188, 0.07146523],
+                                        [-0.07215626, 0.82904402, -0.52638538],
+                                        [0.07145804, -0.5263783, 0.82010589]])
 
-#     # mol = molecule_BC2H4_neutral_radical_HF_STO3G(5)
+
+def test_electronicgtensor_tiny():
+
+    mol = molecules.molecule_LiH_cation_HF_STO3G(5)
+    mol.build()
+
+    mf = pyscf.scf.uhf.UHF(mol)
+    mf.scf()
+
+    C = utils.fix_mocoeffs_shape(mf.mo_coeff)
+    E = utils.fix_moenergies_shape(mf.mo_energy)
+    occupations = utils.occupations_from_pyscf_mol(mol, C)
+
+    gtensor_calculator = ElectronicGTensor(mol, C, E, occupations, hamiltonian='rpa', spin='singlet')
+    gtensor_calculator.form_operators()
+    gtensor_calculator.run()
+    gtensor_calculator.form_results()
+
+    print(ref_electronicgtensor_tiny)
+    print(gtensor_calculator.g_oz_soc_1)
+
+    assert np.all(np.equal(np.sign(ref_electronicgtensor_tiny),
+                           np.sign(utils.screen(gtensor_calculator.g_oz_soc_1))))
+
+    return
+
+
+def test_electronicgtensor_small():
+
+    mol = molecules.molecule_BC2H4_neutral_radical_HF_STO3G(5)
+    mol.build()
+
+    mf = pyscf.scf.uhf.UHF(mol)
+    mf.scf()
+
+    C = utils.fix_mocoeffs_shape(mf.mo_coeff)
+    E = utils.fix_moenergies_shape(mf.mo_energy)
+    occupations = utils.occupations_from_pyscf_mol(mol, C)
+
+    gtensor_calculator = ElectronicGTensor(mol, C, E, occupations, hamiltonian='rpa', spin='singlet')
+    gtensor_calculator.form_operators()
+    gtensor_calculator.run()
+    gtensor_calculator.form_results()
+
+    print(ref_electronicgtensor_small)
+    print(gtensor_calculator.g_oz_soc_1)
+
+    assert np.all(np.equal(np.sign(ref_electronicgtensor_small),
+                           np.sign(gtensor_calculator.g_oz_soc_1)))
+
+    return
+
+
+# def test_electronicgtensor_large():
+
+#     mol = molecules.molecule_0w4a_dication_HF_321G(5)
 #     mol.build()
 
 #     mf = pyscf.scf.uhf.UHF(mol)
@@ -115,18 +171,22 @@ def test_magnetizability_uhf():
 #     E = utils.fix_moenergies_shape(mf.mo_energy)
 #     occupations = utils.occupations_from_pyscf_mol(mol, C)
 
-#     # mol.set_common_orig([0.00000000, 0.00000000, 0.94703972])
-#     # mol.set_common_orig([-0.00838852, 0.73729752, -1.38870875])
-#     mol.set_common_orig([-1.44316614, -1.93460731, -0.04099788])
 #     gtensor_calculator = ElectronicGTensor(mol, C, E, occupations, hamiltonian='rpa', spin='singlet')
 #     gtensor_calculator.form_operators()
 #     gtensor_calculator.run()
 #     gtensor_calculator.form_results()
 
+#     print(ref_electronicgtensor_large)
+#     print(gtensor_calculator.g_oz_soc_1)
+
+#     assert np.all(np.equal(np.sign(ref_electronicgtensor_large),
+#                            np.sign(gtensor_calculator.g_oz_soc_1)))
+
 #     return
 
 if __name__ == '__main__':
-    # test_magnetizability_rhf()
-    # test_magnetizability_uhf()
-    # test_electronicgtensor()
-    pass
+    test_magnetizability_rhf()
+    test_magnetizability_uhf()
+    test_electronicgtensor_tiny()
+    test_electronicgtensor_small()
+    # test_electronicgtensor_large()

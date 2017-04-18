@@ -344,3 +344,12 @@ def form_vec_energy_differences(moene_occ, moene_virt):
             ia = (i * nvirt) + a
             ediff[ia] = moene_virt[a] - moene_occ[i]
     return ediff
+
+
+def screen(mat, thresh=1.0e-16):
+    """Set all values smaller than the given threshold to zero
+    (considering them as numerical noise).
+    """
+    mat_screened = mat.copy()
+    mat_screened[np.abs(mat) <= thresh] = 0.0
+    return mat_screened
