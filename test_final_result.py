@@ -1,6 +1,7 @@
 import numpy as np
 
-from .utils import np_load, parse_int_file_2
+from . import utils
+
 from .cphf import CPHF
 from .operators import Operator
 from .test_runners import run_as_many_tests_as_possible_rhf_disk, run_as_many_tests_as_possible_uhf_disk
@@ -10,26 +11,21 @@ def test_final_result_rhf_h2o_sto3g_rpa_singlet():
     hamiltonian = 'rpa'
     spin = 'singlet'
 
-    C = np_load('C.npz')
-    C = C[np.newaxis, ...]
-    E = np_load('F_MO.npz')
-    E = E[np.newaxis, ...]
-    TEI_MO = np_load('TEI_MO.npz')
+    C = utils.fix_mocoeffs_shape(utils.np_load('C.npz'))
+    E = utils.fix_moenergies_shape(utils.np_load('F_MO.npz'))
+    TEI_MO = utils.np_load('TEI_MO.npz')
     # nocc_alph, nvirt_alph, nocc_beta, nvirt_beta
     occupations = [5, 2, 5, 2]
     stub = 'h2o_sto3g_'
     dim = occupations[0] + occupations[1]
-    mat_dipole_x = parse_int_file_2(stub + "mux.dat", dim)
-    mat_dipole_y = parse_int_file_2(stub + "muy.dat", dim)
-    mat_dipole_z = parse_int_file_2(stub + "muz.dat", dim)
+    mat_dipole_x = utils.parse_int_file_2(stub + "mux.dat", dim)
+    mat_dipole_y = utils.parse_int_file_2(stub + "muy.dat", dim)
+    mat_dipole_z = utils.parse_int_file_2(stub + "muz.dat", dim)
 
     cphf = CPHF(C, E, occupations)
     frequencies = (0.0, 0.02, 0.06, 0.1)
     cphf.frequencies = frequencies
-    ao_integrals_dipole = np.empty(shape=(3, dim, dim))
-    ao_integrals_dipole[0, :, :] = mat_dipole_x
-    ao_integrals_dipole[1, :, :] = mat_dipole_y
-    ao_integrals_dipole[2, :, :] = mat_dipole_z
+    ao_integrals_dipole = np.stack((mat_dipole_x, mat_dipole_y, mat_dipole_z), axis=0)
     operator_dipole = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False)
     operator_dipole.ao_integrals = ao_integrals_dipole
     cphf.add_operator(operator_dipole)
@@ -74,26 +70,21 @@ def test_final_result_rhf_h2o_sto3g_rpa_triplet():
     hamiltonian = 'rpa'
     spin = 'triplet'
 
-    C = np_load('C.npz')
-    C = C[np.newaxis, ...]
-    E = np_load('F_MO.npz')
-    E = E[np.newaxis, ...]
-    TEI_MO = np_load('TEI_MO.npz')
+    C = utils.fix_mocoeffs_shape(utils.np_load('C.npz'))
+    E = utils.fix_moenergies_shape(utils.np_load('F_MO.npz'))
+    TEI_MO = utils.np_load('TEI_MO.npz')
     # nocc_alph, nvirt_alph, nocc_beta, nvirt_beta
     occupations = [5, 2, 5, 2]
     stub = 'h2o_sto3g_'
     dim = occupations[0] + occupations[1]
-    mat_dipole_x = parse_int_file_2(stub + "mux.dat", dim)
-    mat_dipole_y = parse_int_file_2(stub + "muy.dat", dim)
-    mat_dipole_z = parse_int_file_2(stub + "muz.dat", dim)
+    mat_dipole_x = utils.parse_int_file_2(stub + "mux.dat", dim)
+    mat_dipole_y = utils.parse_int_file_2(stub + "muy.dat", dim)
+    mat_dipole_z = utils.parse_int_file_2(stub + "muz.dat", dim)
 
     cphf = CPHF(C, E, occupations)
     frequencies = (0.0, 0.02, 0.06, 0.1)
     cphf.frequencies = frequencies
-    ao_integrals_dipole = np.empty(shape=(3, dim, dim))
-    ao_integrals_dipole[0, :, :] = mat_dipole_x
-    ao_integrals_dipole[1, :, :] = mat_dipole_y
-    ao_integrals_dipole[2, :, :] = mat_dipole_z
+    ao_integrals_dipole = np.stack((mat_dipole_x, mat_dipole_y, mat_dipole_z), axis=0)
     operator_dipole = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False)
     operator_dipole.ao_integrals = ao_integrals_dipole
     cphf.add_operator(operator_dipole)
@@ -138,26 +129,21 @@ def test_final_result_rhf_h2o_sto3g_tda_singlet():
     hamiltonian = 'tda'
     spin = 'singlet'
 
-    C = np_load('C.npz')
-    C = C[np.newaxis, ...]
-    E = np_load('F_MO.npz')
-    E = E[np.newaxis, ...]
-    TEI_MO = np_load('TEI_MO.npz')
+    C = utils.fix_mocoeffs_shape(utils.np_load('C.npz'))
+    E = utils.fix_moenergies_shape(utils.np_load('F_MO.npz'))
+    TEI_MO = utils.np_load('TEI_MO.npz')
     # nocc_alph, nvirt_alph, nocc_beta, nvirt_beta
     occupations = [5, 2, 5, 2]
     stub = 'h2o_sto3g_'
     dim = occupations[0] + occupations[1]
-    mat_dipole_x = parse_int_file_2(stub + "mux.dat", dim)
-    mat_dipole_y = parse_int_file_2(stub + "muy.dat", dim)
-    mat_dipole_z = parse_int_file_2(stub + "muz.dat", dim)
+    mat_dipole_x = utils.parse_int_file_2(stub + "mux.dat", dim)
+    mat_dipole_y = utils.parse_int_file_2(stub + "muy.dat", dim)
+    mat_dipole_z = utils.parse_int_file_2(stub + "muz.dat", dim)
 
     cphf = CPHF(C, E, occupations)
     frequencies = (0.0, 0.02, 0.06, 0.1)
     cphf.frequencies = frequencies
-    ao_integrals_dipole = np.empty(shape=(3, dim, dim))
-    ao_integrals_dipole[0, :, :] = mat_dipole_x
-    ao_integrals_dipole[1, :, :] = mat_dipole_y
-    ao_integrals_dipole[2, :, :] = mat_dipole_z
+    ao_integrals_dipole = np.stack((mat_dipole_x, mat_dipole_y, mat_dipole_z), axis=0)
     operator_dipole = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False)
     operator_dipole.ao_integrals = ao_integrals_dipole
     cphf.add_operator(operator_dipole)
@@ -202,26 +188,21 @@ def test_final_result_rhf_h2o_sto3g_tda_triplet():
     hamiltonian = 'tda'
     spin = 'triplet'
 
-    C = np_load('C.npz')
-    C = C[np.newaxis, ...]
-    E = np_load('F_MO.npz')
-    E = E[np.newaxis, ...]
-    TEI_MO = np_load('TEI_MO.npz')
+    C = utils.fix_mocoeffs_shape(utils.np_load('C.npz'))
+    E = utils.fix_moenergies_shape(utils.np_load('F_MO.npz'))
+    TEI_MO = utils.np_load('TEI_MO.npz')
     # nocc_alph, nvirt_alph, nocc_beta, nvirt_beta
     occupations = [5, 2, 5, 2]
     stub = 'h2o_sto3g_'
     dim = occupations[0] + occupations[1]
-    mat_dipole_x = parse_int_file_2(stub + "mux.dat", dim)
-    mat_dipole_y = parse_int_file_2(stub + "muy.dat", dim)
-    mat_dipole_z = parse_int_file_2(stub + "muz.dat", dim)
+    mat_dipole_x = utils.parse_int_file_2(stub + "mux.dat", dim)
+    mat_dipole_y = utils.parse_int_file_2(stub + "muy.dat", dim)
+    mat_dipole_z = utils.parse_int_file_2(stub + "muz.dat", dim)
 
     cphf = CPHF(C, E, occupations)
     frequencies = (0.0, 0.02, 0.06, 0.1)
     cphf.frequencies = frequencies
-    ao_integrals_dipole = np.empty(shape=(3, dim, dim))
-    ao_integrals_dipole[0, :, :] = mat_dipole_x
-    ao_integrals_dipole[1, :, :] = mat_dipole_y
-    ao_integrals_dipole[2, :, :] = mat_dipole_z
+    ao_integrals_dipole = np.stack((mat_dipole_x, mat_dipole_y, mat_dipole_z), axis=0)
     operator_dipole = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False)
     operator_dipole.ao_integrals = ao_integrals_dipole
     cphf.add_operator(operator_dipole)
@@ -275,97 +256,82 @@ def test_as_many_as_possible_uhf_disk():
 
     return
 
-def getargs():
-    """Get command-line arguments."""
+# TODO what is this?
+# if __name__ == '__main__':
 
-    import argparse
+#     from pyscf import ao2mo, gto, scf
 
-    parser = argparse.ArgumentParser()
+#     import utils
 
-    parser.add_argument('filename')
-    parser.add_argument('-v', '--verbose', action='count', default=0)
+#     mol = gto.Mole()
+#     mol.verbose = 5
+#     with open('water.xyz') as fh:
+#         mol.atom = fh.read()
+#     mol.unit = 'Bohr'
+#     mol.basis = 'sto-3g'
+#     mol.symmetry = False
+#     mol.build()
 
-    args = parser.parse_args()
+#     mf = scf.RHF(mol)
+#     mf.kernel()
 
-    return args
+#     # In the future, we want the full Fock matrices in the MO basis.
+#     fock = utils.fix_moenergies_shape(mf.mo_energy)
+#     mocoeffs = utils.fix_mocoeffs_shape(mf.mo_coeff)
+#     norb = mocoeffs.shape[-1]
+#     tei_mo = ao2mo.full(mol, mocoeffs, aosym='s4', compact=False).reshape(norb, norb, norb, norb)
 
+#     ao_integrals_dipole = mol.intor('cint1e_r_sph', comp=3)
+#     # 'cg' stands for common gauge
+#     ao_integrals_angmom = mol.intor('cint1e_cg_irxp_sph', comp=3)
+#     # ao_integrals_spnorb = mol.intor('cint1e_ia01p_sph', comp=3)
+#     ao_integrals_spnorb = 0
+#     for atm_id in range(mol.natm):
+#         mol.set_rinv_orig(mol.atom_coord(atm_id))
+#         chg = mol.atom_charge(atm_id)
+#         ao_integrals_spnorb += chg * mol.intor('cint1e_prinvxp_sph', comp=3)
 
-if __name__ == '__main__':
+#     operator_dipole = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False)
+#     operator_fermi = Operator(label='fermi', is_imaginary=False, is_spin_dependent=True)
+#     operator_angmom = Operator(label='angmom', is_imaginary=True, is_spin_dependent=False)
+#     operator_spnorb = Operator(label='spinorb', is_imaginary=True, is_spin_dependent=True)
+#     operator_dipole.ao_integrals = ao_integrals_dipole
+#     from daltools import prop
+#     ao_integrals_fermi1 = prop.read('FC O  01', tmpdir='/home/eric/development/pyresponse/dalton_fermi/DALTON_scratch_eric/dalton.h2o_sto3g.response_static_rpa_singlet_5672')
+#     ao_integrals_fermi2 = prop.read('FC H  02', tmpdir='/home/eric/development/pyresponse/dalton_fermi/DALTON_scratch_eric/dalton.h2o_sto3g.response_static_rpa_singlet_5672')
+#     ao_integrals_fermi3 = prop.read('FC H  03', tmpdir='/home/eric/development/pyresponse/dalton_fermi/DALTON_scratch_eric/dalton.h2o_sto3g.response_static_rpa_singlet_5672')
+#     operator_fermi.ao_integrals = np.concatenate((ao_integrals_fermi1, ao_integrals_fermi2, ao_integrals_fermi3), axis=0)
+#     # print(operator_fermi.ao_integrals.shape)
+#     # import sys; sys.exit()
+#     operator_angmom.ao_integrals = ao_integrals_angmom
+#     operator_spnorb.ao_integrals = ao_integrals_spnorb
 
-    from pyscf import ao2mo, gto, scf
+#     nocc_a, nocc_b = mol.nelec
+#     nvirt_a, nvirt_b = norb - nocc_a, norb - nocc_b
+#     occupations = [nocc_a, nvirt_a, nocc_b, nvirt_b]
+#     cphf = CPHF(mocoeffs, fock, occupations)
+#     cphf.tei_mo = (tei_mo, )
+#     cphf.tei_mo_type = 'full'
 
-    import utils
+#     # cphf.add_operator(operator_dipole)
+#     cphf.add_operator(operator_fermi)
+#     # cphf.add_operator(operator_angmom)
+#     cphf.add_operator(operator_spnorb)
 
-    mol = gto.Mole()
-    mol.verbose = 5
-    with open('water.xyz') as fh:
-        mol.atom = fh.read()
-    mol.unit = 'Bohr'
-    mol.basis = 'sto-3g'
-    mol.symmetry = False
-    mol.build()
+#     cphf.set_frequencies()
 
-    mf = scf.RHF(mol)
-    mf.kernel()
-
-    # In the future, we want the full Fock matrices in the MO basis.
-    fock = utils.fix_moenergies_shape(mf.mo_energy)
-    mocoeffs = utils.fix_mocoeffs_shape(mf.mo_coeff)
-    norb = mocoeffs.shape[-1]
-    tei_mo = ao2mo.full(mol, mocoeffs, aosym='s4', compact=False).reshape(norb, norb, norb, norb)
-
-    ao_integrals_dipole = mol.intor('cint1e_r_sph', comp=3)
-    # 'cg' stands for common gauge
-    ao_integrals_angmom = mol.intor('cint1e_cg_irxp_sph', comp=3)
-    # ao_integrals_spnorb = mol.intor('cint1e_ia01p_sph', comp=3)
-    ao_integrals_spnorb = 0
-    for atm_id in range(mol.natm):
-        mol.set_rinv_orig(mol.atom_coord(atm_id))
-        chg = mol.atom_charge(atm_id)
-        ao_integrals_spnorb += chg * mol.intor('cint1e_prinvxp_sph', comp=3)
-
-    operator_dipole = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False)
-    operator_fermi = Operator(label='fermi', is_imaginary=False, is_spin_dependent=True)
-    operator_angmom = Operator(label='angmom', is_imaginary=True, is_spin_dependent=False)
-    operator_spnorb = Operator(label='spinorb', is_imaginary=True, is_spin_dependent=True)
-    operator_dipole.ao_integrals = ao_integrals_dipole
-    from daltools import prop
-    ao_integrals_fermi1 = prop.read('FC O  01', tmpdir='/home/eric/development/pyresponse/dalton_fermi/DALTON_scratch_eric/dalton.h2o_sto3g.response_static_rpa_singlet_5672')
-    ao_integrals_fermi2 = prop.read('FC H  02', tmpdir='/home/eric/development/pyresponse/dalton_fermi/DALTON_scratch_eric/dalton.h2o_sto3g.response_static_rpa_singlet_5672')
-    ao_integrals_fermi3 = prop.read('FC H  03', tmpdir='/home/eric/development/pyresponse/dalton_fermi/DALTON_scratch_eric/dalton.h2o_sto3g.response_static_rpa_singlet_5672')
-    operator_fermi.ao_integrals = np.concatenate((ao_integrals_fermi1, ao_integrals_fermi2, ao_integrals_fermi3), axis=0)
-    # print(operator_fermi.ao_integrals.shape)
-    # import sys; sys.exit()
-    operator_angmom.ao_integrals = ao_integrals_angmom
-    operator_spnorb.ao_integrals = ao_integrals_spnorb
-
-    nocc_a, nocc_b = mol.nelec
-    nvirt_a, nvirt_b = norb - nocc_a, norb - nocc_b
-    occupations = [nocc_a, nvirt_a, nocc_b, nvirt_b]
-    cphf = CPHF(mocoeffs, fock, occupations)
-    cphf.tei_mo = (tei_mo, )
-    cphf.tei_mo_type = 'full'
-
-    # cphf.add_operator(operator_dipole)
-    cphf.add_operator(operator_fermi)
-    # cphf.add_operator(operator_angmom)
-    cphf.add_operator(operator_spnorb)
-
-    cphf.set_frequencies()
-
-    for hamiltonian in ('rpa', 'tda'):
-        for spin in ('singlet', 'triplet'):
-            print('hamiltonian: {}, spin: {}'.format(hamiltonian, spin))
-            cphf.run(solver='explicit', hamiltonian=hamiltonian, spin=spin)
-            thresh = 1.0e-10
-            cphf.results[0][cphf.results[0] < thresh] = 0.0
-            print(cphf.results[0])
+#     for hamiltonian in ('rpa', 'tda'):
+#         for spin in ('singlet', 'triplet'):
+#             print('hamiltonian: {}, spin: {}'.format(hamiltonian, spin))
+#             cphf.run(solver='explicit', hamiltonian=hamiltonian, spin=spin)
+#             thresh = 1.0e-10
+#             cphf.results[0][cphf.results[0] < thresh] = 0.0
+#             print(cphf.results[0])
 
 if __name__ == '__main__':
-    # test_final_result_rhf_h2o_sto3g_rpa_singlet()
-    # test_final_result_rhf_h2o_sto3g_rpa_triplet()
-    # test_final_result_rhf_h2o_sto3g_tda_singlet()
-    # test_final_result_rhf_h2o_sto3g_tda_triplet()
-    # test_as_many_as_possible_rhf_disk()
-    # test_as_many_as_possible_uhf_disk()
-    pass
+    test_final_result_rhf_h2o_sto3g_rpa_singlet()
+    test_final_result_rhf_h2o_sto3g_rpa_triplet()
+    test_final_result_rhf_h2o_sto3g_tda_singlet()
+    test_final_result_rhf_h2o_sto3g_tda_triplet()
+    test_as_many_as_possible_rhf_disk()
+    test_as_many_as_possible_uhf_disk()

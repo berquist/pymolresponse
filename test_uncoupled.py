@@ -239,6 +239,5 @@ def test_uncoupled_uhf():
     return
 
 if __name__ == '__main__':
-    # test_uncoupled_rhf()
-    # test_uncoupled_uhf()
-    pass
+    test_uncoupled_rhf()
+    test_uncoupled_uhf()

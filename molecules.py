@@ -1,6 +1,22 @@
 import pyscf
 
 
+def hydrogen_atom_STO3G(verbose=0):
+
+    mol = pyscf.gto.Mole()
+    mol.verbose = verbose
+    mol.output = None
+
+    mol.atom = [
+        ['H' , (0.0, 0.0, 0.0)]
+    ]
+    mol.basis = 'sto-3g'
+    mol.charge = 0
+    mol.spin = 1
+
+    return mol
+
+
 def molecule_BC2H4_cation_HF_STO3G(verbose=0):
 
     mol = pyscf.gto.Mole()
