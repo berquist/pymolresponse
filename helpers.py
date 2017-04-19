@@ -66,11 +66,16 @@ def nuclear_dipole_contribution(nuccoords, nuccharges, origin_in_bohrs):
     assert isinstance(origin_in_bohrs, np.ndarray)
     assert len(nuccoords.shape) == 2
     assert nuccoords.shape[1] == 3
-    # assert len(nuccharges.shape) == 1
     assert nuccoords.shape[0] == nuccharges.shape[0]
     assert origin_in_bohrs.shape == (3,)
+    assert len(nuccharges.shape) in (1, 2)
+    if len(nuccharges.shape) == 1:
+        charges = nuccharges[..., np.newaxis]
+    else:
+        assert nuccharges.shape[1] == 1
+        charges = nuccharges
 
-    return np.sum((nuccoords - origin_in_bohrs) * nuccharges, axis=0)
+    return np.sum((nuccoords - origin_in_bohrs) * charges, axis=0)
 
 
 def electronic_dipole_contribution_pyscf(D, pyscfmol, origin_in_bohrs):
@@ -161,5 +166,9 @@ def calculate_origin_pyscf(origin_string, nuccoords, nuccharges, D, pyscfmol, do
         origin = calc_center_of_nuclear_charge(nuccoords, nuccharges)
     else:
         pass
+
+    if do_print:
+        print(' Calculating the dipole at the requested origin...')
+        calculate_dipole_pyscf(nuccoords, nuccharges, origin, D, pyscfmol, do_print)
 
     return origin
