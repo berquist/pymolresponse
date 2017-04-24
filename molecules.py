@@ -75,3 +75,20 @@ def molecule_0w4a_dication_HF_321G(verbose=0):
     mol.spin = 1
 
     return mol
+
+
+def molecule_BH_cation_HF_def2_SVP(verbose=0):
+
+    mol = pyscf.gto.Mole()
+    mol.verbose = verbose
+    mol.output = None
+
+    mol.atom = [
+        ['B', (0.0000, 0.0000, 0.0000)],
+        ['H', (0.0000, 0.0000, 1.2340)],
+    ]
+    mol.basis = 'def2-svp'
+    mol.charge = 1
+    mol.spin = 1
+
+    return mol

@@ -353,3 +353,52 @@ def screen(mat, thresh=1.0e-16):
     mat_screened = mat.copy()
     mat_screened[np.abs(mat) <= thresh] = 0.0
     return mat_screened
+
+
+def matsym(amat, thrzer=1.0e-14):
+    """This function returns
+       1 if the matrix is symmetric to threshold THRZER
+       2 if the matrix is antisymmetric to threshold THRZER
+       3 if all elements are below THRZER
+       0 otherwise (the matrix is unsymmetric about the diagonal)
+
+    Copied from DALTON/gp/gphjj.F/MATSYM.
+    thrzer taken from DALTON/include/thrzer.h
+    """
+
+    assert amat.shape[0] == amat.shape[1]
+
+    n = amat.shape[0]
+
+    isym = 1
+    iasym = 2
+    for j in range(n):
+        # for i in range(j+1):
+        # The +1 is so the diagonal elements are checked.
+        for i in range(j+1):
+            amats = abs(amat[i, j] + amat[j, i])
+            amata = abs(amat[i, j] - amat[j, i])
+            if amats > thrzer:
+                iasym = 0
+            if amata > thrzer:
+                isym = 0
+
+    return (isym + iasym)
+
+
+def flip_triangle_sign(A, triangle='lower'):
+    """Flip the sign of either the lower or upper triangle of a sqare
+    matrix. Assume nothing about its symmetry.
+    """
+    assert len(A.shape) == 2
+    assert A.shape[0] == A.shape[1]
+    dim = A.shape[0]
+    if triangle == 'lower':
+        indices = np.tril_indices(dim)
+    elif triangle == 'upper':
+        indices = np.triu_indices(dim)
+    else:
+        sys.exit(1)
+    B = A.copy()
+    B[indices] *= -1.0
+    return B

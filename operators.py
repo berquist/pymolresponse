@@ -50,7 +50,9 @@ class Operator(object):
         # Cartesian directions).
         # pylint: disable=no-member
         for idx in range(self.ao_integrals.shape[0]):
-            operator_component_ai_alph = np.dot(C_alph[:, nocc_alph:].T, np.dot(self.ao_integrals[idx, ...], C_alph[:, :nocc_alph]))
+            operator_component_ai_alph = np.dot(C_alph[:, nocc_alph:].T,
+                                                np.dot(self.ao_integrals[idx, ...],
+                                                       C_alph[:, :nocc_alph]))
             # If the operator is a triplet operator and doing singlet
             # response, remove inactive -> secondary excitations.
             # Is this only true for spin-orbit operators?
@@ -65,7 +67,9 @@ class Operator(object):
             operator_ai_alph.append(operator_component_ai_alph)
             operator_ai_supervector_alph.append(operator_component_ai_supervector_alph)
             if is_uhf:
-                operator_component_ai_beta = np.dot(C_beta[:, nocc_beta:].T, np.dot(self.ao_integrals[idx, ...], C_beta[:, :nocc_beta]))
+                operator_component_ai_beta = np.dot(C_beta[:, nocc_beta:].T,
+                                                    np.dot(self.ao_integrals[idx, ...],
+                                                           C_beta[:, :nocc_beta]))
                 if self.triplet:
                     for (i, a) in self.indices_closed_secondary:
                         operator_component_ai_beta[a - nocc_beta, i] = 0.0

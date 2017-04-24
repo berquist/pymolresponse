@@ -172,3 +172,43 @@ def calculate_origin_pyscf(origin_string, nuccoords, nuccharges, D, pyscfmol, do
         calculate_dipole_pyscf(nuccoords, nuccharges, origin, D, pyscfmol, do_print)
 
     return origin
+
+
+def get_uhf_values(mat_uhf_a, mat_uhf_b, pair_rohf, nocc_a, nvirt_a, nocc_b, nvirt_b):
+    """For a pair ROHF 1-based indices, find the corresponing alpha- and
+    beta-spin UHF values.
+    """
+
+    # TODO there has to be a better way than including this here...
+    range_uhf_a_closed = list(range(0, nocc_a))
+    range_uhf_a_virt = list(range(nocc_a, nocc_a + nvirt_a))
+    range_uhf_b_closed = list(range(0, nocc_b))
+    range_uhf_b_virt = list(range(nocc_b, nocc_b + nvirt_b))
+    indices_uhf_a = [(i, a) for i in range(nocc_a) for a in range(nvirt_a)]
+    indices_uhf_b = [(i, a) for i in range(nocc_b) for a in range(nvirt_b)]
+    # These are the indices for unique pairs considering the full
+    # dimensionality of the system (correct orbital window), [norb,
+    # norb], starting from 1.
+    indices_display_uhf_a = [(p+1, q+1) for p in range_uhf_a_closed for q in range_uhf_a_virt]
+    indices_display_uhf_b = [(p+1, q+1) for p in range_uhf_b_closed for q in range_uhf_b_virt]
+
+    values = []
+    if pair_rohf in indices_display_uhf_a:
+        idx_uhf_a = indices_display_uhf_a.index(pair_rohf)
+        p_a, q_a = indices_uhf_a[idx_uhf_a]
+        val_uhf_a = mat_uhf_a[p_a, q_a]
+        values.append(val_uhf_a)
+    if pair_rohf in indices_display_uhf_b:
+        idx_uhf_b = indices_display_uhf_b.index(pair_rohf)
+        p_b, q_b = indices_uhf_b[idx_uhf_b]
+        val_uhf_b = mat_uhf_b[p_b, q_b]
+        values.append(val_uhf_b)
+    return values
+
+
+def mat_uhf_to_packed_rohf(mat_alpha, mat_beta, indices_display_rohf):
+    dim = len(indices_display_rohf)
+    mat_rohf = np.zeros(dim)
+    for idx, pair_rohf in enumerate(indices_display_rohf):
+        mat_rohf[idx] = sum(get_uhf_values(mat_alpha, mat_beta, pair_rohf))
+    return mat_rohf

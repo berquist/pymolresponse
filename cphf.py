@@ -73,6 +73,8 @@ class CPHF(object):
         self.indices_closed_act = [(i, t) for i in range_closed for t in range_act]
         self.indices_closed_secondary = [(i, a) for i in range_closed for a in range_secondary]
         self.indices_act_secondary = [(t, a) for t in range_act for a in range_secondary]
+        self.indices_rohf = self.indices_closed_act + self.indices_closed_secondary + self.indices_act_secondary
+        self.indices_display_rohf = [(p+1, q+1) for (p, q) in self.indices_rohf]
 
     def set_frequencies(self, frequencies=None):
         if frequencies is None:
