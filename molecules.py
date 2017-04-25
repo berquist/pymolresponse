@@ -1,6 +1,23 @@
 import pyscf
 
 
+def molecule_trithiolane_HF_STO3G(verbose=0):
+
+    mol = pyscf.gto.Mole()
+    mol.verbose = verbose
+    mol.output = None
+
+    with open('trithiolane.xyz') as fh:
+        next(fh)
+        next(fh)
+        mol.atom = fh.read()
+    mol.basis = 'sto-3g'
+    mol.charge = 0
+    mol.spin = 0
+
+    return mol
+
+
 def hydrogen_atom_STO3G(verbose=0):
 
     mol = pyscf.gto.Mole()

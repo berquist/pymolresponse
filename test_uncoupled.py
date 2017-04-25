@@ -6,6 +6,7 @@ from . import utils
 from .cphf import CPHF
 from .operators import Operator
 from . import ao2mo
+from .molecules import molecule_trithiolane_HF_STO3G
 
 
 def mol_atom(symbol='He', charge=0, spin=0, basis='sto-3g', verbose=0):
@@ -128,16 +129,7 @@ uhf_uncoupled = {
 
 
 def test_uncoupled_rhf():
-    mol = pyscf.gto.Mole()
-    mol.verbose = 5
-    mol.output = None
-    with open('trithiolane.xyz') as fh:
-        next(fh)
-        next(fh)
-        mol.atom = fh.read()
-    mol.basis = 'sto-3g'
-    mol.charge = 0
-    mol.spin = 0
+    mol = molecule_trithiolane_HF_STO3G(5)
     mol.build()
 
     mf = pyscf.scf.RHF(mol)
@@ -184,14 +176,7 @@ def test_uncoupled_rhf():
 
 
 def test_uncoupled_uhf():
-    mol = pyscf.gto.Mole()
-    mol.verbose = 5
-    mol.output = None
-    with open('trithiolane.xyz') as fh:
-        next(fh)
-        next(fh)
-        mol.atom = fh.read()
-    mol.basis = 'sto-3g'
+    mol = molecule_trithiolane_HF_STO3G(5)
     mol.charge = 1
     mol.spin = 1
     mol.build()
