@@ -3,7 +3,7 @@ from __future__ import division
 
 import numpy as np
 
-from .iterators import ExactLineqSolver
+from .iterators import LineqSolver, ExactLineqSolver
 from .utils import (form_results, form_vec_energy_differences, np_load,
                     parse_int_file_2, repack_matrix_to_vector)
 
@@ -35,6 +35,7 @@ class CPHF(object):
     def run(self, solver_type=None, hamiltonian=None, spin=None, **kwargs):
 
         assert self.solver is not None
+        assert isinstance(self.solver, (LineqSolver,))
 
         if not solver_type:
             solver_type = self.solver_type
@@ -45,10 +46,14 @@ class CPHF(object):
         if not hasattr(self, 'frequencies'):
             self.frequencies = [0.0]
 
+        assert isinstance(solver_type, str)
+        assert isinstance(hamiltonian, str)
+        assert isinstance(spin, str)
+
         # Set the current state.
-        self.solver_type = solver_type
-        self.hamiltonian = hamiltonian
-        self.spin = spin
+        self.solver_type = solver_type.lower()
+        self.hamiltonian = hamiltonian.lower()
+        self.spin = spin.lower()
 
         if 'exact' in solver_type:
             assert isinstance(self.solver, (ExactLineqSolver,))

@@ -2,6 +2,7 @@ from __future__ import print_function
 from __future__ import division
 
 import numpy as np
+import scipy as sp
 
 from . import ao2mo
 
@@ -435,8 +436,193 @@ class EigSolver(Solver):
     def __init__(self, mocoeffs, moenergies, occupations, *args, **kwargs):
         super().__init__(mocoeffs, moenergies, occupations, *args, **kwargs)
 
+    @staticmethod
+    def norm_xy(z, nocc, nvirt):
+        x, y = z.reshape(2, nvirt, nocc)
+        norm = 2 * (np.linalg.norm(x)**2 - np.linalg.norm(y)**2)
+        norm = 1 / np.sqrt(norm)
+        return (x*norm).flatten(), (y*norm).flatten()
+
+class EigSolverTDA(EigSolver):
+
+    def __init__(self, mocoeffs, moenergies, occupations, *args, **kwargs):
+        super().__init__(mocoeffs, moenergies, occupations, *args, **kwargs)
+
 
 class ExactDiagonalizationSolver(EigSolver):
 
     def __init__(self, mocoeffs, moenergies, occupations, *args, **kwargs):
         super().__init__(mocoeffs, moenergies, occupations, *args, **kwargs)
+
+    def form_explicit_hessian(self, hamiltonian=None, spin=None, frequency=None):
+
+        assert hasattr(self, 'tei_mo')
+        assert self.tei_mo is not None
+        assert len(self.tei_mo) in (1, 2, 4, 6)
+        assert self.tei_mo_type in ('full', 'partial')
+
+        if not hamiltonian:
+            hamiltonian = self.hamiltonian
+        if not spin:
+            spin = self.spin
+
+        assert isinstance(hamiltonian, str)
+        assert isinstance(spin, str)
+        hamiltonian = hamiltonian.lower()
+        spin = spin.lower()
+
+        assert hamiltonian in ('rpa', 'tda')
+        assert spin in ('singlet', 'triplet')
+
+        self.hamiltonian = hamiltonian
+        self.spin = spin
+
+        nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
+        nov_alph = nocc_alph * nvirt_alph
+        nov_beta = nocc_beta * nvirt_beta
+
+        if not self.is_uhf:
+
+            # Set up "function pointers".
+            if self.tei_mo_type == 'full':
+                assert len(self.tei_mo) == 1
+                tei_mo = self.tei_mo[0]
+            elif self.tei_mo_type == 'partial':
+                assert len(self.tei_mo) == 2
+                tei_mo_ovov = self.tei_mo[0]
+                tei_mo_oovv = self.tei_mo[1]
+
+            if self.tei_mo_type == 'full':
+                if hamiltonian == 'rpa' and spin == 'singlet':
+                    A = form_rpa_a_matrix_mo_singlet_full(self.moenergies[0, ...], tei_mo, nocc_alph)
+                    B = form_rpa_b_matrix_mo_singlet_full(tei_mo, nocc_alph)
+                elif hamiltonian == 'rpa' and spin == 'triplet':
+                    A = form_rpa_a_matrix_mo_triplet_full(self.moenergies[0, ...], tei_mo, nocc_alph)
+                    B = form_rpa_b_matrix_mo_triplet_full(tei_mo, nocc_alph)
+                elif hamiltonian == 'tda' and spin == 'singlet':
+                    A = form_rpa_a_matrix_mo_singlet_full(self.moenergies[0, ...], tei_mo, nocc_alph)
+                    B = np.zeros(shape=(nov_alph, nov_alph))
+                elif hamiltonian == 'tda' and spin == 'triplet':
+                    A = form_rpa_a_matrix_mo_triplet_full(self.moenergies[0, ...], tei_mo, nocc_alph)
+                    B = np.zeros(shape=(nov_alph, nov_alph))
+            elif self.tei_mo_type == 'partial':
+                if hamiltonian == 'rpa' and spin == 'singlet':
+                    A = form_rpa_a_matrix_mo_singlet_partial(self.moenergies[0, ...], tei_mo_ovov, tei_mo_oovv)
+                    B = form_rpa_b_matrix_mo_singlet_partial(tei_mo_ovov)
+                elif hamiltonian == 'rpa' and spin == 'triplet':
+                    A = form_rpa_a_matrix_mo_triplet_partial(self.moenergies[0, ...], tei_mo_oovv)
+                    B = form_rpa_b_matrix_mo_triplet_partial(tei_mo_ovov)
+                elif hamiltonian == 'tda' and spin == 'singlet':
+                    A = form_rpa_a_matrix_mo_singlet_partial(self.moenergies[0, ...], tei_mo_ovov, tei_mo_oovv)
+                    B = np.zeros(shape=(nov_alph, nov_alph))
+                elif hamiltonian == 'tda' and spin == 'triplet':
+                    A = form_rpa_a_matrix_mo_triplet_partial(self.moenergies[0, ...], tei_mo_oovv)
+                    B = np.zeros(shape=(nov_alph, nov_alph))
+
+            # pylint: disable=bad-whitespace
+            G = np.asarray(np.bmat([[ A,  B],
+                                    [-B, -A]]))
+            self.explicit_hessian = G
+
+        else:
+            # TODO UHF
+            pass
+
+    def diagonalize_explicit_hessian(self):
+        nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
+        nov_alph = nocc_alph * nvirt_alph
+        nov_beta = nocc_beta * nvirt_beta
+        if not self.is_uhf:
+            eigvals, eigvecs = sp.linalg.eig(self.explicit_hessian)
+            # Sort from lowest to highest eigenvalue (excitation
+            # energy).
+            idx = eigvals.argsort()
+            self.eigvals = eigvals[idx]
+            # Each eigenvector is a column vector.
+            self.eigvecs = eigvecs[:, idx]
+            # Fix the ordering of everything. The first eigenvectors
+            # are those with negative excitation energies.
+            self.eigvals = self.eigvals[nov_alph:]
+            self.eigvecs = self.eigvecs[:, nov_alph:]
+        else:
+            # TODO UHF
+            pass
+
+
+class ExactDiagonalizationSolverTDA(ExactDiagonalizationSolver, EigSolverTDA):
+
+    def __init__(self, mocoeffs, moenergies, occupations, *args, **kwargs):
+        super().__init__(mocoeffs, moenergies, occupations, *args, **kwargs)
+
+    def form_explicit_hessian(self, hamiltonian=None, spin=None, frequency=None):
+
+        assert hasattr(self, 'tei_mo')
+        assert self.tei_mo is not None
+        assert len(self.tei_mo) in (1, 2, 4, 6)
+        assert self.tei_mo_type in ('full', 'partial')
+
+        if not hamiltonian:
+            hamiltonian = self.hamiltonian
+        if not spin:
+            spin = self.spin
+
+        assert isinstance(hamiltonian, str)
+        assert isinstance(spin, str)
+        hamiltonian = hamiltonian.lower()
+        spin = spin.lower()
+
+        assert hamiltonian == 'tda'
+        assert spin in ('singlet', 'triplet')
+
+        self.hamiltonian = hamiltonian
+        self.spin = spin
+
+        nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
+        nov_alph = nocc_alph * nvirt_alph
+        nov_beta = nocc_beta * nvirt_beta
+
+        if not self.is_uhf:
+
+            # Set up "function pointers".
+            if self.tei_mo_type == 'full':
+                assert len(self.tei_mo) == 1
+                tei_mo = self.tei_mo[0]
+            elif self.tei_mo_type == 'partial':
+                assert len(self.tei_mo) == 2
+                tei_mo_ovov = self.tei_mo[0]
+                tei_mo_oovv = self.tei_mo[1]
+
+            if self.tei_mo_type == 'full':
+                if spin == 'singlet':
+                    A = form_rpa_a_matrix_mo_singlet_full(self.moenergies[0, ...], tei_mo, nocc_alph)
+                elif spin == 'triplet':
+                    A = form_rpa_a_matrix_mo_triplet_full(self.moenergies[0, ...], tei_mo, nocc_alph)
+            elif self.tei_mo_type == 'partial':
+                if spin == 'singlet':
+                    A = form_rpa_a_matrix_mo_singlet_partial(self.moenergies[0, ...], tei_mo_ovov, tei_mo_oovv)
+                elif spin == 'triplet':
+                    A = form_rpa_a_matrix_mo_triplet_partial(self.moenergies[0, ...], tei_mo_oovv)
+
+            self.explicit_hessian = A
+
+        else:
+            # TODO UHF
+            pass
+
+    def diagonalize_explicit_hessian(self):
+        nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
+        nov_alph = nocc_alph * nvirt_alph
+        nov_beta = nocc_beta * nvirt_beta
+        if not self.is_uhf:
+            eigvals, eigvecs = sp.linalg.eig(self.explicit_hessian)
+            # Sort from lowest to highest eigenvalue (excitation
+            # energy).
+            idx = eigvals.argsort()
+            self.eigvals = eigvals[idx]
+            # Each eigenvector is a column vector.
+            self.eigvecs = eigvecs[:, idx]
+        else:
+            # TODO UHF
+            pass
+
+

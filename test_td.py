@@ -7,7 +7,7 @@ import pyscf
 
 from . import ao2mo
 from . import utils
-
+from .iterators import ExactDiagonalizationSolver, ExactDiagonalizationSolverTDA
 from .td import TDA, TDHF
 
 
@@ -28,27 +28,29 @@ def test_HF_both_singlet_HF_STO3G():
     mf.scf()
 
     C = utils.fix_mocoeffs_shape(mf.mo_coeff)
-    E = np.diag(mf.mo_energy)[np.newaxis, ...]
+    E = utils.fix_moenergies_shape(mf.mo_energy)
     occupations = utils.occupations_from_pyscf_mol(mol, C)
-    tda = TDA(C, E, occupations)
-    tdhf = TDHF(C, E, occupations)
+    solver_tda = ExactDiagonalizationSolverTDA(C, E, occupations)
+    solver_tdhf = ExactDiagonalizationSolver(C, E, occupations)
     tei_mo = ao2mo.perform_tei_ao2mo_rhf_partial(mol, C, mol.verbose)
-    tda.tei_mo = tei_mo
-    tda.tei_mo_type = 'partial'
-    tdhf.tei_mo = tei_mo
-    tdhf.tei_mo_type = 'partial'
+    solver_tda.tei_mo = tei_mo
+    solver_tda.tei_mo_type = 'partial'
+    solver_tdhf.tei_mo = tei_mo
+    solver_tdhf.tei_mo_type = 'partial'
+    driver_tda = TDA(solver_tda)
+    driver_tdhf = TDHF(solver_tdhf)
 
     nroots = 5
 
     print('TDA using TDA()')
-    tda.run(solver='explicit', hamiltonian='tda', spin='singlet')
-    excitation_energies_tda_using_tda = tda.eigvals[:nroots].real
+    driver_tda.run(solver_type='exact', hamiltonian='tda', spin='singlet')
+    excitation_energies_tda_using_tda = driver_tda.solver.eigvals[:nroots].real
     print('TDA using TDHF()')
-    tdhf.run(solver='explicit', hamiltonian='tda', spin='singlet')
-    excitation_energies_tda_using_tdhf = tdhf.eigvals[:nroots].real
+    driver_tdhf.run(solver_type='exact', hamiltonian='tda', spin='singlet')
+    excitation_energies_tda_using_tdhf = driver_tdhf.solver.eigvals[:nroots].real
     print('RPA using TDHF()')
-    tdhf.run(solver='explicit', hamiltonian='rpa', spin='singlet')
-    excitation_energies_rpa = tdhf.eigvals[:nroots].real
+    driver_tdhf.run(solver_type='exact', hamiltonian='rpa', spin='singlet')
+    excitation_energies_rpa = driver_tdhf.solver.eigvals[:nroots].real
 
     assert excitation_energies_tda_using_tda.shape == excitation_energies_tda_using_tdhf.shape
     assert excitation_energies_tda_using_tdhf.shape == excitation_energies_rpa.shape

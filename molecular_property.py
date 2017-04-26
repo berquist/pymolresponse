@@ -77,10 +77,11 @@ class TransitionProperty(MolecularProperty):
         # TODO this doesn't belong here.
         solver.form_tei_mo(pyscfmol)
 
-        if 'driver' in kwargs:
+        if kwargs.get('driver', None):
             driver = kwargs['driver']
-        elif hamiltonian == 'tda':
+        elif kwargs.get('do_tda', None):
             driver = TDA
         else:
             driver = TDHF
         self.driver = driver(solver)
+        assert isinstance(self.driver, (TDHF,))

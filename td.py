@@ -1,196 +1,69 @@
+from __future__ import print_function
+from __future__ import division
+
 import numpy as np
-import scipy as sp
 
 from .cphf import CPHF
+from .iterators import EigSolver, ExactDiagonalizationSolver
 from .operators import Operator
 from .utils import form_results
-
-from .explicit_equations_full import \
-    (form_rpa_a_matrix_mo_singlet_full,
-     form_rpa_a_matrix_mo_singlet_ss_full,
-     form_rpa_a_matrix_mo_singlet_os_full,
-     form_rpa_a_matrix_mo_triplet_full,
-     form_rpa_b_matrix_mo_singlet_full,
-     form_rpa_b_matrix_mo_singlet_ss_full,
-     form_rpa_b_matrix_mo_singlet_os_full,
-     form_rpa_b_matrix_mo_triplet_full)
-from .explicit_equations_partial import \
-    (form_rpa_a_matrix_mo_singlet_partial,
-     form_rpa_a_matrix_mo_singlet_ss_partial,
-     form_rpa_a_matrix_mo_singlet_os_partial,
-     form_rpa_a_matrix_mo_triplet_partial,
-     form_rpa_b_matrix_mo_singlet_partial,
-     form_rpa_b_matrix_mo_singlet_ss_partial,
-     form_rpa_b_matrix_mo_singlet_os_partial,
-     form_rpa_b_matrix_mo_triplet_partial)
 
 
 class TDHF(CPHF):
 
-    def __init__(self, mocoeffs, moenergies, occupations, *args, **kwargs):
-        # don't call superclass __init__
-        assert len(mocoeffs.shape) == 3
-        assert (mocoeffs.shape[0] == 1) or (mocoeffs.shape[0] == 2)
-        self.is_uhf = (mocoeffs.shape[0] == 2)
-        assert len(moenergies.shape) == 3
-        assert (moenergies.shape[0] == 1) or (moenergies.shape[0] == 2)
-        if self.is_uhf:
-            assert moenergies.shape[0] == 2
-        else:
-            assert moenergies.shape[0] == 1
-        assert moenergies.shape[1] == moenergies.shape[2]
-        assert len(occupations) == 4
+    def __init__(self, solver, *args, **kwargs):
+        super().__init__(solver, *args, **kwargs)
 
-        self.mocoeffs = mocoeffs
-        self.moenergies = moenergies
-        self.occupations = occupations
-        self.form_ranges_from_occupations()
+    def run(self, solver_type=None, hamiltonian=None, spin=None, **kwargs):
 
-        self.solver = 'explicit'
-        self.hamiltonian = 'rpa'
-        self.spin = 'singlet'
+        assert self.solver is not None
+        assert isinstance(self.solver, (EigSolver,))
 
-        self.operators = []
-        self.frequencies = []
-        self.results = []
-
-    def run(self, solver=None, hamiltonian=None, spin=None, **kwargs):
-
-        if not solver:
-            solver = self.solver
+        if not solver_type:
+            solver_type = self.solver_type
         if not hamiltonian:
             hamiltonian = self.hamiltonian
         if not spin:
             spin = self.spin
+
+        assert isinstance(solver_type, str)
+        assert isinstance(hamiltonian, str)
+        assert isinstance(spin, str)
 
         # Set the current state.
-        self.solver = solver
-        self.hamiltonian = hamiltonian
-        self.spin = spin
+        self.solver_type = solver_type.lower()
+        self.hamiltonian = hamiltonian.lower()
+        self.spin = spin.lower()
 
-        if solver == 'explicit':
-            self.form_explicit_hessian(hamiltonian, spin, None)
-            self.diagonalize_explicit_hessian()
-        # Nothing else implemented yet.
+        if 'exact' in solver_type:
+            assert isinstance(self.solver, (ExactDiagonalizationSolver,))
+            self.solver.form_explicit_hessian(hamiltonian, spin, None)
+            self.solver.diagonalize_explicit_hessian()
         else:
-            pass
+            raise NotImplementedError
 
+        # TODO Is there an equivalent to the uncoupled result? Just
+        # orbital energy differences?
         self.form_results()
 
-    def form_explicit_hessian(self, hamiltonian=None, spin=None, frequency=None):
-
-        assert hasattr(self, 'tei_mo')
-        assert self.tei_mo is not None
-        assert len(self.tei_mo) in (1, 2, 4, 6)
-        assert self.tei_mo_type in ('full', 'partial')
-
-        if not hamiltonian:
-            hamiltonian = self.hamiltonian
-        if not spin:
-            spin = self.spin
-
-        assert hamiltonian in ('rpa', 'tda')
-        assert spin in ('singlet', 'triplet')
-
-        self.hamiltonian = hamiltonian
-        self.spin = spin
-
-        nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
-        nov_alph = nocc_alph * nvirt_alph
-        nov_beta = nocc_beta * nvirt_beta
-
-        if not self.is_uhf:
-
-            # Set up "function pointers".
-            if self.tei_mo_type == 'full':
-                assert len(self.tei_mo) == 1
-                tei_mo = self.tei_mo[0]
-            elif self.tei_mo_type == 'partial':
-                assert len(self.tei_mo) == 2
-                tei_mo_ovov = self.tei_mo[0]
-                tei_mo_oovv = self.tei_mo[1]
-
-            if self.tei_mo_type == 'full':
-                if hamiltonian == 'rpa' and spin == 'singlet':
-                    A = form_rpa_a_matrix_mo_singlet_full(self.moenergies[0, ...], tei_mo, nocc_alph)
-                    B = form_rpa_b_matrix_mo_singlet_full(tei_mo, nocc_alph)
-                elif hamiltonian == 'rpa' and spin == 'triplet':
-                    A = form_rpa_a_matrix_mo_triplet_full(self.moenergies[0, ...], tei_mo, nocc_alph)
-                    B = form_rpa_b_matrix_mo_triplet_full(tei_mo, nocc_alph)
-                elif hamiltonian == 'tda' and spin == 'singlet':
-                    A = form_rpa_a_matrix_mo_singlet_full(self.moenergies[0, ...], tei_mo, nocc_alph)
-                    B = np.zeros(shape=(nov_alph, nov_alph))
-                elif hamiltonian == 'tda' and spin == 'triplet':
-                    A = form_rpa_a_matrix_mo_triplet_full(self.moenergies[0, ...], tei_mo, nocc_alph)
-                    B = np.zeros(shape=(nov_alph, nov_alph))
-            elif self.tei_mo_type == 'partial':
-                if hamiltonian == 'rpa' and spin == 'singlet':
-                    A = form_rpa_a_matrix_mo_singlet_partial(self.moenergies[0, ...], tei_mo_ovov, tei_mo_oovv)
-                    B = form_rpa_b_matrix_mo_singlet_partial(tei_mo_ovov)
-                elif hamiltonian == 'rpa' and spin == 'triplet':
-                    A = form_rpa_a_matrix_mo_triplet_partial(self.moenergies[0, ...], tei_mo_oovv)
-                    B = form_rpa_b_matrix_mo_triplet_partial(tei_mo_ovov)
-                elif hamiltonian == 'tda' and spin == 'singlet':
-                    A = form_rpa_a_matrix_mo_singlet_partial(self.moenergies[0, ...], tei_mo_ovov, tei_mo_oovv)
-                    B = np.zeros(shape=(nov_alph, nov_alph))
-                elif hamiltonian == 'tda' and spin == 'triplet':
-                    A = form_rpa_a_matrix_mo_triplet_partial(self.moenergies[0, ...], tei_mo_oovv)
-                    B = np.zeros(shape=(nov_alph, nov_alph))
-
-            # pylint: disable=bad-whitespace
-            G = np.asarray(np.bmat([[ A,  B],
-                                    [-B, -A]]))
-            self.explicit_hessian = G
-
-        else:
-            # TODO UHF
-            pass
-
-    def diagonalize_explicit_hessian(self):
-        nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
-        nov_alph = nocc_alph * nvirt_alph
-        nov_beta = nocc_beta * nvirt_beta
-        if not self.is_uhf:
-            eigvals, eigvecs = sp.linalg.eig(self.explicit_hessian)
-            # Sort from lowest to highest eigenvalue (excitation
-            # energy).
-            idx = eigvals.argsort()
-            self.eigvals = eigvals[idx]
-            # Each eigenvector is a column vector.
-            self.eigvecs = eigvecs[:, idx]
-            # Fix the ordering of everything. The first eigenvectors
-            # are those with negative excitation energies.
-            self.eigvals = self.eigvals[nov_alph:]
-            self.eigvecs = self.eigvecs[:, nov_alph:]
-        else:
-            # TODO UHF
-            pass
-
-    @staticmethod
-    def norm_xy(z, nocc, nvirt):
-        x, y = z.reshape(2, nvirt, nocc)
-        norm = 2 * (np.linalg.norm(x)**2 - np.linalg.norm(y)**2)
-        norm = 1 / np.sqrt(norm)
-        return (x*norm).flatten(), (y*norm).flatten()
-
     def form_results(self):
-        nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
+        nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.solver.occupations
         nov_alph = nocc_alph * nvirt_alph
         nov_beta = nocc_beta * nvirt_beta
-        self.eigvecs_normed = self.eigvecs.copy()
+        self.solver.eigvecs_normed = self.solver.eigvecs.copy()
         for idx in range(nov_alph):
             print('=' * 78)
-            eigvec = self.eigvecs[:, idx]
-            x_normed, y_normed = TDHF.norm_xy(self.eigvecs[:, idx], nocc_alph, nvirt_alph)
+            eigvec = self.solver.eigvecs[:, idx]
+            x_normed, y_normed = self.solver.norm_xy(self.solver.eigvecs[:, idx], nocc_alph, nvirt_alph)
             eigvec_normed = np.concatenate((x_normed.flatten(), y_normed.flatten()), axis=0)
-            self.eigvecs_normed[:, idx] = eigvec_normed
-            eigval = self.eigvals[idx].real
+            self.solver.eigvecs_normed[:, idx] = eigvec_normed
+            eigval = self.solver.eigvals[idx].real
             print(' State: {}'.format(idx + 1))
             print(' Excitation energy [a.u.]: {}'.format(eigval))
             print(' Excitation energy [eV]  : {}'.format(eigval * 27.2114))
             # contract the components of every operator with every
             # eigenvector
-            for operator in self.operators:
+            for operator in self.solver.operators:
                 print('-' * 78)
                 print(' Operator: {}'.format(operator.label))
                 integrals = operator.mo_integrals_ai_supervector_alph[:, :, 0]
@@ -211,7 +84,7 @@ class TDHF(CPHF):
                 operator.transition_moments.append(transition_moment)
                 operator.oscillator_strengths.append(oscillator_strength)
                 operator.total_oscillator_strengths.append(total_oscillator_strength)
-        for operator in self.operators:
+        for operator in self.solver.operators:
             operator.transition_moments = np.array(operator.transition_moments)
             operator.oscillator_strengths = np.array(operator.oscillator_strengths)
             operator.total_oscillator_strengths = np.array(operator.total_oscillator_strengths)
@@ -219,94 +92,27 @@ class TDHF(CPHF):
 
 class TDA(TDHF):
 
-    def __init__(self, mocoeffs, moenergies, occupations, *args, **kwargs):
-        super(TDA, self).__init__(mocoeffs, moenergies, occupations, *args, **kwargs)
-
-    def form_explicit_hessian(self, hamiltonian=None, spin=None, frequency=None):
-
-        assert hasattr(self, 'tei_mo')
-        assert self.tei_mo is not None
-        assert len(self.tei_mo) in (1, 2, 4, 6)
-        assert self.tei_mo_type in ('full', 'partial')
-
-        if not hamiltonian:
-            hamiltonian = self.hamiltonian
-        if not spin:
-            spin = self.spin
-
-        assert hamiltonian == 'tda'
-        assert spin in ('singlet', 'triplet')
-
-        self.hamiltonian = hamiltonian
-        self.spin = spin
-
-        nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
-        nov_alph = nocc_alph * nvirt_alph
-        nov_beta = nocc_beta * nvirt_beta
-
-        if not self.is_uhf:
-
-            # Set up "function pointers".
-            if self.tei_mo_type == 'full':
-                assert len(self.tei_mo) == 1
-                tei_mo = self.tei_mo[0]
-            elif self.tei_mo_type == 'partial':
-                assert len(self.tei_mo) == 2
-                tei_mo_ovov = self.tei_mo[0]
-                tei_mo_oovv = self.tei_mo[1]
-
-            if self.tei_mo_type == 'full':
-                if spin == 'singlet':
-                    A = form_rpa_a_matrix_mo_singlet_full(self.moenergies[0, ...], tei_mo, nocc_alph)
-                elif spin == 'triplet':
-                    A = form_rpa_a_matrix_mo_triplet_full(self.moenergies[0, ...], tei_mo, nocc_alph)
-            elif self.tei_mo_type == 'partial':
-                if spin == 'singlet':
-                    A = form_rpa_a_matrix_mo_singlet_partial(self.moenergies[0, ...], tei_mo_ovov, tei_mo_oovv)
-                elif spin == 'triplet':
-                    A = form_rpa_a_matrix_mo_triplet_partial(self.moenergies[0, ...], tei_mo_oovv)
-
-            self.explicit_hessian = A
-
-        else:
-            # TODO UHF
-            pass
-
-    def diagonalize_explicit_hessian(self):
-        nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
-        nov_alph = nocc_alph * nvirt_alph
-        nov_beta = nocc_beta * nvirt_beta
-        if not self.is_uhf:
-            eigvals, eigvecs = sp.linalg.eig(self.explicit_hessian)
-            # Sort from lowest to highest eigenvalue (excitation
-            # energy).
-            idx = eigvals.argsort()
-            self.eigvals = eigvals[idx]
-            # Each eigenvector is a column vector.
-            self.eigvecs = eigvecs[:, idx]
-        else:
-            # TODO UHF
-            pass
-
+    def __init__(self, solver, *args, **kwargs):
+        super().__init__(solver, *args, **kwargs)
 
     def form_results(self):
-        nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
+        nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.solver.occupations
         nov_alph = nocc_alph * nvirt_alph
         nov_beta = nocc_beta * nvirt_beta
-        self.eigvecs_normed = self.eigvecs.copy()
+        self.solver.eigvecs_normed = self.solver.eigvecs.copy()
         for idx in range(nov_alph):
             print('=' * 78)
             norm = (1 / np.sqrt(2))
-            eigvec = self.eigvecs[:, idx]
-            eigvec_normed = self.eigvecs[:, idx] * norm
-            self.eigvecs_normed[:, idx] = eigvec_normed
-            eigval = self.eigvals[idx].real
+            eigvec = self.solver.eigvecs[:, idx]
+            eigvec_normed = self.solver.eigvecs[:, idx] * norm
+            self.solver.eigvecs_normed[:, idx] = eigvec_normed
+            eigval = self.solver.eigvals[idx].real
             print(' State: {}'.format(idx + 1))
             print(' Excitation energy [a.u.]: {}'.format(eigval))
             print(' Excitation energy [eV]  : {}'.format(eigval * 27.2114))
             # contract the components of every operator with every
             # eigenvector
-            for operator in self.operators:
+            for operator in self.solver.operators:
                 print('-' * 78)
                 print(' Operator: {}'.format(operator.label))
                 integrals = operator.mo_integrals_ai_alph[:, :, 0]
@@ -327,7 +133,7 @@ class TDA(TDHF):
                 operator.transition_moments.append(transition_moment)
                 operator.oscillator_strengths.append(oscillator_strength)
                 operator.total_oscillator_strengths.append(total_oscillator_strength)
-        for operator in self.operators:
+        for operator in self.solver.operators:
             operator.transition_moments = np.array(operator.transition_moments)
             operator.oscillator_strengths = np.array(operator.oscillator_strengths)
             operator.total_oscillator_strengths = np.array(operator.total_oscillator_strengths)
