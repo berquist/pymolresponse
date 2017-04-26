@@ -1,5 +1,6 @@
 import numpy as np
 
+from .iterators import ExactLineqSolver
 from .cphf import CPHF
 from .operators import Operator
 
@@ -274,10 +275,12 @@ def test_explicit_uhf():
 
     occupations = occupations_from_pyscf_mol(mol, C)
 
-    cphf = CPHF(C, E, occupations)
+    solver = ExactLineqSolver(C, E, occupations)
 
-    cphf.tei_mo = perform_tei_ao2mo_uhf_full(mol, C)
-    cphf.tei_mo_type = 'full'
+    solver.tei_mo = perform_tei_ao2mo_uhf_full(mol, C)
+    solver.tei_mo_type = 'full'
+
+    cphf = CPHF(solver)
 
     operator_dipole = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False)
     operator_dipole.ao_integrals = integrals_dipole_ao
@@ -285,7 +288,7 @@ def test_explicit_uhf():
 
     cphf.set_frequencies()
 
-    cphf.run(solver='explicit', hamiltonian='rpa', spin='singlet')
+    cphf.run(solver_type='exact', hamiltonian='rpa', spin='singlet')
     assert len(cphf.frequencies) == len(cphf.results) == 1
     res = cphf.results[0]
     print(res)

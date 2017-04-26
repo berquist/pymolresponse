@@ -3,6 +3,7 @@ import numpy as np
 from . import utils
 
 from .cphf import CPHF
+from .iterators import ExactLineqSolver
 from .operators import Operator
 from .test_runners import run_as_many_tests_as_possible_rhf_disk, run_as_many_tests_as_possible_uhf_disk
 
@@ -22,17 +23,18 @@ def test_final_result_rhf_h2o_sto3g_rpa_singlet():
     mat_dipole_y = utils.parse_int_file_2(stub + "muy.dat", dim)
     mat_dipole_z = utils.parse_int_file_2(stub + "muz.dat", dim)
 
-    cphf = CPHF(C, E, occupations)
-    frequencies = (0.0, 0.02, 0.06, 0.1)
-    cphf.frequencies = frequencies
+    solver = ExactLineqSolver(C, E, occupations)
+    solver.tei_mo = (TEI_MO, )
+    solver.tei_mo_type = 'full'
+    cphf = CPHF(solver)
     ao_integrals_dipole = np.stack((mat_dipole_x, mat_dipole_y, mat_dipole_z), axis=0)
     operator_dipole = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False)
     operator_dipole.ao_integrals = ao_integrals_dipole
     cphf.add_operator(operator_dipole)
-    cphf.tei_mo = (TEI_MO, )
-    cphf.tei_mo_type = 'full'
+    frequencies = (0.0, 0.02, 0.06, 0.1)
+    cphf.set_frequencies(frequencies)
 
-    cphf.run(solver='explicit', hamiltonian=hamiltonian, spin=spin)
+    cphf.run(solver_type='exact', hamiltonian=hamiltonian, spin=spin)
 
     assert len(cphf.results) == len(frequencies)
 
@@ -81,17 +83,18 @@ def test_final_result_rhf_h2o_sto3g_rpa_triplet():
     mat_dipole_y = utils.parse_int_file_2(stub + "muy.dat", dim)
     mat_dipole_z = utils.parse_int_file_2(stub + "muz.dat", dim)
 
-    cphf = CPHF(C, E, occupations)
-    frequencies = (0.0, 0.02, 0.06, 0.1)
-    cphf.frequencies = frequencies
+    solver = ExactLineqSolver(C, E, occupations)
+    solver.tei_mo = (TEI_MO, )
+    solver.tei_mo_type = 'full'
+    cphf = CPHF(solver)
     ao_integrals_dipole = np.stack((mat_dipole_x, mat_dipole_y, mat_dipole_z), axis=0)
     operator_dipole = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False)
     operator_dipole.ao_integrals = ao_integrals_dipole
     cphf.add_operator(operator_dipole)
-    cphf.tei_mo = (TEI_MO, )
-    cphf.tei_mo_type = 'full'
+    frequencies = (0.0, 0.02, 0.06, 0.1)
+    cphf.set_frequencies(frequencies)
 
-    cphf.run(solver='explicit', hamiltonian=hamiltonian, spin=spin)
+    cphf.run(solver_type='exact', hamiltonian=hamiltonian, spin=spin)
 
     assert len(cphf.results) == len(frequencies)
 
@@ -140,17 +143,18 @@ def test_final_result_rhf_h2o_sto3g_tda_singlet():
     mat_dipole_y = utils.parse_int_file_2(stub + "muy.dat", dim)
     mat_dipole_z = utils.parse_int_file_2(stub + "muz.dat", dim)
 
-    cphf = CPHF(C, E, occupations)
-    frequencies = (0.0, 0.02, 0.06, 0.1)
-    cphf.frequencies = frequencies
+    solver = ExactLineqSolver(C, E, occupations)
+    solver.tei_mo = (TEI_MO, )
+    solver.tei_mo_type = 'full'
+    cphf = CPHF(solver)
     ao_integrals_dipole = np.stack((mat_dipole_x, mat_dipole_y, mat_dipole_z), axis=0)
     operator_dipole = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False)
     operator_dipole.ao_integrals = ao_integrals_dipole
     cphf.add_operator(operator_dipole)
-    cphf.tei_mo = (TEI_MO, )
-    cphf.tei_mo_type = 'full'
+    frequencies = (0.0, 0.02, 0.06, 0.1)
+    cphf.set_frequencies(frequencies)
 
-    cphf.run(solver='explicit', hamiltonian=hamiltonian, spin=spin)
+    cphf.run(solver_type='exact', hamiltonian=hamiltonian, spin=spin)
 
     assert len(cphf.results) == len(frequencies)
 
@@ -199,17 +203,18 @@ def test_final_result_rhf_h2o_sto3g_tda_triplet():
     mat_dipole_y = utils.parse_int_file_2(stub + "muy.dat", dim)
     mat_dipole_z = utils.parse_int_file_2(stub + "muz.dat", dim)
 
-    cphf = CPHF(C, E, occupations)
-    frequencies = (0.0, 0.02, 0.06, 0.1)
-    cphf.frequencies = frequencies
+    solver = ExactLineqSolver(C, E, occupations)
+    solver.tei_mo = (TEI_MO, )
+    solver.tei_mo_type = 'full'
+    cphf = CPHF(solver)
     ao_integrals_dipole = np.stack((mat_dipole_x, mat_dipole_y, mat_dipole_z), axis=0)
     operator_dipole = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False)
     operator_dipole.ao_integrals = ao_integrals_dipole
     cphf.add_operator(operator_dipole)
-    cphf.tei_mo = (TEI_MO, )
-    cphf.tei_mo_type = 'full'
+    frequencies = (0.0, 0.02, 0.06, 0.1)
+    cphf.set_frequencies(frequencies)
 
-    cphf.run(solver='explicit', hamiltonian=hamiltonian, spin=spin)
+    cphf.run(solver_type='exact', hamiltonian=hamiltonian, spin=spin)
 
     assert len(cphf.results) == len(frequencies)
 
@@ -323,7 +328,7 @@ def test_as_many_as_possible_uhf_disk():
 #     for hamiltonian in ('rpa', 'tda'):
 #         for spin in ('singlet', 'triplet'):
 #             print('hamiltonian: {}, spin: {}'.format(hamiltonian, spin))
-#             cphf.run(solver='explicit', hamiltonian=hamiltonian, spin=spin)
+#             cphf.run(solver_type='exact', hamiltonian=hamiltonian, spin=spin)
 #             thresh = 1.0e-10
 #             cphf.results[0][cphf.results[0] < thresh] = 0.0
 #             print(cphf.results[0])

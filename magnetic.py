@@ -12,8 +12,8 @@ from .utils import tensor_printer
 
 class Magnetizability(ResponseProperty):
 
-    def __init__(self, pyscfmol, mocoeffs, moenergies, occupations, hamiltonian, spin, use_giao=False, *args, **kwargs):
-        super().__init__(pyscfmol, mocoeffs, moenergies, occupations, hamiltonian, spin, frequencies=[0.0], *args, **kwargs)
+    def __init__(self, pyscfmol, mocoeffs, moenergies, occupations, use_giao=False, *args, **kwargs):
+        super().__init__(pyscfmol, mocoeffs, moenergies, occupations, frequencies=[0.0], *args, **kwargs)
         self.use_giao = use_giao
 
     def form_operators(self):
@@ -26,21 +26,21 @@ class Magnetizability(ResponseProperty):
             operator_angmom = Operator(label='angmom', is_imaginary=True, is_spin_dependent=False, triplet=False)
             integrals_angmom_ao = self.pyscfmol.intor('cint1e_cg_irxp_sph', comp=3)
         operator_angmom.ao_integrals = integrals_angmom_ao
-        self.solver.add_operator(operator_angmom)
+        self.driver.add_operator(operator_angmom)
 
     def form_results(self):
 
-        assert len(self.solver.results) == 1
-        operator_angmom = self.solver.operators[0]
-        self.magnetizability = (1 / 4) * self.solver.results[0]
+        assert len(self.driver.results) == 1
+        operator_angmom = self.driver.solver.operators[0]
+        self.magnetizability = (1 / 4) * self.driver.results[0]
         # print('paramagnetic part of magnetic susceptibility/magnetizability, no GIAO, Cartesian origin')
         # print(self.magnetizability)
 
 
 class ElectronicGTensor(ResponseProperty):
 
-    def __init__(self, pyscfmol, mocoeffs, moenergies, occupations, hamiltonian, spin, gauge_origin='ecc', *args, **kwargs):
-        super().__init__(pyscfmol, mocoeffs, moenergies, occupations, hamiltonian, spin, frequencies=[0.0], *args, **kwargs)
+    def __init__(self, pyscfmol, mocoeffs, moenergies, occupations, gauge_origin='ecc', *args, **kwargs):
+        super().__init__(pyscfmol, mocoeffs, moenergies, occupations, frequencies=[0.0], *args, **kwargs)
 
         assert isinstance(gauge_origin, (str, list, tuple, np.ndarray))
         if isinstance(gauge_origin, str):
@@ -72,7 +72,7 @@ class ElectronicGTensor(ResponseProperty):
         self.pyscfmol.set_common_orig(self.gauge_origin)
         integrals_angmom_ao = self.pyscfmol.intor('cint1e_cg_irxp_sph', comp=3)
         operator_angmom.ao_integrals = integrals_angmom_ao
-        self.solver.add_operator(operator_angmom)
+        self.driver.add_operator(operator_angmom)
 
         # spin-orbit (1-electron, exact nuclear charges)
         operator_spinorb = Operator(label='spinorb', is_imaginary=True, is_spin_dependent=False, triplet=False)
@@ -82,7 +82,7 @@ class ElectronicGTensor(ResponseProperty):
             chg = self.pyscfmol.atom_charge(atm_id)
             integrals_spinorb_ao += chg * self.pyscfmol.intor('cint1e_prinvxp_sph', comp=3)
         operator_spinorb.ao_integrals = integrals_spinorb_ao
-        self.solver.add_operator(operator_spinorb)
+        self.driver.add_operator(operator_spinorb)
 
         # spin-orbit (1-electron, effective nuclear charges)
         operator_spinorb_eff = Operator(label='spinorb_eff', is_imaginary=True, is_spin_dependent=False, triplet=False)
@@ -93,11 +93,11 @@ class ElectronicGTensor(ResponseProperty):
             chg = 0
             integrals_spinorb_eff_ao += chg * self.pyscfmol.intor('cint1e_prinvxp_sph', comp=3)
         operator_spinorb_eff.ao_integrals = integrals_spinorb_eff_ao
-        self.solver.add_operator(operator_spinorb_eff)
+        self.driver.add_operator(operator_spinorb_eff)
 
     def form_results(self):
 
-        operator_angmom = self.solver.operators[0]
+        operator_angmom = self.driver.solver.operators[0]
         # angmom_grad_alph = operator_angmom.mo_integrals_ai_supervector_alph
         # print(angmom_grad_alph[0, :, 0])
         # angmom_resp_alph = operator_angmom.rspvecs_alph[0]
@@ -106,15 +106,15 @@ class ElectronicGTensor(ResponseProperty):
         # print(np.linalg.norm(angmom_resp_alph[0, :, 0]))
         # print(angmom_resp_beta.shape)
         # print(np.linalg.norm(angmom_resp_beta[0, :, 0]))
-        operator_spinorb = self.solver.operators[1]
-        operator_spinorb_eff = self.solver.operators[2]
+        operator_spinorb = self.driver.solver.operators[1]
+        operator_spinorb_eff = self.driver.solver.operators[2]
 
         np_formatter = {
             'float_kind': lambda x: '{:14.8f}'.format(x)
         }
         # np.set_printoptions(linewidth=200, formatter=np_formatter)
-        assert len(self.solver.results) == 1
-        results = self.solver.results[0]
+        assert len(self.driver.results) == 1
+        results = self.driver.results[0]
         assert results.shape == (9, 9)
         block_1 = results[0:3, 0:3] # angmom/angmom
         block_2 = results[0:3, 3:6] # angmom/spinorb
