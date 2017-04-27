@@ -1,6 +1,6 @@
 import numpy as np
 
-from .iterators import ExactLineqSolver
+from .iterators import ExactInv
 from .cphf import CPHF
 from .operators import Operator
 
@@ -192,7 +192,7 @@ def test_explicit_uhf():
 
     integrals_dipole_ao = mol.intor('cint1e_r_sph', comp=3)
 
-    solver = ExactLineqSolver(C, E, occupations)
+    solver = ExactInv(C, E, occupations)
 
     solver.tei_mo = (tei_mo_ovov_aaaa, tei_mo_ovov_aabb, tei_mo_ovov_bbaa, tei_mo_ovov_bbbb, tei_mo_oovv_aaaa, tei_mo_oovv_bbbb)
     solver.tei_mo_type = 'partial'

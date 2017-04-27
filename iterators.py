@@ -346,27 +346,10 @@ class ExactLineqSolver(LineqSolver):
                 G_bb - superoverlap_beta,
             )
 
-    def invert_explicit_hessian(self):
-        assert hasattr(self, 'explicit_hessian')
-        if not self.is_uhf:
-            # TODO check self.explicit_hessian type
-            self.explicit_hessian_inv = np.linalg.inv(self.explicit_hessian)
-        else:
-            # TODO check self.explicit_hessian type
-            assert len(self.explicit_hessian) == 4
-            self.explicit_hessian_inv = []
-            # The inverse of the opposite-spin blocks is not necessary.
-            G_aa, _, _, G_bb = self.explicit_hessian
-            self.explicit_hessian_inv.append(np.linalg.inv(G_aa))
-            self.explicit_hessian_inv.append(np.linalg.inv(G_bb))
-
     def form_response_vectors(self):
         if self.is_uhf:
             G_aa, G_ab, G_ba, G_bb = self.explicit_hessian
             G_aa_inv, G_bb_inv = self.explicit_hessian_inv
-            # Form the operator-independent part of the response vectors.
-            left_alph = np.linalg.inv(G_aa - np.dot(G_ab, np.dot(G_bb_inv, G_ba)))
-            left_beta = np.linalg.inv(G_bb - np.dot(G_ba, np.dot(G_aa_inv, G_ab)))
         for operator in self.operators:
             if not self.is_uhf:
                 rspvecs_operator = []
@@ -403,8 +386,8 @@ class ExactLineqSolver(LineqSolver):
                     right_beta = operator_component_beta - (np.dot(G_ba, np.dot(G_aa_inv, operator_component_alph)))
                     assert right_alph.shape == shape_alph
                     assert right_beta.shape == shape_beta
-                    rspvecs_operator_alph.append(np.dot(left_alph, right_alph))
-                    rspvecs_operator_beta.append(np.dot(left_beta, right_beta))
+                    rspvecs_operator_alph.append(np.dot(self.left_alph, right_alph))
+                    rspvecs_operator_beta.append(np.dot(self.left_beta, right_beta))
                 tmp_alph = np.empty(shape=(len(rspvecs_operator_alph), shape_alph[0], 1),
                                     dtype=operator_component_alph.dtype)
                 tmp_beta = np.empty(shape=(len(rspvecs_operator_beta), shape_beta[0], 1),
@@ -424,12 +407,83 @@ class ExactInv(ExactLineqSolver):
     def __init__(self, mocoeffs, moenergies, occupations, *args, **kwargs):
         super().__init__(mocoeffs, moenergies, occupations, *args, **kwargs)
 
+    def invert_explicit_hessian(self):
+        assert hasattr(self, 'explicit_hessian')
+        if not self.is_uhf:
+            self.explicit_hessian_inv = np.linalg.inv(self.explicit_hessian)
+        else:
+            assert len(self.explicit_hessian) == 4
+            self.explicit_hessian_inv = []
+            G_aa, G_ab, G_ba, G_bb = self.explicit_hessian
+            # The inverse of the opposite-spin blocks is not
+            # necessary.
+            G_aa_inv = np.linalg.inv(G_aa)
+            G_bb_inv = np.linalg.inv(G_bb)
+            self.explicit_hessian_inv.append(G_aa_inv)
+            self.explicit_hessian_inv.append(G_bb_inv)
+            # Form the operator-independent part of the response
+            # vectors.
+            self.left_alph = np.linalg.inv(G_aa - np.dot(G_ab, np.dot(G_bb_inv, G_ba)))
+            self.left_beta = np.linalg.inv(G_bb - np.dot(G_ba, np.dot(G_aa_inv, G_ab)))
+
+
+class ExactPinv(ExactLineqSolver):
+
+    def __init__(self, mocoeffs, moenergies, occupations, *args, **kwargs):
+        super().__init__(mocoeffs, moenergies, occupations, *args, **kwargs)
+
+    def invert_explicit_hessian(self):
+        assert hasattr(self, 'explicit_hessian')
+        if not self.is_uhf:
+            self.explicit_hessian_inv = sp.linalg.pinv2(self.explicit_hessian)
+        else:
+            assert len(self.explicit_hessian) == 4
+            self.explicit_hessian_inv = []
+            G_aa, G_ab, G_ba, G_bb = self.explicit_hessian
+            # The inverse of the opposite-spin blocks is not
+            # necessary.
+            G_aa_inv = sp.linalg.pinv2(G_aa)
+            G_bb_inv = sp.linalg.pinv2(G_bb)
+            self.explicit_hessian_inv.append(G_aa_inv)
+            self.explicit_hessian_inv.append(G_bb_inv)
+            # Form the operator-independent part of the response
+            # vectors.
+            self.left_alph = sp.linalg.pinv(G_aa - np.dot(G_ab, np.dot(G_bb_inv, G_ba)))
+            self.left_beta = sp.linalg.pinv(G_bb - np.dot(G_ba, np.dot(G_aa_inv, G_ab)))
+
 
 class ExactInvCholesky(ExactLineqSolver):
 
     def __init__(self, mocoeffs, moenergies, occupations, *args, **kwargs):
         super().__init__(mocoeffs, moenergies, occupations, *args, **kwargs)
 
+    def invert_explicit_hessian(self):
+        assert hasattr(self, 'explicit_hessian')
+        if not self.is_uhf:
+            fac = sp.linalg.cholesky(self.explicit_hessian)
+            fac_inv = sp.linalg.inv(fac)
+            inv = np.dot(fac_inv, fac_inv.T)
+            self.explicit_hessian_inv = inv
+        else:
+            assert len(self.explicit_hessian) == 4
+            self.explicit_hessian_inv = []
+            G_aa, G_ab, G_ba, G_bb = self.explicit_hessian
+            # The inverse of the opposite-spin blocks is not
+            # necessary.
+            G_aa_R_inv = sp.linalg.inv(sp.linalg.cholesky(G_aa, lower=False))
+            G_bb_R_inv = sp.linalg.inv(sp.linalg.cholesky(G_bb, lower=False))
+            G_aa_inv = np.dot(G_aa_R_inv, G_aa_R_inv.T)
+            G_bb_inv = np.dot(G_bb_R_inv, G_bb_R_inv.T)
+            self.explicit_hessian_inv.append(G_aa_inv)
+            self.explicit_hessian_inv.append(G_bb_inv)
+            # Form the operator-independent part of the response
+            # vectors.
+            left_alph_R = sp.linalg.cholesky(G_aa - np.dot(G_ab, np.dot(G_bb_inv, G_ba)), lower=False)
+            left_beta_R = sp.linalg.cholesky(G_bb - np.dot(G_ba, np.dot(G_aa_inv, G_ab)), lower=False)
+            left_alph_R_inv = sp.linalg.inv(left_alph_R)
+            left_beta_R_inv = sp.linalg.inv(left_beta_R)
+            self.left_alph = np.dot(left_alph_R_inv, left_alph_R_inv.T)
+            self.left_beta = np.dot(left_beta_R_inv, left_beta_R_inv.T)
 
 class EigSolver(Solver):
 

@@ -13,7 +13,7 @@ from cclib.io import ccopen
 import pyscf
 
 from .operators import Operator
-from .iterators import ExactLineqSolver
+from .iterators import ExactInv
 from .cphf import CPHF
 from .utils import get_reference_value_from_file, occupations_from_sirifc
 from .ao2mo import perform_tei_ao2mo_rhf_partial, perform_tei_ao2mo_uhf_partial
@@ -62,7 +62,7 @@ def calculate_disk_rhf(testcase, hamiltonian, spin, frequency, label_1, label_2)
     moene = np.diag(moene[:, 0])[np.newaxis, ...]
     assert moene.shape == (1, norb, norb)
 
-    solver = ExactLineqSolver(C, moene, occupations)
+    solver = ExactInv(C, moene, occupations)
     solver.tei_mo = (moints_iajb_aaaa, moints_ijab_aaaa)
     solver.tei_mo_type = 'partial'
 
@@ -138,7 +138,7 @@ def calculate_disk_uhf(testcase, hamiltonian, spin, frequency, label_1, label_2)
     moene = np.stack((moene_alph, moene_beta), axis=0)
     assert moene.shape == (2, norb, norb)
 
-    solver = ExactLineqSolver(C, moene, occupations)
+    solver = ExactInv(C, moene, occupations)
     solver.tei_mo = (moints_iajb_aaaa, moints_iajb_aabb, moints_iajb_bbaa, moints_iajb_bbbb, moints_ijab_aaaa, moints_ijab_bbbb)
     solver.tei_mo_type = 'partial'
 
@@ -225,7 +225,7 @@ def calculate_rhf(dalton_tmpdir, hamiltonian=None, spin=None, operator_label=Non
     else:
         pass
 
-    solver = ExactLineqSolver(C, E, occupations)
+    solver = ExactInv(C, E, occupations)
 
     solver.tei_mo = perform_tei_ao2mo_rhf_partial(mol, C)
     solver.tei_mo_type = 'partial'
@@ -331,7 +331,7 @@ def calculate_uhf(dalton_tmpdir, hamiltonian=None, spin=None, operator_label=Non
     else:
         pass
 
-    solver = ExactLineqSolver(C, E, occupations)
+    solver = ExactInv(C, E, occupations)
 
     solver.tei_mo = perform_tei_ao2mo_uhf_partial(mol, C)
     solver.tei_mo_type = 'partial'

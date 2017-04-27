@@ -48,7 +48,7 @@ class ResponseProperty(MolecularProperty):
         elif self.solver is not None:
             solver = self.solver
         else:
-            solver = iterators.ExactLineqSolver(mocoeffs, moenergies, occupations)
+            solver = iterators.ExactInv(mocoeffs, moenergies, occupations)
 
         # TODO this doesn't belong here.
         solver.form_tei_mo(pyscfmol)

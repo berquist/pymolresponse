@@ -4,7 +4,7 @@ import pyscf
 
 from . import utils
 from .cphf import CPHF
-from .iterators import ExactLineqSolver
+from .iterators import ExactInv
 from .operators import Operator
 from . import ao2mo
 from .molecules import molecule_trithiolane_HF_STO3G
@@ -140,7 +140,7 @@ def test_uncoupled_rhf():
     E = utils.fix_moenergies_shape(mf.mo_energy)
     occupations = utils.occupations_from_pyscf_mol(mol, C)
 
-    solver = ExactLineqSolver(C, E, occupations)
+    solver = ExactInv(C, E, occupations)
 
     solver.tei_mo = ao2mo.perform_tei_ao2mo_rhf_partial(mol, C, mol.verbose)
     solver.tei_mo_type = 'partial'
@@ -192,7 +192,7 @@ def test_uncoupled_uhf():
     E = utils.fix_moenergies_shape(mf.mo_energy)
     occupations = utils.occupations_from_pyscf_mol(mol, C)
 
-    solver = ExactLineqSolver(C, E, occupations)
+    solver = ExactInv(C, E, occupations)
 
     solver.tei_mo = ao2mo.perform_tei_ao2mo_uhf_partial(mol, C, mol.verbose)
     solver.tei_mo_type = 'partial'

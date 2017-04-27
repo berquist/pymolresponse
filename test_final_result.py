@@ -3,7 +3,7 @@ import numpy as np
 from . import utils
 
 from .cphf import CPHF
-from .iterators import ExactLineqSolver
+from .iterators import ExactInv
 from .operators import Operator
 from .test_runners import run_as_many_tests_as_possible_rhf_disk, run_as_many_tests_as_possible_uhf_disk
 
@@ -23,7 +23,7 @@ def test_final_result_rhf_h2o_sto3g_rpa_singlet():
     mat_dipole_y = utils.parse_int_file_2(stub + "muy.dat", dim)
     mat_dipole_z = utils.parse_int_file_2(stub + "muz.dat", dim)
 
-    solver = ExactLineqSolver(C, E, occupations)
+    solver = ExactInv(C, E, occupations)
     solver.tei_mo = (TEI_MO, )
     solver.tei_mo_type = 'full'
     cphf = CPHF(solver)
@@ -83,7 +83,7 @@ def test_final_result_rhf_h2o_sto3g_rpa_triplet():
     mat_dipole_y = utils.parse_int_file_2(stub + "muy.dat", dim)
     mat_dipole_z = utils.parse_int_file_2(stub + "muz.dat", dim)
 
-    solver = ExactLineqSolver(C, E, occupations)
+    solver = ExactInv(C, E, occupations)
     solver.tei_mo = (TEI_MO, )
     solver.tei_mo_type = 'full'
     cphf = CPHF(solver)
@@ -143,7 +143,7 @@ def test_final_result_rhf_h2o_sto3g_tda_singlet():
     mat_dipole_y = utils.parse_int_file_2(stub + "muy.dat", dim)
     mat_dipole_z = utils.parse_int_file_2(stub + "muz.dat", dim)
 
-    solver = ExactLineqSolver(C, E, occupations)
+    solver = ExactInv(C, E, occupations)
     solver.tei_mo = (TEI_MO, )
     solver.tei_mo_type = 'full'
     cphf = CPHF(solver)
@@ -203,7 +203,7 @@ def test_final_result_rhf_h2o_sto3g_tda_triplet():
     mat_dipole_y = utils.parse_int_file_2(stub + "muy.dat", dim)
     mat_dipole_z = utils.parse_int_file_2(stub + "muz.dat", dim)
 
-    solver = ExactLineqSolver(C, E, occupations)
+    solver = ExactInv(C, E, occupations)
     solver.tei_mo = (TEI_MO, )
     solver.tei_mo_type = 'full'
     cphf = CPHF(solver)

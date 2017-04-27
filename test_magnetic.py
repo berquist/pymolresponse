@@ -23,16 +23,7 @@ ref_magnetizability_rohf = np.array([[10.730460126094, -0.031625404934, -2.41206
 
 
 def test_magnetizability_rhf():
-    mol = pyscf.gto.Mole()
-    mol.verbose = 0
-    mol.output = None
-    with open('glycine.xyz') as fh:
-        next(fh)
-        next(fh)
-        mol.atom = fh.read()
-    mol.basis = 'sto-3g'
-    mol.charge = 0
-    mol.spin = 0
+    mol = molecules.molecule_glycine_HF_STO3G()
     mol.build()
 
     mf = pyscf.scf.RHF(mol)
@@ -63,14 +54,7 @@ def test_magnetizability_rhf():
 
 
 def test_magnetizability_uhf():
-    mol = pyscf.gto.Mole()
-    mol.verbose = 5
-    mol.output = None
-    with open('glycine.xyz') as fh:
-        next(fh)
-        next(fh)
-        mol.atom = fh.read()
-    mol.basis = 'sto-3g'
+    mol = molecules.molecule_glycine_HF_STO3G()
     mol.charge = 1
     mol.spin = 1
     mol.build()

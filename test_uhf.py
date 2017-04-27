@@ -1,6 +1,6 @@
 import numpy as np
 
-from .iterators import ExactLineqSolver
+from .iterators import ExactInv
 from .cphf import CPHF
 from .operators import Operator
 
@@ -275,7 +275,7 @@ def test_explicit_uhf():
 
     occupations = occupations_from_pyscf_mol(mol, C)
 
-    solver = ExactLineqSolver(C, E, occupations)
+    solver = ExactInv(C, E, occupations)
 
     solver.tei_mo = perform_tei_ao2mo_uhf_full(mol, C)
     solver.tei_mo_type = 'full'
