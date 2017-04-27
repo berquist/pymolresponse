@@ -407,49 +407,34 @@ class ExactInv(ExactLineqSolver):
     def __init__(self, mocoeffs, moenergies, occupations, *args, **kwargs):
         super().__init__(mocoeffs, moenergies, occupations, *args, **kwargs)
 
+        self.inv_func = np.linalg.inv
+
     def invert_explicit_hessian(self):
         assert hasattr(self, 'explicit_hessian')
         if not self.is_uhf:
-            self.explicit_hessian_inv = np.linalg.inv(self.explicit_hessian)
+            self.explicit_hessian_inv = self.inv_func(self.explicit_hessian)
         else:
             assert len(self.explicit_hessian) == 4
             self.explicit_hessian_inv = []
             G_aa, G_ab, G_ba, G_bb = self.explicit_hessian
             # The inverse of the opposite-spin blocks is not
             # necessary.
-            G_aa_inv = np.linalg.inv(G_aa)
-            G_bb_inv = np.linalg.inv(G_bb)
+            G_aa_inv = self.inv_func(G_aa)
+            G_bb_inv = self.inv_func(G_bb)
             self.explicit_hessian_inv.append(G_aa_inv)
             self.explicit_hessian_inv.append(G_bb_inv)
             # Form the operator-independent part of the response
             # vectors.
-            self.left_alph = np.linalg.inv(G_aa - np.dot(G_ab, np.dot(G_bb_inv, G_ba)))
-            self.left_beta = np.linalg.inv(G_bb - np.dot(G_ba, np.dot(G_aa_inv, G_ab)))
+            self.left_alph = self.inv_func(G_aa - np.dot(G_ab, np.dot(G_bb_inv, G_ba)))
+            self.left_beta = self.inv_func(G_bb - np.dot(G_ba, np.dot(G_aa_inv, G_ab)))
 
 
-class ExactPinv(ExactLineqSolver):
+class ExactPinv(ExactInv):
 
     def __init__(self, mocoeffs, moenergies, occupations, *args, **kwargs):
         super().__init__(mocoeffs, moenergies, occupations, *args, **kwargs)
 
-    def invert_explicit_hessian(self):
-        assert hasattr(self, 'explicit_hessian')
-        if not self.is_uhf:
-            self.explicit_hessian_inv = sp.linalg.pinv2(self.explicit_hessian)
-        else:
-            assert len(self.explicit_hessian) == 4
-            self.explicit_hessian_inv = []
-            G_aa, G_ab, G_ba, G_bb = self.explicit_hessian
-            # The inverse of the opposite-spin blocks is not
-            # necessary.
-            G_aa_inv = sp.linalg.pinv2(G_aa)
-            G_bb_inv = sp.linalg.pinv2(G_bb)
-            self.explicit_hessian_inv.append(G_aa_inv)
-            self.explicit_hessian_inv.append(G_bb_inv)
-            # Form the operator-independent part of the response
-            # vectors.
-            self.left_alph = sp.linalg.pinv(G_aa - np.dot(G_ab, np.dot(G_bb_inv, G_ba)))
-            self.left_beta = sp.linalg.pinv(G_bb - np.dot(G_ba, np.dot(G_aa_inv, G_ab)))
+        self.inv_func = sp.linalg.pinv2
 
 
 class ExactInvCholesky(ExactLineqSolver):
@@ -678,5 +663,3 @@ class ExactDiagonalizationSolverTDA(ExactDiagonalizationSolver, EigSolverTDA):
         else:
             # TODO UHF
             pass
-
-
