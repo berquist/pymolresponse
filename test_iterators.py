@@ -2,6 +2,7 @@ from __future__ import print_function
 from __future__ import division
 
 import numpy as np
+import scipy as sp
 
 import pyscf
 
@@ -25,24 +26,36 @@ def test_iterators():
     E = utils.fix_moenergies_shape(mf.mo_energy)
     occupations = utils.occupations_from_pyscf_mol(mol, C)
 
-    solver_inv = iterators.ExactInv(C, E, occupations)
-    solver_pinv = iterators.ExactPinv(C, E, occupations)
+    solver_ref = iterators.ExactInv(C, E, occupations)
+    calculator_ref = Magnetizability(mol, C, E, occupations, solver=solver_ref)
+    calculator_ref.form_operators()
+    calculator_ref.run(hamiltonian='rpa', spin='singlet')
+    calculator_ref.form_results()
+    print(calculator_ref.magnetizability)
 
-    calculator_inv = Magnetizability(mol, C, E, occupations, solver=solver_inv)
-    calculator_inv.form_operators()
-    calculator_inv.run(hamiltonian='rpa', spin='singlet')
-    calculator_inv.form_results()
-    print(calculator_inv.magnetizability)
-    calculator_pinv = Magnetizability(mol, C, E, occupations, solver=solver_pinv)
-    calculator_pinv.form_operators()
-    calculator_pinv.run(hamiltonian='rpa', spin='singlet')
-    calculator_pinv.form_results()
-    print(calculator_pinv.magnetizability)
+    ref = calculator_ref.magnetizability
+    inv_funcs = (
+        sp.linalg.inv,
+        sp.linalg.pinv,
+        sp.linalg.pinv2,
+    )
 
-    assert np.all(np.equal(np.sign(calculator_inv.magnetizability),
-                           np.sign(calculator_pinv.magnetizability)))
-    thresh = 1.0e-14
-    assert np.all(np.abs(calculator_inv.magnetizability - calculator_inv.magnetizability) < thresh)
+    thresh = 6.0e-14
+
+    for inv_func in inv_funcs:
+        solver_res = iterators.ExactInv(C, E, occupations, inv_func=inv_func)
+        calculator_res = Magnetizability(mol, C, E, occupations, solver=solver_res)
+        calculator_res.form_operators()
+        calculator_res.run(hamiltonian='rpa', spin='singlet')
+        calculator_res.form_results()
+        print(calculator_res.magnetizability)
+
+        assert np.all(np.equal(np.sign(calculator_ref.magnetizability),
+                               np.sign(calculator_res.magnetizability)))
+        diff = calculator_ref.magnetizability - calculator_res.magnetizability
+        abs_diff = np.abs(diff)
+        print(abs_diff)
+        assert np.all(abs_diff < thresh)
 
     return
 

@@ -407,7 +407,11 @@ class ExactInv(ExactLineqSolver):
     def __init__(self, mocoeffs, moenergies, occupations, *args, **kwargs):
         super().__init__(mocoeffs, moenergies, occupations, *args, **kwargs)
 
-        self.inv_func = np.linalg.inv
+        inv_func = kwargs.get('inv_func')
+        if inv_func:
+            self.inv_func = inv_func
+        else:
+            self.inv_func = np.linalg.inv
 
     def invert_explicit_hessian(self):
         assert hasattr(self, 'explicit_hessian')
@@ -427,14 +431,6 @@ class ExactInv(ExactLineqSolver):
             # vectors.
             self.left_alph = self.inv_func(G_aa - np.dot(G_ab, np.dot(G_bb_inv, G_ba)))
             self.left_beta = self.inv_func(G_bb - np.dot(G_ba, np.dot(G_aa_inv, G_ab)))
-
-
-class ExactPinv(ExactInv):
-
-    def __init__(self, mocoeffs, moenergies, occupations, *args, **kwargs):
-        super().__init__(mocoeffs, moenergies, occupations, *args, **kwargs)
-
-        self.inv_func = sp.linalg.pinv2
 
 
 class ExactInvCholesky(ExactLineqSolver):
@@ -469,6 +465,7 @@ class ExactInvCholesky(ExactLineqSolver):
             left_beta_R_inv = sp.linalg.inv(left_beta_R)
             self.left_alph = np.dot(left_alph_R_inv, left_alph_R_inv.T)
             self.left_beta = np.dot(left_beta_R_inv, left_beta_R_inv.T)
+
 
 class EigSolver(Solver):
 
