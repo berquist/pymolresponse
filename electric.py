@@ -7,8 +7,8 @@ from .operators import Operator
 
 class Polarizability(ResponseProperty):
 
-    def __init__(self, pyscfmol, mocoeffs, moenergies, occupations, hamiltonian, spin, frequencies, *args, **kwargs):
-        super().__init__(pyscfmol, mocoeffs, moenergies, occupations, hamiltonian, spin, frequencies, *args, **kwargs)
+    def __init__(self, pyscfmol, mocoeffs, moenergies, occupations, frequencies, *args, **kwargs):
+        super().__init__(pyscfmol, mocoeffs, moenergies, occupations, frequencies, *args, **kwargs)
 
 
     def form_operators(self):

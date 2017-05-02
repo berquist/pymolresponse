@@ -1,5 +1,6 @@
 import numpy as np
 
+from .iterators import ExactInv
 from .cphf import CPHF
 from .operators import Operator
 
@@ -191,10 +192,12 @@ def test_explicit_uhf():
 
     integrals_dipole_ao = mol.intor('cint1e_r_sph', comp=3)
 
-    cphf = CPHF(C, E, occupations)
+    solver = ExactInv(C, E, occupations)
 
-    cphf.tei_mo = (tei_mo_ovov_aaaa, tei_mo_ovov_aabb, tei_mo_ovov_bbaa, tei_mo_ovov_bbbb, tei_mo_oovv_aaaa, tei_mo_oovv_bbbb)
-    cphf.tei_mo_type = 'partial'
+    solver.tei_mo = (tei_mo_ovov_aaaa, tei_mo_ovov_aabb, tei_mo_ovov_bbaa, tei_mo_ovov_bbbb, tei_mo_oovv_aaaa, tei_mo_oovv_bbbb)
+    solver.tei_mo_type = 'partial'
+
+    cphf = CPHF(solver)
 
     operator_dipole = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False)
     operator_dipole.ao_integrals = integrals_dipole_ao
@@ -202,7 +205,7 @@ def test_explicit_uhf():
 
     cphf.set_frequencies()
 
-    cphf.run(solver='explicit', hamiltonian='rpa', spin='singlet')
+    cphf.run(solver_type='exact', hamiltonian='rpa', spin='singlet')
     assert len(cphf.frequencies) == len(cphf.results) == 1
     res = cphf.results[0]
     print(res)

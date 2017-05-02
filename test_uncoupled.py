@@ -4,6 +4,7 @@ import pyscf
 
 from . import utils
 from .cphf import CPHF
+from .iterators import ExactInv
 from .operators import Operator
 from . import ao2mo
 from .molecules import molecule_trithiolane_HF_STO3G
@@ -129,7 +130,7 @@ uhf_uncoupled = {
 
 
 def test_uncoupled_rhf():
-    mol = molecule_trithiolane_HF_STO3G(5)
+    mol = molecule_trithiolane_HF_STO3G(0)
     mol.build()
 
     mf = pyscf.scf.RHF(mol)
@@ -139,10 +140,12 @@ def test_uncoupled_rhf():
     E = utils.fix_moenergies_shape(mf.mo_energy)
     occupations = utils.occupations_from_pyscf_mol(mol, C)
 
-    cphf = CPHF(C, E, occupations)
+    solver = ExactInv(C, E, occupations)
 
-    cphf.tei_mo = ao2mo.perform_tei_ao2mo_rhf_partial(mol, C, mol.verbose)
-    cphf.tei_mo_type = 'partial'
+    solver.tei_mo = ao2mo.perform_tei_ao2mo_rhf_partial(mol, C, mol.verbose)
+    solver.tei_mo_type = 'partial'
+
+    cphf = CPHF(solver)
 
     operator_diplen = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False, triplet=False)
     integrals_diplen_ao = mol.intor('cint1e_r_sph', comp=3)
@@ -152,7 +155,8 @@ def test_uncoupled_rhf():
     frequencies = [0.0, 0.0773178, 0.128347]
     cphf.set_frequencies(frequencies)
 
-    cphf.run(solver='explicit', hamiltonian='rpa', spin='singlet')
+    cphf.run(solver_type='exact', hamiltonian='rpa', spin='singlet')
+
     for idxf, frequency in enumerate(frequencies):
         print(idxf, frequency)
         print('uncoupled')
@@ -176,7 +180,7 @@ def test_uncoupled_rhf():
 
 
 def test_uncoupled_uhf():
-    mol = molecule_trithiolane_HF_STO3G(5)
+    mol = molecule_trithiolane_HF_STO3G(0)
     mol.charge = 1
     mol.spin = 1
     mol.build()
@@ -188,10 +192,12 @@ def test_uncoupled_uhf():
     E = utils.fix_moenergies_shape(mf.mo_energy)
     occupations = utils.occupations_from_pyscf_mol(mol, C)
 
-    cphf = CPHF(C, E, occupations)
+    solver = ExactInv(C, E, occupations)
 
-    cphf.tei_mo = ao2mo.perform_tei_ao2mo_uhf_partial(mol, C, mol.verbose)
-    cphf.tei_mo_type = 'partial'
+    solver.tei_mo = ao2mo.perform_tei_ao2mo_uhf_partial(mol, C, mol.verbose)
+    solver.tei_mo_type = 'partial'
+
+    cphf = CPHF(solver)
 
     operator_diplen = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False, triplet=False)
     integrals_diplen_ao = mol.intor('cint1e_r_sph', comp=3)
@@ -201,7 +207,8 @@ def test_uncoupled_uhf():
     frequencies = [0.0, 0.0773178, 0.128347, 0.4556355]
     cphf.set_frequencies(frequencies)
 
-    cphf.run(solver='explicit', hamiltonian='rpa', spin='singlet')
+    cphf.run(solver_type='exact', hamiltonian='rpa', spin='singlet')
+
     for idxf, frequency in enumerate(frequencies):
         print(idxf, frequency)
         print('uncoupled')

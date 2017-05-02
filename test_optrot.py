@@ -60,13 +60,13 @@ def test_ORD_RPA_singlet_BC2H4_cation_HF_STO3G():
     mf.scf()
 
     C = utils.fix_mocoeffs_shape(mf.mo_coeff)
-    E = np.diag(mf.mo_energy)[np.newaxis, ...]
+    E = utils.fix_moenergies_shape(mf.mo_energy)
     occupations = utils.occupations_from_pyscf_mol(pyscfmol, C)
 
     frequencies = [0.0, 0.001, 0.0773178, 0.128347]
-    ord_solver = ORD(pyscfmol, C, E, occupations, hamiltonian='rpa', spin='singlet', frequencies=frequencies, do_dipvel=False)
+    ord_solver = ORD(pyscfmol, C, E, occupations, frequencies=frequencies, do_dipvel=False)
     ord_solver.form_operators()
-    ord_solver.run()
+    ord_solver.run(hamiltonian='rpa', spin='singlet')
     ord_solver.form_results()
 
     print('Polarizabilities')
@@ -88,7 +88,7 @@ def test_ORD_RPA_singlet_BC2H4_cation_HF_STO3G():
             ref_beta = ref[frequency]['orbeta']
             # TODO why no speed of light?
             # TODO why the (1/2)?
-            res_beta = -(0.5 / frequency) * ord_solver.solver.results[idxf][3:6, 0:3]
+            res_beta = -(0.5 / frequency) * ord_solver.driver.results[idxf][3:6, 0:3]
             abs_diff = abs(res_beta - ref_beta)
             print(idxf, frequency)
             print(res_beta)

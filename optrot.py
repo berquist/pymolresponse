@@ -11,8 +11,8 @@ from .utils import tensor_printer
 
 class ORD(ResponseProperty):
 
-    def __init__(self, pyscfmol, mocoeffs, moenergies, occupations, hamiltonian, spin, frequencies, do_dipvel=False, *args, **kwargs):
-        super().__init__(pyscfmol, mocoeffs, moenergies, occupations, hamiltonian, spin, frequencies, *args, **kwargs)
+    def __init__(self, pyscfmol, mocoeffs, moenergies, occupations, frequencies, do_dipvel=False, *args, **kwargs):
+        super().__init__(pyscfmol, mocoeffs, moenergies, occupations, frequencies, *args, **kwargs)
         self.do_dipvel = do_dipvel
 
     def form_operators(self):
@@ -20,24 +20,24 @@ class ORD(ResponseProperty):
         operator_angmom = Operator(label='angmom', is_imaginary=True, is_spin_dependent=False, triplet=False)
         integrals_angmom_ao = self.pyscfmol.intor('cint1e_cg_irxp_sph', comp=3)
         operator_angmom.ao_integrals = integrals_angmom_ao
-        self.solver.add_operator(operator_angmom)
+        self.driver.add_operator(operator_angmom)
         operator_diplen = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False, triplet=False)
         integrals_diplen_ao = self.pyscfmol.intor('cint1e_r_sph', comp=3)
         operator_diplen.ao_integrals = integrals_diplen_ao
-        self.solver.add_operator(operator_diplen)
+        self.driver.add_operator(operator_diplen)
         if self.do_dipvel:
             operator_dipvel = Operator(label='dipvel', is_imaginary=True, is_spin_dependent=False, triplet=False)
             integrals_dipvel_ao = self.pyscfmol.intor('cint1e_ipovlp_sph', comp=3)
             operator_dipvel.ao_integrals = integrals_dipvel_ao
-            self.solver.add_operator(operator_dipvel)
+            self.driver.add_operator(operator_dipvel)
 
     def form_results(self):
 
-        assert len(self.solver.results) == len(self.frequencies)
+        assert len(self.driver.results) == len(self.frequencies)
         self.polarizabilities = []
         for idxf, frequency in enumerate(self.frequencies):
             # print('=' * 78)
-            results = self.solver.results[idxf]
+            results = self.driver.results[idxf]
             if self.do_dipvel:
                 assert results.shape == (9, 9)
             else:

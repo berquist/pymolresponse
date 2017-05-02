@@ -23,16 +23,7 @@ ref_magnetizability_rohf = np.array([[10.730460126094, -0.031625404934, -2.41206
 
 
 def test_magnetizability_rhf():
-    mol = pyscf.gto.Mole()
-    mol.verbose = 0
-    mol.output = None
-    with open('glycine.xyz') as fh:
-        next(fh)
-        next(fh)
-        mol.atom = fh.read()
-    mol.basis = 'sto-3g'
-    mol.charge = 0
-    mol.spin = 0
+    mol = molecules.molecule_glycine_HF_STO3G()
     mol.build()
 
     mf = pyscf.scf.RHF(mol)
@@ -42,9 +33,9 @@ def test_magnetizability_rhf():
     E = utils.fix_moenergies_shape(mf.mo_energy)
     occupations = utils.occupations_from_pyscf_mol(mol, C)
 
-    calculator_common = Magnetizability(mol, C, E, occupations, hamiltonian='rpa', spin='singlet')
+    calculator_common = Magnetizability(mol, C, E, occupations)
     calculator_common.form_operators()
-    calculator_common.run()
+    calculator_common.run(hamiltonian='rpa', spin='singlet')
     calculator_common.form_results()
     ref_eigvals, ref_iso, _ = utils.tensor_printer(ref_magnetizability_rhf)
     res_eigvals, res_iso, _ = utils.tensor_printer(calculator_common.magnetizability)
@@ -63,14 +54,7 @@ def test_magnetizability_rhf():
 
 
 def test_magnetizability_uhf():
-    mol = pyscf.gto.Mole()
-    mol.verbose = 5
-    mol.output = None
-    with open('glycine.xyz') as fh:
-        next(fh)
-        next(fh)
-        mol.atom = fh.read()
-    mol.basis = 'sto-3g'
+    mol = molecules.molecule_glycine_HF_STO3G()
     mol.charge = 1
     mol.spin = 1
     mol.build()
@@ -82,9 +66,9 @@ def test_magnetizability_uhf():
     E = utils.fix_moenergies_shape(mf.mo_energy)
     occupations = utils.occupations_from_pyscf_mol(mol, C)
 
-    calculator_common = Magnetizability(mol, C, E, occupations, hamiltonian='rpa', spin='singlet')
+    calculator_common = Magnetizability(mol, C, E, occupations)
     calculator_common.form_operators()
-    calculator_common.run()
+    calculator_common.run(hamiltonian='rpa', spin='singlet')
     calculator_common.form_results()
     ref_eigvals, ref_iso, _ = utils.tensor_printer(ref_magnetizability_rohf)
     res_eigvals, res_iso, _ = utils.tensor_printer(calculator_common.magnetizability)
@@ -109,7 +93,7 @@ ref_electronicgtensor_large = np.array([[0.30798458, -0.07215188, 0.07146523],
 
 def test_electronicgtensor_tiny():
 
-    mol = molecules.molecule_LiH_cation_HF_STO3G(5)
+    mol = molecules.molecule_LiH_cation_HF_STO3G(0)
     mol.build()
 
     mf = pyscf.scf.uhf.UHF(mol)
@@ -119,9 +103,9 @@ def test_electronicgtensor_tiny():
     E = utils.fix_moenergies_shape(mf.mo_energy)
     occupations = utils.occupations_from_pyscf_mol(mol, C)
 
-    gtensor_calculator = ElectronicGTensor(mol, C, E, occupations, hamiltonian='rpa', spin='singlet')
+    gtensor_calculator = ElectronicGTensor(mol, C, E, occupations)
     gtensor_calculator.form_operators()
-    gtensor_calculator.run()
+    gtensor_calculator.run(hamiltonian='rpa', spin='singlet')
     gtensor_calculator.form_results()
 
     print(ref_electronicgtensor_tiny)
@@ -135,7 +119,7 @@ def test_electronicgtensor_tiny():
 
 def test_electronicgtensor_small():
 
-    mol = molecules.molecule_BC2H4_neutral_radical_HF_STO3G(5)
+    mol = molecules.molecule_BC2H4_neutral_radical_HF_STO3G(0)
     mol.build()
 
     mf = pyscf.scf.uhf.UHF(mol)
@@ -145,9 +129,9 @@ def test_electronicgtensor_small():
     E = utils.fix_moenergies_shape(mf.mo_energy)
     occupations = utils.occupations_from_pyscf_mol(mol, C)
 
-    gtensor_calculator = ElectronicGTensor(mol, C, E, occupations, hamiltonian='rpa', spin='singlet')
+    gtensor_calculator = ElectronicGTensor(mol, C, E, occupations)
     gtensor_calculator.form_operators()
-    gtensor_calculator.run()
+    gtensor_calculator.run(hamiltonian='rpa', spin='singlet')
     gtensor_calculator.form_results()
 
     print(ref_electronicgtensor_small)
@@ -161,7 +145,7 @@ def test_electronicgtensor_small():
 
 # def test_electronicgtensor_large():
 
-#     mol = molecules.molecule_0w4a_dication_HF_321G(5)
+#     mol = molecules.molecule_0w4a_dication_HF_321G(0)
 #     mol.build()
 
 #     mf = pyscf.scf.uhf.UHF(mol)

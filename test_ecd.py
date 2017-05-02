@@ -120,14 +120,14 @@ def test_ECD_RPA_singlet_BC2H4_cation_HF_STO3G():
     E = utils.fix_moenergies_shape(mf.mo_energy)
     occupations = utils.occupations_from_pyscf_mol(mol, C)
 
-    ecd_dipvel_rpa = ECD(mol, C, E, occupations, hamiltonian='rpa', spin='singlet', do_dipvel=True)
+    ecd_dipvel_rpa = ECD(mol, C, E, occupations, do_dipvel=True)
     ecd_dipvel_rpa.form_operators()
-    ecd_dipvel_rpa.run()
+    ecd_dipvel_rpa.run(hamiltonian='rpa', spin='singlet')
     ecd_dipvel_rpa.form_results()
 
     print('excitation energies')
     ref_etenergies = np.array(ref['etenergies'])
-    res_etenergies = ecd_dipvel_rpa.solver.eigvals.real[:nroots]
+    res_etenergies = ecd_dipvel_rpa.driver.solver.eigvals.real[:nroots]
     print('ref, res')
     for refval, resval in zip(ref_etenergies, res_etenergies):
         print(refval, resval)
@@ -138,7 +138,7 @@ def test_ECD_RPA_singlet_BC2H4_cation_HF_STO3G():
 
     print('dipole (length) oscillator strengths')
     ref_etoscslen = np.array(ref['etoscslen'])
-    res_etoscslen = ecd_dipvel_rpa.solver.operators[1].total_oscillator_strengths[:nroots]
+    res_etoscslen = ecd_dipvel_rpa.driver.solver.operators[1].total_oscillator_strengths[:nroots]
     print('ref, res')
     for refval, resval in zip(ref_etoscslen, res_etoscslen):
         print(refval, resval)

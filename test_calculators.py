@@ -13,6 +13,7 @@ from cclib.io import ccopen
 import pyscf
 
 from .operators import Operator
+from .iterators import ExactInv
 from .cphf import CPHF
 from .utils import get_reference_value_from_file, occupations_from_sirifc
 from .ao2mo import perform_tei_ao2mo_rhf_partial, perform_tei_ao2mo_uhf_partial
@@ -61,16 +62,17 @@ def calculate_disk_rhf(testcase, hamiltonian, spin, frequency, label_1, label_2)
     moene = np.diag(moene[:, 0])[np.newaxis, ...]
     assert moene.shape == (1, norb, norb)
 
-    cphf = CPHF(C, moene, occupations)
+    solver = ExactInv(C, moene, occupations)
+    solver.tei_mo = (moints_iajb_aaaa, moints_ijab_aaaa)
+    solver.tei_mo_type = 'partial'
+
+    cphf = CPHF(solver)
     cphf.add_operator(operator_1)
     cphf.add_operator(operator_2)
 
-    cphf.tei_mo = (moints_iajb_aaaa, moints_ijab_aaaa)
-    cphf.tei_mo_type = 'partial'
-
     cphf.set_frequencies([float(frequency)])
 
-    cphf.run(solver='explicit', hamiltonian=hamiltonian, spin=spin)
+    cphf.run(solver_type='exact', hamiltonian=hamiltonian, spin=spin)
 
     assert len(cphf.frequencies) == len(cphf.results) == 1
     res = cphf.results[0]
@@ -136,16 +138,17 @@ def calculate_disk_uhf(testcase, hamiltonian, spin, frequency, label_1, label_2)
     moene = np.stack((moene_alph, moene_beta), axis=0)
     assert moene.shape == (2, norb, norb)
 
-    cphf = CPHF(C, moene, occupations)
+    solver = ExactInv(C, moene, occupations)
+    solver.tei_mo = (moints_iajb_aaaa, moints_iajb_aabb, moints_iajb_bbaa, moints_iajb_bbbb, moints_ijab_aaaa, moints_ijab_bbbb)
+    solver.tei_mo_type = 'partial'
+
+    cphf = CPHF(solver)
     cphf.add_operator(operator_1)
     cphf.add_operator(operator_2)
 
-    cphf.tei_mo = (moints_iajb_aaaa, moints_iajb_aabb, moints_iajb_bbaa, moints_iajb_bbbb, moints_ijab_aaaa, moints_ijab_bbbb)
-    cphf.tei_mo_type = 'partial'
-
     cphf.set_frequencies([float(frequency)])
 
-    cphf.run(solver='explicit', hamiltonian=hamiltonian, spin=spin)
+    cphf.run(solver_type='exact', hamiltonian=hamiltonian, spin=spin)
 
     assert len(cphf.frequencies) == len(cphf.results) == 1
     res = cphf.results[0]
@@ -222,10 +225,12 @@ def calculate_rhf(dalton_tmpdir, hamiltonian=None, spin=None, operator_label=Non
     else:
         pass
 
-    cphf = CPHF(C, E, occupations)
+    solver = ExactInv(C, E, occupations)
 
-    cphf.tei_mo = perform_tei_ao2mo_rhf_partial(mol, C)
-    cphf.tei_mo_type = 'partial'
+    solver.tei_mo = perform_tei_ao2mo_rhf_partial(mol, C)
+    solver.tei_mo_type = 'partial'
+
+    cphf = CPHF(solver)
 
     if operator:
         cphf.add_operator(operator)
@@ -256,7 +261,7 @@ def calculate_rhf(dalton_tmpdir, hamiltonian=None, spin=None, operator_label=Non
 
     cphf.set_frequencies()
 
-    cphf.run(solver='explicit', hamiltonian=hamiltonian, spin=spin)
+    cphf.run(solver_type='exact', hamiltonian=hamiltonian, spin=spin)
 
     return cphf.results[0]
 
@@ -326,10 +331,12 @@ def calculate_uhf(dalton_tmpdir, hamiltonian=None, spin=None, operator_label=Non
     else:
         pass
 
-    cphf = CPHF(C, E, occupations)
+    solver = ExactInv(C, E, occupations)
 
-    cphf.tei_mo = perform_tei_ao2mo_uhf_partial(mol, C)
-    cphf.tei_mo_type = 'partial'
+    solver.tei_mo = perform_tei_ao2mo_uhf_partial(mol, C)
+    solver.tei_mo_type = 'partial'
+
+    cphf = CPHF(solver)
 
     if operator:
         cphf.add_operator(operator)
@@ -360,6 +367,6 @@ def calculate_uhf(dalton_tmpdir, hamiltonian=None, spin=None, operator_label=Non
 
     cphf.set_frequencies()
 
-    cphf.run(solver='explicit', hamiltonian=hamiltonian, spin=spin)
+    cphf.run(solver_type='exact', hamiltonian=hamiltonian, spin=spin)
 
     return cphf.results[0]
