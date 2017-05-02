@@ -187,7 +187,7 @@ def read_file_occupations(filename):
         contents = fh.read().strip()
     tokens = contents.split()
     assert len(tokens) == 4
-    nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = [int(x) for x in tokens]    
+    nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = [int(x) for x in tokens]
     return [nocc_alph, nvirt_alph, nocc_beta, nvirt_beta]
 
 
@@ -246,6 +246,44 @@ def occupations_from_sirifc(ifc):
     nvirt_a, nvirt_b = norb - nocc_a, norb - nocc_b
     occupations = (nocc_a, nvirt_a, nocc_b, nvirt_b)
     return occupations
+
+
+def occupations_from_psi4wfn(wfn):
+    # Not needed.
+    # occupations_a = wfn.occupation_a().to_array()
+    # occupations_b = wfn.occupation_b().to_brray()
+    # assert occupations_a.shape == occupations_b.shape
+    norb = wfn.nmo()
+    nocc_a = wfn.nalpha()
+    nocc_b = wfn.nbeta()
+    nvirt_a = norb - nocc_a
+    nvirt_b = norb - nocc_b
+    occupations = (nocc_a, nvirt_a, nocc_b, nvirt_b)
+    return occupations
+
+
+def mocoeffs_from_psi4wfn(wfn):
+    is_uhf = not wfn.same_a_b_orbs()
+    Ca = wfn.Ca().to_array()
+    if is_uhf:
+        Cb = wfn.Cb().to_array()
+        C = np.stack((Ca, Cb), axis=0)
+    else:
+        C = Ca
+    # Clean up.
+    return fix_mocoeffs_shape(C)
+
+
+def moenergies_from_psi4wfn(wfn):
+    is_uhf = not wfn.same_a_b_orbs()
+    Ea = wfn.epsilon_a().to_array()
+    if is_uhf:
+        Eb = wfn.epsilon_b().to_array()
+        E = np.stack((Ea, Eb), axis=0).T
+    else:
+        E = Ea
+    # Clean up.
+    return fix_moenergies_shape(E)
 
 
 class Splitter:
@@ -335,14 +373,18 @@ def tensor_printer(tensor):
 
 
 def form_vec_energy_differences(moene_occ, moene_virt):
-    nocc = len(moene_occ)
-    nvirt = len(moene_virt)
+    nocc = moene_occ.shape[0]
+    nvirt = moene_virt.shape[0]
     nov = nocc * nvirt
+    # The stupid loop is faster!
     ediff = np.zeros(nov)
     for i in range(nocc):
         for a in range(nvirt):
             ia = (i * nvirt) + a
             ediff[ia] = moene_virt[a] - moene_occ[i]
+    # eo = np.einsum('ij,ab->iajb', np.diag(moene_occ), np.diag(np.ones(nvirt)))
+    # ev = np.einsum('ab,ij->iajb', np.diag(moene_virt), np.diag(np.ones(nocc)))
+    # ediff = np.diag((ev - eo).reshape(nov, nov))
     return ediff
 
 

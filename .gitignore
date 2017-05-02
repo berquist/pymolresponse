@@ -2,6 +2,11 @@
 tmp*
 untracked
 
+## Psi4
+input.dat
+output.dat
+timer.dat
+
 ## Python
 
 # Byte-compiled / optimized / DLL files
