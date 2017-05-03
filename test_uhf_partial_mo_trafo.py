@@ -1,5 +1,7 @@
 import numpy as np
 
+import pyscf
+
 from .iterators import ExactInv
 from .cphf import CPHF
 from .operators import Operator
@@ -14,26 +16,18 @@ from .explicit_equations_partial import \
      form_rpa_b_matrix_mo_singlet_os_partial,
      form_rpa_b_matrix_mo_triplet_partial)
 
+from .molecules import molecule_water_HF_STO3G
 from .test_uhf import ref_water_cation_UHF_HF_STO3G
 
 
 def test_explicit_uhf_outside_solver():
-    from pyscf import ao2mo, gto, scf
 
-    mol = gto.Mole()
-    mol.verbose = 5
-    with open('water.xyz') as fh:
-        mol.atom = fh.read()
-    mol.unit = 'Bohr'
-    mol.basis = 'sto-3g'
-    mol.symmetry = False
-
+    mol = molecule_water_HF_STO3G()
     mol.charge = 1
     mol.spin = 1
-
     mol.build()
 
-    mf = scf.UHF(mol)
+    mf = pyscf.scf.UHF(mol)
     mf.kernel()
     C_a = mf.mo_coeff[0, ...]
     C_b = mf.mo_coeff[1, ...]
@@ -56,12 +50,12 @@ def test_explicit_uhf_outside_solver():
     C_ovov_bbbb = (C_occ_beta, C_virt_beta, C_occ_beta, C_virt_beta)
     C_oovv_aaaa = (C_occ_alph, C_occ_alph, C_virt_alph, C_virt_alph)
     C_oovv_bbbb = (C_occ_beta, C_occ_beta, C_virt_beta, C_virt_beta)
-    tei_mo_ovov_aaaa = ao2mo.general(mol, C_ovov_aaaa, aosym='s4', compact=False, verbose=5).reshape(nocc_a, nvirt_a, nocc_a, nvirt_a)
-    tei_mo_ovov_aabb = ao2mo.general(mol, C_ovov_aabb, aosym='s4', compact=False, verbose=5).reshape(nocc_a, nvirt_a, nocc_b, nvirt_b)
-    tei_mo_ovov_bbaa = ao2mo.general(mol, C_ovov_bbaa, aosym='s4', compact=False, verbose=5).reshape(nocc_b, nvirt_b, nocc_a, nvirt_a)
-    tei_mo_ovov_bbbb = ao2mo.general(mol, C_ovov_bbbb, aosym='s4', compact=False, verbose=5).reshape(nocc_b, nvirt_b, nocc_b, nvirt_b)
-    tei_mo_oovv_aaaa = ao2mo.general(mol, C_oovv_aaaa, aosym='s4', compact=False, verbose=5).reshape(nocc_a, nocc_a, nvirt_a, nvirt_a)
-    tei_mo_oovv_bbbb = ao2mo.general(mol, C_oovv_bbbb, aosym='s4', compact=False, verbose=5).reshape(nocc_b, nocc_b, nvirt_b, nvirt_b)
+    tei_mo_ovov_aaaa = pyscf.ao2mo.general(mol, C_ovov_aaaa, aosym='s4', compact=False, verbose=5).reshape(nocc_a, nvirt_a, nocc_a, nvirt_a)
+    tei_mo_ovov_aabb = pyscf.ao2mo.general(mol, C_ovov_aabb, aosym='s4', compact=False, verbose=5).reshape(nocc_a, nvirt_a, nocc_b, nvirt_b)
+    tei_mo_ovov_bbaa = pyscf.ao2mo.general(mol, C_ovov_bbaa, aosym='s4', compact=False, verbose=5).reshape(nocc_b, nvirt_b, nocc_a, nvirt_a)
+    tei_mo_ovov_bbbb = pyscf.ao2mo.general(mol, C_ovov_bbbb, aosym='s4', compact=False, verbose=5).reshape(nocc_b, nvirt_b, nocc_b, nvirt_b)
+    tei_mo_oovv_aaaa = pyscf.ao2mo.general(mol, C_oovv_aaaa, aosym='s4', compact=False, verbose=5).reshape(nocc_a, nocc_a, nvirt_a, nvirt_a)
+    tei_mo_oovv_bbbb = pyscf.ao2mo.general(mol, C_oovv_bbbb, aosym='s4', compact=False, verbose=5).reshape(nocc_b, nocc_b, nvirt_b, nvirt_b)
 
     A_s_ss_a = form_rpa_a_matrix_mo_singlet_ss_partial(E_a, tei_mo_ovov_aaaa, tei_mo_oovv_aaaa)
     A_s_os_a = form_rpa_a_matrix_mo_singlet_os_partial(tei_mo_ovov_aabb)
@@ -143,22 +137,13 @@ def test_explicit_uhf_outside_solver():
 
 
 def test_explicit_uhf():
-    from pyscf import ao2mo, gto, scf
 
-    mol = gto.Mole()
-    mol.verbose = 5
-    with open('water.xyz') as fh:
-        mol.atom = fh.read()
-    mol.unit = 'Bohr'
-    mol.basis = 'sto-3g'
-    mol.symmetry = False
-
+    mol = molecule_water_HF_STO3G()
     mol.charge = 1
     mol.spin = 1
-
     mol.build()
 
-    mf = scf.UHF(mol)
+    mf = pyscf.scf.UHF(mol)
     mf.kernel()
     C = mf.mo_coeff
     C_a = C[0, ...]
@@ -183,12 +168,12 @@ def test_explicit_uhf():
     C_ovov_bbbb = (C_occ_beta, C_virt_beta, C_occ_beta, C_virt_beta)
     C_oovv_aaaa = (C_occ_alph, C_occ_alph, C_virt_alph, C_virt_alph)
     C_oovv_bbbb = (C_occ_beta, C_occ_beta, C_virt_beta, C_virt_beta)
-    tei_mo_ovov_aaaa = ao2mo.general(mol, C_ovov_aaaa, aosym='s4', compact=False, verbose=5).reshape(nocc_a, nvirt_a, nocc_a, nvirt_a)
-    tei_mo_ovov_aabb = ao2mo.general(mol, C_ovov_aabb, aosym='s4', compact=False, verbose=5).reshape(nocc_a, nvirt_a, nocc_b, nvirt_b)
-    tei_mo_ovov_bbaa = ao2mo.general(mol, C_ovov_bbaa, aosym='s4', compact=False, verbose=5).reshape(nocc_b, nvirt_b, nocc_a, nvirt_a)
-    tei_mo_ovov_bbbb = ao2mo.general(mol, C_ovov_bbbb, aosym='s4', compact=False, verbose=5).reshape(nocc_b, nvirt_b, nocc_b, nvirt_b)
-    tei_mo_oovv_aaaa = ao2mo.general(mol, C_oovv_aaaa, aosym='s4', compact=False, verbose=5).reshape(nocc_a, nocc_a, nvirt_a, nvirt_a)
-    tei_mo_oovv_bbbb = ao2mo.general(mol, C_oovv_bbbb, aosym='s4', compact=False, verbose=5).reshape(nocc_b, nocc_b, nvirt_b, nvirt_b)
+    tei_mo_ovov_aaaa = pyscf.ao2mo.general(mol, C_ovov_aaaa, aosym='s4', compact=False, verbose=5).reshape(nocc_a, nvirt_a, nocc_a, nvirt_a)
+    tei_mo_ovov_aabb = pyscf.ao2mo.general(mol, C_ovov_aabb, aosym='s4', compact=False, verbose=5).reshape(nocc_a, nvirt_a, nocc_b, nvirt_b)
+    tei_mo_ovov_bbaa = pyscf.ao2mo.general(mol, C_ovov_bbaa, aosym='s4', compact=False, verbose=5).reshape(nocc_b, nvirt_b, nocc_a, nvirt_a)
+    tei_mo_ovov_bbbb = pyscf.ao2mo.general(mol, C_ovov_bbbb, aosym='s4', compact=False, verbose=5).reshape(nocc_b, nvirt_b, nocc_b, nvirt_b)
+    tei_mo_oovv_aaaa = pyscf.ao2mo.general(mol, C_oovv_aaaa, aosym='s4', compact=False, verbose=5).reshape(nocc_a, nocc_a, nvirt_a, nvirt_a)
+    tei_mo_oovv_bbbb = pyscf.ao2mo.general(mol, C_oovv_bbbb, aosym='s4', compact=False, verbose=5).reshape(nocc_b, nocc_b, nvirt_b, nvirt_b)
 
     integrals_dipole_ao = mol.intor('cint1e_r_sph', comp=3)
 

@@ -1,5 +1,7 @@
 import numpy as np
 
+import pyscf
+
 from .iterators import ExactInv
 from .cphf import CPHF
 from .operators import Operator
@@ -14,32 +16,25 @@ from .explicit_equations_full import \
      form_rpa_b_matrix_mo_singlet_ss_full,
      form_rpa_b_matrix_mo_singlet_os_full)
 
-from .utils import (np_load, occupations_from_pyscf_mol)
+from .molecules import molecule_water_HF_STO3G
+from .utils import occupations_from_pyscf_mol
 
 
 def test_explicit_uhf_from_rhf_outside_solver():
-    from pyscf import gto, scf
 
-    mol = gto.Mole()
-    mol.verbose = 5
-    with open('water.xyz') as fh:
-        mol.atom = fh.read()
-    mol.unit = 'Bohr'
-    mol.basis = 'sto-3g'
-    mol.symmetry = False
+    mol = molecule_water_HF_STO3G()
     mol.build()
 
-    mf = scf.RHF(mol)
+    mf = pyscf.scf.RHF(mol)
     mf.kernel()
     mocoeffs = mf.mo_coeff
     moenergies = mf.mo_energy
-    norb = mocoeffs.shape[1]
     tei_mo = perform_tei_ao2mo_rhf_full(mol, mocoeffs)
 
     C_a = mocoeffs
     C_b = C_a.copy()
     E_a = np.diag(moenergies)
-    E_b = E_a.copy()
+    # E_b = E_a.copy()
     occupations = occupations_from_pyscf_mol(mol, mocoeffs)
     nocc_a, nvirt_a, nocc_b, nvirt_b = occupations
 
@@ -140,22 +135,13 @@ ref_water_cation_UHF_HF_STO3G = np.array([[6.1406370,   0.0000000,   0.0000000],
 
 
 def test_explicit_uhf_outside_solver():
-    from pyscf import gto, scf
 
-    mol = gto.Mole()
-    mol.verbose = 5
-    with open('water.xyz') as fh:
-        mol.atom = fh.read()
-    mol.unit = 'Bohr'
-    mol.basis = 'sto-3g'
-    mol.symmetry = False
-
+    mol = molecule_water_HF_STO3G()
     mol.charge = 1
     mol.spin = 1
-
     mol.build()
 
-    mf = scf.UHF(mol)
+    mf = pyscf.scf.UHF(mol)
     mf.kernel()
     C_a = mf.mo_coeff[0, ...]
     C_b = mf.mo_coeff[1, ...]
@@ -248,22 +234,13 @@ def test_explicit_uhf_outside_solver():
 
 
 def test_explicit_uhf():
-    from pyscf import ao2mo, gto, scf
 
-    mol = gto.Mole()
-    mol.verbose = 5
-    with open('water.xyz') as fh:
-        mol.atom = fh.read()
-    mol.unit = 'Bohr'
-    mol.basis = 'sto-3g'
-    mol.symmetry = False
-
+    mol = molecule_water_HF_STO3G()
     mol.charge = 1
     mol.spin = 1
-
     mol.build()
 
-    mf = scf.UHF(mol)
+    mf = pyscf.scf.UHF(mol)
     mf.kernel()
     C = mf.mo_coeff
     E_a = np.diag(mf.mo_energy[0, ...])

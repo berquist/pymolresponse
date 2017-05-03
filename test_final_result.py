@@ -3,7 +3,9 @@ import numpy as np
 from . import utils
 
 from .cphf import CPHF
+from .electric import Polarizability
 from .iterators import ExactInv
+from .molecules import molecule_water_HF_STO3G
 from .operators import Operator
 from .test_runners import run_as_many_tests_as_possible_rhf_disk, run_as_many_tests_as_possible_uhf_disk
 
@@ -65,6 +67,22 @@ def test_final_result_rhf_h2o_sto3g_rpa_singlet():
     np.testing.assert_allclose(cphf.results[2], result__0_06, rtol=rtol, atol=atol)
     np.testing.assert_allclose(cphf.results[3], result__0_10, rtol=rtol, atol=atol)
 
+    mol = molecule_water_HF_STO3G()
+    mol.build()
+    polarizability = Polarizability(mol, C, E, occupations, frequencies)
+    polarizability.form_operators()
+    polarizability.run(hamiltonian=hamiltonian, spin=spin)
+    polarizability.form_results()
+
+    np.testing.assert_allclose(polarizability.polarizabilities[0],
+                               result__0_00, rtol=rtol, atol=atol)
+    np.testing.assert_allclose(polarizability.polarizabilities[1],
+                               result__0_02, rtol=rtol, atol=atol)
+    np.testing.assert_allclose(polarizability.polarizabilities[2],
+                               result__0_06, rtol=rtol, atol=atol)
+    np.testing.assert_allclose(polarizability.polarizabilities[3],
+                               result__0_10, rtol=rtol, atol=atol)
+
     return
 
 
@@ -124,6 +142,22 @@ def test_final_result_rhf_h2o_sto3g_rpa_triplet():
     np.testing.assert_allclose(cphf.results[1], result__0_02, rtol=rtol, atol=atol)
     np.testing.assert_allclose(cphf.results[2], result__0_06, rtol=rtol, atol=atol)
     np.testing.assert_allclose(cphf.results[3], result__0_10, rtol=rtol, atol=atol)
+
+    mol = molecule_water_HF_STO3G()
+    mol.build()
+    polarizability = Polarizability(mol, C, E, occupations, frequencies)
+    polarizability.form_operators()
+    polarizability.run(hamiltonian=hamiltonian, spin=spin)
+    polarizability.form_results()
+
+    np.testing.assert_allclose(polarizability.polarizabilities[0],
+                               result__0_00, rtol=rtol, atol=atol)
+    np.testing.assert_allclose(polarizability.polarizabilities[1],
+                               result__0_02, rtol=rtol, atol=atol)
+    np.testing.assert_allclose(polarizability.polarizabilities[2],
+                               result__0_06, rtol=rtol, atol=atol)
+    np.testing.assert_allclose(polarizability.polarizabilities[3],
+                               result__0_10, rtol=rtol, atol=atol)
 
     return
 
@@ -185,6 +219,22 @@ def test_final_result_rhf_h2o_sto3g_tda_singlet():
     np.testing.assert_allclose(cphf.results[2], result__0_06, rtol=rtol, atol=atol)
     np.testing.assert_allclose(cphf.results[3], result__0_10, rtol=rtol, atol=atol)
 
+    mol = molecule_water_HF_STO3G()
+    mol.build()
+    polarizability = Polarizability(mol, C, E, occupations, frequencies)
+    polarizability.form_operators()
+    polarizability.run(hamiltonian=hamiltonian, spin=spin)
+    polarizability.form_results()
+
+    np.testing.assert_allclose(polarizability.polarizabilities[0],
+                               result__0_00, rtol=rtol, atol=atol)
+    np.testing.assert_allclose(polarizability.polarizabilities[1],
+                               result__0_02, rtol=rtol, atol=atol)
+    np.testing.assert_allclose(polarizability.polarizabilities[2],
+                               result__0_06, rtol=rtol, atol=atol)
+    np.testing.assert_allclose(polarizability.polarizabilities[3],
+                               result__0_10, rtol=rtol, atol=atol)
+
     return
 
 
@@ -244,6 +294,22 @@ def test_final_result_rhf_h2o_sto3g_tda_triplet():
     np.testing.assert_allclose(cphf.results[1], result__0_02, rtol=rtol, atol=atol)
     np.testing.assert_allclose(cphf.results[2], result__0_06, rtol=rtol, atol=atol)
     np.testing.assert_allclose(cphf.results[3], result__0_10, rtol=rtol, atol=atol)
+
+    mol = molecule_water_HF_STO3G()
+    mol.build()
+    polarizability = Polarizability(mol, C, E, occupations, frequencies)
+    polarizability.form_operators()
+    polarizability.run(hamiltonian=hamiltonian, spin=spin)
+    polarizability.form_results()
+
+    np.testing.assert_allclose(polarizability.polarizabilities[0],
+                               result__0_00, rtol=rtol, atol=atol)
+    np.testing.assert_allclose(polarizability.polarizabilities[1],
+                               result__0_02, rtol=rtol, atol=atol)
+    np.testing.assert_allclose(polarizability.polarizabilities[2],
+                               result__0_06, rtol=rtol, atol=atol)
+    np.testing.assert_allclose(polarizability.polarizabilities[3],
+                               result__0_10, rtol=rtol, atol=atol)
 
     return
 

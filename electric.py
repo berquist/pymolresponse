@@ -16,16 +16,16 @@ class Polarizability(ResponseProperty):
         operator_diplen = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False, triplet=False)
         integrals_diplen_ao = self.pyscfmol.intor('cint1e_r_sph', comp=3)
         operator_diplen.ao_integrals = integrals_diplen_ao
-        self.solver.add_operator(operator_diplen)
+        self.driver.add_operator(operator_diplen)
 
 
     def form_results(self):
 
-        assert len(self.solver.results) == len(self.frequencies)
+        assert len(self.driver.results) == len(self.frequencies)
         self.polarizabilities = []
         for idxf, frequency in enumerate(self.frequencies):
             # print('=' * 78)
-            results = self.solver.results[idxf]
+            results = self.driver.results[idxf]
             assert results.shape == (3, 3)
             # print('frequency')
             # print(frequency)
