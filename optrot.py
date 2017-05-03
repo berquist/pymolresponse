@@ -35,6 +35,8 @@ class ORD(ResponseProperty):
 
         assert len(self.driver.results) == len(self.frequencies)
         self.polarizabilities = []
+        self.polarizabilities_lenmag = []
+
         for idxf, frequency in enumerate(self.frequencies):
             # print('=' * 78)
             results = self.driver.results[idxf]
@@ -42,16 +44,22 @@ class ORD(ResponseProperty):
                 assert results.shape == (9, 9)
             else:
                 assert results.shape == (6, 6)
+
             # Ordering of the operators:
             # 1. angular momentum
             # 2. dipole (length gauge)
             # 3. dipole (velocity gauge) [if calculated]
             # print('frequency')
             # print(frequency)
+
             polarizability = results[3:6, 3:6]
             self.polarizabilities.append(polarizability)
+
             # print('symmetry check')
-            abs_diff = results[0:3, 3:6] - results[3:6, 0:3].T
-            # print('electric dipole-magnetic dipole')
+            # abs_diff = results[0:3, 3:6] - results[3:6, 0:3].T
+            # print(abs_diff)
+            # print('electric dipole-magnetic dipole polarizabilities')
             # eigvals, iso, _ = tensor_printer(results[0:3, 3:6])
             # eigvals, iso, _ = tensor_printer(results[3:6, 0:3])
+            polarizability_lenmag = results[0:3, 3:6]
+            self.polarizabilities_lenmag.append(polarizability_lenmag)

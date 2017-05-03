@@ -7,6 +7,13 @@ input.dat
 output.dat
 timer.dat
 
+## NWChem
+*.aoresp_fiao_b1
+*.cphf_rhs.*
+*.cphf_sol.*
+*.db
+*.movecs
+
 ## Python
 
 # Byte-compiled / optimized / DLL files
