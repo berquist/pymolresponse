@@ -1,5 +1,7 @@
 import numpy as np
 
+from .utils import form_vec_energy_differences
+
 
 def form_rpa_a_matrix_mo_singlet_full(E_MO, TEI_MO, nocc):
     """Form the A (CIS) matrix for RPA in the molecular orbital (MO)
@@ -14,6 +16,9 @@ def form_rpa_a_matrix_mo_singlet_full(E_MO, TEI_MO, nocc):
     nvirt = norb - nocc
     nov = nocc * nvirt
 
+    ediff = form_vec_energy_differences(np.diag(E_MO)[:nocc],
+                                        np.diag(E_MO)[nocc:])
+
     A = np.empty(shape=(nov, nov))
 
     for i in range(nocc):
@@ -23,8 +28,8 @@ def form_rpa_a_matrix_mo_singlet_full(E_MO, TEI_MO, nocc):
                 for b in range(nvirt):
                     jb = j*nvirt + b
                     A[ia, jb] = 2*TEI_MO[a + nocc, i, j, b + nocc] - TEI_MO[a + nocc, b + nocc, j, i]
-                    if (ia == jb):
-                        A[ia, jb] += (E_MO[a + nocc, b + nocc] - E_MO[i, j])
+
+    A += np.diag(ediff)
 
     return A
 
@@ -42,6 +47,9 @@ def form_rpa_a_matrix_mo_triplet_full(E_MO, TEI_MO, nocc):
     nvirt = norb - nocc
     nov = nocc * nvirt
 
+    ediff = form_vec_energy_differences(np.diag(E_MO)[:nocc],
+                                        np.diag(E_MO)[nocc:])
+
     A = np.empty(shape=(nov, nov))
 
     for i in range(nocc):
@@ -51,8 +59,8 @@ def form_rpa_a_matrix_mo_triplet_full(E_MO, TEI_MO, nocc):
                 for b in range(nvirt):
                     jb = j*nvirt + b
                     A[ia, jb] = - TEI_MO[a + nocc, b + nocc, j, i]
-                    if (ia == jb):
-                        A[ia, jb] += (E_MO[a + nocc, b + nocc] - E_MO[i, j])
+
+    A += np.diag(ediff)
 
     return A
 
@@ -107,6 +115,9 @@ def form_rpa_a_matrix_mo_singlet_ss_full(E_MO, TEI_MO, nocc):
     nvirt = norb - nocc
     nov = nocc * nvirt
 
+    ediff = form_vec_energy_differences(np.diag(E_MO)[:nocc],
+                                        np.diag(E_MO)[nocc:])
+
     A = np.empty(shape=(nov, nov))
 
     for i in range(nocc):
@@ -116,8 +127,8 @@ def form_rpa_a_matrix_mo_singlet_ss_full(E_MO, TEI_MO, nocc):
                 for b in range(nvirt):
                     jb = j*nvirt + b
                     A[ia, jb] = TEI_MO[a + nocc, i, j, b + nocc] - TEI_MO[a + nocc, b + nocc, j, i]
-                    if (ia == jb):
-                        A[ia, jb] += (E_MO[a + nocc, b + nocc] - E_MO[i, j])
+
+    A += np.diag(ediff)
 
     return A
 
@@ -137,6 +148,7 @@ def form_rpa_a_matrix_mo_singlet_os_full(TEI_MO_xxyy, nocc_x, nocc_y):
             for j in range(nocc_y):
                 for b in range(nvirt_y):
                     jb = j*nvirt_y + b
+                    # TODO
                     A[ia, jb] = TEI_MO_xxyy[a + nocc_x, i, j, b + nocc_y]
 
     return A
@@ -176,6 +188,7 @@ def form_rpa_b_matrix_mo_singlet_os_full(TEI_MO_xxyy, nocc_x, nocc_y):
             for j in range(nocc_y):
                 for b in range(nvirt_y):
                     jb = j*nvirt_y + b
+                    # TODO
                     B[ia, jb] = TEI_MO_xxyy[a + nocc_x, i, b + nocc_y, j]
 
     return B
