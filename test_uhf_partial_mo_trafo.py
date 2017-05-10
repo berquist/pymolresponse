@@ -110,8 +110,8 @@ def test_explicit_uhf_outside_solver():
     integrals_dipole_mo_ai_a = np.stack(integrals_dipole_mo_ai_a, axis=0).T
     integrals_dipole_mo_ai_b = np.stack(integrals_dipole_mo_ai_b, axis=0).T
 
-    integrals_dipole_mo_ai_a_super = np.concatenate((integrals_dipole_mo_ai_a, integrals_dipole_mo_ai_a), axis=0)
-    integrals_dipole_mo_ai_b_super = np.concatenate((integrals_dipole_mo_ai_b, integrals_dipole_mo_ai_b), axis=0)
+    integrals_dipole_mo_ai_a_super = np.concatenate((integrals_dipole_mo_ai_a, -integrals_dipole_mo_ai_a), axis=0)
+    integrals_dipole_mo_ai_b_super = np.concatenate((integrals_dipole_mo_ai_b, -integrals_dipole_mo_ai_b), axis=0)
 
     # Form the operator-dependent part of the response vectors.
     right_a = integrals_dipole_mo_ai_a_super - (np.dot(G_ab, np.dot(G_bb_inv, integrals_dipole_mo_ai_b_super)))

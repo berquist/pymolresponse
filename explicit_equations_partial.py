@@ -88,7 +88,7 @@ def form_rpa_b_matrix_mo_singlet_partial(TEI_MO_iajb):
     B -= TEI_MO_iajb.swapaxes(1, 3)
     B.shape = (nov, nov)
 
-    return B
+    return -B
 
 
 def form_rpa_b_matrix_mo_triplet_partial(TEI_MO_iajb):
@@ -105,7 +105,7 @@ def form_rpa_b_matrix_mo_triplet_partial(TEI_MO_iajb):
     B -= TEI_MO_iajb.swapaxes(1, 3)
     B.shape = (nov, nov)
 
-    return B
+    return -B
 
 
 def form_rpa_a_matrix_mo_singlet_ss_partial(E_MO, TEI_MO_iajb, TEI_MO_ijab):
@@ -162,7 +162,7 @@ def form_rpa_b_matrix_mo_singlet_ss_partial(TEI_MO_iajb):
     B -= TEI_MO_iajb.swapaxes(1, 3)
     B.shape = (nov, nov)
 
-    return B
+    return -B
 
 
 def form_rpa_b_matrix_mo_singlet_os_partial(TEI_MO_iajb_xxyy):
@@ -176,4 +176,4 @@ def form_rpa_b_matrix_mo_singlet_os_partial(TEI_MO_iajb_xxyy):
     B = TEI_MO_iajb_xxyy.copy()
     B.shape = (nov_x, nov_y)
 
-    return B
+    return -B

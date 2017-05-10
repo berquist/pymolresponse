@@ -39,9 +39,9 @@ class Operator(object):
             C_beta = C[1, ...]
         assert len(occupations) == 4
         nocc_alph, _, nocc_beta, _ = occupations
-        b_prefactor = 1
+        b_prefactor = -1
         if self.is_imaginary:
-            b_prefactor = -1
+            b_prefactor = +1
         operator_ai_alph = []
         operator_ai_supervector_alph = []
         operator_ai_beta = []

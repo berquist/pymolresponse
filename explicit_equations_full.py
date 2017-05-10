@@ -87,7 +87,7 @@ def form_rpa_b_matrix_mo_singlet_full(TEI_MO, nocc):
                     jb = j*nvirt + b
                     B[ia, jb] = 2*TEI_MO[a + nocc, i, b + nocc, j] - TEI_MO[a + nocc, j, b + nocc, i]
 
-    return B
+    return -B
 
 
 def form_rpa_b_matrix_mo_triplet_full(TEI_MO, nocc):
@@ -106,7 +106,7 @@ def form_rpa_b_matrix_mo_triplet_full(TEI_MO, nocc):
                     jb = j*nvirt + b
                     B[ia, jb] = - TEI_MO[a + nocc, j, b + nocc, i]
 
-    return B
+    return -B
 
 
 def form_rpa_a_matrix_mo_singlet_ss_full(E_MO, TEI_MO, nocc):
@@ -170,7 +170,7 @@ def form_rpa_b_matrix_mo_singlet_ss_full(TEI_MO, nocc):
                     jb = j*nvirt + b
                     B[ia, jb] = TEI_MO[a + nocc, i, b + nocc, j] - TEI_MO[a + nocc, j, b + nocc, i]
 
-    return B
+    return -B
 
 
 def form_rpa_b_matrix_mo_singlet_os_full(TEI_MO_xxyy, nocc_x, nocc_y):
@@ -191,4 +191,4 @@ def form_rpa_b_matrix_mo_singlet_os_full(TEI_MO_xxyy, nocc_x, nocc_y):
                     # TODO
                     B[ia, jb] = TEI_MO_xxyy[a + nocc_x, i, b + nocc_y, j]
 
-    return B
+    return -B
