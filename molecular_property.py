@@ -51,7 +51,8 @@ class ResponseProperty(MolecularProperty):
             solver = iterators.ExactInv(mocoeffs, moenergies, occupations)
 
         # TODO this doesn't belong here.
-        solver.form_tei_mo(pyscfmol)
+        if solver.tei_mo is None:
+            solver.form_tei_mo(pyscfmol)
 
         if 'driver' in kwargs:
             driver = kwargs['driver']
@@ -75,7 +76,8 @@ class TransitionProperty(MolecularProperty):
             solver = iterators.ExactDiagonalizationSolver(mocoeffs, moenergies, occupations)
 
         # TODO this doesn't belong here.
-        solver.form_tei_mo(pyscfmol)
+        if solver.tei_mo is None:
+            solver.form_tei_mo(pyscfmol)
 
         if kwargs.get('driver', None):
             driver = kwargs['driver']

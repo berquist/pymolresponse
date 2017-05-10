@@ -2,12 +2,19 @@ import pyscf
 
 from .utils import fix_mocoeffs_shape, occupations_from_pyscf_mol
 
+# TODO make separate files for
+# 1. pyscf
+# 2. psi4
+# 3. own (einsum)
+
+# TODO what does the pyscf compact kwarg do?
+
 
 def perform_tei_ao2mo_rhf_full(pyscfmol, C, verbose=1):
     C = fix_mocoeffs_shape(C)
     norb = C.shape[-1]
     tei_mo = pyscf.ao2mo.full(pyscfmol, C[0, ...], aosym='s4', compact=False, verbose=verbose).reshape(norb, norb, norb, norb)
-    return tei_mo
+    return (tei_mo, )
 
 
 def perform_tei_ao2mo_uhf_full(pyscfmol, C, verbose=1):

@@ -29,7 +29,7 @@ def test_explicit_uhf_from_rhf_outside_solver():
     mf.kernel()
     mocoeffs = mf.mo_coeff
     moenergies = mf.mo_energy
-    tei_mo = perform_tei_ao2mo_rhf_full(mol, mocoeffs)
+    tei_mo = perform_tei_ao2mo_rhf_full(mol, mocoeffs)[0]
 
     C_a = mocoeffs
     C_b = C_a.copy()

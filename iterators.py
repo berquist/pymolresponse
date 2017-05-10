@@ -59,14 +59,23 @@ class Solver(object):
         self.explicit_hessian = None
         self.explicit_hessian_inv = None
 
-    def form_tei_mo(self, pyscfmol):
+    def form_tei_mo(self, pyscfmol, tei_mo_type='partial'):
+        assert tei_mo_type in ('partial', 'full')
         nden = self.mocoeffs.shape[0]
-        if nden == 2:
+        assert nden in (1, 2)
+        if tei_mo_type == 'partial' and nden == 2:
             tei_mo_func = ao2mo.perform_tei_ao2mo_uhf_partial
-        else:
+        elif tei_mo_type == 'partial' and nden == 1:
             tei_mo_func = ao2mo.perform_tei_ao2mo_rhf_partial
+        elif tei_mo_type == 'full' and nden == 2:
+            tei_mo_func = ao2mo.perform_tei_ao2mo_uhf_full
+        elif tei_mo_type == 'full' and nden == 1:
+            tei_mo_func = ao2mo.perform_tei_ao2mo_rhf_full
+        else:
+            # TODO more specific exception
+            raise Exception
         self.tei_mo = tei_mo_func(pyscfmol, self.mocoeffs, pyscfmol.verbose)
-        self.tei_mo_type = 'partial'
+        self.tei_mo_type = tei_mo_type
 
     def form_ranges_from_occupations(self):
         assert len(self.occupations) == 4
