@@ -12,12 +12,13 @@ from cclib.io import ccopen
 
 import pyscf
 
-from .operators import Operator
-from .iterators import ExactInv
-from .cphf import CPHF
-from .utils import get_reference_value_from_file, occupations_from_sirifc
-from .ao2mo import perform_tei_ao2mo_rhf_partial, perform_tei_ao2mo_uhf_partial
-from .utils import read_file_3, read_file_2, read_file_occupations, read_file_4, dalton_label_to_operator
+from pyresponse.operators import Operator
+from pyresponse.iterators import ExactInv
+from pyresponse.cphf import CPHF
+from pyresponse.utils import (get_reference_value_from_file,
+                              occupations_from_sirifc, read_file_3, read_file_2,
+                              read_file_occupations, read_file_4, dalton_label_to_operator)
+from pyresponse.ao2mo import perform_tei_ao2mo_rhf_partial, perform_tei_ao2mo_uhf_partial
 
 
 def calculate_disk_rhf(testcase, hamiltonian, spin, frequency, label_1, label_2):

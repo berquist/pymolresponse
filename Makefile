@@ -1,10 +1,10 @@
 test: pytest
 
 pylint:
-	pylint *.py
+	pylint *.py tests/*.py
 
 pytest:
-	pytest -v test_*.py
+	pytest -v tests
 
 nosetest:
-	nosetests -v test_*.py
+	nosetests -v tests

@@ -3,10 +3,10 @@ from __future__ import division
 
 import pyscf
 
-from . import ao2mo
-from . import utils
-from .iterators import ExactDiagonalizationSolver, ExactDiagonalizationSolverTDA
-from .td import TDA, TDHF
+from pyresponse import ao2mo
+from pyresponse import utils
+from pyresponse.iterators import ExactDiagonalizationSolver, ExactDiagonalizationSolverTDA
+from pyresponse.td import TDA, TDHF
 
 
 def test_HF_both_singlet_HF_STO3G():

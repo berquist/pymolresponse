@@ -1,4 +1,4 @@
-from .utils import dalton_label_to_operator
+from pyresponse.utils import dalton_label_to_operator
 
 
 def run_dalton_label_to_operator(dalton_label, operator_label, slice_idx, is_imaginary, is_spin_dependent):

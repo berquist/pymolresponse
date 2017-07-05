@@ -2,11 +2,11 @@ import numpy as np
 
 import pyscf
 
-from .iterators import ExactInv
-from .cphf import CPHF
-from .operators import Operator
+from pyresponse.iterators import ExactInv
+from pyresponse.cphf import CPHF
+from pyresponse.operators import Operator
 
-from .explicit_equations_partial import \
+from pyresponse.explicit_equations_partial import \
     (form_rpa_a_matrix_mo_singlet_partial,
      form_rpa_a_matrix_mo_singlet_ss_partial,
      form_rpa_a_matrix_mo_singlet_os_partial,
@@ -16,8 +16,8 @@ from .explicit_equations_partial import \
      form_rpa_b_matrix_mo_singlet_os_partial,
      form_rpa_b_matrix_mo_triplet_partial)
 
-from .molecules import molecule_water_HF_STO3G
-from .test_uhf import ref_water_cation_UHF_HF_STO3G
+from pyresponse.molecules import molecule_water_HF_STO3G
+from pyresponse.tests.test_uhf import ref_water_cation_UHF_HF_STO3G
 
 
 def test_explicit_uhf_outside_solver():

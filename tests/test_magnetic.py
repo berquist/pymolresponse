@@ -6,10 +6,10 @@ import scipy.constants as spc
 
 import pyscf
 
-from . import molecules
-from . import utils
+from pyresponse import molecules
+from pyresponse import utils
 
-from .magnetic import Magnetizability, ElectronicGTensor
+from pyresponse.magnetic import Magnetizability, ElectronicGTensor
 
 
 # These were generated using DALTON.

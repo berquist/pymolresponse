@@ -3,10 +3,10 @@ from __future__ import division
 
 import pyscf
 
-from . import utils
+from pyresponse import utils
 
-from .electric import Polarizability
-from .molecules import hydrogen_atom_STO3G
+from pyresponse.electric import Polarizability
+from pyresponse.molecules import hydrogen_atom_STO3G
 
 
 # def test_hydrogen_atom_electric():

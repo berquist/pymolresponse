@@ -6,10 +6,10 @@ import scipy.constants as spc
 
 import pyscf
 
-from . import molecules
-from . import utils
+from pyresponse import molecules
+from pyresponse import utils
 
-from .optrot import ORD
+from pyresponse.optrot import ORD
 
 
 BC2H4_cation_HF_STO3G_RPA_singlet_nwchem = {

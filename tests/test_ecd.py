@@ -5,10 +5,10 @@ import numpy as np
 
 import pyscf
 
-from . import utils
+from pyresponse import utils
 
-from .ecd import ECD
-from .molecules import molecule_BC2H4_cation_HF_STO3G
+from pyresponse.ecd import ECD
+from pyresponse.molecules import molecule_BC2H4_cation_HF_STO3G
 
 
 BC2H4_cation_HF_STO3G_RPA_singlet_nwchem = {

@@ -2,13 +2,13 @@ import numpy as np
 
 import pyscf
 
-from .iterators import ExactInv
-from .cphf import CPHF
-from .operators import Operator
+from pyresponse.iterators import ExactInv
+from pyresponse.cphf import CPHF
+from pyresponse.operators import Operator
 
-from .ao2mo import (perform_tei_ao2mo_rhf_full, perform_tei_ao2mo_uhf_full)
+from pyresponse.ao2mo import (perform_tei_ao2mo_rhf_full, perform_tei_ao2mo_uhf_full)
 
-from .explicit_equations_full import \
+from pyresponse.explicit_equations_full import \
     (form_rpa_a_matrix_mo_singlet_full,
      form_rpa_a_matrix_mo_singlet_ss_full,
      form_rpa_a_matrix_mo_singlet_os_full,
@@ -16,8 +16,8 @@ from .explicit_equations_full import \
      form_rpa_b_matrix_mo_singlet_ss_full,
      form_rpa_b_matrix_mo_singlet_os_full)
 
-from .molecules import molecule_water_HF_STO3G
-from .utils import occupations_from_pyscf_mol
+from pyresponse.molecules import molecule_water_HF_STO3G
+from pyresponse.utils import occupations_from_pyscf_mol
 
 
 def test_explicit_uhf_from_rhf_outside_solver():

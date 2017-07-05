@@ -2,12 +2,12 @@ import numpy as np
 
 import pyscf
 
-from . import utils
-from .cphf import CPHF
-from .iterators import ExactInv
-from .operators import Operator
-from . import ao2mo
-from .molecules import molecule_trithiolane_HF_STO3G
+from pyresponse import utils
+from pyresponse.cphf import CPHF
+from pyresponse.iterators import ExactInv
+from pyresponse.operators import Operator
+from pyresponse import ao2mo
+from pyresponse.molecules import molecule_trithiolane_HF_STO3G
 
 
 def mol_atom(symbol='He', charge=0, spin=0, basis='sto-3g', verbose=0):

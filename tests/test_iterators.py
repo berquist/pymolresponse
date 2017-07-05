@@ -6,10 +6,10 @@ import scipy as sp
 
 import pyscf
 
-from . import iterators
-from . import molecules
-from . import utils
-from .magnetic import Magnetizability
+from pyresponse import iterators
+from pyresponse import molecules
+from pyresponse import utils
+from pyresponse.magnetic import Magnetizability
 
 
 def test_iterators():
