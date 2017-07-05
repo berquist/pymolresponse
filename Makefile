@@ -1,7 +1,7 @@
 test: pytest
 
 pylint:
-	pylint *.py tests/*.py
+	pylint pyresponse/*.py tests/*.py
 
 pytest:
 	pytest -v tests

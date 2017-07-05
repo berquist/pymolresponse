@@ -17,7 +17,7 @@ from pyresponse.explicit_equations_partial import \
      form_rpa_b_matrix_mo_triplet_partial)
 
 from pyresponse.molecules import molecule_water_HF_STO3G
-from pyresponse.tests.test_uhf import ref_water_cation_UHF_HF_STO3G
+from .test_uhf import ref_water_cation_UHF_HF_STO3G
 
 
 def test_explicit_uhf_outside_solver():

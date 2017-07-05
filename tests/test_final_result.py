@@ -7,7 +7,7 @@ from pyresponse.electric import Polarizability
 from pyresponse.iterators import ExactInv
 from pyresponse.molecules import molecule_water_HF_STO3G
 from pyresponse.operators import Operator
-from pyresponse.tests.test_runners import run_as_many_tests_as_possible_rhf_disk, run_as_many_tests_as_possible_uhf_disk
+from .test_runners import run_as_many_tests_as_possible_rhf_disk, run_as_many_tests_as_possible_uhf_disk
 
 
 def test_final_result_rhf_h2o_sto3g_rpa_singlet():
