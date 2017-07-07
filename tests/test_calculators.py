@@ -12,38 +12,32 @@ from cclib.io import ccopen
 
 import pyscf
 
-from pyresponse.operators import Operator
-from pyresponse.iterators import ExactInv
-from pyresponse.cphf import CPHF
-from pyresponse.utils import (get_reference_value_from_file,
-                              occupations_from_sirifc, read_file_3, read_file_2,
-                              read_file_occupations, read_file_4, dalton_label_to_operator)
-from pyresponse.ao2mo import perform_tei_ao2mo_rhf_partial, perform_tei_ao2mo_uhf_partial
+from pyresponse import operators, iterators, cphf, utils, ao2mo
 
 
 def calculate_disk_rhf(testcase, hamiltonian, spin, frequency, label_1, label_2):
 
-    occupations = read_file_occupations(testcase + '/' + 'occupations')
+    occupations = utils.read_file_occupations(testcase + '/' + 'occupations')
     nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = occupations
     assert nocc_alph == nocc_beta
     assert nvirt_alph == nvirt_beta
     norb = nocc_alph + nvirt_alph
-    C = read_file_3(testcase + '/' + 'C')
+    C = utils.read_file_3(testcase + '/' + 'C')
     assert C.shape[0] == 1
     assert C.shape[2] == norb
     nbasis = C.shape[1]
-    moene = read_file_2(testcase + '/' + 'moene')
+    moene = utils.read_file_2(testcase + '/' + 'moene')
     assert moene.shape == (norb, 1)
-    moints_iajb_aaaa = read_file_4(testcase + '/' + 'moints_iajb_aaaa')
-    moints_ijab_aaaa = read_file_4(testcase + '/' + 'moints_ijab_aaaa')
+    moints_iajb_aaaa = utils.read_file_4(testcase + '/' + 'moints_iajb_aaaa')
+    moints_ijab_aaaa = utils.read_file_4(testcase + '/' + 'moints_ijab_aaaa')
     assert moints_iajb_aaaa.shape == (nocc_alph, nvirt_alph, nocc_alph, nvirt_alph)
     assert moints_ijab_aaaa.shape == (nocc_alph, nocc_alph, nvirt_alph, nvirt_alph)
 
-    operator_1 = dalton_label_to_operator(label_1)
-    operator_2 = dalton_label_to_operator(label_2)
+    operator_1 = utils.dalton_label_to_operator(label_1)
+    operator_2 = utils.dalton_label_to_operator(label_2)
 
-    operator_1_integrals_mn = read_file_3(testcase + '/' + 'operator_mn_' + operator_1.label)
-    operator_2_integrals_mn = read_file_3(testcase + '/' + 'operator_mn_' + operator_2.label)
+    operator_1_integrals_mn = utils.read_file_3(testcase + '/' + 'operator_mn_' + operator_1.label)
+    operator_2_integrals_mn = utils.read_file_3(testcase + '/' + 'operator_mn_' + operator_2.label)
     # The first dimension can't be checked since there may be multiple
     # components.
     assert operator_1_integrals_mn.shape[1:] == (nbasis, nbasis)
@@ -63,20 +57,20 @@ def calculate_disk_rhf(testcase, hamiltonian, spin, frequency, label_1, label_2)
     moene = np.diag(moene[:, 0])[np.newaxis, ...]
     assert moene.shape == (1, norb, norb)
 
-    solver = ExactInv(C, moene, occupations)
+    solver = iterators.ExactInv(C, moene, occupations)
     solver.tei_mo = (moints_iajb_aaaa, moints_ijab_aaaa)
     solver.tei_mo_type = 'partial'
 
-    cphf = CPHF(solver)
-    cphf.add_operator(operator_1)
-    cphf.add_operator(operator_2)
+    driver = cphf.CPHF(solver)
+    driver.add_operator(operator_1)
+    driver.add_operator(operator_2)
 
-    cphf.set_frequencies([float(frequency)])
+    driver.set_frequencies([float(frequency)])
 
-    cphf.run(solver_type='exact', hamiltonian=hamiltonian, spin=spin)
+    driver.run(solver_type='exact', hamiltonian=hamiltonian, spin=spin)
 
-    assert len(cphf.frequencies) == len(cphf.results) == 1
-    res = cphf.results[0]
+    assert len(driver.frequencies) == len(driver.results) == 1
+    res = driver.results[0]
     assert res.shape == (2, 2)
     bl = res[1, 0]
     tr = res[0, 1]
@@ -91,21 +85,21 @@ def calculate_disk_rhf(testcase, hamiltonian, spin, frequency, label_1, label_2)
 
 def calculate_disk_uhf(testcase, hamiltonian, spin, frequency, label_1, label_2):
 
-    occupations = read_file_occupations(testcase + '/' + 'occupations')
+    occupations = utils.read_file_occupations(testcase + '/' + 'occupations')
     nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = occupations
     norb = nocc_alph + nvirt_alph
-    C = read_file_3(testcase + '/' + 'C')
+    C = utils.read_file_3(testcase + '/' + 'C')
     assert C.shape[0] == 2
     assert C.shape[2] == norb
     nbasis = C.shape[1]
-    moene = read_file_2(testcase + '/' + 'moene')
+    moene = utils.read_file_2(testcase + '/' + 'moene')
     assert moene.shape == (norb, 2)
-    moints_iajb_aaaa = read_file_4(testcase + '/' + 'moints_iajb_aaaa')
-    moints_iajb_aabb = read_file_4(testcase + '/' + 'moints_iajb_aabb')
-    moints_iajb_bbaa = read_file_4(testcase + '/' + 'moints_iajb_bbaa')
-    moints_iajb_bbbb = read_file_4(testcase + '/' + 'moints_iajb_bbbb')
-    moints_ijab_aaaa = read_file_4(testcase + '/' + 'moints_ijab_aaaa')
-    moints_ijab_bbbb = read_file_4(testcase + '/' + 'moints_ijab_bbbb')
+    moints_iajb_aaaa = utils.read_file_4(testcase + '/' + 'moints_iajb_aaaa')
+    moints_iajb_aabb = utils.read_file_4(testcase + '/' + 'moints_iajb_aabb')
+    moints_iajb_bbaa = utils.read_file_4(testcase + '/' + 'moints_iajb_bbaa')
+    moints_iajb_bbbb = utils.read_file_4(testcase + '/' + 'moints_iajb_bbbb')
+    moints_ijab_aaaa = utils.read_file_4(testcase + '/' + 'moints_ijab_aaaa')
+    moints_ijab_bbbb = utils.read_file_4(testcase + '/' + 'moints_ijab_bbbb')
     assert moints_iajb_aaaa.shape == (nocc_alph, nvirt_alph, nocc_alph, nvirt_alph)
     assert moints_iajb_aabb.shape == (nocc_alph, nvirt_alph, nocc_beta, nvirt_beta)
     assert moints_iajb_bbaa.shape == (nocc_beta, nvirt_beta, nocc_alph, nvirt_alph)
@@ -113,11 +107,11 @@ def calculate_disk_uhf(testcase, hamiltonian, spin, frequency, label_1, label_2)
     assert moints_ijab_aaaa.shape == (nocc_alph, nocc_alph, nvirt_alph, nvirt_alph)
     assert moints_ijab_bbbb.shape == (nocc_beta, nocc_beta, nvirt_beta, nvirt_beta)
 
-    operator_1 = dalton_label_to_operator(label_1)
-    operator_2 = dalton_label_to_operator(label_2)
+    operator_1 = utils.dalton_label_to_operator(label_1)
+    operator_2 = utils.dalton_label_to_operator(label_2)
 
-    operator_1_integrals_mn = read_file_3(testcase + '/' + 'operator_mn_' + operator_1.label)
-    operator_2_integrals_mn = read_file_3(testcase + '/' + 'operator_mn_' + operator_2.label)
+    operator_1_integrals_mn = utils.read_file_3(testcase + '/' + 'operator_mn_' + operator_1.label)
+    operator_2_integrals_mn = utils.read_file_3(testcase + '/' + 'operator_mn_' + operator_2.label)
     # The first dimension can't be checked since there may be multiple
     # components.
     assert operator_1_integrals_mn.shape[1:] == (nbasis, nbasis)
@@ -139,20 +133,20 @@ def calculate_disk_uhf(testcase, hamiltonian, spin, frequency, label_1, label_2)
     moene = np.stack((moene_alph, moene_beta), axis=0)
     assert moene.shape == (2, norb, norb)
 
-    solver = ExactInv(C, moene, occupations)
+    solver = iterators.ExactInv(C, moene, occupations)
     solver.tei_mo = (moints_iajb_aaaa, moints_iajb_aabb, moints_iajb_bbaa, moints_iajb_bbbb, moints_ijab_aaaa, moints_ijab_bbbb)
     solver.tei_mo_type = 'partial'
 
-    cphf = CPHF(solver)
-    cphf.add_operator(operator_1)
-    cphf.add_operator(operator_2)
+    driver = cphf.CPHF(solver)
+    driver.add_operator(operator_1)
+    driver.add_operator(operator_2)
 
-    cphf.set_frequencies([float(frequency)])
+    driver.set_frequencies([float(frequency)])
 
-    cphf.run(solver_type='exact', hamiltonian=hamiltonian, spin=spin)
+    driver.run(solver_type='exact', hamiltonian=hamiltonian, spin=spin)
 
-    assert len(cphf.frequencies) == len(cphf.results) == 1
-    res = cphf.results[0]
+    assert len(driver.frequencies) == len(driver.results) == 1
+    res = driver.results[0]
     assert res.shape == (2, 2)
     bl = res[1, 0]
     tr = res[0, 1]
@@ -202,7 +196,7 @@ def calculate_rhf(dalton_tmpdir, hamiltonian=None, spin=None, operator_label=Non
 
     SIRIFC = os.path.join(dalton_tmpdir, 'SIRIFC')
     ifc = sirifc.sirifc(SIRIFC)
-    occupations = occupations_from_sirifc(ifc)
+    occupations = utils.occupations_from_sirifc(ifc)
 
     if source_moenergies == 'pyscf' or source_mocoeffs == 'pyscf':
         mf = pyscf.scf.RHF(mol)
@@ -226,45 +220,45 @@ def calculate_rhf(dalton_tmpdir, hamiltonian=None, spin=None, operator_label=Non
     else:
         pass
 
-    solver = ExactInv(C, E, occupations)
+    solver = iterators.ExactInv(C, E, occupations)
 
-    solver.tei_mo = perform_tei_ao2mo_rhf_partial(mol, C)
+    solver.tei_mo = ao2mo.perform_tei_ao2mo_rhf_partial(mol, C)
     solver.tei_mo_type = 'partial'
 
-    cphf = CPHF(solver)
+    driver = cphf.CPHF(solver)
 
     if operator:
-        cphf.add_operator(operator)
+        driver.add_operator(operator)
     elif operator_label:
         if operator_label == 'dipole':
-            operator_dipole = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False, triplet=False)
+            operator_dipole = operators.Operator(label='dipole', is_imaginary=False, is_spin_dependent=False, triplet=False)
             integrals_dipole_ao = mol.intor('cint1e_r_sph', comp=3)
             operator_dipole.ao_integrals = integrals_dipole_ao
-            cphf.add_operator(operator_dipole)
+            driver.add_operator(operator_dipole)
         elif operator_label == 'angmom':
-            operator_angmom = Operator(label='angmom', is_imaginary=True, is_spin_dependent=False, triplet=False)
+            operator_angmom = operators.Operator(label='angmom', is_imaginary=True, is_spin_dependent=False, triplet=False)
             integrals_angmom_ao = mol.intor('cint1e_cg_irxp_sph', comp=3)
             operator_angmom.ao_integrals = integrals_angmom_ao
-            cphf.add_operator(operator_angmom)
+            driver.add_operator(operator_angmom)
         elif operator_label == 'spinorb':
-            operator_spinorb = Operator(label='spinorb', is_imaginary=True, is_spin_dependent=False, triplet=False)
+            operator_spinorb = operators.Operator(label='spinorb', is_imaginary=True, is_spin_dependent=False, triplet=False)
             integrals_spinorb_ao = 0
             for atm_id in range(mol.natm):
                 mol.set_rinv_orig(mol.atom_coord(atm_id))
                 chg = mol.atom_charge(atm_id)
                 integrals_spinorb_ao += chg * mol.intor('cint1e_prinvxp_sph', comp=3)
             operator_spinorb.ao_integrals = integrals_spinorb_ao
-            cphf.add_operator(operator_spinorb)
+            driver.add_operator(operator_spinorb)
         else:
             pass
     else:
         pass
 
-    cphf.set_frequencies()
+    driver.set_frequencies()
 
-    cphf.run(solver_type='exact', hamiltonian=hamiltonian, spin=spin)
+    driver.run(solver_type='exact', hamiltonian=hamiltonian, spin=spin)
 
-    return cphf.results[0]
+    return driver.results[0]
 
 
 def calculate_uhf(dalton_tmpdir, hamiltonian=None, spin=None, operator_label=None, operator=None, source_moenergies=None, source_mocoeffs=None, source_operator=None):
@@ -304,7 +298,7 @@ def calculate_uhf(dalton_tmpdir, hamiltonian=None, spin=None, operator_label=Non
 
     SIRIFC = os.path.join(dalton_tmpdir, 'SIRIFC')
     ifc = sirifc.sirifc(SIRIFC)
-    occupations = occupations_from_sirifc(ifc)
+    occupations = utils.occupations_from_sirifc(ifc)
 
     if source_moenergies == 'pyscf' or source_mocoeffs == 'pyscf':
         mf = pyscf.scf.UHF(mol)
@@ -332,42 +326,42 @@ def calculate_uhf(dalton_tmpdir, hamiltonian=None, spin=None, operator_label=Non
     else:
         pass
 
-    solver = ExactInv(C, E, occupations)
+    solver = iterators.ExactInv(C, E, occupations)
 
-    solver.tei_mo = perform_tei_ao2mo_uhf_partial(mol, C)
+    solver.tei_mo = ao2mo.perform_tei_ao2mo_uhf_partial(mol, C)
     solver.tei_mo_type = 'partial'
 
-    cphf = CPHF(solver)
+    driver = cphf.CPHF(solver)
 
     if operator:
-        cphf.add_operator(operator)
+        driver.add_operator(operator)
     elif operator_label:
         if operator_label == 'dipole':
-            operator_dipole = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False, triplet=False)
+            operator_dipole = operators.Operator(label='dipole', is_imaginary=False, is_spin_dependent=False, triplet=False)
             integrals_dipole_ao = mol.intor('cint1e_r_sph', comp=3)
             operator_dipole.ao_integrals = integrals_dipole_ao
-            cphf.add_operator(operator_dipole)
+            driver.add_operator(operator_dipole)
         elif operator_label == 'angmom':
-            operator_angmom = Operator(label='angmom', is_imaginary=True, is_spin_dependent=False, triplet=False)
+            operator_angmom = operators.Operator(label='angmom', is_imaginary=True, is_spin_dependent=False, triplet=False)
             integrals_angmom_ao = mol.intor('cint1e_cg_irxp_sph', comp=3)
             operator_angmom.ao_integrals = integrals_angmom_ao
-            cphf.add_operator(operator_angmom)
+            driver.add_operator(operator_angmom)
         elif operator_label == 'spinorb':
-            operator_spinorb = Operator(label='spinorb', is_imaginary=True, is_spin_dependent=False, triplet=False)
+            operator_spinorb = operators.Operator(label='spinorb', is_imaginary=True, is_spin_dependent=False, triplet=False)
             integrals_spinorb_ao = 0
             for atm_id in range(mol.natm):
                 mol.set_rinv_orig(mol.atom_coord(atm_id))
                 chg = mol.atom_charge(atm_id)
                 integrals_spinorb_ao += chg * mol.intor('cint1e_prinvxp_sph', comp=3)
             operator_spinorb.ao_integrals = integrals_spinorb_ao
-            cphf.add_operator(operator_spinorb)
+            driver.add_operator(operator_spinorb)
         else:
             pass
     else:
         pass
 
-    cphf.set_frequencies()
+    driver.set_frequencies()
 
-    cphf.run(solver_type='exact', hamiltonian=hamiltonian, spin=spin)
+    driver.run(solver_type='exact', hamiltonian=hamiltonian, spin=spin)
 
-    return cphf.results[0]
+    return driver.results[0]

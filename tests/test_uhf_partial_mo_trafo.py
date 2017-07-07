@@ -2,27 +2,15 @@ import numpy as np
 
 import pyscf
 
-from pyresponse.iterators import ExactInv
-from pyresponse.cphf import CPHF
-from pyresponse.operators import Operator
+from pyresponse import iterators, cphf, operators, molecules
+from pyresponse import explicit_equations_partial as eqns
 
-from pyresponse.explicit_equations_partial import \
-    (form_rpa_a_matrix_mo_singlet_partial,
-     form_rpa_a_matrix_mo_singlet_ss_partial,
-     form_rpa_a_matrix_mo_singlet_os_partial,
-     form_rpa_a_matrix_mo_triplet_partial,
-     form_rpa_b_matrix_mo_singlet_partial,
-     form_rpa_b_matrix_mo_singlet_ss_partial,
-     form_rpa_b_matrix_mo_singlet_os_partial,
-     form_rpa_b_matrix_mo_triplet_partial)
-
-from pyresponse.molecules import molecule_water_HF_STO3G
 from .test_uhf import ref_water_cation_UHF_HF_STO3G
 
 
 def test_explicit_uhf_outside_solver():
 
-    mol = molecule_water_HF_STO3G()
+    mol = molecules.molecule_water_HF_STO3G()
     mol.charge = 1
     mol.spin = 1
     mol.build()
@@ -57,14 +45,14 @@ def test_explicit_uhf_outside_solver():
     tei_mo_oovv_aaaa = pyscf.ao2mo.general(mol, C_oovv_aaaa, aosym='s4', compact=False, verbose=5).reshape(nocc_a, nocc_a, nvirt_a, nvirt_a)
     tei_mo_oovv_bbbb = pyscf.ao2mo.general(mol, C_oovv_bbbb, aosym='s4', compact=False, verbose=5).reshape(nocc_b, nocc_b, nvirt_b, nvirt_b)
 
-    A_s_ss_a = form_rpa_a_matrix_mo_singlet_ss_partial(E_a, tei_mo_ovov_aaaa, tei_mo_oovv_aaaa)
-    A_s_os_a = form_rpa_a_matrix_mo_singlet_os_partial(tei_mo_ovov_aabb)
-    B_s_ss_a = form_rpa_b_matrix_mo_singlet_ss_partial(tei_mo_ovov_aaaa)
-    B_s_os_a = form_rpa_b_matrix_mo_singlet_os_partial(tei_mo_ovov_aabb)
-    A_s_ss_b = form_rpa_a_matrix_mo_singlet_ss_partial(E_b, tei_mo_ovov_bbbb, tei_mo_oovv_bbbb)
-    A_s_os_b = form_rpa_a_matrix_mo_singlet_os_partial(tei_mo_ovov_bbaa)
-    B_s_ss_b = form_rpa_b_matrix_mo_singlet_ss_partial(tei_mo_ovov_bbbb)
-    B_s_os_b = form_rpa_b_matrix_mo_singlet_os_partial(tei_mo_ovov_bbaa)
+    A_s_ss_a = eqns.form_rpa_a_matrix_mo_singlet_ss_partial(E_a, tei_mo_ovov_aaaa, tei_mo_oovv_aaaa)
+    A_s_os_a = eqns.form_rpa_a_matrix_mo_singlet_os_partial(tei_mo_ovov_aabb)
+    B_s_ss_a = eqns.form_rpa_b_matrix_mo_singlet_ss_partial(tei_mo_ovov_aaaa)
+    B_s_os_a = eqns.form_rpa_b_matrix_mo_singlet_os_partial(tei_mo_ovov_aabb)
+    A_s_ss_b = eqns.form_rpa_a_matrix_mo_singlet_ss_partial(E_b, tei_mo_ovov_bbbb, tei_mo_oovv_bbbb)
+    A_s_os_b = eqns.form_rpa_a_matrix_mo_singlet_os_partial(tei_mo_ovov_bbaa)
+    B_s_ss_b = eqns.form_rpa_b_matrix_mo_singlet_ss_partial(tei_mo_ovov_bbbb)
+    B_s_os_b = eqns.form_rpa_b_matrix_mo_singlet_os_partial(tei_mo_ovov_bbaa)
     # Since the "triplet" part contains no Coulomb contribution, and
     # (xx|yy) is only in the Coulomb part, there is no ss/os
     # separation for the triplet part.
@@ -138,7 +126,7 @@ def test_explicit_uhf_outside_solver():
 
 def test_explicit_uhf():
 
-    mol = molecule_water_HF_STO3G()
+    mol = molecules.molecule_water_HF_STO3G()
     mol.charge = 1
     mol.spin = 1
     mol.build()
@@ -177,22 +165,22 @@ def test_explicit_uhf():
 
     integrals_dipole_ao = mol.intor('cint1e_r_sph', comp=3)
 
-    solver = ExactInv(C, E, occupations)
+    solver = iterators.ExactInv(C, E, occupations)
 
     solver.tei_mo = (tei_mo_ovov_aaaa, tei_mo_ovov_aabb, tei_mo_ovov_bbaa, tei_mo_ovov_bbbb, tei_mo_oovv_aaaa, tei_mo_oovv_bbbb)
     solver.tei_mo_type = 'partial'
 
-    cphf = CPHF(solver)
+    driver = cphf.CPHF(solver)
 
-    operator_dipole = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False)
+    operator_dipole = operators.Operator(label='dipole', is_imaginary=False, is_spin_dependent=False)
     operator_dipole.ao_integrals = integrals_dipole_ao
-    cphf.add_operator(operator_dipole)
+    driver.add_operator(operator_dipole)
 
-    cphf.set_frequencies()
+    driver.set_frequencies()
 
-    cphf.run(solver_type='exact', hamiltonian='rpa', spin='singlet')
-    assert len(cphf.frequencies) == len(cphf.results) == 1
-    res = cphf.results[0]
+    driver.run(solver_type='exact', hamiltonian='rpa', spin='singlet')
+    assert len(driver.frequencies) == len(driver.results) == 1
+    res = driver.results[0]
     print(res)
 
     atol = 1.0e-5

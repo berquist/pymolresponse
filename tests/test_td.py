@@ -1,12 +1,6 @@
-from __future__ import print_function
-from __future__ import division
-
 import pyscf
 
-from pyresponse import ao2mo
-from pyresponse import utils
-from pyresponse.iterators import ExactDiagonalizationSolver, ExactDiagonalizationSolverTDA
-from pyresponse.td import TDA, TDHF
+from pyresponse import ao2mo, utils, iterators, td
 
 
 def test_HF_both_singlet_HF_STO3G():
@@ -28,15 +22,15 @@ def test_HF_both_singlet_HF_STO3G():
     C = utils.fix_mocoeffs_shape(mf.mo_coeff)
     E = utils.fix_moenergies_shape(mf.mo_energy)
     occupations = utils.occupations_from_pyscf_mol(mol, C)
-    solver_tda = ExactDiagonalizationSolverTDA(C, E, occupations)
-    solver_tdhf = ExactDiagonalizationSolver(C, E, occupations)
+    solver_tda = iterators.ExactDiagonalizationSolverTDA(C, E, occupations)
+    solver_tdhf = iterators.ExactDiagonalizationSolver(C, E, occupations)
     tei_mo = ao2mo.perform_tei_ao2mo_rhf_partial(mol, C, mol.verbose)
     solver_tda.tei_mo = tei_mo
     solver_tda.tei_mo_type = 'partial'
     solver_tdhf.tei_mo = tei_mo
     solver_tdhf.tei_mo_type = 'partial'
-    driver_tda = TDA(solver_tda)
-    driver_tdhf = TDHF(solver_tdhf)
+    driver_tda = td.TDA(solver_tda)
+    driver_tdhf = td.TDHF(solver_tdhf)
 
     nroots = 5
 

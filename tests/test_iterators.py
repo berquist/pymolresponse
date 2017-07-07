@@ -1,15 +1,9 @@
-from __future__ import print_function
-from __future__ import division
-
 import numpy as np
 import scipy as sp
 
 import pyscf
 
-from pyresponse import iterators
-from pyresponse import molecules
-from pyresponse import utils
-from pyresponse.magnetic import Magnetizability
+from pyresponse import iterators, molecules, utils, magnetic
 
 
 def test_iterators():
@@ -27,7 +21,7 @@ def test_iterators():
     occupations = utils.occupations_from_pyscf_mol(mol, C)
 
     solver_ref = iterators.ExactInv(C, E, occupations)
-    calculator_ref = Magnetizability(mol, C, E, occupations, solver=solver_ref)
+    calculator_ref = magnetic.Magnetizability(mol, C, E, occupations, solver=solver_ref)
     calculator_ref.form_operators()
     calculator_ref.run(hamiltonian='rpa', spin='singlet')
     calculator_ref.form_results()
@@ -44,7 +38,7 @@ def test_iterators():
 
     for inv_func in inv_funcs:
         solver_res = iterators.ExactInv(C, E, occupations, inv_func=inv_func)
-        calculator_res = Magnetizability(mol, C, E, occupations, solver=solver_res)
+        calculator_res = magnetic.Magnetizability(mol, C, E, occupations, solver=solver_res)
         calculator_res.form_operators()
         calculator_res.run(hamiltonian='rpa', spin='singlet')
         calculator_res.form_results()

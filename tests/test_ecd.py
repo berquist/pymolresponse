@@ -5,10 +5,7 @@ import numpy as np
 
 import pyscf
 
-from pyresponse import utils
-
-from pyresponse.ecd import ECD
-from pyresponse.molecules import molecule_BC2H4_cation_HF_STO3G
+from pyresponse import utils, ecd, molecules
 
 
 BC2H4_cation_HF_STO3G_RPA_singlet_nwchem = {
@@ -110,7 +107,7 @@ def test_ECD_RPA_singlet_BC2H4_cation_HF_STO3G():
     ref = BC2H4_cation_HF_STO3G_RPA_singlet_nwchem
     nroots = ref['nroots']
 
-    mol = molecule_BC2H4_cation_HF_STO3G(0)
+    mol = molecules.molecule_BC2H4_cation_HF_STO3G(0)
     mol.build()
 
     mf = pyscf.scf.RHF(mol)
@@ -120,7 +117,7 @@ def test_ECD_RPA_singlet_BC2H4_cation_HF_STO3G():
     E = utils.fix_moenergies_shape(mf.mo_energy)
     occupations = utils.occupations_from_pyscf_mol(mol, C)
 
-    ecd_dipvel_rpa = ECD(mol, C, E, occupations, do_dipvel=True)
+    ecd_dipvel_rpa = ecd.ECD(mol, C, E, occupations, do_dipvel=True)
     ecd_dipvel_rpa.form_operators()
     ecd_dipvel_rpa.run(hamiltonian='rpa', spin='singlet')
     ecd_dipvel_rpa.form_results()
@@ -184,7 +181,7 @@ def test_ECD_RPA_singlet_BC2H4_cation_HF_STO3G():
 
 # TODO once UHF is done
 # def test_ECD_RPA_singlet_BC2H4_neutral_radical_HF_STO3G():
-#     mol = molecule_BC2H4_neutral_radical_HF_STO3G()
+#     mol = molecules.molecule_BC2H4_neutral_radical_HF_STO3G()
 #     mol.build()
 
 #     mf = pyscf.scf.UHF(mol)

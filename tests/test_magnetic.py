@@ -1,15 +1,9 @@
-from __future__ import print_function
-from __future__ import division
-
 import numpy as np
 import scipy.constants as spc
 
 import pyscf
 
-from pyresponse import molecules
-from pyresponse import utils
-
-from pyresponse.magnetic import Magnetizability, ElectronicGTensor
+from pyresponse import molecules, utils, magnetic
 
 
 # These were generated using DALTON.
@@ -33,7 +27,7 @@ def test_magnetizability_rhf():
     E = utils.fix_moenergies_shape(mf.mo_energy)
     occupations = utils.occupations_from_pyscf_mol(mol, C)
 
-    calculator_common = Magnetizability(mol, C, E, occupations)
+    calculator_common = magnetic.Magnetizability(mol, C, E, occupations)
     calculator_common.form_operators()
     calculator_common.run(hamiltonian='rpa', spin='singlet')
     calculator_common.form_results()
@@ -45,7 +39,7 @@ def test_magnetizability_rhf():
 
     # TODO it isn't so simple; there are actually many more terms
     # present when using London orbitals.
-    # calculator_giao = Magnetizability(mol, C, E, occupations, hamiltonian='rpa', spin='singlet', use_giao=True)
+    # calculator_giao = magnetic.Magnetizability(mol, C, E, occupations, hamiltonian='rpa', spin='singlet', use_giao=True)
     # calculator_giao.form_operators()
     # calculator_giao.run()
     # calculator_giao.form_results()
@@ -66,7 +60,7 @@ def test_magnetizability_uhf():
     E = utils.fix_moenergies_shape(mf.mo_energy)
     occupations = utils.occupations_from_pyscf_mol(mol, C)
 
-    calculator_common = Magnetizability(mol, C, E, occupations)
+    calculator_common = magnetic.Magnetizability(mol, C, E, occupations)
     calculator_common.form_operators()
     calculator_common.run(hamiltonian='rpa', spin='singlet')
     calculator_common.form_results()
@@ -103,7 +97,7 @@ def test_electronicgtensor_tiny():
     E = utils.fix_moenergies_shape(mf.mo_energy)
     occupations = utils.occupations_from_pyscf_mol(mol, C)
 
-    gtensor_calculator = ElectronicGTensor(mol, C, E, occupations)
+    gtensor_calculator = magnetic.ElectronicGTensor(mol, C, E, occupations)
     gtensor_calculator.form_operators()
     gtensor_calculator.run(hamiltonian='rpa', spin='singlet')
     gtensor_calculator.form_results()
@@ -129,7 +123,7 @@ def test_electronicgtensor_small():
     E = utils.fix_moenergies_shape(mf.mo_energy)
     occupations = utils.occupations_from_pyscf_mol(mol, C)
 
-    gtensor_calculator = ElectronicGTensor(mol, C, E, occupations)
+    gtensor_calculator = magnetic.ElectronicGTensor(mol, C, E, occupations)
     gtensor_calculator.form_operators()
     gtensor_calculator.run(hamiltonian='rpa', spin='singlet')
     gtensor_calculator.form_results()
@@ -155,7 +149,7 @@ def test_electronicgtensor_small():
 #     E = utils.fix_moenergies_shape(mf.mo_energy)
 #     occupations = utils.occupations_from_pyscf_mol(mol, C)
 
-#     gtensor_calculator = ElectronicGTensor(mol, C, E, occupations, hamiltonian='rpa', spin='singlet')
+#     gtensor_calculator = magnetic.ElectronicGTensor(mol, C, E, occupations, hamiltonian='rpa', spin='singlet')
 #     gtensor_calculator.form_operators()
 #     gtensor_calculator.run()
 #     gtensor_calculator.form_results()

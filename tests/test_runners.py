@@ -1,8 +1,8 @@
-from pyresponse.utils import dalton_label_to_operator
+from pyresponse import utils
 
 
 def run_dalton_label_to_operator(dalton_label, operator_label, slice_idx, is_imaginary, is_spin_dependent):
-    operator = dalton_label_to_operator(dalton_label)
+    operator = utils.dalton_label_to_operator(dalton_label)
     assert operator.label == operator_label
     assert operator.slice_idx == slice_idx
     assert operator.is_imaginary == is_imaginary

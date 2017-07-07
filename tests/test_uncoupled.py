@@ -2,12 +2,7 @@ import numpy as np
 
 import pyscf
 
-from pyresponse import utils
-from pyresponse.cphf import CPHF
-from pyresponse.iterators import ExactInv
-from pyresponse.operators import Operator
-from pyresponse import ao2mo
-from pyresponse.molecules import molecule_trithiolane_HF_STO3G
+from pyresponse import utils, cphf, iterators, operators, ao2mo, molecules
 
 
 def mol_atom(symbol='He', charge=0, spin=0, basis='sto-3g', verbose=0):
@@ -130,7 +125,7 @@ uhf_uncoupled = {
 
 
 def test_uncoupled_rhf():
-    mol = molecule_trithiolane_HF_STO3G(0)
+    mol = molecules.molecule_trithiolane_HF_STO3G(0)
     mol.build()
 
     mf = pyscf.scf.RHF(mol)
@@ -140,27 +135,28 @@ def test_uncoupled_rhf():
     E = utils.fix_moenergies_shape(mf.mo_energy)
     occupations = utils.occupations_from_pyscf_mol(mol, C)
 
-    solver = ExactInv(C, E, occupations)
+    solver = iterators.ExactInv(C, E, occupations)
 
     solver.tei_mo = ao2mo.perform_tei_ao2mo_rhf_partial(mol, C, mol.verbose)
     solver.tei_mo_type = 'partial'
 
-    cphf = CPHF(solver)
+    driver = cphf.CPHF(solver)
 
-    operator_diplen = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False, triplet=False)
+    operator_diplen = operators.Operator(label='dipole',
+                                         is_imaginary=False, is_spin_dependent=False, triplet=False)
     integrals_diplen_ao = mol.intor('cint1e_r_sph', comp=3)
     operator_diplen.ao_integrals = integrals_diplen_ao
-    cphf.add_operator(operator_diplen)
+    driver.add_operator(operator_diplen)
 
     frequencies = [0.0, 0.0773178, 0.128347]
-    cphf.set_frequencies(frequencies)
+    driver.set_frequencies(frequencies)
 
-    cphf.run(solver_type='exact', hamiltonian='rpa', spin='singlet')
+    driver.run(solver_type='exact', hamiltonian='rpa', spin='singlet')
 
     for idxf, frequency in enumerate(frequencies):
         print(idxf, frequency)
         print('uncoupled')
-        diag_res = np.diag(cphf.uncoupled_results[idxf])
+        diag_res = np.diag(driver.uncoupled_results[idxf])
         diag_ref = np.diag(rhf_uncoupled[frequency]['result'])
         diff = diag_res - diag_ref
         print(diag_res)
@@ -168,7 +164,7 @@ def test_uncoupled_rhf():
         print(diff)
         assert np.max(np.abs(diff)) < rhf_uncoupled[frequency]['error_max_diag']
         print('coupled')
-        diag_res = np.diag(cphf.results[idxf])
+        diag_res = np.diag(driver.results[idxf])
         diag_ref = np.diag(rhf_coupled[frequency]['result'])
         diff = diag_res - diag_ref
         print(diag_res)
@@ -180,7 +176,7 @@ def test_uncoupled_rhf():
 
 
 def test_uncoupled_uhf():
-    mol = molecule_trithiolane_HF_STO3G(0)
+    mol = molecules.molecule_trithiolane_HF_STO3G(0)
     mol.charge = 1
     mol.spin = 1
     mol.build()
@@ -192,27 +188,28 @@ def test_uncoupled_uhf():
     E = utils.fix_moenergies_shape(mf.mo_energy)
     occupations = utils.occupations_from_pyscf_mol(mol, C)
 
-    solver = ExactInv(C, E, occupations)
+    solver = iterators.ExactInv(C, E, occupations)
 
     solver.tei_mo = ao2mo.perform_tei_ao2mo_uhf_partial(mol, C, mol.verbose)
     solver.tei_mo_type = 'partial'
 
-    cphf = CPHF(solver)
+    driver = cphf.CPHF(solver)
 
-    operator_diplen = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False, triplet=False)
+    operator_diplen = operators.Operator(label='dipole',
+                                         is_imaginary=False, is_spin_dependent=False, triplet=False)
     integrals_diplen_ao = mol.intor('cint1e_r_sph', comp=3)
     operator_diplen.ao_integrals = integrals_diplen_ao
-    cphf.add_operator(operator_diplen)
+    driver.add_operator(operator_diplen)
 
     frequencies = [0.0, 0.0773178, 0.128347, 0.4556355]
-    cphf.set_frequencies(frequencies)
+    driver.set_frequencies(frequencies)
 
-    cphf.run(solver_type='exact', hamiltonian='rpa', spin='singlet')
+    driver.run(solver_type='exact', hamiltonian='rpa', spin='singlet')
 
     for idxf, frequency in enumerate(frequencies):
         print(idxf, frequency)
         print('uncoupled')
-        diag_res = np.diag(cphf.uncoupled_results[idxf])
+        diag_res = np.diag(driver.uncoupled_results[idxf])
         diag_ref = np.diag(uhf_uncoupled[frequency]['result'])
         diff = diag_res - diag_ref
         print(diag_res)
@@ -220,7 +217,7 @@ def test_uncoupled_uhf():
         print(diff)
         assert np.max(np.abs(diff)) < uhf_uncoupled[frequency]['error_max_diag']
         print('coupled')
-        diag_res = np.diag(cphf.results[idxf])
+        diag_res = np.diag(driver.results[idxf])
         diag_ref = np.diag(uhf_coupled[frequency]['result'])
         diff = diag_res - diag_ref
         print(diag_res)

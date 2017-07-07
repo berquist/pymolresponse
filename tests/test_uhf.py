@@ -2,51 +2,37 @@ import numpy as np
 
 import pyscf
 
-from pyresponse.iterators import ExactInv
-from pyresponse.cphf import CPHF
-from pyresponse.operators import Operator
-
-from pyresponse.ao2mo import (perform_tei_ao2mo_rhf_full, perform_tei_ao2mo_uhf_full)
-
-from pyresponse.explicit_equations_full import \
-    (form_rpa_a_matrix_mo_singlet_full,
-     form_rpa_a_matrix_mo_singlet_ss_full,
-     form_rpa_a_matrix_mo_singlet_os_full,
-     form_rpa_b_matrix_mo_singlet_full,
-     form_rpa_b_matrix_mo_singlet_ss_full,
-     form_rpa_b_matrix_mo_singlet_os_full)
-
-from pyresponse.molecules import molecule_water_HF_STO3G
-from pyresponse.utils import occupations_from_pyscf_mol
+from pyresponse import iterators, cphf, operators, ao2mo, molecules, utils
+from pyresponse import explicit_equations_full as eqns
 
 
 def test_explicit_uhf_from_rhf_outside_solver():
 
-    mol = molecule_water_HF_STO3G()
+    mol = molecules.molecule_water_HF_STO3G()
     mol.build()
 
     mf = pyscf.scf.RHF(mol)
     mf.kernel()
     mocoeffs = mf.mo_coeff
     moenergies = mf.mo_energy
-    tei_mo = perform_tei_ao2mo_rhf_full(mol, mocoeffs)[0]
+    tei_mo = ao2mo.perform_tei_ao2mo_rhf_full(mol, mocoeffs)[0]
 
     C_a = mocoeffs
     C_b = C_a.copy()
     E_a = np.diag(moenergies)
     # E_b = E_a.copy()
-    occupations = occupations_from_pyscf_mol(mol, mocoeffs)
+    occupations = utils.occupations_from_pyscf_mol(mol, mocoeffs)
     nocc_a, nvirt_a, nocc_b, nvirt_b = occupations
 
     # Same-spin and opposite-spin contributions should add together
     # properly for restricted wavefunction.
-    A_s = form_rpa_a_matrix_mo_singlet_full(E_a, tei_mo, nocc_a)
-    A_s_ss = form_rpa_a_matrix_mo_singlet_ss_full(E_a, tei_mo, nocc_a)
-    A_s_os = form_rpa_a_matrix_mo_singlet_os_full(tei_mo, nocc_a, nocc_b)
+    A_s = eqns.form_rpa_a_matrix_mo_singlet_full(E_a, tei_mo, nocc_a)
+    A_s_ss = eqns.form_rpa_a_matrix_mo_singlet_ss_full(E_a, tei_mo, nocc_a)
+    A_s_os = eqns.form_rpa_a_matrix_mo_singlet_os_full(tei_mo, nocc_a, nocc_b)
     np.testing.assert_allclose(A_s, A_s_ss + A_s_os)
-    B_s = form_rpa_b_matrix_mo_singlet_full(tei_mo, nocc_a)
-    B_s_ss = form_rpa_b_matrix_mo_singlet_ss_full(tei_mo, nocc_a)
-    B_s_os = form_rpa_b_matrix_mo_singlet_os_full(tei_mo, nocc_a, nocc_b)
+    B_s = eqns.form_rpa_b_matrix_mo_singlet_full(tei_mo, nocc_a)
+    B_s_ss = eqns.form_rpa_b_matrix_mo_singlet_ss_full(tei_mo, nocc_a)
+    B_s_os = eqns.form_rpa_b_matrix_mo_singlet_os_full(tei_mo, nocc_a, nocc_b)
     np.testing.assert_allclose(B_s, B_s_ss + B_s_os)
     # Since the "triplet" part contains no Coulomb contribution, and
     # (xx|yy) is only in the Coulomb part, there is no ss/os
@@ -136,7 +122,7 @@ ref_water_cation_UHF_HF_STO3G = np.array([[6.1406370,   0.0000000,   0.0000000],
 
 def test_explicit_uhf_outside_solver():
 
-    mol = molecule_water_HF_STO3G()
+    mol = molecules.molecule_water_HF_STO3G()
     mol.charge = 1
     mol.spin = 1
     mol.build()
@@ -150,20 +136,20 @@ def test_explicit_uhf_outside_solver():
     assert C_a.shape == C_b.shape
     assert E_a.shape == E_b.shape
 
-    tei_mo = perform_tei_ao2mo_uhf_full(mol, mf.mo_coeff, verbose=5)
+    tei_mo = ao2mo.perform_tei_ao2mo_uhf_full(mol, mf.mo_coeff, verbose=5)
     tei_mo_aaaa, tei_mo_aabb, tei_mo_bbaa, tei_mo_bbbb = tei_mo
 
-    occupations = occupations_from_pyscf_mol(mol, mf.mo_coeff)
+    occupations = utils.occupations_from_pyscf_mol(mol, mf.mo_coeff)
     nocc_a, nvirt_a, nocc_b, nvirt_b = occupations
 
-    A_s_ss_a = form_rpa_a_matrix_mo_singlet_ss_full(E_a, tei_mo_aaaa, nocc_a)
-    A_s_os_a = form_rpa_a_matrix_mo_singlet_os_full(tei_mo_aabb, nocc_a, nocc_b)
-    B_s_ss_a = form_rpa_b_matrix_mo_singlet_ss_full(tei_mo_aaaa, nocc_a)
-    B_s_os_a = form_rpa_b_matrix_mo_singlet_os_full(tei_mo_aabb, nocc_a, nocc_b)
-    A_s_ss_b = form_rpa_a_matrix_mo_singlet_ss_full(E_b, tei_mo_bbbb, nocc_b)
-    A_s_os_b = form_rpa_a_matrix_mo_singlet_os_full(tei_mo_bbaa, nocc_b, nocc_a)
-    B_s_ss_b = form_rpa_b_matrix_mo_singlet_ss_full(tei_mo_bbbb, nocc_b)
-    B_s_os_b = form_rpa_b_matrix_mo_singlet_os_full(tei_mo_bbaa, nocc_b, nocc_a)
+    A_s_ss_a = eqns.form_rpa_a_matrix_mo_singlet_ss_full(E_a, tei_mo_aaaa, nocc_a)
+    A_s_os_a = eqns.form_rpa_a_matrix_mo_singlet_os_full(tei_mo_aabb, nocc_a, nocc_b)
+    B_s_ss_a = eqns.form_rpa_b_matrix_mo_singlet_ss_full(tei_mo_aaaa, nocc_a)
+    B_s_os_a = eqns.form_rpa_b_matrix_mo_singlet_os_full(tei_mo_aabb, nocc_a, nocc_b)
+    A_s_ss_b = eqns.form_rpa_a_matrix_mo_singlet_ss_full(E_b, tei_mo_bbbb, nocc_b)
+    A_s_os_b = eqns.form_rpa_a_matrix_mo_singlet_os_full(tei_mo_bbaa, nocc_b, nocc_a)
+    B_s_ss_b = eqns.form_rpa_b_matrix_mo_singlet_ss_full(tei_mo_bbbb, nocc_b)
+    B_s_os_b = eqns.form_rpa_b_matrix_mo_singlet_os_full(tei_mo_bbaa, nocc_b, nocc_a)
     # Since the "triplet" part contains no Coulomb contribution, and
     # (xx|yy) is only in the Coulomb part, there is no ss/os
     # separation for the triplet part.
@@ -235,7 +221,7 @@ def test_explicit_uhf_outside_solver():
 
 def test_explicit_uhf():
 
-    mol = molecule_water_HF_STO3G()
+    mol = molecules.molecule_water_HF_STO3G()
     mol.charge = 1
     mol.spin = 1
     mol.build()
@@ -250,24 +236,25 @@ def test_explicit_uhf():
 
     integrals_dipole_ao = mol.intor('cint1e_r_sph', comp=3)
 
-    occupations = occupations_from_pyscf_mol(mol, C)
+    occupations = utils.occupations_from_pyscf_mol(mol, C)
 
-    solver = ExactInv(C, E, occupations)
+    solver = iterators.ExactInv(C, E, occupations)
 
-    solver.tei_mo = perform_tei_ao2mo_uhf_full(mol, C)
+    solver.tei_mo = ao2mo.perform_tei_ao2mo_uhf_full(mol, C)
     solver.tei_mo_type = 'full'
 
-    cphf = CPHF(solver)
+    driver = cphf.CPHF(solver)
 
-    operator_dipole = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False)
+    operator_dipole = operators.Operator(label='dipole',
+                                         is_imaginary=False, is_spin_dependent=False)
     operator_dipole.ao_integrals = integrals_dipole_ao
-    cphf.add_operator(operator_dipole)
+    driver.add_operator(operator_dipole)
 
-    cphf.set_frequencies()
+    driver.set_frequencies()
 
-    cphf.run(solver_type='exact', hamiltonian='rpa', spin='singlet')
-    assert len(cphf.frequencies) == len(cphf.results) == 1
-    res = cphf.results[0]
+    driver.run(solver_type='exact', hamiltonian='rpa', spin='singlet')
+    assert len(driver.frequencies) == len(driver.results) == 1
+    res = driver.results[0]
     print(res)
 
     atol = 1.0e-5
