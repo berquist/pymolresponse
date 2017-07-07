@@ -3,7 +3,8 @@ import scipy.constants as spc
 
 import pyscf
 
-from pyresponse import molecules, utils, magnetic
+from pyresponse import utils, magnetic
+from . import molecules
 
 
 # These were generated using DALTON.

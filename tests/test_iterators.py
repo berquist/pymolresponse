@@ -3,7 +3,8 @@ import scipy as sp
 
 import pyscf
 
-from pyresponse import iterators, molecules, utils, magnetic
+from pyresponse import iterators, utils, magnetic
+from . import molecules
 
 
 def test_iterators():

@@ -2,7 +2,8 @@ import numpy as np
 
 import pyscf
 
-from pyresponse import utils, cphf, iterators, operators, ao2mo, molecules
+from pyresponse import utils, cphf, iterators, operators, ao2mo
+from . import molecules
 
 
 def mol_atom(symbol='He', charge=0, spin=0, basis='sto-3g', verbose=0):

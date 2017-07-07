@@ -1,0 +1,35 @@
+echo
+
+geometry units angstrom noautoz nocenter
+symmetry c1
+S          -1.71956        -0.00008        -0.00009
+S           1.13397         0.99623         0.32378
+S           1.13395        -0.99624        -0.32388
+C          -0.51264         1.34934        -0.38930
+C          -0.51251        -1.34919         0.38961
+H          -0.43862         1.46792        -1.47144
+H          -0.87301         2.27578         0.06671
+H          -0.43822        -1.46730         1.47178
+H          -0.87299        -2.27583        -0.06589
+end
+
+charge 0
+
+basis
+  * library sto-3g
+end
+
+dft
+  xc hfexch
+  direct
+end
+
+set prop:newaoresp 0
+
+property
+  center arb 0.0 0.0 0.0
+  response 1 0.0
+  convergence 1e-8
+end
+
+task dft property

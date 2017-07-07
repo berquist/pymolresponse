@@ -1,4 +1,10 @@
+import os.path
+
 import pyscf
+
+
+__filedir__ = os.path.realpath(os.path.dirname(__file__))
+refdir = os.path.join(__filedir__, 'reference_data')
 
 
 def molecule_water_HF_STO3G(verbose=0):
@@ -7,7 +13,7 @@ def molecule_water_HF_STO3G(verbose=0):
     mol.verbose = verbose
     mol.output = None
 
-    with open('water.xyz') as fh:
+    with open(os.path.join(refdir, 'water.xyz')) as fh:
         mol.atom = fh.read()
     mol.basis = 'sto-3g'
     mol.charge = 0
@@ -24,7 +30,7 @@ def molecule_glycine_HF_STO3G(verbose=0):
     mol.verbose = verbose
     mol.output = None
 
-    with open('glycine.xyz') as fh:
+    with open(os.path.join(refdir, 'glycine.xyz')) as fh:
         next(fh)
         next(fh)
         mol.atom = fh.read()
@@ -41,7 +47,7 @@ def molecule_trithiolane_HF_STO3G(verbose=0):
     mol.verbose = verbose
     mol.output = None
 
-    with open('trithiolane.xyz') as fh:
+    with open(os.path.join(refdir, 'trithiolane.xyz')) as fh:
         next(fh)
         next(fh)
         mol.atom = fh.read()
@@ -74,7 +80,7 @@ def molecule_BC2H4_cation_HF_STO3G(verbose=0):
     mol.verbose = verbose
     mol.output = None
 
-    with open('BC2H4.xyz') as fh:
+    with open(os.path.join(refdir, 'BC2H4.xyz')) as fh:
         next(fh)
         next(fh)
         mol.atom = fh.read()
@@ -100,7 +106,7 @@ def molecule_LiH_cation_HF_STO3G(verbose=0):
     mol.verbose = verbose
     mol.output = None
 
-    with open('LiH.xyz') as fh:
+    with open(os.path.join(refdir, 'LiH.xyz')) as fh:
         next(fh)
         next(fh)
         mol.atom = fh.read()
@@ -117,7 +123,7 @@ def molecule_0w4a_dication_HF_321G(verbose=0):
     mol.verbose = verbose
     mol.output = None
 
-    with open('0w4a.xyz') as fh:
+    with open(os.path.join(refdir, '0w4a.xyz')) as fh:
         next(fh)
         next(fh)
         mol.atom = fh.read()

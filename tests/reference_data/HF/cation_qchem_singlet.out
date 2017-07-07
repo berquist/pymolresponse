@@ -1,0 +1,315 @@
+/home/eric/opt/apps/qchem/qchem_trunk_svn/exe/qcprog.exe .cation_qchem_singlet.in.13733.qcin.1 /tmp/qchem/qchem13733/
+
+localhost.localdomain 127.0.0
+Q-Chem Developer Version! Running on 127.0.0.*
+                  Welcome to Q-Chem
+     A Quantum Leap Into The Future Of Chemistry
+
+
+ Q-Chem 4.4, Q-Chem, Inc., Pleasanton, CA (2016)
+
+ Y. Shao,  Z. Gan,  E. Epifanovsky,  A. T. B. Gilbert,  M. Wormit,  
+ J. Kussmann,  A. W. Lange,  A. Behn,  J. Deng,  X. Feng,  D. Ghosh,  
+ M. Goldey,  P. R. Horn,  L. D. Jacobson,  I. Kaliman,  F. Rob,  
+ R. Z. Khaliullin,  T. Kus,  A. Landau,  J. Liu,  E. I. Proynov,  Y. M. Rhee,  
+ R. M. Richard,  M. A. Rohrdanz,  R. P. Steele,  E. J. Sundstrom,  
+ H. L. Woodcock III,  P. M. Zimmerman,  D. Zuev,  B. Albrecht,  E. Alguire,  
+ B. Austin,  S. A. Baeppler,  G. J. O. Beran,  Y. A. Bernard,  
+ E. J. Berquist,  K. Brandhorst,  K. B. Bravaya,  S. T. Brown,  D. Casanova,  
+ C.-M. Chang,  Y. Chen,  S. H. Chien,  K. D. Closser,  M. P. Coons,  
+ D. L. Crittenden,  S. Dasgupta,  M. Diedenhofen,  R. A. DiStasio Jr.,  
+ H. Do,  A. D. Dutoi,  R. G. Edgar,  P.-T. Fang,  S. Fatehi,  Q. Feng,  
+ L. Fusti-Molnar,  A. Ghysels,  A. Golubeva-Zadorozhnaya,  J. Gomes,  
+ A. Gunina,  M. W. D. Hanson-Heine,  P. H. P. Harbach,  A. W. Hauser,  
+ J. E. Herr,  E. G. Hohenstein,  Z. C. Holden,  K. Hui,  T.-C. Jagau,  H. Ji,  
+ B. Kaduk,  K. Khistyaev,  Jaehoon Kim,  Jihan Kim,  R. A. King,  
+ P. Klunzinger,  K. Koh,  D. Kosenkov,  T. Kowalczyk,  C. M. Krauter,  
+ A. Kunitsa,  K. U. Lao,  A. Laurent,  K. V. Lawler,  J. Lee,  D. Lefrancois,  
+ S. Lehtola,  S. V. Levchenko,  C. Y. Lin,  Y.-S. Lin,  F. Liu,  E. Livshits,  
+ R. C. Lochan,  A. Luenser,  P. Manohar,  S. F. Manzer,  S.-P. Mao,  Y. Mao,  
+ N. Mardirossian,  A. V. Marenich,  L. A. Martinez-Martinez,  S. A. Maurer,  
+ N. J. Mayhall,  J.-M. Mewes,  A. F. Morrison,  K. Nanda,  T. S. Nguyen-Beck,  
+ C. M. Oana,  R. Olivares-Amaya,  D. P. O'Neill,  J. A. Parkhill,  
+ T. M. Perrine,  R. Peverati,  P. A. Pieniazek,  F. Plasser,  A. Prociuk,  
+ D. R. Rehn,  E. Rosta,  N. J. Russ,  N. Sergueev,  S. M. Sharada,  
+ S. Sharma,  D. W. Small,  A. Sodt,  T. Stauch,  T. Stein,  D. Stuck,  
+ Y.-C. Su,  A. J. W. Thom,  T. Tsuchimochi,  L. Vogt,  O. Vydrov,  T. Wang,  
+ M. A. Watson,  J. Wenzel,  A. White,  C. F. Williams,  V. Vanovschi,  
+ K. Yao,  S. Yeganeh,  S. R. Yost,  Z.-Q. You,  I. Y. Zhang,  X. Zhang,  
+ Y. Zhao,  B. R. Brooks,  G. K. L. Chan,  D. M. Chipman,  C. J. Cramer,  
+ W. A. Goddard III,  M. S. Gordon,  W. J. Hehre,  A. Klamt,  
+ H. F. Schaefer III,  M. W. Schmidt,  C. D. Sherrill,  D. G. Truhlar,  
+ A. Warshel,  X. Xu,  A. Aspuru-Guzik,  R. Baer,  A. T. Bell,  N. A. Besley,  
+ J.-D. Chai,  A. Dreuw,  B. D. Dunietz,  T. R. Furlani,  S. R. Gwaltney,  
+ C.-P. Hsu,  Y. Jung,  J. Kong,  D. S. Lambrecht,  W. Liang,  C. Ochsenfeld,  
+ V. A. Rassolov,  L. V. Slipchenko,  J. E. Subotnik,  T. Van Voorhis,  
+ J. M. Herbert,  A. I. Krylov,  P. M. W. Gill,  M. Head-Gordon
+
+ Contributors to earlier versions of Q-Chem not listed above: 
+ R. D. Adamson,  J. Baker,  E. F. C. Byrd,  A. K. Chakraborty,  C.-L. Cheng,  
+ H. Dachsel,  R. J. Doerksen,  G. Hawkins,  A. Heyden,  S. Hirata,  
+ G. Kedziora,  F. J. Keil,  C. Kelley,  P. P. Korambath,  W. Kurlancheek,  
+ A. M. Lee,  M. S. Lee,  D. Liotard,  I. Lotan,  P. E. Maslen,  N. Nair,  
+ D. Neuhauser,  R. Olson,  B. Peters,  J. Ritchie,  N. E. Schultz,  
+ N. Shenvi,  A. C. Simmonett,  K. S. Thanthiriwatte,  Q. Wu,  W. Zhang
+
+ Please cite Q-Chem as follows:
+ Y. Shao et al., Mol. Phys. 113, 184-215 (2015)
+ DOI: 10.1080/00268976.2014.952696
+
+ Q-Chem 4.4.2 for Intel X86 EM64T Linux
+
+ Parts of Q-Chem use Armadillo 5.200.1 (Boston Tea Smuggler).
+ http://arma.sourceforge.net/
+
+ Q-Chem begins on Wed Apr  5 23:58:40 2017  
+
+copper
+Host: 0
+
+     Scratch files written to /tmp/qchem/qchem13733//
+
+Checking the input file for inconsistencies... 	...done.
+
+--------------------------------------------------------------
+User input:
+--------------------------------------------------------------
+$rem
+method hf
+basis sto-3g
+scf_convergence 10
+thresh 14
+symmetry false
+sym_ignore true
+cis_singlets true
+cis_triplets false
+cis_n_roots 100
+cis_dynamic_mem true
+rpa true
+$end
+
+$molecule
+1 2
+H 0.000 0.000 0.917
+F 0.000 0.000 0.000
+$end
+--------------------------------------------------------------
+ ----------------------------------------------------------------
+             Standard Nuclear Orientation (Angstroms)
+    I     Atom           X                Y                Z
+ ----------------------------------------------------------------
+    1      H       0.0000000000     0.0000000000     0.9170000000
+    2      F       0.0000000000     0.0000000000     0.0000000000
+ ----------------------------------------------------------------
+ Nuclear Repulsion Energy =     5.1936694626 hartrees
+ There are        5 alpha and        4 beta electrons
+ Requested basis set is STO-3G
+ There are 3 shells and 6 basis functions
+
+ Total QAlloc Memory Limit   2000 MB
+ Mega-Array Size        61 MB
+ MEM_STATIC part        62 MB
+
+                       Distance Matrix (Angstroms)
+             H (  1)
+   F (  2)  0.917000
+
+ A cutoff of  1.0D-14 yielded      6 shell pairs
+ There are        27 function pairs
+
+ -------------------------------------------------------
+ OpenMP Integral Computing Module                       
+ Release: version 1.0, May 2013, Q-Chem Inc. Pittsburgh 
+ -------------------------------------------------------
+ Integral Job Info:
+ Integral job number is                      11
+ Integral operator is                         1
+ short-range coefficients                     0
+ long-range coefficients              100000000
+ Omega coefficients                           0
+ if combine SR and LR in K                    0
+ Integral screening is                        0
+ Integral computing path is                   2
+ max size of driver memory is            800000
+ size of driver memory is                 45569
+ size of scratch memory is               945100
+ max col of scratch BK array                289
+ max len of scratch array in speh3           22
+ max len of scratch index in speh4            8
+ max int batch size is                      520
+ min int batch size is                       52
+ fixed nKL is                                52
+ max L of basis functions is                  1
+ order of int derivative is                   0
+ number of shells is                          3
+ number of basis is                           6
+ number of cartesian basis is                 6
+ number of contracted shell pairs             6
+ number of primitive shell pairs             54
+ maxK2 (contraction) of shell pair            9
+ max number of K2 of shell pair               1
+ max number of CS2 of shell pair              3
+ max number of PS2 of shell pair             27
+ mem total for path MDJ                    6006
+ -------------------------------------------------------
+ Smallest overlap matrix eigenvalue = 4.13E-01
+
+ Scale SEOQF with 1.000000e+00/1.000000e+00/1.000000e+00
+
+ Standard Electronic Orientation quadrupole field applied
+ Nucleus-field energy     =    -0.0000000009 hartrees
+ Guess from superposition of atomic densities
+ Warning:  Energy on first SCF cycle will be non-variational
+ An unrestricted Hartree-Fock SCF calculation will be
+ performed using Pulay DIIS extrapolation
+ SCF converges when DIIS error is below 1.0E-10
+ ---------------------------------------
+  Cycle       Energy         DIIS Error
+ ---------------------------------------
+    1     -98.3592845178      3.86E-01
+    2     -98.1681539326      4.09E-02
+    3     -98.1768437544      5.66E-03
+    4     -98.1771375501      3.51E-04
+    5     -98.1771710802      2.35E-05
+    6     -98.1771795460      4.52E-06
+    7     -98.1771830369      5.33E-07
+    8     -98.1771830413      6.64E-08
+    9     -98.1771830424      1.96E-08
+   10     -98.1771830417      5.46E-08
+   11     -98.1771830425      2.38E-09
+   12     -98.1771830425      1.24E-09
+   13     -98.1771830425      8.51E-10
+   14     -98.1771830425      4.37E-10
+   15     -98.1771830425      2.23E-10
+   16     -98.1771830425      2.30E-11 Convergence criterion met
+ ---------------------------------------
+ <S^2> = 0.7518
+ SCF time:  CPU 0.02 s  wall 0.02 s
+ SCF   energy in the final basis set = -98.1771830425
+ Total energy in the final basis set = -98.1771830425
+
+ Direct UCIS calculation will be performed
+ Defaulting to maximum number of CIS states:  13
+ CIS energy converged when residual is below 10e- 6
+ ---------------------------------------------------
+ Iter    Rts Conv    Rts Left    Ttl Dev     Max Dev
+ ---------------------------------------------------
+   1        13           0      0.000000    0.000000    Roots Converged
+ ---------------------------------------------------
+
+ ---------------------------------------------------
+               CIS Excitation Energies              
+ ---------------------------------------------------
+
+ Excited state   1: excitation energy (eV) =    0.0000
+    Total energy for state   1:    -98.177183042474
+    <S**2>     :  0.7518
+    Trans. Mom.: -0.0000 X  -0.0000 Y  -0.0000 Z
+    Strength   :     0.0000000000
+    D(  4) --> S(  1) amplitude =  1.0000 beta
+
+ Excited state   2: excitation energy (eV) =    4.5328
+    Total energy for state   2:    -98.010606318446
+    <S**2>     :  0.7510
+    Trans. Mom.: -0.1216 X  -0.0000 Y   0.0000 Z
+    Strength   :     0.0016407467
+    D(  3) --> S(  1) amplitude =  0.9998 beta
+
+ Excited state   3: excitation energy (eV) =   17.1318
+    Total energy for state   3:    -97.547601022177
+    <S**2>     :  2.4381
+    Trans. Mom.:  0.0000 X  -0.0113 Y  -0.0000 Z
+    Strength   :     0.0000540690
+    S(  1) --> V(  1) amplitude = -0.3708 alpha
+    D(  4) --> V(  1) amplitude =  0.9287 beta
+
+ Excited state   4: excitation energy (eV) =   18.7421
+    Total energy for state   4:    -97.488422364336
+    <S**2>     :  2.7368
+    Trans. Mom.:  0.0000 X   0.0000 Y   0.0936 Z
+    Strength   :     0.0040204310
+    D(  4) --> V(  1) amplitude = -0.6509 alpha
+    D(  3) --> V(  1) amplitude =  0.7506 beta
+
+ Excited state   5: excitation energy (eV) =   18.9570
+    Total energy for state   5:    -97.480525602084
+    <S**2>     :  1.0619
+    Trans. Mom.:  0.0000 X  -0.0004 Y   0.0000 Z
+    Strength   :     0.0000000664
+    S(  1) --> V(  1) amplitude =  0.9287 alpha
+    D(  4) --> V(  1) amplitude =  0.3708 beta
+
+ Excited state   6: excitation energy (eV) =   21.4667
+    Total energy for state   6:    -97.388297401409
+    <S**2>     :  0.7500
+    Trans. Mom.:  0.0929 X   0.0000 Y  -0.0000 Z
+    Strength   :     0.0045366929
+    D(  3) --> V(  1) amplitude =  0.9876 alpha
+    D(  2) --> S(  1) amplitude =  0.1566 beta
+
+ Excited state   7: excitation energy (eV) =   26.1438
+    Total energy for state   7:    -97.216415306115
+    <S**2>     :  0.7644
+    Trans. Mom.:  0.0000 X  -0.0000 Y   1.0559 Z
+    Strength   :     0.7140602308
+    D(  4) --> V(  1) amplitude =  0.7524 alpha
+    D(  3) --> V(  1) amplitude =  0.6574 beta
+
+ Excited state   8: excitation energy (eV) =   28.4087
+    Total energy for state   8:    -97.133182083972
+    <S**2>     :  0.7508
+    Trans. Mom.:  0.5496 X   0.0000 Y  -0.0000 Z
+    Strength   :     0.2102252814
+    D(  3) --> V(  1) amplitude = -0.1564 alpha
+    D(  2) --> S(  1) amplitude =  0.9876 beta
+
+ Excited state   9: excitation energy (eV) =   41.7398
+    Total energy for state   9:    -96.643274095678
+    <S**2>     :  2.3642
+    Trans. Mom.: -0.0000 X   0.0000 Y   0.1568 Z
+    Strength   :     0.0251280524
+    D(  2) --> V(  1) amplitude = -0.3255 alpha
+    D(  2) --> V(  1) amplitude =  0.9388 beta
+
+ Excited state  10: excitation energy (eV) =   47.9550
+    Total energy for state  10:    -96.414869452234
+    <S**2>     :  1.1309
+    Trans. Mom.: -0.0000 X   0.0000 Y   0.1911 Z
+    Strength   :     0.0428994524
+    D(  2) --> V(  1) amplitude =  0.9427 alpha
+    D(  2) --> V(  1) amplitude =  0.3310 beta
+
+ Excited state  11: excitation energy (eV) =  688.6873
+    Total energy for state  11:    -72.868389314962
+    <S**2>     :  0.7518
+    Trans. Mom.:  0.0565 X   0.0000 Y  -0.0000 Z
+    Strength   :     0.0538324804
+    D(  1) --> S(  1) amplitude =  1.0000 beta
+
+ Excited state  12: excitation energy (eV) =  711.6028
+    Total energy for state  12:    -72.026259603470
+    <S**2>     :  2.4607
+    Trans. Mom.: -0.0000 X   0.0000 Y  -0.0205 Z
+    Strength   :     0.0073174121
+    D(  1) --> V(  1) amplitude = -0.3855 alpha
+    D(  1) --> V(  1) amplitude =  0.9227 beta
+
+ Excited state  13: excitation energy (eV) =  713.1809
+    Total energy for state  13:    -71.968267785746
+    <S**2>     :  1.0393
+    Trans. Mom.: -0.0000 X   0.0000 Y  -0.0483 Z
+    Strength   :     0.0407756786
+    D(  1) --> V(  1) amplitude =  0.9227 alpha
+    D(  1) --> V(  1) amplitude =  0.3855 beta
+
+ ---------------------------------------------------
+
+ Direct TDHF calculation will be performed
+ ---------------------------------------------------
+ Iter    Rts Conv    Rts Left    Ttl Dev     Max Dev
+ ---------------------------------------------------
+
+ Q-Chem fatal error occurred in module /home/eric/opt/apps/qchem/qchem_trunk_svn/setman/rpa_dia.C, line 72:
+
+ Imaginary RPA root detected
+

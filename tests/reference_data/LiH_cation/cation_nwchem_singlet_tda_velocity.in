@@ -1,0 +1,33 @@
+echo
+
+geometry units angstrom noautoz nocenter
+symmetry c1
+Li  0.0000  0.0000  0.0000
+H   0.0000  0.0000  1.5949
+end
+
+charge 1
+
+basis
+  * library sto-3g
+end
+
+dft
+  mult 2
+  xc hfexch
+  direct
+  maxiter 1000
+  convergence energy 1.0e-10
+end
+
+tddft
+  nroots 100
+  singlet
+  notriplet
+  cdspectrum
+  velocity
+  tda
+  thresh 1d-08
+end
+
+task tddft energy

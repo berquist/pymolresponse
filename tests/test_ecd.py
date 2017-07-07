@@ -1,11 +1,9 @@
-from __future__ import print_function
-from __future__ import division
-
 import numpy as np
 
 import pyscf
 
-from pyresponse import utils, ecd, molecules
+from pyresponse import utils, ecd
+from . import molecules
 
 
 BC2H4_cation_HF_STO3G_RPA_singlet_nwchem = {

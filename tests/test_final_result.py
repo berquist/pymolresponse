@@ -1,31 +1,36 @@
+import os.path
+
 import numpy as np
 
-from pyresponse import utils, cphf, electric, iterators, molecules, operators
-
+from pyresponse import utils, cphf, electric, iterators, operators
+from . import molecules
 from .test_runners import run_as_many_tests_as_possible_rhf_disk, run_as_many_tests_as_possible_uhf_disk
+
+refdir = molecules.refdir
 
 
 def test_final_result_rhf_h2o_sto3g_rpa_singlet():
     hamiltonian = 'rpa'
     spin = 'singlet'
 
-    C = utils.fix_mocoeffs_shape(utils.np_load('C.npz'))
-    E = utils.fix_moenergies_shape(utils.np_load('F_MO.npz'))
-    TEI_MO = utils.np_load('TEI_MO.npz')
+    C = utils.fix_mocoeffs_shape(utils.np_load(os.path.join(refdir, 'C.npz')))
+    E = utils.fix_moenergies_shape(utils.np_load(os.path.join(refdir, 'F_MO.npz')))
+    TEI_MO = utils.np_load(os.path.join(refdir, 'TEI_MO.npz'))
     # nocc_alph, nvirt_alph, nocc_beta, nvirt_beta
     occupations = [5, 2, 5, 2]
     stub = 'h2o_sto3g_'
     dim = occupations[0] + occupations[1]
-    mat_dipole_x = utils.parse_int_file_2(stub + "mux.dat", dim)
-    mat_dipole_y = utils.parse_int_file_2(stub + "muy.dat", dim)
-    mat_dipole_z = utils.parse_int_file_2(stub + "muz.dat", dim)
+    mat_dipole_x = utils.parse_int_file_2(os.path.join(refdir, stub + "mux.dat"), dim)
+    mat_dipole_y = utils.parse_int_file_2(os.path.join(refdir, stub + "muy.dat"), dim)
+    mat_dipole_z = utils.parse_int_file_2(os.path.join(refdir, stub + "muz.dat"), dim)
 
     solver = iterators.ExactInv(C, E, occupations)
     solver.tei_mo = (TEI_MO, )
     solver.tei_mo_type = 'full'
     driver = cphf.CPHF(solver)
     ao_integrals_dipole = np.stack((mat_dipole_x, mat_dipole_y, mat_dipole_z), axis=0)
-    operator_dipole = operators.Operator(label='dipole', is_imaginary=False, is_spin_dependent=False)
+    operator_dipole = operators.Operator(label='dipole',
+                                         is_imaginary=False, is_spin_dependent=False)
     operator_dipole.ao_integrals = ao_integrals_dipole
     driver.add_operator(operator_dipole)
     frequencies = (0.0, 0.02, 0.06, 0.1)
@@ -85,23 +90,24 @@ def test_final_result_rhf_h2o_sto3g_rpa_triplet():
     hamiltonian = 'rpa'
     spin = 'triplet'
 
-    C = utils.fix_mocoeffs_shape(utils.np_load('C.npz'))
-    E = utils.fix_moenergies_shape(utils.np_load('F_MO.npz'))
-    TEI_MO = utils.np_load('TEI_MO.npz')
+    C = utils.fix_mocoeffs_shape(utils.np_load(os.path.join(refdir, 'C.npz')))
+    E = utils.fix_moenergies_shape(utils.np_load(os.path.join(refdir, 'F_MO.npz')))
+    TEI_MO = utils.np_load(os.path.join(refdir, 'TEI_MO.npz'))
     # nocc_alph, nvirt_alph, nocc_beta, nvirt_beta
     occupations = [5, 2, 5, 2]
     stub = 'h2o_sto3g_'
     dim = occupations[0] + occupations[1]
-    mat_dipole_x = utils.parse_int_file_2(stub + "mux.dat", dim)
-    mat_dipole_y = utils.parse_int_file_2(stub + "muy.dat", dim)
-    mat_dipole_z = utils.parse_int_file_2(stub + "muz.dat", dim)
+    mat_dipole_x = utils.parse_int_file_2(os.path.join(refdir, stub + "mux.dat"), dim)
+    mat_dipole_y = utils.parse_int_file_2(os.path.join(refdir, stub + "muy.dat"), dim)
+    mat_dipole_z = utils.parse_int_file_2(os.path.join(refdir, stub + "muz.dat"), dim)
 
     solver = iterators.ExactInv(C, E, occupations)
     solver.tei_mo = (TEI_MO, )
     solver.tei_mo_type = 'full'
     driver = cphf.CPHF(solver)
     ao_integrals_dipole = np.stack((mat_dipole_x, mat_dipole_y, mat_dipole_z), axis=0)
-    operator_dipole = operators.Operator(label='dipole', is_imaginary=False, is_spin_dependent=False)
+    operator_dipole = operators.Operator(label='dipole',
+                                         is_imaginary=False, is_spin_dependent=False)
     operator_dipole.ao_integrals = ao_integrals_dipole
     driver.add_operator(operator_dipole)
     frequencies = (0.0, 0.02, 0.06, 0.1)
@@ -161,23 +167,24 @@ def test_final_result_rhf_h2o_sto3g_tda_singlet():
     hamiltonian = 'tda'
     spin = 'singlet'
 
-    C = utils.fix_mocoeffs_shape(utils.np_load('C.npz'))
-    E = utils.fix_moenergies_shape(utils.np_load('F_MO.npz'))
-    TEI_MO = utils.np_load('TEI_MO.npz')
+    C = utils.fix_mocoeffs_shape(utils.np_load(os.path.join(refdir, 'C.npz')))
+    E = utils.fix_moenergies_shape(utils.np_load(os.path.join(refdir, 'F_MO.npz')))
+    TEI_MO = utils.np_load(os.path.join(refdir, 'TEI_MO.npz'))
     # nocc_alph, nvirt_alph, nocc_beta, nvirt_beta
     occupations = [5, 2, 5, 2]
     stub = 'h2o_sto3g_'
     dim = occupations[0] + occupations[1]
-    mat_dipole_x = utils.parse_int_file_2(stub + "mux.dat", dim)
-    mat_dipole_y = utils.parse_int_file_2(stub + "muy.dat", dim)
-    mat_dipole_z = utils.parse_int_file_2(stub + "muz.dat", dim)
+    mat_dipole_x = utils.parse_int_file_2(os.path.join(refdir, stub + "mux.dat"), dim)
+    mat_dipole_y = utils.parse_int_file_2(os.path.join(refdir, stub + "muy.dat"), dim)
+    mat_dipole_z = utils.parse_int_file_2(os.path.join(refdir, stub + "muz.dat"), dim)
 
     solver = iterators.ExactInv(C, E, occupations)
     solver.tei_mo = (TEI_MO, )
     solver.tei_mo_type = 'full'
     driver = cphf.CPHF(solver)
     ao_integrals_dipole = np.stack((mat_dipole_x, mat_dipole_y, mat_dipole_z), axis=0)
-    operator_dipole = operators.Operator(label='dipole', is_imaginary=False, is_spin_dependent=False)
+    operator_dipole = operators.Operator(label='dipole',
+                                         is_imaginary=False, is_spin_dependent=False)
     operator_dipole.ao_integrals = ao_integrals_dipole
     driver.add_operator(operator_dipole)
     frequencies = (0.0, 0.02, 0.06, 0.1)
@@ -237,23 +244,24 @@ def test_final_result_rhf_h2o_sto3g_tda_triplet():
     hamiltonian = 'tda'
     spin = 'triplet'
 
-    C = utils.fix_mocoeffs_shape(utils.np_load('C.npz'))
-    E = utils.fix_moenergies_shape(utils.np_load('F_MO.npz'))
-    TEI_MO = utils.np_load('TEI_MO.npz')
+    C = utils.fix_mocoeffs_shape(utils.np_load(os.path.join(refdir, 'C.npz')))
+    E = utils.fix_moenergies_shape(utils.np_load(os.path.join(refdir, 'F_MO.npz')))
+    TEI_MO = utils.np_load(os.path.join(refdir, 'TEI_MO.npz'))
     # nocc_alph, nvirt_alph, nocc_beta, nvirt_beta
     occupations = [5, 2, 5, 2]
     stub = 'h2o_sto3g_'
     dim = occupations[0] + occupations[1]
-    mat_dipole_x = utils.parse_int_file_2(stub + "mux.dat", dim)
-    mat_dipole_y = utils.parse_int_file_2(stub + "muy.dat", dim)
-    mat_dipole_z = utils.parse_int_file_2(stub + "muz.dat", dim)
+    mat_dipole_x = utils.parse_int_file_2(os.path.join(refdir, stub + "mux.dat"), dim)
+    mat_dipole_y = utils.parse_int_file_2(os.path.join(refdir, stub + "muy.dat"), dim)
+    mat_dipole_z = utils.parse_int_file_2(os.path.join(refdir, stub + "muz.dat"), dim)
 
     solver = iterators.ExactInv(C, E, occupations)
     solver.tei_mo = (TEI_MO, )
     solver.tei_mo_type = 'full'
     driver = cphf.CPHF(solver)
     ao_integrals_dipole = np.stack((mat_dipole_x, mat_dipole_y, mat_dipole_z), axis=0)
-    operator_dipole = operators.Operator(label='dipole', is_imaginary=False, is_spin_dependent=False)
+    operator_dipole = operators.Operator(label='dipole',
+                                         is_imaginary=False, is_spin_dependent=False)
     operator_dipole.ao_integrals = ao_integrals_dipole
     driver.add_operator(operator_dipole)
     frequencies = (0.0, 0.02, 0.06, 0.1)

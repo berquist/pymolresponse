@@ -1,6 +1,3 @@
-from __future__ import print_function
-from __future__ import division
-
 import numpy as np
 
 from .operators import Operator
@@ -42,7 +39,7 @@ class ECD(TransitionProperty):
             assert len(self.driver.solver.operators) == 3
             operator_dipvel = self.driver.solver.operators[2]
             assert len(operator_dipvel.transition_moments) == nstates
-        from constants import esuecd
+        from .constants import esuecd
         for stateidx in range(nstates):
             print('-' * 78)
             eigval = self.driver.solver.eigvals[stateidx].real

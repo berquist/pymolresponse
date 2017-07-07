@@ -2,8 +2,9 @@ import numpy as np
 
 import pyscf
 
-from pyresponse import iterators, cphf, operators, ao2mo, molecules, utils
+from pyresponse import iterators, cphf, operators, ao2mo, utils
 from pyresponse import explicit_equations_full as eqns
+from . import molecules
 
 
 def test_explicit_uhf_from_rhf_outside_solver():
