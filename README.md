@@ -12,7 +12,7 @@ Currently, the goal is to provide:
 
 # Requirements
 
-* Python >= 3.2
+* Python >= 3.2 because of pyscf.
 * [pyscf](https://github.com/sunqm/pyscf) and its dependencies
 
 ## Python dependencies
@@ -20,6 +20,10 @@ Currently, the goal is to provide:
 * [pytest](http://doc.pytest.org/en/latest/) (for testing)
 * [daltools](https://github.com/vahtras/daltools) (for testing)
 * [periodictable](https://github.com/pkienzle/periodictable) (for calculating the center of mass)
+
+# Testing
+
+    make test
 
 # Caveats
 
@@ -35,17 +39,20 @@ Currently, the goal is to provide:
 * Non-orthogonal orbitals. Requires switch from using MO energies to full Fock matrices.
 * ROHF reference (compare against DALTON). Requires equations for the ROHF orbital Hessian.
 * Post-HF support: MP2, CCSD, and CIS. Requires constriction of a Lagrangian.
-* Support for GIAOs. Only requires re-dimensioning??
+* Support for GIAOs. Only requires re-dimensioning as long as AO matrix elements are available??
 * At least one iterative method for each property type, for example DIIS for inversion and Davidson for diagonalization. Requires matrix-vector products.
 * Quadratic response and associated single residues (needed for phosphorescence) and double residues (excited state expectation values and transition moments of linear operators). Requires permutation of linear response solution vectors.
 
 ## Desired features that don't fix the caveats
 
-* Open-ended response: see xxx.
+* Open-ended response: see [Ringholm, Jonsson, and Ruud)(http://dx.doi.org/10.1002/jcc.23533).
 * Finite-difference for testing and higher-order response.
 * Independence from pyscf, requires molecule/basis set handling, AO integral engine, and RHF/UHF solver.
 * Interface to [PyQuante](https://github.com/berquist/pyquante) and/or [pyquante2](https://github.com/rpmuller/pyquante2).
 * Interface to [Psi4](https://github.com/psi4/psi4) (through Python, not C++).
+* Sphinx-based documentation.
+* Jupyter Notebook-based tutorials.
+* Automated builds and testing with Travis CI.
 
 # References
 

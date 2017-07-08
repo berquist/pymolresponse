@@ -15,29 +15,29 @@ import pyscf
 from pyresponse import operators, iterators, cphf, utils, ao2mo
 
 
-def calculate_disk_rhf(testcase, hamiltonian, spin, frequency, label_1, label_2):
+def calculate_disk_rhf(testcasedir, hamiltonian, spin, frequency, label_1, label_2):
 
-    occupations = utils.read_file_occupations(testcase + '/' + 'occupations')
+    occupations = utils.read_file_occupations(testcasedir + '/' + 'occupations')
     nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = occupations
     assert nocc_alph == nocc_beta
     assert nvirt_alph == nvirt_beta
     norb = nocc_alph + nvirt_alph
-    C = utils.read_file_3(testcase + '/' + 'C')
+    C = utils.read_file_3(testcasedir + '/' + 'C')
     assert C.shape[0] == 1
     assert C.shape[2] == norb
     nbasis = C.shape[1]
-    moene = utils.read_file_2(testcase + '/' + 'moene')
+    moene = utils.read_file_2(testcasedir + '/' + 'moene')
     assert moene.shape == (norb, 1)
-    moints_iajb_aaaa = utils.read_file_4(testcase + '/' + 'moints_iajb_aaaa')
-    moints_ijab_aaaa = utils.read_file_4(testcase + '/' + 'moints_ijab_aaaa')
+    moints_iajb_aaaa = utils.read_file_4(testcasedir + '/' + 'moints_iajb_aaaa')
+    moints_ijab_aaaa = utils.read_file_4(testcasedir + '/' + 'moints_ijab_aaaa')
     assert moints_iajb_aaaa.shape == (nocc_alph, nvirt_alph, nocc_alph, nvirt_alph)
     assert moints_ijab_aaaa.shape == (nocc_alph, nocc_alph, nvirt_alph, nvirt_alph)
 
     operator_1 = utils.dalton_label_to_operator(label_1)
     operator_2 = utils.dalton_label_to_operator(label_2)
 
-    operator_1_integrals_mn = utils.read_file_3(testcase + '/' + 'operator_mn_' + operator_1.label)
-    operator_2_integrals_mn = utils.read_file_3(testcase + '/' + 'operator_mn_' + operator_2.label)
+    operator_1_integrals_mn = utils.read_file_3(testcasedir + '/' + 'operator_mn_' + operator_1.label)
+    operator_2_integrals_mn = utils.read_file_3(testcasedir + '/' + 'operator_mn_' + operator_2.label)
     # The first dimension can't be checked since there may be multiple
     # components.
     assert operator_1_integrals_mn.shape[1:] == (nbasis, nbasis)
@@ -83,23 +83,23 @@ def calculate_disk_rhf(testcase, hamiltonian, spin, frequency, label_1, label_2)
     return bl
 
 
-def calculate_disk_uhf(testcase, hamiltonian, spin, frequency, label_1, label_2):
+def calculate_disk_uhf(testcasedir, hamiltonian, spin, frequency, label_1, label_2):
 
-    occupations = utils.read_file_occupations(testcase + '/' + 'occupations')
+    occupations = utils.read_file_occupations(testcasedir + '/' + 'occupations')
     nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = occupations
     norb = nocc_alph + nvirt_alph
-    C = utils.read_file_3(testcase + '/' + 'C')
+    C = utils.read_file_3(testcasedir + '/' + 'C')
     assert C.shape[0] == 2
     assert C.shape[2] == norb
     nbasis = C.shape[1]
-    moene = utils.read_file_2(testcase + '/' + 'moene')
+    moene = utils.read_file_2(testcasedir + '/' + 'moene')
     assert moene.shape == (norb, 2)
-    moints_iajb_aaaa = utils.read_file_4(testcase + '/' + 'moints_iajb_aaaa')
-    moints_iajb_aabb = utils.read_file_4(testcase + '/' + 'moints_iajb_aabb')
-    moints_iajb_bbaa = utils.read_file_4(testcase + '/' + 'moints_iajb_bbaa')
-    moints_iajb_bbbb = utils.read_file_4(testcase + '/' + 'moints_iajb_bbbb')
-    moints_ijab_aaaa = utils.read_file_4(testcase + '/' + 'moints_ijab_aaaa')
-    moints_ijab_bbbb = utils.read_file_4(testcase + '/' + 'moints_ijab_bbbb')
+    moints_iajb_aaaa = utils.read_file_4(testcasedir + '/' + 'moints_iajb_aaaa')
+    moints_iajb_aabb = utils.read_file_4(testcasedir + '/' + 'moints_iajb_aabb')
+    moints_iajb_bbaa = utils.read_file_4(testcasedir + '/' + 'moints_iajb_bbaa')
+    moints_iajb_bbbb = utils.read_file_4(testcasedir + '/' + 'moints_iajb_bbbb')
+    moints_ijab_aaaa = utils.read_file_4(testcasedir + '/' + 'moints_ijab_aaaa')
+    moints_ijab_bbbb = utils.read_file_4(testcasedir + '/' + 'moints_ijab_bbbb')
     assert moints_iajb_aaaa.shape == (nocc_alph, nvirt_alph, nocc_alph, nvirt_alph)
     assert moints_iajb_aabb.shape == (nocc_alph, nvirt_alph, nocc_beta, nvirt_beta)
     assert moints_iajb_bbaa.shape == (nocc_beta, nvirt_beta, nocc_alph, nvirt_alph)
@@ -110,8 +110,8 @@ def calculate_disk_uhf(testcase, hamiltonian, spin, frequency, label_1, label_2)
     operator_1 = utils.dalton_label_to_operator(label_1)
     operator_2 = utils.dalton_label_to_operator(label_2)
 
-    operator_1_integrals_mn = utils.read_file_3(testcase + '/' + 'operator_mn_' + operator_1.label)
-    operator_2_integrals_mn = utils.read_file_3(testcase + '/' + 'operator_mn_' + operator_2.label)
+    operator_1_integrals_mn = utils.read_file_3(testcasedir + '/' + 'operator_mn_' + operator_1.label)
+    operator_2_integrals_mn = utils.read_file_3(testcasedir + '/' + 'operator_mn_' + operator_2.label)
     # The first dimension can't be checked since there may be multiple
     # components.
     assert operator_1_integrals_mn.shape[1:] == (nbasis, nbasis)
