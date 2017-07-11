@@ -8,7 +8,7 @@ addons:
     packages:
       - cmake
       - gfortran
-      - liblapack-dev
+      - libopenblas-dev
       - libhdf5-serial-dev
 
 # before_install:
@@ -31,6 +31,7 @@ install:
   - source activate p4env
   # - while read requirement; do conda install -q $requirement; done < requirements.txt
   - pip install -r requirements.txt
+  - conda install -c conda-forge pytest-cov
   - conda install -c berquist pyscf
   - conda list
   - mkdir "$HOME/tmp"
@@ -43,7 +44,4 @@ before_script:
 script:
   - make test
 
-after_script:
-  # right now, only to make sure Psi4 install worked
-  - psi4 --test
-
+# after_script:
