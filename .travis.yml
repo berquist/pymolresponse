@@ -14,7 +14,7 @@ python:
   - "3.6"
 
 before_install:
-  - "bash bin/install-pyscf.sh"
+  - "bash .github/install_pyscf.sh"
 
 install:
   - "pip install -r requirements.txt"
