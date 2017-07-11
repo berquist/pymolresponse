@@ -29,9 +29,10 @@ install:
   - conda info -a
   - conda create -q -n p4env python=$TRAVIS_PYTHON_VERSION numpy scipy h5py psi4 psi4-rt -c psi4/label/dev -c psi4
   - source activate p4env
+  - while read requirement; do conda install -q $requirement; done < requirements.txt
   - conda list
   - mkdir "$HOME/tmp"
-  - export PSI_SCRATCH="HOME/tmp"
+  - export PSI_SCRATCH="$HOME/tmp"
 
 before_script:
   - "export PYTHONPATH=$HOME/pyscf:$PYTHONPATH"
