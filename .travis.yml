@@ -13,7 +13,13 @@ addons:
 
 # before_install:
 
+cache:
+  pip: true
+  # directories:
+  #   - "$HOME/pyscf"
+
 install:
+  - bash .github/install_pyscf.sh
   - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
   - bash miniconda.sh -b -p $HOME/miniconda
   - export PATH="$HOME/miniconda/bin:$PATH"
@@ -26,7 +32,6 @@ install:
   - conda list
   - mkdir "$HOME/tmp"
   - export PSI_SCRATCH="HOME/tmp"
-  - bash .github/install_pyscf.sh
 
 before_script:
   - "export PYTHONPATH=$HOME/pyscf:$PYTHONPATH"
@@ -39,7 +44,3 @@ after_script:
   # right now, only to make sure Psi4 install worked
   - psi4 --test
 
-cache:
-  pip: true
-  directories:
-    - "$HOME/pyscf"
