@@ -3,6 +3,7 @@
 Molecular frequency-dependent response properties for arbitrary operators.
 
 [![build status](http://img.shields.io/travis/cclib/cclib/master.svg?style=flat)](https://travis-ci.org/berquist/pyresponse)
+[![codecov](https://codecov.io/gh/berquist/pyresponse/branch/master/graph/badge.svg)](https://codecov.io/gh/berquist/pyresponse)
 [![license](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg?style=flat)](https://github.com/berquist/pyresponse/blob/master/LICENSE)
 
 Currently, the goal is to provide:

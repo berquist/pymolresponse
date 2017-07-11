@@ -1,4 +1,7 @@
 sudo: false
+language: python
+python:
+  - "3.6"
 
 addons:
   apt:
@@ -8,25 +11,33 @@ addons:
       - "liblapack-dev"
       - "libhdf5-serial-dev"
 
-language: python
-
-python:
-  - "3.6"
-
-before_install:
-  - "bash .github/install_pyscf.sh"
+# before_install:
 
 install:
-  - "pip install -r requirements.txt"
+  - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
+  - bash miniconda.sh -b -p $HOME/miniconda
+  - export PATH="$HOME/miniconda/bin:$PATH"
+  - hash -r
+  - conda config --set always_yes yes --set changeps1 no
+  - conda update -q conda
+  - conda info -a
+  - conda create -q -n p4env python=$PYTHON_VER scipy h5py psi4 psi4-rt -c psi4/label/dev -c psi4
+  - source activate p4env
+  - conda list
+  - mkdir "$HOME/tmp"
+  - export PSI_SCRATCH="HOME/tmp"
+  - bash .github/install_pyscf.sh
 
 before_script:
   - "export PYTHONPATH=$HOME/pyscf:$PYTHONPATH"
   - "export PYTHONPATH=$(pwd):$PYTHONPATH"
 
 script:
-  - "make test"
+  - make test
 
-# after_script:
+after_script:
+  # right now, only to make sure Psi4 install worked
+  - psi4 --test
 
 cache:
   pip: true
