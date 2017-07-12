@@ -17,7 +17,9 @@ pyscf_dir="$HOME/pyscf"
 git clone $remote_repo "$HOME"/pyscf
 mkdir -p "$pyscf_dir"/lib/build
 cd "$pyscf_dir"/lib/build || exit
-cmake ..
+cmake \
+    -DENABLE_XCFUN=0 \
+    ..
 make
 cd ../.. || exit
 python setup.py install
