@@ -19,10 +19,10 @@ Currently, the goal is to provide:
 
 ## Python dependencies
 
+* [periodictable](https://github.com/pkienzle/periodictable) (for calculating the center of mass)
 * [pytest](http://doc.pytest.org/en/latest/) (for testing)
 * [daltools](https://github.com/vahtras/daltools) (for testing?)
 * [cclib](https://github.com/cclib/cclib) (for ?)
-* [periodictable](https://github.com/pkienzle/periodictable) (for calculating the center of mass)
 
 # Testing
 

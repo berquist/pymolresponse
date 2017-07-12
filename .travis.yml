@@ -31,8 +31,8 @@ install:
   - source activate p4env
   # - while read requirement; do conda install -q $requirement; done < requirements.txt
   - pip install -r requirements.txt
-  - conda install -c conda-forge pytest-cov
-  - conda install -c berquist pyscf
+  - conda install -q -c conda-forge pytest-cov
+  - conda install -q -c berquist pyscf
   - conda list
   - mkdir "$HOME/tmp"
   - export PSI_SCRATCH="$HOME/tmp"
