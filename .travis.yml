@@ -31,6 +31,7 @@ install:
   - source activate p4env
   - pip install -r requirements.txt
   - conda install -q -c conda-forge pytest-cov
+  - pip install codecov
   - conda list
   - mkdir "$HOME/tmp"
   - export PSI_SCRATCH="$HOME/tmp"
@@ -43,3 +44,6 @@ script:
   - make test
 
 # after_script:
+
+after_success:
+  - codecov
