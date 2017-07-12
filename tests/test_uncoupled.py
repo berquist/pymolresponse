@@ -3,7 +3,7 @@ import numpy as np
 import pyscf
 
 from pyresponse import utils, cphf, iterators, operators, ao2mo
-from . import molecules
+from . import molecules_pyscf as molecules
 
 
 def mol_atom(symbol='He', charge=0, spin=0, basis='sto-3g', verbose=0):
@@ -126,7 +126,7 @@ uhf_uncoupled = {
 
 
 def test_uncoupled_rhf():
-    mol = molecules.molecule_trithiolane_HF_STO3G(0)
+    mol = molecules.molecule_trithiolane_sto3g()
     mol.build()
 
     mf = pyscf.scf.RHF(mol)
@@ -177,7 +177,7 @@ def test_uncoupled_rhf():
 
 
 def test_uncoupled_uhf():
-    mol = molecules.molecule_trithiolane_HF_STO3G(0)
+    mol = molecules.molecule_trithiolane_sto3g()
     mol.charge = 1
     mol.spin = 1
     mol.build()

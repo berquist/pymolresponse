@@ -3,7 +3,7 @@ import numpy as np
 import pyscf
 
 from pyresponse import utils, ecd
-from . import molecules
+from . import molecules_pyscf as molecules
 
 
 BC2H4_cation_HF_STO3G_RPA_singlet_nwchem = {
@@ -105,7 +105,7 @@ def test_ECD_RPA_singlet_BC2H4_cation_HF_STO3G():
     ref = BC2H4_cation_HF_STO3G_RPA_singlet_nwchem
     nroots = ref['nroots']
 
-    mol = molecules.molecule_BC2H4_cation_HF_STO3G(0)
+    mol = molecules.molecule_bc2h4_cation_sto3g()
     mol.build()
 
     mf = pyscf.scf.RHF(mol)
@@ -179,7 +179,7 @@ def test_ECD_RPA_singlet_BC2H4_cation_HF_STO3G():
 
 # TODO once UHF is done
 # def test_ECD_RPA_singlet_BC2H4_neutral_radical_HF_STO3G():
-#     mol = molecules.molecule_BC2H4_neutral_radical_HF_STO3G()
+#     mol = molecules.molecule_bc2h4_neutral_radical_sto3g()
 #     mol.build()
 
 #     mf = pyscf.scf.UHF(mol)

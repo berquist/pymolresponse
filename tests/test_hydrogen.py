@@ -1,12 +1,12 @@
 import pyscf
 
 from pyresponse import utils, electric
-from . import molecules
+from . import molecules_pyscf as molecules
 
 
 # def test_hydrogen_atom_electric():
 
-#     mol = molecules.hydrogen_atom_STO3G(5)
+#     mol = molecules.hydrogen_atom_sto3g(5)
 #     mol.build()
 
 #     mf = pyscf.scf.uhf.UHF(mol)

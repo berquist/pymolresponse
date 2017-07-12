@@ -7,7 +7,7 @@ __filedir__ = os.path.realpath(os.path.dirname(__file__))
 refdir = os.path.join(__filedir__, 'reference_data')
 
 
-def molecule_water_HF_STO3G(verbose=0):
+def molecule_water_sto3g(verbose=0):
 
     mol = pyscf.gto.Mole()
     mol.verbose = verbose
@@ -24,7 +24,7 @@ def molecule_water_HF_STO3G(verbose=0):
     return mol
 
 
-def molecule_glycine_HF_STO3G(verbose=0):
+def molecule_glycine_sto3g(verbose=0):
 
     mol = pyscf.gto.Mole()
     mol.verbose = verbose
@@ -41,7 +41,7 @@ def molecule_glycine_HF_STO3G(verbose=0):
     return mol
 
 
-def molecule_trithiolane_HF_STO3G(verbose=0):
+def molecule_trithiolane_sto3g(verbose=0):
 
     mol = pyscf.gto.Mole()
     mol.verbose = verbose
@@ -58,7 +58,7 @@ def molecule_trithiolane_HF_STO3G(verbose=0):
     return mol
 
 
-def hydrogen_atom_STO3G(verbose=0):
+def hydrogen_atom_sto3g(verbose=0):
 
     mol = pyscf.gto.Mole()
     mol.verbose = verbose
@@ -74,7 +74,7 @@ def hydrogen_atom_STO3G(verbose=0):
     return mol
 
 
-def molecule_BC2H4_cation_HF_STO3G(verbose=0):
+def molecule_bc2h4_cation_sto3g(verbose=0):
 
     mol = pyscf.gto.Mole()
     mol.verbose = verbose
@@ -91,16 +91,16 @@ def molecule_BC2H4_cation_HF_STO3G(verbose=0):
     return mol
 
 
-def molecule_BC2H4_neutral_radical_HF_STO3G(verbose=0):
+def molecule_bc2h4_neutral_radical_sto3g(verbose=0):
 
-    mol = molecule_BC2H4_cation_HF_STO3G(verbose)
+    mol = molecule_bc2h4_cation_sto3g(verbose)
     mol.charge = 0
     mol.spin = 1
 
     return mol
 
 
-def molecule_LiH_cation_HF_STO3G(verbose=0):
+def molecule_lih_cation_sto3g(verbose=0):
 
     mol = pyscf.gto.Mole()
     mol.verbose = verbose
@@ -117,7 +117,7 @@ def molecule_LiH_cation_HF_STO3G(verbose=0):
     return mol
 
 
-def molecule_0w4a_dication_HF_321G(verbose=0):
+def molecule_0w4a_dication_321g(verbose=0):
 
     mol = pyscf.gto.Mole()
     mol.verbose = verbose
@@ -134,7 +134,7 @@ def molecule_0w4a_dication_HF_321G(verbose=0):
     return mol
 
 
-def molecule_BH_cation_HF_def2_SVP(verbose=0):
+def molecule_bh_cation_def2_svp(verbose=0):
 
     mol = pyscf.gto.Mole()
     mol.verbose = verbose

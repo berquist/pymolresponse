@@ -4,12 +4,12 @@ import pyscf
 
 from pyresponse import iterators, cphf, operators, ao2mo, utils
 from pyresponse import explicit_equations_full as eqns
-from . import molecules
+from . import molecules_pyscf as molecules
 
 
 def test_explicit_uhf_from_rhf_outside_solver():
 
-    mol = molecules.molecule_water_HF_STO3G()
+    mol = molecules.molecule_water_sto3g()
     mol.build()
 
     mf = pyscf.scf.RHF(mol)
@@ -123,7 +123,7 @@ ref_water_cation_UHF_HF_STO3G = np.array([[6.1406370,   0.0000000,   0.0000000],
 
 def test_explicit_uhf_outside_solver():
 
-    mol = molecules.molecule_water_HF_STO3G()
+    mol = molecules.molecule_water_sto3g()
     mol.charge = 1
     mol.spin = 1
     mol.build()
@@ -222,7 +222,7 @@ def test_explicit_uhf_outside_solver():
 
 def test_explicit_uhf():
 
-    mol = molecules.molecule_water_HF_STO3G()
+    mol = molecules.molecule_water_sto3g()
     mol.charge = 1
     mol.spin = 1
     mol.build()

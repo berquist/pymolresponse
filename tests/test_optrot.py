@@ -3,7 +3,7 @@ import numpy as np
 import pyscf
 
 from pyresponse import utils, optrot
-from . import molecules
+from . import molecules_pyscf as molecules
 
 
 BC2H4_cation_HF_STO3G_RPA_singlet_nwchem = {
@@ -113,7 +113,7 @@ def test_ORD_RPA_singlet_BC2H4_cation_HF_STO3G():
 
     ref = BC2H4_cation_HF_STO3G_RPA_singlet_nwchem
 
-    pyscfmol = molecules.molecule_BC2H4_cation_HF_STO3G()
+    pyscfmol = molecules.molecule_bc2h4_cation_sto3g()
     pyscfmol.build()
 
     mf = pyscf.scf.RHF(pyscfmol)
@@ -174,7 +174,7 @@ def test_ORD_RPA_singlet_BC2H4_HF_STO3G():
 
     ref = BC2H4_HF_STO3G_RPA_singlet_nwchem
 
-    pyscfmol = molecules.molecule_BC2H4_neutral_radical_HF_STO3G()
+    pyscfmol = molecules.molecule_bc2h4_neutral_radical_sto3g()
     pyscfmol.build()
 
     mf = pyscf.scf.UHF(pyscfmol)
@@ -226,7 +226,7 @@ def test_ORD_RPA_singlet_trithiolane_HF_STO3G():
 
     ref = trithiolane_HF_STO3G_RPA_singlet
 
-    pyscfmol = molecules.molecule_trithiolane_HF_STO3G(0)
+    pyscfmol = molecules.molecule_trithiolane_sto3g()
     pyscfmol.build()
 
     mf = pyscf.scf.RHF(pyscfmol)

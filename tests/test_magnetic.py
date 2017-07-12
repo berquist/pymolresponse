@@ -4,7 +4,7 @@ import scipy.constants as spc
 import pyscf
 
 from pyresponse import utils, magnetic
-from . import molecules
+from . import molecules_pyscf as molecules
 
 
 # These were generated using DALTON.
@@ -18,7 +18,7 @@ ref_magnetizability_rohf = np.array([[10.730460126094, -0.031625404934, -2.41206
 
 
 def test_magnetizability_rhf():
-    mol = molecules.molecule_glycine_HF_STO3G()
+    mol = molecules.molecule_glycine_sto3g()
     mol.build()
 
     mf = pyscf.scf.RHF(mol)
@@ -49,7 +49,7 @@ def test_magnetizability_rhf():
 
 
 def test_magnetizability_uhf():
-    mol = molecules.molecule_glycine_HF_STO3G()
+    mol = molecules.molecule_glycine_sto3g()
     mol.charge = 1
     mol.spin = 1
     mol.build()
@@ -88,7 +88,7 @@ ref_electronicgtensor_large = np.array([[0.30798458, -0.07215188, 0.07146523],
 
 def test_electronicgtensor_tiny():
 
-    mol = molecules.molecule_LiH_cation_HF_STO3G(0)
+    mol = molecules.molecule_lih_cation_sto3g()
     mol.build()
 
     mf = pyscf.scf.uhf.UHF(mol)
@@ -114,7 +114,7 @@ def test_electronicgtensor_tiny():
 
 def test_electronicgtensor_small():
 
-    mol = molecules.molecule_BC2H4_neutral_radical_HF_STO3G(0)
+    mol = molecules.molecule_bc2h4_neutral_radical_sto3g()
     mol.build()
 
     mf = pyscf.scf.uhf.UHF(mol)
@@ -140,7 +140,7 @@ def test_electronicgtensor_small():
 
 # def test_electronicgtensor_large():
 
-#     mol = molecules.molecule_0w4a_dication_HF_321G(0)
+#     mol = molecules.molecule_0w4a_dication_321g()
 #     mol.build()
 
 #     mf = pyscf.scf.uhf.UHF(mol)

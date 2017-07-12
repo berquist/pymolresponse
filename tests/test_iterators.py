@@ -4,12 +4,12 @@ import scipy as sp
 import pyscf
 
 from pyresponse import iterators, utils, magnetic
-from . import molecules
+from . import molecules_pyscf as molecules
 
 
 def test_iterators():
 
-    mol = molecules.molecule_glycine_HF_STO3G()
+    mol = molecules.molecule_glycine_sto3g()
     mol.charge = 1
     mol.spin = 1
     mol.build()

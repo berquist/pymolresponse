@@ -3,7 +3,7 @@ import os.path
 import numpy as np
 
 from pyresponse import utils, cphf, electric, iterators, operators
-from . import molecules
+from . import molecules_pyscf as molecules
 from .test_runners import run_as_many_tests_as_possible_rhf_disk, run_as_many_tests_as_possible_uhf_disk
 
 refdir = molecules.refdir
@@ -67,7 +67,9 @@ def test_final_result_rhf_h2o_sto3g_rpa_singlet():
     np.testing.assert_allclose(driver.results[2], result__0_06, rtol=rtol, atol=atol)
     np.testing.assert_allclose(driver.results[3], result__0_10, rtol=rtol, atol=atol)
 
-    mol = molecules.molecule_water_HF_STO3G()
+    # Reminder: there's no call to do SCF here because we already have
+    # the MO coefficients.
+    mol = molecules.molecule_water_sto3g()
     mol.build()
     polarizability = electric.Polarizability(mol, C, E, occupations, frequencies)
     polarizability.form_operators()
@@ -144,7 +146,7 @@ def test_final_result_rhf_h2o_sto3g_rpa_triplet():
     np.testing.assert_allclose(driver.results[2], result__0_06, rtol=rtol, atol=atol)
     np.testing.assert_allclose(driver.results[3], result__0_10, rtol=rtol, atol=atol)
 
-    mol = molecules.molecule_water_HF_STO3G()
+    mol = molecules.molecule_water_sto3g()
     mol.build()
     polarizability = electric.Polarizability(mol, C, E, occupations, frequencies)
     polarizability.form_operators()
@@ -221,7 +223,7 @@ def test_final_result_rhf_h2o_sto3g_tda_singlet():
     np.testing.assert_allclose(driver.results[2], result__0_06, rtol=rtol, atol=atol)
     np.testing.assert_allclose(driver.results[3], result__0_10, rtol=rtol, atol=atol)
 
-    mol = molecules.molecule_water_HF_STO3G()
+    mol = molecules.molecule_water_sto3g()
     mol.build()
     polarizability = electric.Polarizability(mol, C, E, occupations, frequencies)
     polarizability.form_operators()
@@ -298,7 +300,7 @@ def test_final_result_rhf_h2o_sto3g_tda_triplet():
     np.testing.assert_allclose(driver.results[2], result__0_06, rtol=rtol, atol=atol)
     np.testing.assert_allclose(driver.results[3], result__0_10, rtol=rtol, atol=atol)
 
-    mol = molecules.molecule_water_HF_STO3G()
+    mol = molecules.molecule_water_sto3g()
     mol.build()
     polarizability = electric.Polarizability(mol, C, E, occupations, frequencies)
     polarizability.form_operators()
