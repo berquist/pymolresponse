@@ -55,6 +55,7 @@ Currently, the goal is to provide:
 * Interface to [Psi4](https://github.com/psi4/psi4) (through Python, not C++).
 * Sphinx-based documentation.
 * Jupyter Notebook-based tutorials.
+* Argument type-checking using [mypy](http://mypy-lang.org/).
 
 # References
 

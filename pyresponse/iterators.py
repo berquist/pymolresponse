@@ -1,8 +1,6 @@
 import numpy as np
 import scipy as sp
 
-from . import ao2mo
-
 from .explicit_equations_full import \
     (form_rpa_a_matrix_mo_singlet_full,
      form_rpa_a_matrix_mo_singlet_ss_full,
@@ -60,18 +58,20 @@ class Solver(object):
         assert tei_mo_type in ('partial', 'full')
         nden = self.mocoeffs.shape[0]
         assert nden in (1, 2)
+        from .ao2mo import AO2MOpyscf
+        ao2mo = AO2MOpyscf(self.mocoeffs, pyscfmol.verbose, pyscfmol)
         if tei_mo_type == 'partial' and nden == 2:
-            tei_mo_func = ao2mo.perform_tei_ao2mo_uhf_partial
+            ao2mo.perform_uhf_partial()
         elif tei_mo_type == 'partial' and nden == 1:
-            tei_mo_func = ao2mo.perform_tei_ao2mo_rhf_partial
+            ao2mo.perform_rhf_partial()
         elif tei_mo_type == 'full' and nden == 2:
-            tei_mo_func = ao2mo.perform_tei_ao2mo_uhf_full
+            ao2mo.perform_uhf_full()
         elif tei_mo_type == 'full' and nden == 1:
-            tei_mo_func = ao2mo.perform_tei_ao2mo_rhf_full
+            ao2mo.perform_rhf_full()
         else:
             # TODO more specific exception
             raise Exception
-        self.tei_mo = tei_mo_func(pyscfmol, self.mocoeffs, pyscfmol.verbose)
+        self.tei_mo = ao2mo.tei_mo
         self.tei_mo_type = tei_mo_type
 
     def form_ranges_from_occupations(self):

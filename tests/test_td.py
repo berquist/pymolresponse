@@ -1,6 +1,7 @@
 import pyscf
 
-from pyresponse import ao2mo, utils, iterators, td
+from pyresponse import utils, iterators, td
+from pyresponse.ao2mo import AO2MOpyscf
 
 
 def test_HF_both_singlet_HF_STO3G():
@@ -24,7 +25,9 @@ def test_HF_both_singlet_HF_STO3G():
     occupations = utils.occupations_from_pyscf_mol(mol, C)
     solver_tda = iterators.ExactDiagonalizationSolverTDA(C, E, occupations)
     solver_tdhf = iterators.ExactDiagonalizationSolver(C, E, occupations)
-    tei_mo = ao2mo.perform_tei_ao2mo_rhf_partial(mol, C, mol.verbose)
+    ao2mo = AO2MOpyscf(C, mol.verbose, mol)
+    ao2mo.perform_rhf_partial()
+    tei_mo = ao2mo.tei_mo
     solver_tda.tei_mo = tei_mo
     solver_tda.tei_mo_type = 'partial'
     solver_tdhf.tei_mo = tei_mo

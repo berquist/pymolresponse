@@ -2,8 +2,9 @@ import numpy as np
 
 import pyscf
 
-from pyresponse import iterators, cphf, operators, ao2mo, utils
+from pyresponse import iterators, cphf, operators, utils
 from pyresponse import explicit_equations_full as eqns
+from pyresponse.ao2mo import AO2MOpyscf
 from . import molecules_pyscf as molecules
 
 
@@ -16,7 +17,9 @@ def test_explicit_uhf_from_rhf_outside_solver():
     mf.kernel()
     mocoeffs = mf.mo_coeff
     moenergies = mf.mo_energy
-    tei_mo = ao2mo.perform_tei_ao2mo_rhf_full(mol, mocoeffs)[0]
+    ao2mo = AO2MOpyscf(mocoeffs, mol.verbose, mol)
+    ao2mo.perform_rhf_full()
+    tei_mo = ao2mo.tei_mo[0]
 
     C_a = mocoeffs
     C_b = C_a.copy()
@@ -137,8 +140,9 @@ def test_explicit_uhf_outside_solver():
     assert C_a.shape == C_b.shape
     assert E_a.shape == E_b.shape
 
-    tei_mo = ao2mo.perform_tei_ao2mo_uhf_full(mol, mf.mo_coeff, verbose=5)
-    tei_mo_aaaa, tei_mo_aabb, tei_mo_bbaa, tei_mo_bbbb = tei_mo
+    ao2mo = AO2MOpyscf(mf.mo_coeff, 5, mol)
+    ao2mo.perform_uhf_full()
+    tei_mo_aaaa, tei_mo_aabb, tei_mo_bbaa, tei_mo_bbbb = ao2mo.tei_mo
 
     occupations = utils.occupations_from_pyscf_mol(mol, mf.mo_coeff)
     nocc_a, nvirt_a, nocc_b, nvirt_b = occupations
@@ -241,7 +245,9 @@ def test_explicit_uhf():
 
     solver = iterators.ExactInv(C, E, occupations)
 
-    solver.tei_mo = ao2mo.perform_tei_ao2mo_uhf_full(mol, C)
+    ao2mo = AO2MOpyscf(C, mol.verbose, mol)
+    ao2mo.perform_uhf_full()
+    solver.tei_mo = ao2mo.tei_mo
     solver.tei_mo_type = 'full'
 
     driver = cphf.CPHF(solver)

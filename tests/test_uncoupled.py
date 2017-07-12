@@ -2,7 +2,8 @@ import numpy as np
 
 import pyscf
 
-from pyresponse import utils, cphf, iterators, operators, ao2mo
+from pyresponse import utils, cphf, iterators, operators
+from pyresponse.ao2mo import AO2MOpyscf
 from . import molecules_pyscf as molecules
 
 
@@ -138,7 +139,9 @@ def test_uncoupled_rhf():
 
     solver = iterators.ExactInv(C, E, occupations)
 
-    solver.tei_mo = ao2mo.perform_tei_ao2mo_rhf_partial(mol, C, mol.verbose)
+    ao2mo = AO2MOpyscf(C, mol.verbose, mol)
+    ao2mo.perform_rhf_partial()
+    solver.tei_mo = ao2mo.tei_mo
     solver.tei_mo_type = 'partial'
 
     driver = cphf.CPHF(solver)
@@ -191,7 +194,9 @@ def test_uncoupled_uhf():
 
     solver = iterators.ExactInv(C, E, occupations)
 
-    solver.tei_mo = ao2mo.perform_tei_ao2mo_uhf_partial(mol, C, mol.verbose)
+    ao2mo = AO2MOpyscf(C, mol.verbose, mol)
+    ao2mo.perform_uhf_partial()
+    solver.tei_mo = ao2mo.tei_mo
     solver.tei_mo_type = 'partial'
 
     driver = cphf.CPHF(solver)
