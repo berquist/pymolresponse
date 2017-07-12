@@ -11,3 +11,6 @@ nosetest:
 
 pytest-cov:
 	pytest -v --doctest-modules --cov=pyresponse tests
+
+nosetest-cov:
+	nosetests -v --with-coverage tests

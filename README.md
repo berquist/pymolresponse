@@ -26,7 +26,7 @@ Currently, the goal is to provide:
 
 # Testing
 
-    make test
+    make pytest
 
 # Caveats
 

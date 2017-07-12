@@ -30,8 +30,7 @@ install:
   - conda create -q -n p4env python=$TRAVIS_PYTHON_VERSION numpy scipy h5py psi4 psi4-rt -c psi4/label/dev -c psi4
   - source activate p4env
   - pip install -r requirements.txt
-  - conda install -q -c conda-forge pytest-cov
-  - pip install codecov
+  - conda install -q -c conda-forge pytest-cov codecov
   - conda list
   - mkdir "$HOME/tmp"
   - export PSI_SCRATCH="$HOME/tmp"
