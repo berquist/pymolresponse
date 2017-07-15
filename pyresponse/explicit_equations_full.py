@@ -4,12 +4,14 @@ from .utils import form_vec_energy_differences
 
 
 def form_rpa_a_matrix_mo_singlet_full(E_MO, TEI_MO, nocc):
-    """Form the A (CIS) matrix for RPA in the molecular orbital (MO)
-    basis. [singlet]
+    r"""Form the A (CIS) matrix for RPA in the molecular orbital (MO)
+basis. [singlet]
 
-    The equation for element {ia,jb} is <aj||ib> = <aj|ib> - <aj|bi> =
-    [ai|jb] - [ab|ji] = 2(ai|jb) - (ab|ji). It also includes the
-    virt-occ energy difference on the diagonal.
+    The equation for element :math:`\{ia,jb\}` is
+    :math:`\left<aj||ib\right> = \left<aj|ib\right> -
+    \left<aj|bi\right> = [ai|jb] - [ab|ji] = 2(ai|jb) - (ab|ji)`. It
+    also includes the virt-occ energy difference on the diagonal.
+
     """
 
     norb = E_MO.shape[0]

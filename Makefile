@@ -14,3 +14,9 @@ pytest-cov:
 
 nosetest-cov:
 	nosetests -v --with-coverage tests
+
+.PHONY: docs
+
+docs:
+	sphinx-apidoc -o docs/source pyresponse
+	cd docs && make html
