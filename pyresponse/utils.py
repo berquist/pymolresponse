@@ -56,6 +56,10 @@ def repack_matrix_to_vector(mat):
     return np.reshape(mat, -1, order='F')
 
 
+def repack_vector_to_matrix(vec, shape):
+    return vec.reshape(shape, order='F')
+
+
 def clean_dalton_label(original_label):
     cleaned_label = original_label.lower().replace(' ', '_')
     return cleaned_label
