@@ -1,7 +1,5 @@
-#!/usr/bin/env python
-
 import os.path
-from itertools import permutations
+from itertools import permutations, product
 
 import numpy as np
 
@@ -12,7 +10,7 @@ from pyresponse import utils, electric
 __filedir__ = os.path.realpath(os.path.dirname(__file__))
 refdir = os.path.join(__filedir__, 'reference_data')
 
-def molecule_water_sto3g(verbose=0):
+def molecule_water_sto3g_angstrom(verbose=0):
 
     mol = pyscf.gto.Mole()
     mol.verbose = verbose
@@ -29,7 +27,7 @@ H         -2.10234       -0.29131        0.45244
 
     return mol
 
-mol = molecule_water_sto3g(5)
+mol = molecule_water_sto3g_angstrom(5)
 mol.build()
 
 mf = pyscf.scf.RHF(mol)
@@ -143,6 +141,7 @@ for r in range(6):
         tr = tr1 + tr2 + tr3 + tr4 + tr5 + tr6
         hyperpolarizability[r, i] = 2 * (tl - tr)
 
+# pylint: disable=C0326
 ref = np.array([
     [-8.86822254,  0.90192130, -0.50796586],
     [ 1.98744058,  5.13635628, -2.95319400],
@@ -160,7 +159,6 @@ assert np.all(np.abs(ref - hyperpolarizability) < thresh)
 # Assume no symmetry and calculate the full tensor.
 
 hyperpolarizability_full = np.zeros(shape=(3, 3, 3))
-from itertools import product
 for p in product(range(3), range(3), range(3)):
     a, b, c = p
     tl, tr = 0, 0
@@ -169,4 +167,5 @@ for p in product(range(3), range(3), range(3)):
         tl += np.trace(np.dot(rspmats[d, ...], np.dot(G[e, ...], rspmats[f, ...]))[:nocc_alph, :nocc_alph])
         tr += np.trace(np.dot(rspmats[d, ...], np.dot(rspmats[e, ...], epsilon[f, ...]))[:nocc_alph, :nocc_alph])
     hyperpolarizability_full[a, b, c] = 2 * (tl - tr)
+print('hyperpolarizability')
 print(hyperpolarizability_full)
