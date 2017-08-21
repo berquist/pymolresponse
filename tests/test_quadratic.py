@@ -4,12 +4,10 @@ import os.path
 from itertools import permutations
 
 import numpy as np
-# np.set_printoptions(linewidth=200)
 
 import pyscf
 
 from pyresponse import utils, electric
-from pyresponse.ao2mo import AO2MOpyscf
 
 __filedir__ = os.path.realpath(os.path.dirname(__file__))
 refdir = os.path.join(__filedir__, 'reference_data')
@@ -103,47 +101,16 @@ for icomp in range(ncomp):
     integrals_mo[icomp, ...] = np.dot(C[0, ...].T,
                                       np.dot(integrals_ao[icomp, ...],
                                              C[0, ...]))
-# print(integrals_mo)
-
-ao2mo = AO2MOpyscf(C, pyscfmol=mol)
-ao2mo.perform_rhf_full()
-tei_mo = ao2mo.tei_mo[0]
 
 G = np.empty_like(rspmats)
 C = mf.mo_coeff
 for icomp in range(ncomp):
-    # print(icomp)
     V = integrals_mo[icomp, ...]
-    # J = np.einsum('rs,pqrs->pq', rspmats[icomp, ...], tei_mo)
-    # K = np.einsum('rs,psrq->pq', rspmats[icomp, ...], tei_mo)
-    # print(4*J - K - K.T)
-    # D^{a} &= C^{0}U^{a}nC^{0\dagger} + C^{0}nU^{a\dagger}C^{0\dagger} \\
-    # U = rspmats[icomp, ...]
-    # D = np.dot(C, np.dot(U, C.T)) + np.dot(C, np.dot(U.T, C.T))
-    # D = np.dot(C, np.dot(U, C.T))
-    # print(D)
     Dl = np.dot(C[:, nocc_alph:], np.dot(utils.repack_vector_to_matrix(rspvecs[icomp, :nov_alph, 0], (nvirt_alph, nocc_alph)), C[:, :nocc_alph].T))
-    # Dr = np.dot(C[:, nocc_alph:], np.dot(utils.repack_vector_to_matrix(rspvecs[icomp, nov_alph:, 0], (nvirt_alph, nocc_alph)), C[:, :nocc_alph].T))
-    # print('Dl')
-    # print(Dl)
-    # print('Dr')
-    # print(Dr)
-    # D = Dl + Dr
-    # print('D')
-    # print(D)
-    # D = np.dot(C, np.dot(rspmats[icomp, ...], C.T))
     J, K = mf.get_jk(mol, Dl, hermi=0)
-    # print(np.einsum('rs,psrq->pq', rspmats[icomp, ...], tei_mo))
-    # print(K)
     F_AO = -(4*J - K - K.T)
     F_MO = np.dot(C.T, np.dot(F_AO, C))
-    # print('F_AO')
-    # print(F_AO)
-    # print('F_MO')
-    # print(F_MO)
     G[icomp, ...] = V + F_MO
-
-# print(G)
 
 E_diag = np.diag(E[0, ...])
 epsilon = G.copy()
@@ -153,17 +120,16 @@ for icomp in range(ncomp):
     Ue = rspmats[icomp, ...] * E_diag[np.newaxis, ...]
     epsilon[icomp, ...] += (eoU - Ue)
 
+# Assume some symmetry and calculate only part of the tensor.
 
 hyperpolarizability = np.zeros(shape=(6, 3))
 off1 = [0, 1, 2, 0, 0, 1]
 off2 = [0, 1, 2, 1, 2, 2]
-
 for r in range(6):
     b = off1[r]
     c = off2[r]
     for i in range(3):
         a = i
-        # print(a, b, c)
         tl1 = 2 * np.trace(np.dot(rspmats[a, ...], np.dot(G[b, ...], rspmats[c, ...]))[:nocc_alph, :nocc_alph])
         tl2 = 2 * np.trace(np.dot(rspmats[a, ...], np.dot(G[c, ...], rspmats[b, ...]))[:nocc_alph, :nocc_alph])
         tl3 = 2 * np.trace(np.dot(rspmats[c, ...], np.dot(G[a, ...], rspmats[b, ...]))[:nocc_alph, :nocc_alph])
@@ -175,8 +141,7 @@ for r in range(6):
         tr6 = np.trace(np.dot(rspmats[a, ...], np.dot(rspmats[b, ...], epsilon[c, ...]))[:nocc_alph, :nocc_alph])
         tl = tl1 + tl2 + tl3
         tr = tr1 + tr2 + tr3 + tr4 + tr5 + tr6
-        component = 2*(tl - tr)
-        hyperpolarizability[r, i] = component
+        hyperpolarizability[r, i] = 2 * (tl - tr)
 
 ref = np.array([
     [-8.86822254,  0.90192130, -0.50796586],
@@ -186,8 +151,22 @@ ref = np.array([
     [-0.50796586, -1.09505123,  0.66008119],
     [-1.09505123, -2.95319400,  1.62699646]
 ])
+ref_avgs = np.array([6.22070078, -7.66527404, 4.31748398])
+ref_avg = 10.77470242
+
 thresh = 1.5e-4
 assert np.all(np.abs(ref - hyperpolarizability) < thresh)
 
-ref_avgs = np.array([6.22070078, -7.66527404, 4.31748398])
-ref_avg = 10.77470242
+# Assume no symmetry and calculate the full tensor.
+
+hyperpolarizability_full = np.zeros(shape=(3, 3, 3))
+from itertools import product
+for p in product(range(3), range(3), range(3)):
+    a, b, c = p
+    tl, tr = 0, 0
+    for q in permutations(p, 3):
+        d, e, f = q
+        tl += np.trace(np.dot(rspmats[d, ...], np.dot(G[e, ...], rspmats[f, ...]))[:nocc_alph, :nocc_alph])
+        tr += np.trace(np.dot(rspmats[d, ...], np.dot(rspmats[e, ...], epsilon[f, ...]))[:nocc_alph, :nocc_alph])
+    hyperpolarizability_full[a, b, c] = 2 * (tl - tr)
+print(hyperpolarizability_full)
