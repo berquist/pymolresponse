@@ -7,6 +7,24 @@ __filedir__ = os.path.realpath(os.path.dirname(__file__))
 refdir = os.path.join(__filedir__, 'reference_data')
 
 
+def molecule_water_sto3g_angstrom(verbose=0):
+
+    mol = pyscf.gto.Mole()
+    mol.verbose = verbose
+    mol.output = None
+
+    mol.basis = 'sto-3g'
+    mol.charge = 0
+    mol.spin = 0
+
+    mol.atom = """O         -1.81298        0.53384       -0.01233
+H         -0.82365        0.49649        0.00870
+H         -2.10234       -0.29131        0.45244
+"""
+
+    return mol
+
+
 def molecule_water_sto3g(verbose=0):
 
     mol = pyscf.gto.Mole()

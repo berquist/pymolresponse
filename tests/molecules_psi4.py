@@ -7,7 +7,9 @@ __filedir__ = os.path.realpath(os.path.dirname(__file__))
 refdir = os.path.join(__filedir__, 'reference_data')
 
 
-def molecule_water():
+# TODO molecule_water_sto3g_angstrom
+
+def molecule_water_sto3g():
 
     # TODO this isn't a proper xyz file. Why?
     with open(os.path.join(refdir, 'water.xyz')) as fh:
