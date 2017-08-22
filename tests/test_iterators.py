@@ -17,6 +17,8 @@ def test_iterators():
     mf = pyscf.scf.uhf.UHF(mol)
     mf.scf()
 
+    assert isinstance(mf.mo_coeff, tuple)
+    assert len(mf.mo_coeff) == 2
     C = utils.fix_mocoeffs_shape(mf.mo_coeff)
     E = utils.fix_moenergies_shape(mf.mo_energy)
     occupations = utils.occupations_from_pyscf_mol(mol, C)

@@ -17,10 +17,10 @@ def test_explicit_uhf_outside_solver():
 
     mf = pyscf.scf.UHF(mol)
     mf.kernel()
-    C_a = mf.mo_coeff[0, ...]
-    C_b = mf.mo_coeff[1, ...]
-    E_a = np.diag(mf.mo_energy[0, ...])
-    E_b = np.diag(mf.mo_energy[1, ...])
+    C_a = mf.mo_coeff[0]
+    C_b = mf.mo_coeff[1]
+    E_a = np.diag(mf.mo_energy[0])
+    E_b = np.diag(mf.mo_energy[1])
     assert C_a.shape == C_b.shape
     assert E_a.shape == E_b.shape
     norb = C_a.shape[1]
@@ -133,11 +133,11 @@ def test_explicit_uhf():
 
     mf = pyscf.scf.UHF(mol)
     mf.kernel()
-    C = mf.mo_coeff
+    C = np.stack(mf.mo_coeff, axis=0)
     C_a = C[0, ...]
     C_b = C[1, ...]
-    E_a = np.diag(mf.mo_energy[0, ...])
-    E_b = np.diag(mf.mo_energy[1, ...])
+    E_a = np.diag(mf.mo_energy[0])
+    E_b = np.diag(mf.mo_energy[1])
     assert C_a.shape == C_b.shape
     assert E_a.shape == E_b.shape
     E = np.stack((E_a, E_b), axis=0)
