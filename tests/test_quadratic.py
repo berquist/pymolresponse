@@ -109,8 +109,7 @@ def test_first_hyperpolarizability_static_rhf_wigner_explicit():
     for r in range(6):
         b = off1[r]
         c = off2[r]
-        for i in range(3):
-            a = i
+        for a in range(3):
             tl1 = 2 * np.trace(np.dot(rspmats[a, ...], np.dot(G[b, ...], rspmats[c, ...]))[:nocc_alph, :nocc_alph])
             tl2 = 2 * np.trace(np.dot(rspmats[a, ...], np.dot(G[c, ...], rspmats[b, ...]))[:nocc_alph, :nocc_alph])
             tl3 = 2 * np.trace(np.dot(rspmats[c, ...], np.dot(G[a, ...], rspmats[b, ...]))[:nocc_alph, :nocc_alph])
@@ -122,7 +121,7 @@ def test_first_hyperpolarizability_static_rhf_wigner_explicit():
             tr6 = np.trace(np.dot(rspmats[a, ...], np.dot(rspmats[b, ...], epsilon[c, ...]))[:nocc_alph, :nocc_alph])
             tl = tl1 + tl2 + tl3
             tr = tr1 + tr2 + tr3 + tr4 + tr5 + tr6
-            hyperpolarizability[r, i] = 2 * (tl - tr)
+            hyperpolarizability[r, a] = 2 * (tl - tr)
 
     # pylint: disable=C0326
     ref = np.array([
@@ -155,6 +154,14 @@ def test_first_hyperpolarizability_static_rhf_wigner_explicit():
         hyperpolarizability_full[a, b, c] = 2 * (tl - tr)
     print('hyperpolarizability (static), full tensor')
     print(hyperpolarizability_full)
+
+    for r in range(6):
+        b = off1[r]
+        c = off2[r]
+        for a in range(3):
+            diff = hyperpolarizability[r, a] - hyperpolarizability_full[a, b, c]
+            assert abs(diff) < 1.0e-14
+
     return
 
 
@@ -302,8 +309,7 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit():
     for r in range(6):
         b = off1[r]
         c = off2[r]
-        for i in range(3):
-            a = i
+        for a in range(3):
             tl1 = np.trace(np.dot(rspmats_2[a, ...].T, np.dot(G_1[b, ...], rspmats_1[c, ...]))[:nocc_alph, :nocc_alph])
             tl2 = np.trace(np.dot(rspmats_1[c, ...], np.dot(G_1[b, ...], rspmats_2[a, ...].T))[:nocc_alph, :nocc_alph])
             tl3 = np.trace(np.dot(rspmats_2[a, ...].T, np.dot(G_1[c, ...], rspmats_1[b, ...]))[:nocc_alph, :nocc_alph])
@@ -318,7 +324,7 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit():
             tr6 = np.trace(np.dot(rspmats_2[a, ...].T, np.dot(rspmats_1[b, ...], epsilon_1[c, ...]))[:nocc_alph, :nocc_alph])
             tl = tl1 + tl2 + tl3 + tl4 + tl5 + tl6
             tr = tr1 + tr2 + tr3 + tr4 + tr5 + tr6
-            hyperpolarizability[r, i] = -2 * (tl - tr)
+            hyperpolarizability[r, a] = -2 * (tl - tr)
 
     # pylint: disable=C0326
     ref = np.array([
@@ -359,8 +365,7 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit():
     for r in range(6):
         b = off1[r]
         c = off2[r]
-        for i in range(3):
-            a = i
+        for a in range(3):
             tl1 = np.trace(np.dot(mU[0][a, ...], np.dot(mG[1][b, ...], mU[1][c, ...]))[:nocc_alph, :nocc_alph])
             tl2 = np.trace(np.dot(mU[1][c, ...], np.dot(mG[1][b, ...], mU[0][a, ...]))[:nocc_alph, :nocc_alph])
             tl3 = np.trace(np.dot(mU[0][a, ...], np.dot(mG[1][c, ...], mU[1][b, ...]))[:nocc_alph, :nocc_alph])
@@ -375,7 +380,7 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit():
             tr6 = np.trace(np.dot(mU[0][a, ...], np.dot(mU[1][b, ...], me[1][c, ...]))[:nocc_alph, :nocc_alph])
             tl = [tl1, tl2, tl3, tl4, tl5, tl6]
             tr = [tr1, tr2, tr3, tr4, tr5, tr6]
-            hyperpolarizability[r, i] = -2 * (sum(tl) - sum(tr))
+            hyperpolarizability[r, a] = -2 * (sum(tl) - sum(tr))
 
     assert np.all(np.abs(ref - hyperpolarizability) < thresh)
 
@@ -400,6 +405,15 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit():
         hyperpolarizability_full[a, b, c] = -2 * (sum(tl) - sum(tr))
     print('hyperpolarizability: SHG, (-{}; {}, {}), full tensor'.format(f2, f1, f1))
     print(hyperpolarizability_full)
+
+    for r in range(6):
+        b = off1[r]
+        c = off2[r]
+        for a in range(3):
+            diff = hyperpolarizability[r, a] - hyperpolarizability_full[a, b, c]
+            assert abs(diff) < 1.0e-14
+
+    return
 
 if __name__ == '__main__':
     test_first_hyperpolarizability_static_rhf_wigner_explicit()
