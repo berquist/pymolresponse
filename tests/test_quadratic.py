@@ -139,6 +139,9 @@ def test_first_hyperpolarizability_static_rhf_wigner_explicit():
     thresh = 1.5e-4
     assert np.all(np.abs(ref - hyperpolarizability) < thresh)
 
+    print('hyperpolarizability (static), symmetry-unique components')
+    print(hyperpolarizability)
+
     # Assume no symmetry and calculate the full tensor.
 
     hyperpolarizability_full = np.zeros(shape=(3, 3, 3))
@@ -150,7 +153,7 @@ def test_first_hyperpolarizability_static_rhf_wigner_explicit():
             tl += np.trace(np.dot(rspmats[d, ...], np.dot(G[e, ...], rspmats[f, ...]))[:nocc_alph, :nocc_alph])
             tr += np.trace(np.dot(rspmats[d, ...], np.dot(rspmats[e, ...], epsilon[f, ...]))[:nocc_alph, :nocc_alph])
         hyperpolarizability_full[a, b, c] = 2 * (tl - tr)
-    print('hyperpolarizability (static)')
+    print('hyperpolarizability (static), full tensor')
     print(hyperpolarizability_full)
     return
 
@@ -332,13 +335,8 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit():
     thresh = 2.5e-5
     assert np.all(np.abs(ref - hyperpolarizability) < thresh)
 
-    # a, b, c = 0, 0, 0
-    # mat = np.dot(rspmats_2[a, ...].T, np.dot(G_1[b, ...], rspmats_1[c, ...]))
-    # print(mat)
-    # print(np.trace(mat[:nocc_alph, :nocc_alph]))
-    # mat = np.dot(rspmats_2[a, ...].T, np.dot(rspmats_1[b, ...], epsilon_1[c, ...]))
-    # print(mat)
-    # print(np.trace(mat[:nocc_alph, :nocc_alph]))
+    print('hyperpolarizability: SHG, (-{}; {}, {}), symmetry-unique components'.format(f2, f1, f1))
+    print(hyperpolarizability)
 
     # Transpose all frequency-doubled quantities (+2w) to get -2w.
 
@@ -347,39 +345,60 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit():
         G_2[icomp, ...] = -G_2[icomp, ...].T
         epsilon_2[icomp, ...] = -epsilon_2[icomp, ...].T
 
-    # Assume no symmetry and calculate the full tensor.
+    # Assume some symmetry and calculate only part of the tensor. This
+    # time, work with the in-place manipulated quantities (this tests
+    # their correctness).
 
     mU = (rspmats_2, rspmats_1)
     mG = (G_2, G_1)
     me = (epsilon_2, epsilon_1)
 
-    # mat = np.dot(mU[0][a, ...], np.dot(mG[1][b, ...], mU[1][c, ...]))
-    # print(mat)
-    # print(np.trace(mat[:nocc_alph, :nocc_alph]))
-    # mat = np.dot(mU[0][a, ...], np.dot(mU[1][b, ...], me[1][c, ...]))
-    # print(mat)
-    # print(np.trace(mat[:nocc_alph, :nocc_alph]))
+    hyperpolarizability = np.zeros(shape=(6, 3))
+    off1 = [0, 1, 2, 0, 0, 1]
+    off2 = [0, 1, 2, 1, 2, 2]
+    for r in range(6):
+        b = off1[r]
+        c = off2[r]
+        for i in range(3):
+            a = i
+            tl1 = np.trace(np.dot(mU[0][a, ...], np.dot(mG[1][b, ...], mU[1][c, ...]))[:nocc_alph, :nocc_alph])
+            tl2 = np.trace(np.dot(mU[1][c, ...], np.dot(mG[1][b, ...], mU[0][a, ...]))[:nocc_alph, :nocc_alph])
+            tl3 = np.trace(np.dot(mU[0][a, ...], np.dot(mG[1][c, ...], mU[1][b, ...]))[:nocc_alph, :nocc_alph])
+            tl4 = np.trace(np.dot(mU[1][b, ...], np.dot(mG[1][c, ...], mU[0][a, ...]))[:nocc_alph, :nocc_alph])
+            tl5 = np.trace(np.dot(mU[1][c, ...], np.dot(mG[0][a, ...], mU[1][b, ...]))[:nocc_alph, :nocc_alph])
+            tl6 = np.trace(np.dot(mU[1][b, ...], np.dot(mG[0][a, ...], mU[1][c, ...]))[:nocc_alph, :nocc_alph])
+            tr1 = np.trace(np.dot(mU[1][c, ...], np.dot(mU[1][b, ...], me[0][a, ...]))[:nocc_alph, :nocc_alph])
+            tr2 = np.trace(np.dot(mU[1][b, ...], np.dot(mU[1][c, ...], me[0][a, ...]))[:nocc_alph, :nocc_alph])
+            tr3 = np.trace(np.dot(mU[1][c, ...], np.dot(mU[0][a, ...], me[1][b, ...]))[:nocc_alph, :nocc_alph])
+            tr4 = np.trace(np.dot(mU[0][a, ...], np.dot(mU[1][c, ...], me[1][b, ...]))[:nocc_alph, :nocc_alph])
+            tr5 = np.trace(np.dot(mU[1][b, ...], np.dot(mU[0][a, ...], me[1][c, ...]))[:nocc_alph, :nocc_alph])
+            tr6 = np.trace(np.dot(mU[0][a, ...], np.dot(mU[1][b, ...], me[1][c, ...]))[:nocc_alph, :nocc_alph])
+            tl = [tl1, tl2, tl3, tl4, tl5, tl6]
+            tr = [tr1, tr2, tr3, tr4, tr5, tr6]
+            hyperpolarizability[r, i] = -2 * (sum(tl) - sum(tr))
+
+    assert np.all(np.abs(ref - hyperpolarizability) < thresh)
+
+    # Assume no symmetry and calculate the full tensor.
 
     hyperpolarizability_full = np.zeros(shape=(3, 3, 3))
 
-    # 1st tuple -> index a, b, c (*not* x, y, z!)
-    # 2nd tuple -> index frequency (0 -> -2w, 1 -> +w)
-    l = list(zip((0, 1, 2), (0, 1, 1)))
-    for ip, p in enumerate(list(product(l, l, l))):
-        print(ip, p)
+    # components x, y, z
+    for ip, p in enumerate(list(product(range(3), range(3), range(3)))):
         a, b, c = p
-        tl, tr = 0, 0
-        for iq, q in enumerate(list(permutations(p, 3))):
-            print(iq, q)
+        tl, tr = [], []
+        # 1st tuple -> index a, b, c (*not* x, y, z!)
+        # 2nd tuple -> index frequency (0 -> -2w, 1 -> +w)
+        for iq, q in enumerate(list(permutations(zip(p, (0, 1, 1)), 3))):
             d, e, f = q
             tlp = np.dot(mU[d[1]][d[0], ...], np.dot(mG[e[1]][e[0], ...], mU[f[1]][f[0], ...]))
             tle = np.trace(tlp[:nocc_alph, :nocc_alph])
-            tl += tle
+            tl.append(tle)
             trp = np.dot(mU[d[1]][d[0], ...], np.dot(mU[e[1]][e[0], ...], me[f[1]][f[0], ...]))
             tre = np.trace(trp[:nocc_alph, :nocc_alph])
-            tr += tre
-        hyperpolarizability_full[a[0], b[0], c[0]] = -2 * (tl - tr)
-    print('hyperpolarizability: SHG, (-{}; {}, {})'.format(f2, f1, f1))
+            tr.append(tre)
+        hyperpolarizability_full[a, b, c] = -2 * (sum(tl) - sum(tr))
+    print('hyperpolarizability: SHG, (-{}; {}, {}), full tensor'.format(f2, f1, f1))
     print(hyperpolarizability_full)
 
 if __name__ == '__main__':
