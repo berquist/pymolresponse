@@ -601,7 +601,7 @@ def test_first_hyperpolarizability_eope_rhf_wigner_explicit():
     return
 
 
-def test_first_hyperpolarizability_oke_rhf_wigner_explicit():
+def test_first_hyperpolarizability_or_rhf_wigner_explicit():
     mol = molecule_water_sto3g_angstrom()
     mol.build()
 
@@ -780,7 +780,7 @@ def test_first_hyperpolarizability_oke_rhf_wigner_explicit():
     thresh = 4.0e-5
     assert np.all(np.abs(ref - hyperpolarizability) < thresh)
 
-    print('hyperpolarizability: OKE, (0; {}, -{}), symmetry-unique components'.format(f2, f2))
+    print('hyperpolarizability: OR, (0; {}, -{}), symmetry-unique components'.format(f2, f2))
     print(hyperpolarizability)
 
     return
@@ -790,4 +790,4 @@ if __name__ == '__main__':
     test_first_hyperpolarizability_static_rhf_wigner_explicit()
     test_first_hyperpolarizability_shg_rhf_wigner_explicit()
     test_first_hyperpolarizability_eope_rhf_wigner_explicit()
-    test_first_hyperpolarizability_oke_rhf_wigner_explicit()
+    test_first_hyperpolarizability_or_rhf_wigner_explicit()
