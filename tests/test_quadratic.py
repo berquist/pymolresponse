@@ -155,12 +155,36 @@ def test_first_hyperpolarizability_static_rhf_wigner_explicit():
     print('hyperpolarizability (static), full tensor')
     print(hyperpolarizability_full)
 
+    # Check that the elements of the reduced and full tensors are
+    # equivalent.
+
     for r in range(6):
         b = off1[r]
         c = off2[r]
         for a in range(3):
             diff = hyperpolarizability[r, a] - hyperpolarizability_full[a, b, c]
             assert abs(diff) < 1.0e-14
+
+    # Compute averages and compare to reference.
+    # This is the slow way.
+    # avgs = []
+    # for i in range(3):
+    #     avg_c = 0
+    #     for j in range(3):
+    #         avg_c += hyperpolarizability_full[i, j, j] + hyperpolarizability_full[j, i, j] + hyperpolarizability_full[j, j, i]
+    #     avgs.append((-1/3) * avg_c)
+    # print(np.asarray(avgs))
+    x = hyperpolarizability_full
+    # This is the simplest non-einsum way.
+    # avgs = (-1 / 3) * np.asarray([np.trace(x[i, :, :] + x[:, i, :] + x[:, :, i]) for i in range(3)])
+    # This is the best way.
+    avgs = (-1 / 3) * (np.einsum('ijj->i', x) + np.einsum('jij->i', x) + np.einsum('jji->i', x))
+    # print(list(set([''.join(p) for p in list(permutations('ijj', 3))])))
+    assert np.allclose(ref_avgs, avgs, rtol=0, atol=1.0e-3)
+    avg = np.sum(avgs ** 2) ** (1 / 2)
+    assert abs(ref_avg - avg) < 1.0e-3
+    print(avgs)
+    print(avg)
 
     return
 
