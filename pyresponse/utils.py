@@ -458,3 +458,12 @@ def flip_triangle_sign(A, triangle='lower'):
     B = A.copy()
     B[indices] *= -1.0
     return B
+
+
+def form_first_hyperpolarizability_averages(beta):
+    assert beta.shape == (3, 3, 3)
+    avgs = (-1 / 3) * (np.einsum('ijj->i', beta) +
+                       np.einsum('jij->i', beta) +
+                       np.einsum('jji->i', beta))
+    avg = np.sum(avgs ** 2) ** (1 / 2)
+    return avgs, avg

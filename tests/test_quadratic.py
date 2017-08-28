@@ -179,9 +179,13 @@ def test_first_hyperpolarizability_static_rhf_wigner_explicit():
     # print(list(set([''.join(p) for p in list(permutations('ijj', 3))])))
     assert np.allclose(ref_avgs, avgs, rtol=0, atol=1.0e-3)
     avg = np.sum(avgs ** 2) ** (1 / 2)
-    assert abs(ref_avg - avg) < 1.0e-3
+    assert np.allclose([ref_avg], [avg], rtol=0, atol=1.0e-3)
     print(avgs)
     print(avg)
+
+    utils_avgs, utils_avg = utils.form_first_hyperpolarizability_averages(x)
+    assert np.allclose(avgs, utils_avgs, rtol=0, atol=1.0e-13)
+    assert np.allclose([avg], [utils_avg], rtol=0, atol=1.0e-13)
 
     return
 
@@ -425,12 +429,23 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit():
     print('hyperpolarizability: SHG, (-{}; {}, {}), full tensor'.format(f2, f1, f1))
     print(hyperpolarizability_full)
 
+    # Check that the elements of the reduced and full tensors are
+    # equivalent.
+
     for r in range(6):
         b = off1[r]
         c = off2[r]
         for a in range(3):
             diff = hyperpolarizability[r, a] - hyperpolarizability_full[a, b, c]
             assert abs(diff) < 1.0e-14
+
+    # Compute averages and compare to reference.
+
+    avgs, avg = utils.form_first_hyperpolarizability_averages(hyperpolarizability_full)
+    assert np.allclose(ref_avgs, avgs, rtol=0, atol=1.0e-3)
+    assert np.allclose([ref_avg], [avg],rtol=0, atol=1.0e-3)
+    print(avgs)
+    print(avg)
 
     return
 
