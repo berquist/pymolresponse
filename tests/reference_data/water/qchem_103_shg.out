@@ -1,0 +1,770 @@
+localhost.localdomain 127.0.0
+Q-Chem Developer Version! Running on 127.0.0.*
+                  Welcome to Q-Chem
+     A Quantum Leap Into The Future Of Chemistry
+
+
+ Q-Chem 5.0, Q-Chem, Inc., Pleasanton, CA (2017)
+
+ Yihan Shao,  Zhengting Gan,  E. Epifanovsky,  A. T. B. Gilbert,  M. Wormit,  
+ J. Kussmann,  A. W. Lange,  A. Behn,  Jia Deng,  Xintian Feng,  D. Ghosh,  
+ M. Goldey,  P. R. Horn,  L. D. Jacobson,  I. Kaliman,  T. Kus,  A. Landau,  
+ Jie Liu,  E. I. Proynov,  R. M. Richard,  R. P. Steele,  E. J. Sundstrom,  
+ H. L. Woodcock III,  P. M. Zimmerman,  D. Zuev,  B. Albrecht,  E. Alguire,  
+ S. A. Baeppler,  Z. Benda,  Y. A. Bernard,  E. J. Berquist,  K. B. Bravaya,  
+ D. Casanova,  Chun-Min Chang,  Yunqing Chen,  A. Chien,  K. D. Closser,  
+ M. P. Coons,  S. Dasgupta,  M. Diedenhofen,  Hainam Do,  R. G. Edgar,  
+ Po-Tung Fang,  S. Fatehi,  Qingguo Feng,  Qinghui Ge,  A. Ghysels,  
+ J. Gomes,  J. Gonthier,  A. Gunina,  M. W. D. Hanson-Heine,  
+ P. H. P. Harbach,  A. W. Hauser,  J. E. Herr,  E. G. Hohenstein,  
+ Z. C. Holden,  Kerwin Hui,  T.-C. Jagau,  Hyunjun Ji,  B. Kaduk,  
+ K. Khistyaev,  Jaehoon Kim,  P. Klunzinger,  K. Koh,  D. Kosenkov,  
+ T. Kowalczyk,  C. M. Krauter,  A. Kunitsa,  Ka Un Lao,  A. Laurent,  
+ K. V. Lawler,  Joonho Lee,  D. Lefrancois,  S. Lehtola,  D. S. Levine,  
+ Yi-Pei Li,  You-Sheng Lin,  Fenglai Liu,  E. Livshits,  A. Luenser,  
+ P. Manohar,  E. Mansoor,  S. F. Manzer,  Shan-Ping Mao,  Yuezhi Mao,  
+ N. Mardirossian,  A. V. Marenich,  L. A. Martinez-Martinez,  S. A. Maurer,  
+ N. J. Mayhall,  S. C. McKenzie,  J.-M. Mewes,  A. F. Morrison,  K. Nanda,  
+ T. S. Nguyen-Beck,  R. Olivares-Amaya,  J. A. Parkhill,  T. M. Perrine,  
+ F. Plasser,  S. Prager,  A. Prociuk,  D. R. Rehn,  F. Rob,  M. Schneider,  
+ N. Sergueev,  S. M. Sharada,  S. Sharma,  D. W. Small,  T. Stauch,  
+ T. Stein,  Yu-Chuan Su,  A. J. W. Thom,  T. Tsuchimochi,  L. Vogt,  
+ O. Vydrov,  M. A. Watson,  J. Wenzel,  M. de Wergifosse,  T. A. Wesolowski,  
+ A. White,  J. Witte,  A. Yamada,  Jun Yang,  K. Yao,  S. Yeganeh,  
+ S. R. Yost,  Zhi-Qiang You,  A. Zech,  Igor Ying Zhang,  Xing Zhang,  
+ Yan Zhao,  Ying Zhu,  B. R. Brooks,  G. K. L. Chan,  C. J. Cramer,  
+ M. S. Gordon,  W. J. Hehre,  A. Klamt,  M. W. Schmidt,  C. D. Sherrill,  
+ D. G. Truhlar,  A. Aspuru-Guzik,  R. Baer,  A. T. Bell,  N. A. Besley,  
+ Jeng-Da Chai,  A. Dreuw,  B. D. Dunietz,  T. R. Furlani,  Chao-Ping Hsu,  
+ Yousung Jung,  Jing Kong,  D. S. Lambrecht,  WanZhen Liang,  C. Ochsenfeld,  
+ V. A. Rassolov,  L. V. Slipchenko,  J. E. Subotnik,  T. Van Voorhis,  
+ J. M. Herbert,  A. I. Krylov,  P. M. W. Gill,  M. Head-Gordon
+
+ Contributors to earlier versions of Q-Chem not listed above: 
+ R. D. Adamson,  B. Austin,  J. Baker,  G. J. O. Beran,  K. Brandhorst,  
+ S. T. Brown,  E. F. C. Byrd,  A. K. Chakraborty,  C.-L. Cheng,  
+ Siu Hung Chien,  D. M. Chipman,  D. L. Crittenden,  H. Dachsel,  
+ R. A. DiStasio Jr.,  R. J. Doerksen,  A. D. Dutoi,  L. Fusti-Molnar,  
+ W. A. Goddard III,  A. Golubeva-Zadorozhnaya,  S. R. Gwaltney,  G. Hawkins,  
+ A. Heyden,  S. Hirata,  G. Kedziora,  F. J. Keil,  C. Kelley,  Jihan Kim,  
+ R. A. King,  R. Z. Khaliullin,  P. P. Korambath,  W. Kurlancheek,  
+ A. M. Lee,  M. S. Lee,  S. V. Levchenko,  Ching Yeh Lin,  D. Liotard,  
+ R. C. Lochan,  I. Lotan,  P. E. Maslen,  N. Nair,  D. P. O'Neill,  
+ D. Neuhauser,  E. Neuscamman,  C. M. Oana,  R. Olson,  B. Peters,  
+ R. Peverati,  P. A. Pieniazek,  Y. M. Rhee,  J. Ritchie,  M. A. Rohrdanz,  
+ E. Rosta,  N. J. Russ,  H. F. Schaefer III,  N. E. Schultz,  N. Shenvi,  
+ A. C. Simmonett,  A. Sodt,  D. Stuck,  K. S. Thanthiriwatte,  V. Vanovschi,  
+ Tao Wang,  A. Warshel,  C. F. Williams,  Q. Wu,  X. Xu,  W. Zhang
+
+ Please cite Q-Chem as follows:
+ Y. Shao et al., Mol. Phys. 113, 184-215 (2015)
+ DOI: 10.1080/00268976.2014.952696
+
+ Q-Chem 5.0.1 for Intel X86 EM64T Linux
+
+ Parts of Q-Chem use Armadillo 5.200.1 (Boston Tea Smuggler).
+ http://arma.sourceforge.net/
+
+ Q-Chem begins on Fri Aug 25 13:12:47 2017  
+
+Host: copper
+0
+
+     Scratch files written to /tmp/qchem/qchem15191//
+
+Checking the input file for inconsistencies... 	...done.
+
+--------------------------------------------------------------
+User input:
+--------------------------------------------------------------
+$rem
+ method = hf
+ basis = sto-3g
+ scf_convergence = 10
+ thresh = 14
+ moprop = 103
+ symmetry = false
+ sym_ignore = true
+ moprop_conv_1st = 9
+ moprop_conv_2nd = 9
+$end
+
+$fdpfreq
+shg
+0.0773178
+au
+$end
+
+$molecule
+0 1
+O         -1.81298        0.53384       -0.01233
+H         -0.82365        0.49649        0.00870
+H         -2.10234       -0.29131        0.45244
+$end
+--------------------------------------------------------------
+ ----------------------------------------------------------------
+             Standard Nuclear Orientation (Angstroms)
+    I     Atom           X                Y                Z
+ ----------------------------------------------------------------
+    1      O      -1.8129800000     0.5338400000    -0.0123300000
+    2      H      -0.8236500000     0.4964900000     0.0087000000
+    3      H      -2.1023400000    -0.2913100000     0.4524400000
+ ----------------------------------------------------------------
+ Nuclear Repulsion Energy =     8.8880268445 hartrees
+ There are        5 alpha and        5 beta electrons
+ Requested basis set is STO-3G
+ There are 4 shells and 7 basis functions
+
+ Total QAlloc Memory Limit   2000 MB
+ Mega-Array Size        61 MB
+ MEM_STATIC part        62 MB
+
+                       Distance Matrix (Angstroms)
+             O (  1)   H (  2)
+   H (  2)  0.990258
+   H (  3)  0.990259  1.566072
+
+ A cutoff of  1.0D-14 yielded     10 shell pairs
+ There are        34 function pairs
+ Smallest overlap matrix eigenvalue = 3.64E-01
+
+ Scale SEOQF with 1.000000e-01/1.000000e+00/1.000000e+00
+
+ Standard Electronic Orientation quadrupole field applied
+ Nucleus-field energy     =     0.0000000028 hartrees
+ Guess from superposition of atomic densities
+ Warning:  Energy on first SCF cycle will be non-variational
+ A restricted Hartree-Fock SCF calculation will be
+ performed using Pulay DIIS extrapolation
+ SCF converges when DIIS error is below 1.0E-10
+ ---------------------------------------
+  Cycle       Energy         DIIS Error
+ ---------------------------------------
+    1     -74.6006725917      3.98E-01
+    2     -74.9234647823      6.71E-02
+    3     -74.9644890174      8.35E-03
+    4     -74.9649798568      1.59E-03
+    5     -74.9650031027      1.39E-05
+    6     -74.9650031059      5.22E-06
+    7     -74.9650031064      9.63E-08
+    8     -74.9650031064      4.10E-11 Convergence criterion met
+ ---------------------------------------
+ SCF time:  CPU 0.00 s  wall 0.00 s
+ SCF   energy in the final basis set = -74.96500311
+ Total energy in the final basis set = -74.96500311
+
+
+      ==================================================== 
+      ===                                              === 
+      ===      MO-based Calculation of Properties      === 
+      ===                                              === 
+      ===          J. Kussmann, C. Ochsenfeld          === 
+      ===                                              === 
+      ==================================================== 
+
+WARNING: SYMMETRY USAGE disabled in MO-CPSCF for now... 
+
+ --> static/frequency-dependent 1st hyper-polarizability
+
+  Calculate frequency-dependent polarizabilities for 1 frequencies:
+  0.077318
+
+Now forming Dipole-matrix (explicitly)... 
+...done! 
+
+  DIIS-Info:
+  starting crit.:                        1.0e+00
+  Max. dimension of DIIS-subspace:            15
+  Mode: cyclic vector sampling, shifting vectors if max. dimension is reached.
+
+  ++++++++++++++++++++++++++++
+  ++++ TDSCF  - 1st order ++++
+  ++++++++++++++++++++++++++++
+
+  ConvCrit:  1.0e-06       Max. Iter:    50
+  Treat Ex/Ey/Ez together...
+
+    FREQUENCY   1:         0.0773178000 a.u.
+
+  ----------------------------------------------------------------------------------------
+     Iter              Error Ex           Error Ey          Error Ez          Converged
+  ----------------------------------------------------------------------------------------
+
+ =======================================================
+   Intermediate polarization tensor
+ =======================================================
+   ISOTROPIC:        2.54855557
+   ANISOTROPIC:      4.62105667
+   Trace =           7.64566672
+   Full Tensor:
+          4.31960705       1.26621509      -0.71323124
+          1.26621509       2.50734144      -1.39309939
+         -0.71323124      -1.39309939       0.81871824
+ =======================================================
+
+        0          10000000000.0000000000  (isotropic)
+
+
+ =======================================================
+   Intermediate polarization tensor
+ =======================================================
+   ISOTROPIC:        2.67981020
+   ANISOTROPIC:      4.91530946
+   Trace =           8.03943060
+   Full Tensor:
+          4.56018453       1.38092012      -0.77784091
+          1.38092012       2.62067986      -1.45372923
+         -0.77784091      -1.45372923       0.85856621
+ =======================================================
+
+        1             0.1312546275  (isotropic)
+
+
+ =======================================================
+   Intermediate polarization tensor
+ =======================================================
+   ISOTROPIC:        2.72330730
+   ANISOTROPIC:      5.01561884
+   Trace =           8.16992190
+   Full Tensor:
+          4.64105069       1.42248660      -0.80125393
+          1.42179934       2.65667479      -1.47211983
+         -0.80074369      -1.47202149       0.87219643
+ =======================================================
+
+        2             0.0434970998  (isotropic)
+
+
+ =======================================================
+   Intermediate polarization tensor
+ =======================================================
+   ISOTROPIC:        2.73203643
+   ANISOTROPIC:      5.03240643
+   Trace =           8.19610930
+   Full Tensor:
+          4.65499511       1.42844046      -0.80460755
+          1.42897597       2.66497587      -1.47601111
+         -0.80538183      -1.47639028       0.87613833
+ =======================================================
+
+        3             0.0087291338  (isotropic)
+
+
+ =======================================================
+   Intermediate polarization tensor
+ =======================================================
+   ISOTROPIC:        2.73382097
+   ANISOTROPIC:      5.03492228
+   Trace =           8.20146292
+   Full Tensor:
+          4.65791006       1.42941586      -0.80515696
+          1.42973841       2.66661017      -1.47658526
+         -0.80553345      -1.47675806       0.87694269
+ =======================================================
+
+        4             0.0017845390  (isotropic)
+
+
+ =======================================================
+   Intermediate polarization tensor
+ =======================================================
+   ISOTROPIC:        2.73467577
+   ANISOTROPIC:      5.03604558
+   Trace =           8.20402731
+   Full Tensor:
+          4.65937808       1.42986655      -0.80541082
+          1.42999654       2.66735463      -1.47680985
+         -0.80551248      -1.47683721       0.87729461
+ =======================================================
+
+        5             0.0008547979  (isotropic)
+
+
+ =======================================================
+   Intermediate polarization tensor
+ =======================================================
+   ISOTROPIC:        2.73504397
+   ANISOTROPIC:      5.03650511
+   Trace =           8.20513191
+   Full Tensor:
+          4.66002188       1.43004621      -0.80551202
+          1.43007740       2.66766454      -1.47688765
+         -0.80550796      -1.47686393       0.87744549
+ =======================================================
+
+        6             0.0003681980  (isotropic)
+
+
+ =======================================================
+   Intermediate polarization tensor
+ =======================================================
+   ISOTROPIC:        2.73517220
+   ANISOTROPIC:      5.03664453
+   Trace =           8.20551661
+   Full Tensor:
+          4.66024016       1.43009747      -0.80554089
+          1.43009530       2.66776940      -1.47690550
+         -0.80551315      -1.47687521       0.87750706
+ =======================================================
+
+        7             0.0001282347  (isotropic)
+
+
+ =======================================================
+   Intermediate polarization tensor
+ =======================================================
+   ISOTROPIC:        2.73521793
+   ANISOTROPIC:      5.03667017
+   Trace =           8.20565379
+   Full Tensor:
+          4.66030099       1.43010678      -0.80554614
+          1.43009923       2.66780728      -1.47690803
+         -0.80551917      -1.47688284       0.87754552
+ =======================================================
+
+        8             0.0000457243  (isotropic)
+
+
+ =======================================================
+   Intermediate polarization tensor
+ =======================================================
+   ISOTROPIC:        2.73523973
+   ANISOTROPIC:      5.03666677
+   Trace =           8.20571920
+   Full Tensor:
+          4.66031668       1.43010676      -0.80554613
+          1.43010094       2.66782640      -1.47690774
+         -0.80552540      -1.47688930       0.87757613
+ =======================================================
+
+        9             0.0000218066  (isotropic)
+
+
+ =======================================================
+   Intermediate polarization tensor
+ =======================================================
+   ISOTROPIC:        2.73525329
+   ANISOTROPIC:      5.03665744
+   Trace =           8.20575988
+   Full Tensor:
+          4.66031996       1.43010556      -0.80554545
+          1.43010214       2.66783752      -1.47690682
+         -0.80553180      -1.47689517       0.87760240
+ =======================================================
+
+       10             0.0000135571  (isotropic)
+
+
+ =======================================================
+   Intermediate polarization tensor
+ =======================================================
+   ISOTROPIC:        2.73526225
+   ANISOTROPIC:      5.03664904
+   Trace =           8.20578675
+   Full Tensor:
+          4.66032010       1.43010481      -0.80554502
+          1.43010310       2.66784331      -1.47690592
+         -0.80553777      -1.47690015       0.87762334
+ =======================================================
+
+       11             0.0000089588  (isotropic)
+
+
+ =======================================================
+   Intermediate polarization tensor
+ =======================================================
+   ISOTROPIC:        2.73526705
+   ANISOTROPIC:      5.03664429
+   Trace =           8.20580115
+   Full Tensor:
+          4.66031989       1.43010453      -0.80554487
+          1.43010377       2.66784538      -1.47690536
+         -0.80554209      -1.47690341       0.87763589
+ =======================================================
+
+       12             0.0000048002  (isotropic)
+
+
+ =======================================================
+   Intermediate polarization tensor
+ =======================================================
+   ISOTROPIC:        2.73526853
+   ANISOTROPIC:      5.03664301
+   Trace =           8.20580558
+   Full Tensor:
+          4.66031980       1.43010446      -0.80554483
+          1.43010414       2.66784573      -1.47690514
+         -0.80554407      -1.47690472       0.87764004
+ =======================================================
+
+       13             0.0000014740  (isotropic)
+
+
+ =======================================================
+   Intermediate polarization tensor
+ =======================================================
+   ISOTROPIC:        2.73526865
+   ANISOTROPIC:      5.03664305
+   Trace =           8.20580595
+   Full Tensor:
+          4.66031978       1.43010445      -0.80554482
+          1.43010432       2.66784569      -1.47690508
+         -0.80554462      -1.47690500       0.87764048
+ =======================================================
+
+       14             0.0000001263  (isotropic)
+
+
+
+  ===== TDSCF converged after 14 iterations... =====
+
+
+
+    FREQUENCY   2:         0.1546356000 a.u.
+
+  ----------------------------------------------------------------------------------------
+     Iter              Error Ex           Error Ey          Error Ez          Converged
+  ----------------------------------------------------------------------------------------
+
+ =======================================================
+   Intermediate polarization tensor
+ =======================================================
+   ISOTROPIC:        2.78145713
+   ANISOTROPIC:      5.11877662
+   Trace =           8.34437140
+   Full Tensor:
+          4.73801623       1.45245428      -0.81813400
+          1.45245418       2.71337542      -1.50181189
+         -0.81813388      -1.50181185       0.89297976
+ =======================================================
+
+        0          10000000000.0000000000  (isotropic)
+
+
+ =======================================================
+   Intermediate polarization tensor
+ =======================================================
+   ISOTROPIC:        2.80160004
+   ANISOTROPIC:      5.16171135
+   Trace =           8.40480013
+   Full Tensor:
+          4.77413429       1.46826854      -0.82704169
+          1.46826850       2.73129879      -1.51132912
+         -0.82704163      -1.51132910       0.89936705
+ =======================================================
+
+        1             0.0201429111  (isotropic)
+
+
+ =======================================================
+   Intermediate polarization tensor
+ =======================================================
+   ISOTROPIC:        2.81300524
+   ANISOTROPIC:      5.18451042
+   Trace =           8.43901572
+   Full Tensor:
+          4.79413109       1.47627234      -0.83154999
+          1.47623592       2.74170390      -1.51671712
+         -0.83145940      -1.51663299       0.90318073
+ =======================================================
+
+        2             0.0114051938  (isotropic)
+
+
+ =======================================================
+   Intermediate polarization tensor
+ =======================================================
+   ISOTROPIC:        2.81915843
+   ANISOTROPIC:      5.19626243
+   Trace =           8.45747528
+   Full Tensor:
+          4.80458791       1.48033085      -0.83383603
+          1.48036392       2.74738742      -1.51954969
+         -0.83386947      -1.51956678       0.90549995
+ =======================================================
+
+        3             0.0061531891  (isotropic)
+
+
+ =======================================================
+   Intermediate polarization tensor
+ =======================================================
+   ISOTROPIC:        2.82024233
+   ANISOTROPIC:      5.19780780
+   Trace =           8.46072698
+   Full Tensor:
+          4.80623292       1.48080583      -0.83410357
+          1.48085247       2.74843394      -1.51997188
+         -0.83417231      -1.52002153       0.90606013
+ =======================================================
+
+        4             0.0010839003  (isotropic)
+
+
+ =======================================================
+   Intermediate polarization tensor
+ =======================================================
+   ISOTROPIC:        2.82050398
+   ANISOTROPIC:      5.19791986
+   Trace =           8.46151195
+   Full Tensor:
+          4.80656582       1.48080590      -0.83410361
+          1.48083353       2.74869864      -1.52002744
+         -0.83415155      -1.52006467       0.90624749
+ =======================================================
+
+        5             0.0002616544  (isotropic)
+
+
+ =======================================================
+   Intermediate polarization tensor
+ =======================================================
+   ISOTROPIC:        2.82062674
+   ANISOTROPIC:      5.19789165
+   Trace =           8.46188023
+   Full Tensor:
+          4.80669576       1.48077542      -0.83408645
+          1.48079355       2.74882430      -1.52003768
+         -0.83411762      -1.52006486       0.90636018
+ =======================================================
+
+        6             0.0001227620  (isotropic)
+
+
+ =======================================================
+   Intermediate polarization tensor
+ =======================================================
+   ISOTROPIC:        2.82069631
+   ANISOTROPIC:      5.19783381
+   Trace =           8.46208893
+   Full Tensor:
+          4.80675325       1.48074653      -0.83407017
+          1.48075758       2.74889829      -1.52003441
+         -0.83408636      -1.52005118       0.90643740
+ =======================================================
+
+        7             0.0000695663  (isotropic)
+
+
+ =======================================================
+   Intermediate polarization tensor
+ =======================================================
+   ISOTROPIC:        2.82073144
+   ANISOTROPIC:      5.19777802
+   Trace =           8.46219433
+   Full Tensor:
+          4.80677170       1.48072737      -0.83405938
+          1.48073100       2.74893834      -1.52002533
+         -0.83406356      -1.52003288       0.90648429
+ =======================================================
+
+        8             0.0000351340  (isotropic)
+
+
+ =======================================================
+   Intermediate polarization tensor
+ =======================================================
+   ISOTROPIC:        2.82074371
+   ANISOTROPIC:      5.19774295
+   Trace =           8.46223113
+   Full Tensor:
+          4.80677349       1.48071861      -0.83405445
+          1.48071669       2.74895336      -1.52001564
+         -0.83405234      -1.52001752       0.90650428
+ =======================================================
+
+        9             0.0000122655  (isotropic)
+
+
+ =======================================================
+   Intermediate polarization tensor
+ =======================================================
+   ISOTROPIC:        2.82074546
+   ANISOTROPIC:      5.19772837
+   Trace =           8.46223637
+   Full Tensor:
+          4.80677219       1.48071567      -0.83405279
+          1.48071209       2.74895527      -1.52000873
+         -0.83404959      -1.52000857       0.90650891
+ =======================================================
+
+       10             0.0000017466  (isotropic)
+
+
+ =======================================================
+   Intermediate polarization tensor
+ =======================================================
+   ISOTROPIC:        2.82074475
+   ANISOTROPIC:      5.19772376
+   Trace =           8.46223425
+   Full Tensor:
+          4.80677141       1.48071480      -0.83405230
+          1.48071178       2.74895381      -1.52000481
+         -0.83404993      -1.52000434       0.90650904
+ =======================================================
+
+       11             0.0000007060  (isotropic)
+
+
+
+  ===== TDSCF converged after 11 iterations... =====
+
+
+ TDSCF (1st order) time:  CPU       0.02 s  wall       0.02 s
+
+               ======================================================= 
+               ===                                                 === 
+               ===                 Polarizability (a.u.)           === 
+               ===                                                 === 
+               ======================================================= 
+
+   =================================================================================
+   =   Frequency:            0.07731780 a.u.    =           2.10392438 eV          =
+   =                                            =          35.22858161 x 10^-8 Hz  =
+   =   Wavelength:         589.29964774 nm                                         =
+   =   Wavenumber:       16969.29573660 cm^(-1)                                    =
+   =================================================================================
+
+      ISOTROPIC:      2.73526865          ANISOTROPIC:      5.03664305
+
+      Trace =         8.20580595
+      Full Tensor:
+
+                      4.66031978            1.43010445           -0.80554482
+                      1.43010432            2.66784569           -1.47690508
+                     -0.80554462           -1.47690500            0.87764048
+
+
+   =================================================================================
+   =   Frequency:            0.15463560 a.u.    =           4.20784876 eV          =
+   =                                            =          70.45716322 x 10^-8 Hz  =
+   =   Wavelength:         294.64982387 nm                                         =
+   =   Wavenumber:       33938.59147321 cm^(-1)                                    =
+   =================================================================================
+
+      ISOTROPIC:      2.82074475          ANISOTROPIC:      5.19772376
+
+      Trace =         8.46223425
+      Full Tensor:
+
+                      4.80677141            1.48071480           -0.83405230
+                      1.48071178            2.74895381           -1.52000481
+                     -0.83404993           -1.52000434            0.90650904
+
+
+  Dipole moment:
+  --------------
+
+                   Ex              Ey              Ez               Total
+
+  (a.u.)       0.38207095     -0.47078530      0.26516811         0.66176365
+  (Debye)      0.97112863     -1.19661827      0.67399091         1.68203741
+
+
+
+ --- DONE ---
+
+
+               ========================================================== 
+               ===                                                    === 
+               ===       Second Harmonic Generation     (a.u.)        === 
+               ===                                                    === 
+               ========================================================== 
+
+   =================================================================================
+   =   Frequency:            0.07731780 a.u.    =           2.10392438 eV          =
+   =                                            =          35.22858161 x 10^-8 Hz  =
+   =   Wavelength:         589.29964774 nm                                         =
+   =   Wavenumber:       16969.29573660 cm^(-1)                                    =
+   =================================================================================
+
+      Full Tensor:
+
+                          x                     y                     z
+
+       xx            -9.36569537            0.95027236           -0.53517712
+       yy             2.08678513            5.44243317           -3.12580855
+       zz             0.69963062            1.71431536           -0.90527592
+       xy             0.97920892            2.06615040           -1.13929344
+       xz            -0.55147065           -1.13929389            0.68517252
+       yz            -1.14439025           -3.13384693            1.72859812
+
+  Averages:               x                     y                     z
+                      6.60267484           -8.13583377            4.58248287
+                     11.43618185
+
+
+
+
+ --- DONE ---
+
+
+WARNING: no symmetry was used (preliminary integrals)
+
+
+      ======================================================== 
+      =   LinK/CFMM integral contractions as described in:   = 
+      =                                                      = 
+      =            J. Kussmann and C. Ochsenfeld,            = 
+      =            J. Chem. Phys. DOI: 10.1063/1.2794033     = 
+      =            (2007)                                    = 
+      ======================================================== 
+
+ MO-PROP time:  CPU 0.02 s  wall 0.02 s 
+
+
+ --------------------------------------------------------------
+
+                    Orbital Energies (a.u.)
+ --------------------------------------------------------------
+
+ Alpha MOs
+ -- Occupied --
+-20.246  -1.252  -0.601  -0.449  -0.389
+ -- Virtual --
+  0.573   0.704
+ --------------------------------------------------------------
+
+          Ground-State Mulliken Net Atomic Charges
+
+     Atom                 Charge (a.u.)
+  ----------------------------------------
+      1 O                    -0.336476
+      2 H                     0.168238
+      3 H                     0.168238
+  ----------------------------------------
+  Sum of atomic charges =    -0.000000
+
+ -----------------------------------------------------------------
+                    Cartesian Multipole Moments
+ -----------------------------------------------------------------
+    Charge (ESU x 10^10)
+                 0.0000
+    Dipole Moment (Debye)
+         X       0.9711      Y      -1.1966      Z       0.6740
+       Tot       1.6820
+    Quadrupole Moments (Debye-Ang)
+        XX      -8.0797     XY       2.9531     YY      -6.3763
+        XZ      -1.3833     YZ      -0.2023     ZZ      -5.8146
+    Octopole Moments (Debye-Ang^2)
+       XXX      34.0882    XXY      -8.7964    XYY      11.4870
+       YYY      -8.1988    XXZ       2.6248    XYZ       0.3876
+       YYZ      -0.2956    XZZ      10.0460    YZZ      -2.7500
+       ZZZ      -0.5839
+    Hexadecapole Moments (Debye-Ang^3)
+      XXXX    -116.8719   XXXY      25.2713   XXYY     -23.6154
+      XYYY      14.0297   YYYY     -12.4240   XXXZ      -4.4046
+      XXYZ      -0.6560   XYYZ       0.5697   YYYZ       0.1266
+      XXZZ     -19.1504   XYZZ       4.6499   YYZZ      -2.7082
+      XZZZ       1.2678   YZZZ       0.2555   ZZZZ      -3.9459
+ -----------------------------------------------------------------
+ Total job time:  0.10s(wall), 0.09s(cpu) 
+ Fri Aug 25 13:12:47 2017
+
+        *************************************************************
+        *                                                           *
+        *  Thank you very much for using Q-Chem.  Have a nice day.  *
+        *                                                           *
+        *************************************************************
+
+

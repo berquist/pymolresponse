@@ -1,0 +1,24 @@
+$rem
+ method = hf
+ basis = sto-3g
+ scf_convergence = 10
+ thresh = 14
+ moprop = 103
+ symmetry = false
+ sym_ignore = true
+ moprop_conv_1st = 9
+ moprop_conv_2nd = 9
+$end
+
+$fdpfreq
+eopockels
+0.0773178
+au
+$end
+
+$molecule
+0 1
+O         -1.81298        0.53384       -0.01233
+H         -0.82365        0.49649        0.00870
+H         -2.10234       -0.29131        0.45244
+$end
