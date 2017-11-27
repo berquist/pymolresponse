@@ -1,0 +1,24 @@
+$rem
+ method = hf
+ basis = aug-cc-pvdz
+ scf_convergence = 10
+ thresh = 14
+ moprop = 103
+ symmetry = false
+ sym_ignore = true
+ moprop_conv_1st = 9
+ moprop_conv_2nd = 9
+$end
+
+$fdpfreq
+optrect
+0.0773178
+au
+$end
+
+$molecule
+0 1
+O          0.000000000000     0.000000000000    -0.075791843589
+H          0.000000000000    -0.866811828967     0.601435779270
+H          0.000000000000     0.866811828967     0.601435779270
+$end

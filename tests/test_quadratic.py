@@ -532,10 +532,8 @@ def test_first_hyperpolarizability_eope_rhf_wigner_explicit():
     polarizability_full_2 = np.empty_like(polarizability_2)
     for a in (0, 1, 2):
         for b in (0, 1, 2):
-            polarizability_full_1[a, b] = 2 * np.trace(np.dot(rhsmats[a, ...].T,
-                                                              rspmats_1[b, ...]))
-            polarizability_full_2[a, b] = 2 * np.trace(np.dot(rhsmats[a, ...].T,
-                                                              rspmats_2[b, ...]))
+            polarizability_full_1[a, b] = 2 * np.trace(rhsmats[a, ...].T.dot(rspmats_1[b, ...]))
+            polarizability_full_2[a, b] = 2 * np.trace(rhsmats[a, ...].T.dot(rspmats_2[b, ...]))
 
     np.testing.assert_almost_equal(polarizability_1, -polarizability_full_1)
     np.testing.assert_almost_equal(polarizability_2, -polarizability_full_2)
@@ -814,8 +812,189 @@ def test_first_hyperpolarizability_or_rhf_wigner_explicit():
     return
 
 
+# def test_first_hyperpolarizability_general_rhf_wigner_explicit():
+#     mol = molecule_water_sto3g_angstrom()
+#     mol.build()
+
+#     mf = pyscf.scf.RHF(mol)
+#     mf.kernel()
+#     C = utils.fix_mocoeffs_shape(mf.mo_coeff)
+#     E = utils.fix_moenergies_shape(mf.mo_energy)
+#     occupations = utils.occupations_from_pyscf_mol(mol, C)
+#     nocc_alph, nvirt_alph, _, _ = occupations
+#     nov_alph = nocc_alph * nvirt_alph
+#     norb = nocc_alph + nvirt_alph
+
+#     # calculate linear response vectors for electric dipole operator
+#     f1 = 0.0773178
+#     f2 = 0.1283470
+#     frequencies = [f1, f2]
+#     calculator = electric.Polarizability(mol, C, E, occupations, frequencies=frequencies)
+#     calculator.form_operators()
+#     calculator.run()
+#     calculator.form_results()
+
+#     polarizability_1 = calculator.polarizabilities[0]
+#     polarizability_2 = calculator.polarizabilities[1]
+#     print('polarizability: {} a.u.'.format(f1))
+#     print(polarizability_1)
+#     print('polarizability: {} a.u.'.format(f2))
+#     print(polarizability_2)
+
+#     # each operator contains multiple sets of response vectors, one
+#     # set of components for each frequency
+#     assert type(calculator.driver.solver.operators) == list
+#     assert len(calculator.driver.solver.operators) == 1
+#     operator = calculator.driver.solver.operators[0]
+#     rhsvecs = operator.mo_integrals_ai_supervector_alph
+#     assert type(operator.rspvecs_alph) == list
+#     assert len(operator.rspvecs_alph) == 2
+#     rspvecs_1 = operator.rspvecs_alph[0]
+#     rspvecs_2 = operator.rspvecs_alph[1]
+
+#     ## Form the full [norb, norb] representation of everything.
+#     # Response vectors: transform X_{ia} and Y_{ia} -> U_{p,q}
+#     # 0. 'a' is fast index, 'i' slow
+#     # 1. rspvec == [X Y]
+#     # 2. U_{p, q} -> zero
+#     # 3. place X_{ia} into U_{i, a}
+#     # 4. place Y_{ia} into U_{a, i}
+
+#     ncomp = rhsvecs.shape[0]
+
+#     rspmats_1 = np.zeros(shape=(ncomp, norb, norb))
+#     rspmats_2 = np.zeros(shape=(ncomp, norb, norb))
+#     for icomp in range(ncomp):
+#         rspvec_1 = rspvecs_1[icomp, :, 0]
+#         rspvec_2 = rspvecs_2[icomp, :, 0]
+#         x_1 = rspvec_1[:nov_alph]
+#         y_1 = rspvec_1[nov_alph:]
+#         x_2 = rspvec_2[:nov_alph]
+#         y_2 = rspvec_2[nov_alph:]
+#         x_full_1 = utils.repack_vector_to_matrix(x_1, (nvirt_alph, nocc_alph))
+#         y_full_1 = utils.repack_vector_to_matrix(y_1, (nvirt_alph, nocc_alph))
+#         x_full_2 = utils.repack_vector_to_matrix(x_2, (nvirt_alph, nocc_alph))
+#         y_full_2 = utils.repack_vector_to_matrix(y_2, (nvirt_alph, nocc_alph))
+#         rspmats_1[icomp, :nocc_alph, nocc_alph:] = y_full_1.T
+#         rspmats_1[icomp, nocc_alph:, :nocc_alph] = x_full_1
+#         rspmats_2[icomp, :nocc_alph, nocc_alph:] = y_full_2.T
+#         rspmats_2[icomp, nocc_alph:, :nocc_alph] = x_full_2
+
+#     rhsmats = np.zeros(shape=(ncomp, norb, norb))
+#     for icomp in range(ncomp):
+#         rhsvec = rhsvecs[icomp, :, 0]
+#         rhsvec_top = rhsvec[:nov_alph]
+#         rhsvec_bot = rhsvec[nov_alph:]
+#         rhsvec_top_mat = utils.repack_vector_to_matrix(rhsvec_top, (nvirt_alph, nocc_alph))
+#         rhsvec_bot_mat = utils.repack_vector_to_matrix(rhsvec_bot, (nvirt_alph, nocc_alph))
+#         rhsmats[icomp, :nocc_alph, nocc_alph:] = rhsvec_top_mat.T
+#         rhsmats[icomp, nocc_alph:, :nocc_alph] = rhsvec_bot_mat
+
+#     polarizability_full_1 = np.empty_like(polarizability_1)
+#     polarizability_full_2 = np.empty_like(polarizability_2)
+#     for a in (0, 1, 2):
+#         for b in (0, 1, 2):
+#             polarizability_full_1[a, b] = 2 * np.trace(rhsmats[a, ...].T.dot(rspmats_1[b, ...]))
+#             polarizability_full_2[a, b] = 2 * np.trace(rhsmats[a, ...].T.dot(rspmats_2[b, ...]))
+
+#     np.testing.assert_almost_equal(polarizability_1, -polarizability_full_1)
+#     np.testing.assert_almost_equal(polarizability_2, -polarizability_full_2)
+
+#     # V_{p,q} <- full MO transformation of right hand side
+#     integrals_ao = operator.ao_integrals
+#     integrals_mo = np.empty_like(integrals_ao)
+#     for icomp in range(ncomp):
+#         integrals_mo[icomp, ...] = (C[0, ...].T).dot(integrals_ao[icomp, ...]).dot(C[0, ...])
+
+#     # from pyresponse.ao2mo import AO2MOpyscf
+#     # ao2mo = AO2MOpyscf(C, pyscfmol=mol)
+#     # ao2mo.perform_rhf_full()
+#     # tei_mo = ao2mo.tei_mo[0]
+
+#     G_1 = np.empty_like(rspmats_1)
+#     G_2 = np.empty_like(rspmats_2)
+#     C = mf.mo_coeff
+#     # TODO I feel as though if I have all the MO-basis two-electron
+#     # integrals, I shouldn't need another JK build.
+#     for icomp in range(ncomp):
+#         V = integrals_mo[icomp, ...]
+#         Dl_1 = (C[:, :nocc_alph]).dot(rspmats_1[icomp, :nocc_alph, :]).dot(C.T)
+#         Dr_1 = (-C).dot(rspmats_1[icomp, :, :nocc_alph]).dot(C[:, :nocc_alph].T)
+#         D_1 = Dl_1 + Dr_1
+#         Dl_2 = (C[:, :nocc_alph]).dot(rspmats_2[icomp, :nocc_alph, :]).dot(C.T)
+#         Dr_2 = (-C).dot(rspmats_2[icomp, :, :nocc_alph]).dot(C[:, :nocc_alph].T)
+#         D_2 = Dl_2 + Dr_2
+#         J_1, K_1 = mf.get_jk(mol, D_1, hermi=0)
+#         J_2, K_2 = mf.get_jk(mol, D_2, hermi=0)
+#         F_AO_1 = 2*J_1 - K_1
+#         F_AO_2 = 2*J_2 - K_2
+#         F_MO_1 = (C.T).dot(F_AO_1).dot(C)
+#         F_MO_2 = (C.T).dot(F_AO_2).dot(C)
+#         G_1[icomp, ...] = V + F_MO_1
+#         G_2[icomp, ...] = V + F_MO_2
+
+#     E_diag = np.diag(E[0, ...])
+#     epsilon_1 = G_1.copy()
+#     epsilon_2 = G_2.copy()
+#     for icomp in range(ncomp):
+#         eoU_1 = (E_diag[..., np.newaxis] + f1) * rspmats_1[icomp, ...]
+#         Ue_1 = rspmats_1[icomp, ...] * E_diag[np.newaxis, ...]
+#         epsilon_1[icomp, ...] += (eoU_1 - Ue_1)
+#         eoU_2 = (E_diag[..., np.newaxis] + f2) * rspmats_2[icomp, ...]
+#         Ue_2 = rspmats_2[icomp, ...] * E_diag[np.newaxis, ...]
+#         epsilon_2[icomp, ...] += (eoU_2 - Ue_2)
+
+#     mU = (rspmats_1, rspmats_2)
+#     mG = (G_1, G_2)
+#     mE = (epsilon_1, epsilon_2)
+
+#     # # components x, y, z
+#     # for ip, p in enumerate(product(range(3), range(3), range(3))):
+#     #     a, b, c = p
+#     #     tl, tr = [], []
+#     #     # 1st tuple -> index a, b, c
+#     #     # 2nd tuple -> index frequency (0 -> w_a, 1 -> w_b)
+#     #     for iq, q in enumerate(permutations(zip(p, (
+
+#     # Assume some symmetry and calculate only part of the tensor.
+
+#     hyperpolarizability = np.zeros(shape=(6, 3))
+#     off1 = [0, 1, 2, 0, 0, 1]
+#     off2 = [0, 1, 2, 1, 2, 2]
+#     for r in range(6):
+#         b = off1[r]
+#         c = off2[r]
+#         for a in range(3):
+#             # _1 -> perturbation w_b
+#             # _2 -> perturbation w_c
+#             #
+#             tl1 = np.trace(np.dot(rspmats_2[a, ...], np.dot(G_1[b, ...], rspmats_2[c, ...]))[:nocc_alph, :nocc_alph])
+#             tl2 = np.trace(np.dot(rspmats_2[c, ...], np.dot(G_1[b, ...], rspmats_2[a, ...]))[:nocc_alph, :nocc_alph])
+#             tl3 = np.trace(np.dot(rspmats_2[a, ...], np.dot(G_2[c, ...], rspmats_1[b, ...]))[:nocc_alph, :nocc_alph])
+#             tl4 = np.trace(np.dot(rspmats_1[b, ...], np.dot(G_2[c, ...], rspmats_2[a, ...]))[:nocc_alph, :nocc_alph])
+#             tl5 = np.trace(np.dot(rspmats_2[c, ...], np.dot(G_2[a, ...], rspmats_1[b, ...]))[:nocc_alph, :nocc_alph])
+#             tl6 = np.trace(np.dot(rspmats_1[b, ...], np.dot(G_2[a, ...], rspmats_2[c, ...]))[:nocc_alph, :nocc_alph])
+#             tr1 = np.trace(np.dot(rspmats_2[c, ...], np.dot(rspmats_1[b, ...], epsilon_2[a, ...]))[:nocc_alph, :nocc_alph])
+#             tr2 = np.trace(np.dot(rspmats_1[b, ...], np.dot(rspmats_2[c, ...], epsilon_2[a, ...]))[:nocc_alph, :nocc_alph])
+#             tr3 = np.trace(np.dot(rspmats_2[c, ...], np.dot(rspmats_2[a, ...], epsilon_1[b, ...]))[:nocc_alph, :nocc_alph])
+#             tr4 = np.trace(np.dot(rspmats_2[a, ...], np.dot(rspmats_2[c, ...], epsilon_1[b, ...]))[:nocc_alph, :nocc_alph])
+#             tr5 = np.trace(np.dot(rspmats_1[b, ...], np.dot(rspmats_2[a, ...], epsilon_2[c, ...]))[:nocc_alph, :nocc_alph])
+#             tr6 = np.trace(np.dot(rspmats_2[a, ...], np.dot(rspmats_1[b, ...], epsilon_2[c, ...]))[:nocc_alph, :nocc_alph])
+#             tl = tl1 + tl2 + tl3 + tl4 + tl5 + tl6
+#             tr = tr1 + tr2 + tr3 + tr4 + tr5 + tr6
+#             hyperpolarizability[r, a] = -2 * (tl - tr)
+
+#     # pylint: disable=C0326
+
+#     print('hyperpolarizability: (-{}; {}, {}), symmetry-unique components'.format(f1 + f2, f1, f2))
+#     print(hyperpolarizability)
+
+#     return
+
+
 if __name__ == '__main__':
     test_first_hyperpolarizability_static_rhf_wigner_explicit()
     test_first_hyperpolarizability_shg_rhf_wigner_explicit()
     test_first_hyperpolarizability_eope_rhf_wigner_explicit()
     test_first_hyperpolarizability_or_rhf_wigner_explicit()
+    # test_first_hyperpolarizability_general_rhf_wigner_explicit()

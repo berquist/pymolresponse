@@ -14,6 +14,9 @@ timer.dat
 *.db
 *.movecs
 
+## Q-Chem
+pathtable
+
 ## Python
 
 # Byte-compiled / optimized / DLL files
