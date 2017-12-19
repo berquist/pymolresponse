@@ -46,24 +46,24 @@ def test_first_hyperpolarizability_static_rhf_wigner_explicit():
     ncomp = rhsvecs.shape[0]
 
     rspmats = np.zeros(shape=(ncomp, norb, norb))
-    for icomp in range(ncomp):
-        rspvec = rspvecs[icomp, :, 0]
+    for i in range(ncomp):
+        rspvec = rspvecs[i, :, 0]
         x = rspvec[:nov_alph]
         y = rspvec[nov_alph:]
         x_full = utils.repack_vector_to_matrix(x, (nvirt_alph, nocc_alph))
         y_full = utils.repack_vector_to_matrix(y, (nvirt_alph, nocc_alph))
-        rspmats[icomp, :nocc_alph, nocc_alph:] = x_full.T
-        rspmats[icomp, nocc_alph:, :nocc_alph] = y_full
+        rspmats[i, :nocc_alph, nocc_alph:] = x_full.T
+        rspmats[i, nocc_alph:, :nocc_alph] = y_full
 
     rhsmats = np.zeros(shape=(ncomp, norb, norb))
-    for icomp in range(ncomp):
-        rhsvec = rhsvecs[icomp, :, 0]
+    for i in range(ncomp):
+        rhsvec = rhsvecs[i, :, 0]
         rhsvec_top = rhsvec[:nov_alph]
         rhsvec_bot = rhsvec[nov_alph:]
         rhsvec_top_mat = utils.repack_vector_to_matrix(rhsvec_top, (nvirt_alph, nocc_alph))
         rhsvec_bot_mat = utils.repack_vector_to_matrix(rhsvec_bot, (nvirt_alph, nocc_alph))
-        rhsmats[icomp, :nocc_alph, nocc_alph:] = rhsvec_top_mat.T
-        rhsmats[icomp, nocc_alph:, :nocc_alph] = rhsvec_bot_mat
+        rhsmats[i, :nocc_alph, nocc_alph:] = rhsvec_top_mat.T
+        rhsmats[i, nocc_alph:, :nocc_alph] = rhsvec_bot_mat
 
     polarizability_full = np.empty_like(polarizability)
     for a in (0, 1, 2):
@@ -75,28 +75,28 @@ def test_first_hyperpolarizability_static_rhf_wigner_explicit():
     # V_{p,q} <- full MO transformation of right hand side
     integrals_ao = operator.ao_integrals
     integrals_mo = np.empty_like(integrals_ao)
-    for icomp in range(ncomp):
-        integrals_mo[icomp, ...] = (C[0, ...].T).dot(integrals_ao[icomp, ...]).dot(C[0, ...])
+    for i in range(ncomp):
+        integrals_mo[i, ...] = (C[0, ...].T).dot(integrals_ao[i, ...]).dot(C[0, ...])
 
     G = np.empty_like(rspmats)
     C = mf.mo_coeff
     # TODO I feel as though if I have all the MO-basis two-electron
     # integrals, I shouldn't need another JK build.
-    for icomp in range(ncomp):
-        V = integrals_mo[icomp, ...]
-        Dl = C[:, nocc_alph:].dot(utils.repack_vector_to_matrix(rspvecs[icomp, :nov_alph, 0], (nvirt_alph, nocc_alph))).dot(C[:, :nocc_alph].T)
+    for i in range(ncomp):
+        V = integrals_mo[i, ...]
+        Dl = C[:, nocc_alph:].dot(utils.repack_vector_to_matrix(rspvecs[i, :nov_alph, 0], (nvirt_alph, nocc_alph))).dot(C[:, :nocc_alph].T)
         J, K = mf.get_jk(mol, Dl, hermi=0)
         F_AO = -(4*J - K - K.T)
         F_MO = (C.T).dot(F_AO).dot(C)
-        G[icomp, ...] = V + F_MO
+        G[i, ...] = V + F_MO
 
     E_diag = np.diag(E[0, ...])
     epsilon = G.copy()
     omega = 0
-    for icomp in range(ncomp):
-        eoU = (E_diag[..., np.newaxis] + omega) * rspmats[icomp, ...]
-        Ue = rspmats[icomp, ...] * E_diag[np.newaxis, ...]
-        epsilon[icomp, ...] += (eoU - Ue)
+    for i in range(ncomp):
+        eoU = (E_diag[..., np.newaxis] + omega) * rspmats[i, ...]
+        Ue = rspmats[i, ...] * E_diag[np.newaxis, ...]
+        epsilon[i, ...] += (eoU - Ue)
 
     # Assume some symmetry and calculate only part of the tensor.
 
@@ -242,9 +242,9 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit():
 
     rspmats_1 = np.zeros(shape=(ncomp, norb, norb))
     rspmats_2 = np.zeros(shape=(ncomp, norb, norb))
-    for icomp in range(ncomp):
-        rspvec_1 = rspvecs_1[icomp, :, 0]
-        rspvec_2 = rspvecs_2[icomp, :, 0]
+    for i in range(ncomp):
+        rspvec_1 = rspvecs_1[i, :, 0]
+        rspvec_2 = rspvecs_2[i, :, 0]
         x_1 = rspvec_1[:nov_alph]
         y_1 = rspvec_1[nov_alph:]
         x_2 = rspvec_2[:nov_alph]
@@ -253,20 +253,20 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit():
         y_full_1 = utils.repack_vector_to_matrix(y_1, (nvirt_alph, nocc_alph))
         x_full_2 = utils.repack_vector_to_matrix(x_2, (nvirt_alph, nocc_alph))
         y_full_2 = utils.repack_vector_to_matrix(y_2, (nvirt_alph, nocc_alph))
-        rspmats_1[icomp, :nocc_alph, nocc_alph:] = y_full_1.T
-        rspmats_1[icomp, nocc_alph:, :nocc_alph] = x_full_1
-        rspmats_2[icomp, :nocc_alph, nocc_alph:] = y_full_2.T
-        rspmats_2[icomp, nocc_alph:, :nocc_alph] = x_full_2
+        rspmats_1[i, :nocc_alph, nocc_alph:] = y_full_1.T
+        rspmats_1[i, nocc_alph:, :nocc_alph] = x_full_1
+        rspmats_2[i, :nocc_alph, nocc_alph:] = y_full_2.T
+        rspmats_2[i, nocc_alph:, :nocc_alph] = x_full_2
 
     rhsmats = np.zeros(shape=(ncomp, norb, norb))
-    for icomp in range(ncomp):
-        rhsvec = rhsvecs[icomp, :, 0]
+    for i in range(ncomp):
+        rhsvec = rhsvecs[i, :, 0]
         rhsvec_top = rhsvec[:nov_alph]
         rhsvec_bot = rhsvec[nov_alph:]
         rhsvec_top_mat = utils.repack_vector_to_matrix(rhsvec_top, (nvirt_alph, nocc_alph))
         rhsvec_bot_mat = utils.repack_vector_to_matrix(rhsvec_bot, (nvirt_alph, nocc_alph))
-        rhsmats[icomp, :nocc_alph, nocc_alph:] = rhsvec_top_mat.T
-        rhsmats[icomp, nocc_alph:, :nocc_alph] = rhsvec_bot_mat
+        rhsmats[i, :nocc_alph, nocc_alph:] = rhsvec_top_mat.T
+        rhsmats[i, nocc_alph:, :nocc_alph] = rhsvec_bot_mat
 
     polarizability_full_1 = np.empty_like(polarizability_1)
     polarizability_full_2 = np.empty_like(polarizability_2)
@@ -283,26 +283,21 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit():
     # V_{p,q} <- full MO transformation of right hand side
     integrals_ao = operator.ao_integrals
     integrals_mo = np.empty_like(integrals_ao)
-    for icomp in range(ncomp):
-        integrals_mo[icomp, ...] = (C[0, ...].T).dot(integrals_ao[icomp, ...]).dot(C[0, ...])
-
-    # from pyresponse.ao2mo import AO2MOpyscf
-    # ao2mo = AO2MOpyscf(C, pyscfmol=mol)
-    # ao2mo.perform_rhf_full()
-    # tei_mo = ao2mo.tei_mo[0]
+    for i in range(ncomp):
+        integrals_mo[i, ...] = (C[0, ...].T).dot(integrals_ao[i, ...]).dot(C[0, ...])
 
     G_1 = np.empty_like(rspmats_1)
     G_2 = np.empty_like(rspmats_2)
     C = mf.mo_coeff
     # TODO I feel as though if I have all the MO-basis two-electron
     # integrals, I shouldn't need another JK build.
-    for icomp in range(ncomp):
-        V = integrals_mo[icomp, ...]
-        Dl_1 = (C[:, :nocc_alph]).dot(rspmats_1[icomp, :nocc_alph, :]).dot(C.T)
-        Dr_1 = (-C).dot(rspmats_1[icomp, :, :nocc_alph]).dot(C[:, :nocc_alph].T)
+    for i in range(ncomp):
+        V = integrals_mo[i, ...]
+        Dl_1 = (C[:, :nocc_alph]).dot(rspmats_1[i, :nocc_alph, :]).dot(C.T)
+        Dr_1 = (-C).dot(rspmats_1[i, :, :nocc_alph]).dot(C[:, :nocc_alph].T)
         D_1 = Dl_1 + Dr_1
-        Dl_2 = (C[:, :nocc_alph]).dot(rspmats_2[icomp, :nocc_alph, :]).dot(C.T)
-        Dr_2 = (-C).dot(rspmats_2[icomp, :, :nocc_alph]).dot(C[:, :nocc_alph].T)
+        Dl_2 = (C[:, :nocc_alph]).dot(rspmats_2[i, :nocc_alph, :]).dot(C.T)
+        Dr_2 = (-C).dot(rspmats_2[i, :, :nocc_alph]).dot(C[:, :nocc_alph].T)
         D_2 = Dl_2 + Dr_2
         J_1, K_1 = mf.get_jk(mol, D_1, hermi=0)
         J_2, K_2 = mf.get_jk(mol, D_2, hermi=0)
@@ -310,19 +305,19 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit():
         F_AO_2 = 2*J_2 - K_2
         F_MO_1 = (C.T).dot(F_AO_1).dot(C)
         F_MO_2 = (C.T).dot(F_AO_2).dot(C)
-        G_1[icomp, ...] = V + F_MO_1
-        G_2[icomp, ...] = V + F_MO_2
+        G_1[i, ...] = V + F_MO_1
+        G_2[i, ...] = V + F_MO_2
 
     E_diag = np.diag(E[0, ...])
     epsilon_1 = G_1.copy()
     epsilon_2 = G_2.copy()
-    for icomp in range(ncomp):
-        eoU_1 = (E_diag[..., np.newaxis] + f1) * rspmats_1[icomp, ...]
-        Ue_1 = rspmats_1[icomp, ...] * E_diag[np.newaxis, ...]
-        epsilon_1[icomp, ...] += (eoU_1 - Ue_1)
-        eoU_2 = (E_diag[..., np.newaxis] + f2) * rspmats_2[icomp, ...]
-        Ue_2 = rspmats_2[icomp, ...] * E_diag[np.newaxis, ...]
-        epsilon_2[icomp, ...] += (eoU_2 - Ue_2)
+    for i in range(ncomp):
+        eoU_1 = (E_diag[..., np.newaxis] + f1) * rspmats_1[i, ...]
+        Ue_1 = rspmats_1[i, ...] * E_diag[np.newaxis, ...]
+        epsilon_1[i, ...] += (eoU_1 - Ue_1)
+        eoU_2 = (E_diag[..., np.newaxis] + f2) * rspmats_2[i, ...]
+        Ue_2 = rspmats_2[i, ...] * E_diag[np.newaxis, ...]
+        epsilon_2[i, ...] += (eoU_2 - Ue_2)
 
     # Assume some symmetry and calculate only part of the tensor.
 
@@ -369,10 +364,10 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit():
 
     # Transpose all frequency-doubled quantities (+2w) to get -2w.
 
-    for icomp in range(ncomp):
-        rspmats_2[icomp, ...] = rspmats_2[icomp, ...].T
-        G_2[icomp, ...] = -G_2[icomp, ...].T
-        epsilon_2[icomp, ...] = -epsilon_2[icomp, ...].T
+    for i in range(ncomp):
+        rspmats_2[i, ...] = rspmats_2[i, ...].T
+        G_2[i, ...] = -G_2[i, ...].T
+        epsilon_2[i, ...] = -epsilon_2[i, ...].T
 
     # Assume some symmetry and calculate only part of the tensor. This
     # time, work with the in-place manipulated quantities (this tests
@@ -502,9 +497,9 @@ def test_first_hyperpolarizability_eope_rhf_wigner_explicit():
 
     rspmats_1 = np.zeros(shape=(ncomp, norb, norb))
     rspmats_2 = np.zeros(shape=(ncomp, norb, norb))
-    for icomp in range(ncomp):
-        rspvec_1 = rspvecs_1[icomp, :, 0]
-        rspvec_2 = rspvecs_2[icomp, :, 0]
+    for i in range(ncomp):
+        rspvec_1 = rspvecs_1[i, :, 0]
+        rspvec_2 = rspvecs_2[i, :, 0]
         x_1 = rspvec_1[:nov_alph]
         y_1 = rspvec_1[nov_alph:]
         x_2 = rspvec_2[:nov_alph]
@@ -513,20 +508,20 @@ def test_first_hyperpolarizability_eope_rhf_wigner_explicit():
         y_full_1 = utils.repack_vector_to_matrix(y_1, (nvirt_alph, nocc_alph))
         x_full_2 = utils.repack_vector_to_matrix(x_2, (nvirt_alph, nocc_alph))
         y_full_2 = utils.repack_vector_to_matrix(y_2, (nvirt_alph, nocc_alph))
-        rspmats_1[icomp, :nocc_alph, nocc_alph:] = y_full_1.T
-        rspmats_1[icomp, nocc_alph:, :nocc_alph] = x_full_1
-        rspmats_2[icomp, :nocc_alph, nocc_alph:] = y_full_2.T
-        rspmats_2[icomp, nocc_alph:, :nocc_alph] = x_full_2
+        rspmats_1[i, :nocc_alph, nocc_alph:] = y_full_1.T
+        rspmats_1[i, nocc_alph:, :nocc_alph] = x_full_1
+        rspmats_2[i, :nocc_alph, nocc_alph:] = y_full_2.T
+        rspmats_2[i, nocc_alph:, :nocc_alph] = x_full_2
 
     rhsmats = np.zeros(shape=(ncomp, norb, norb))
-    for icomp in range(ncomp):
-        rhsvec = rhsvecs[icomp, :, 0]
+    for i in range(ncomp):
+        rhsvec = rhsvecs[i, :, 0]
         rhsvec_top = rhsvec[:nov_alph]
         rhsvec_bot = rhsvec[nov_alph:]
         rhsvec_top_mat = utils.repack_vector_to_matrix(rhsvec_top, (nvirt_alph, nocc_alph))
         rhsvec_bot_mat = utils.repack_vector_to_matrix(rhsvec_bot, (nvirt_alph, nocc_alph))
-        rhsmats[icomp, :nocc_alph, nocc_alph:] = rhsvec_top_mat.T
-        rhsmats[icomp, nocc_alph:, :nocc_alph] = rhsvec_bot_mat
+        rhsmats[i, :nocc_alph, nocc_alph:] = rhsvec_top_mat.T
+        rhsmats[i, nocc_alph:, :nocc_alph] = rhsvec_bot_mat
 
     polarizability_full_1 = np.empty_like(polarizability_1)
     polarizability_full_2 = np.empty_like(polarizability_2)
@@ -541,8 +536,8 @@ def test_first_hyperpolarizability_eope_rhf_wigner_explicit():
     # V_{p,q} <- full MO transformation of right hand side
     integrals_ao = operator.ao_integrals
     integrals_mo = np.empty_like(integrals_ao)
-    for icomp in range(ncomp):
-        integrals_mo[icomp, ...] = (C[0, ...].T).dot(integrals_ao[icomp, ...]).dot(C[0, ...])
+    for i in range(ncomp):
+        integrals_mo[i, ...] = (C[0, ...].T).dot(integrals_ao[i, ...]).dot(C[0, ...])
 
     # from pyresponse.ao2mo import AO2MOpyscf
     # ao2mo = AO2MOpyscf(C, pyscfmol=mol)
@@ -554,13 +549,13 @@ def test_first_hyperpolarizability_eope_rhf_wigner_explicit():
     C = mf.mo_coeff
     # TODO I feel as though if I have all the MO-basis two-electron
     # integrals, I shouldn't need another JK build.
-    for icomp in range(ncomp):
-        V = integrals_mo[icomp, ...]
-        Dl_1 = (C[:, :nocc_alph]).dot(rspmats_1[icomp, :nocc_alph, :]).dot(C.T)
-        Dr_1 = (-C).dot(rspmats_1[icomp, :, :nocc_alph]).dot(C[:, :nocc_alph].T)
+    for i in range(ncomp):
+        V = integrals_mo[i, ...]
+        Dl_1 = (C[:, :nocc_alph]).dot(rspmats_1[i, :nocc_alph, :]).dot(C.T)
+        Dr_1 = (-C).dot(rspmats_1[i, :, :nocc_alph]).dot(C[:, :nocc_alph].T)
         D_1 = Dl_1 + Dr_1
-        Dl_2 = (C[:, :nocc_alph]).dot(rspmats_2[icomp, :nocc_alph, :]).dot(C.T)
-        Dr_2 = (-C).dot(rspmats_2[icomp, :, :nocc_alph]).dot(C[:, :nocc_alph].T)
+        Dl_2 = (C[:, :nocc_alph]).dot(rspmats_2[i, :nocc_alph, :]).dot(C.T)
+        Dr_2 = (-C).dot(rspmats_2[i, :, :nocc_alph]).dot(C[:, :nocc_alph].T)
         D_2 = Dl_2 + Dr_2
         J_1, K_1 = mf.get_jk(mol, D_1, hermi=0)
         J_2, K_2 = mf.get_jk(mol, D_2, hermi=0)
@@ -568,19 +563,19 @@ def test_first_hyperpolarizability_eope_rhf_wigner_explicit():
         F_AO_2 = 2*J_2 - K_2
         F_MO_1 = (C.T).dot(F_AO_1).dot(C)
         F_MO_2 = (C.T).dot(F_AO_2).dot(C)
-        G_1[icomp, ...] = V + F_MO_1
-        G_2[icomp, ...] = V + F_MO_2
+        G_1[i, ...] = V + F_MO_1
+        G_2[i, ...] = V + F_MO_2
 
     E_diag = np.diag(E[0, ...])
     epsilon_1 = G_1.copy()
     epsilon_2 = G_2.copy()
-    for icomp in range(ncomp):
-        eoU_1 = (E_diag[..., np.newaxis] + f1) * rspmats_1[icomp, ...]
-        Ue_1 = rspmats_1[icomp, ...] * E_diag[np.newaxis, ...]
-        epsilon_1[icomp, ...] += (eoU_1 - Ue_1)
-        eoU_2 = (E_diag[..., np.newaxis] + f2) * rspmats_2[icomp, ...]
-        Ue_2 = rspmats_2[icomp, ...] * E_diag[np.newaxis, ...]
-        epsilon_2[icomp, ...] += (eoU_2 - Ue_2)
+    for i in range(ncomp):
+        eoU_1 = (E_diag[..., np.newaxis] + f1) * rspmats_1[i, ...]
+        Ue_1 = rspmats_1[i, ...] * E_diag[np.newaxis, ...]
+        epsilon_1[i, ...] += (eoU_1 - Ue_1)
+        eoU_2 = (E_diag[..., np.newaxis] + f2) * rspmats_2[i, ...]
+        Ue_2 = rspmats_2[i, ...] * E_diag[np.newaxis, ...]
+        epsilon_2[i, ...] += (eoU_2 - Ue_2)
 
     # Assume some symmetry and calculate only part of the tensor.
 
@@ -683,9 +678,9 @@ def test_first_hyperpolarizability_or_rhf_wigner_explicit():
 
     rspmats_1 = np.zeros(shape=(ncomp, norb, norb))
     rspmats_2 = np.zeros(shape=(ncomp, norb, norb))
-    for icomp in range(ncomp):
-        rspvec_1 = rspvecs_1[icomp, :, 0]
-        rspvec_2 = rspvecs_2[icomp, :, 0]
+    for i in range(ncomp):
+        rspvec_1 = rspvecs_1[i, :, 0]
+        rspvec_2 = rspvecs_2[i, :, 0]
         x_1 = rspvec_1[:nov_alph]
         y_1 = rspvec_1[nov_alph:]
         x_2 = rspvec_2[:nov_alph]
@@ -694,20 +689,20 @@ def test_first_hyperpolarizability_or_rhf_wigner_explicit():
         y_full_1 = utils.repack_vector_to_matrix(y_1, (nvirt_alph, nocc_alph))
         x_full_2 = utils.repack_vector_to_matrix(x_2, (nvirt_alph, nocc_alph))
         y_full_2 = utils.repack_vector_to_matrix(y_2, (nvirt_alph, nocc_alph))
-        rspmats_1[icomp, :nocc_alph, nocc_alph:] = y_full_1.T
-        rspmats_1[icomp, nocc_alph:, :nocc_alph] = x_full_1
-        rspmats_2[icomp, :nocc_alph, nocc_alph:] = y_full_2.T
-        rspmats_2[icomp, nocc_alph:, :nocc_alph] = x_full_2
+        rspmats_1[i, :nocc_alph, nocc_alph:] = y_full_1.T
+        rspmats_1[i, nocc_alph:, :nocc_alph] = x_full_1
+        rspmats_2[i, :nocc_alph, nocc_alph:] = y_full_2.T
+        rspmats_2[i, nocc_alph:, :nocc_alph] = x_full_2
 
     rhsmats = np.zeros(shape=(ncomp, norb, norb))
-    for icomp in range(ncomp):
-        rhsvec = rhsvecs[icomp, :, 0]
+    for i in range(ncomp):
+        rhsvec = rhsvecs[i, :, 0]
         rhsvec_top = rhsvec[:nov_alph]
         rhsvec_bot = rhsvec[nov_alph:]
         rhsvec_top_mat = utils.repack_vector_to_matrix(rhsvec_top, (nvirt_alph, nocc_alph))
         rhsvec_bot_mat = utils.repack_vector_to_matrix(rhsvec_bot, (nvirt_alph, nocc_alph))
-        rhsmats[icomp, :nocc_alph, nocc_alph:] = rhsvec_top_mat.T
-        rhsmats[icomp, nocc_alph:, :nocc_alph] = rhsvec_bot_mat
+        rhsmats[i, :nocc_alph, nocc_alph:] = rhsvec_top_mat.T
+        rhsmats[i, nocc_alph:, :nocc_alph] = rhsvec_bot_mat
 
     polarizability_full_1 = np.empty_like(polarizability_1)
     polarizability_full_2 = np.empty_like(polarizability_2)
@@ -722,8 +717,8 @@ def test_first_hyperpolarizability_or_rhf_wigner_explicit():
     # V_{p,q} <- full MO transformation of right hand side
     integrals_ao = operator.ao_integrals
     integrals_mo = np.empty_like(integrals_ao)
-    for icomp in range(ncomp):
-        integrals_mo[icomp, ...] = (C[0, ...].T).dot(integrals_ao[icomp, ...]).dot(C[0, ...])
+    for i in range(ncomp):
+        integrals_mo[i, ...] = (C[0, ...].T).dot(integrals_ao[i, ...]).dot(C[0, ...])
 
     # from pyresponse.ao2mo import AO2MOpyscf
     # ao2mo = AO2MOpyscf(C, pyscfmol=mol)
@@ -735,13 +730,13 @@ def test_first_hyperpolarizability_or_rhf_wigner_explicit():
     C = mf.mo_coeff
     # TODO I feel as though if I have all the MO-basis two-electron
     # integrals, I shouldn't need another JK build.
-    for icomp in range(ncomp):
-        V = integrals_mo[icomp, ...]
-        Dl_1 = (C[:, :nocc_alph]).dot(rspmats_1[icomp, :nocc_alph, :]).dot(C.T)
-        Dr_1 = (-C).dot(rspmats_1[icomp, :, :nocc_alph]).dot(C[:, :nocc_alph].T)
+    for i in range(ncomp):
+        V = integrals_mo[i, ...]
+        Dl_1 = (C[:, :nocc_alph]).dot(rspmats_1[i, :nocc_alph, :]).dot(C.T)
+        Dr_1 = (-C).dot(rspmats_1[i, :, :nocc_alph]).dot(C[:, :nocc_alph].T)
         D_1 = Dl_1 + Dr_1
-        Dl_2 = (C[:, :nocc_alph]).dot(rspmats_2[icomp, :nocc_alph, :]).dot(C.T)
-        Dr_2 = (-C).dot(rspmats_2[icomp, :, :nocc_alph]).dot(C[:, :nocc_alph].T)
+        Dl_2 = (C[:, :nocc_alph]).dot(rspmats_2[i, :nocc_alph, :]).dot(C.T)
+        Dr_2 = (-C).dot(rspmats_2[i, :, :nocc_alph]).dot(C[:, :nocc_alph].T)
         D_2 = Dl_2 + Dr_2
         J_1, K_1 = mf.get_jk(mol, D_1, hermi=0)
         J_2, K_2 = mf.get_jk(mol, D_2, hermi=0)
@@ -749,19 +744,19 @@ def test_first_hyperpolarizability_or_rhf_wigner_explicit():
         F_AO_2 = 2*J_2 - K_2
         F_MO_1 = (C.T).dot(F_AO_1).dot(C)
         F_MO_2 = (C.T).dot(F_AO_2).dot(C)
-        G_1[icomp, ...] = V + F_MO_1
-        G_2[icomp, ...] = V + F_MO_2
+        G_1[i, ...] = V + F_MO_1
+        G_2[i, ...] = V + F_MO_2
 
     E_diag = np.diag(E[0, ...])
     epsilon_1 = G_1.copy()
     epsilon_2 = G_2.copy()
-    for icomp in range(ncomp):
-        eoU_1 = (E_diag[..., np.newaxis] + f1) * rspmats_1[icomp, ...]
-        Ue_1 = rspmats_1[icomp, ...] * E_diag[np.newaxis, ...]
-        epsilon_1[icomp, ...] += (eoU_1 - Ue_1)
-        eoU_2 = (E_diag[..., np.newaxis] + f2) * rspmats_2[icomp, ...]
-        Ue_2 = rspmats_2[icomp, ...] * E_diag[np.newaxis, ...]
-        epsilon_2[icomp, ...] += (eoU_2 - Ue_2)
+    for i in range(ncomp):
+        eoU_1 = (E_diag[..., np.newaxis] + f1) * rspmats_1[i, ...]
+        Ue_1 = rspmats_1[i, ...] * E_diag[np.newaxis, ...]
+        epsilon_1[i, ...] += (eoU_1 - Ue_1)
+        eoU_2 = (E_diag[..., np.newaxis] + f2) * rspmats_2[i, ...]
+        Ue_2 = rspmats_2[i, ...] * E_diag[np.newaxis, ...]
+        epsilon_2[i, ...] += (eoU_2 - Ue_2)
 
     # Assume some symmetry and calculate only part of the tensor.
 
@@ -864,9 +859,9 @@ def test_first_hyperpolarizability_or_rhf_wigner_explicit():
 
 #     rspmats_1 = np.zeros(shape=(ncomp, norb, norb))
 #     rspmats_2 = np.zeros(shape=(ncomp, norb, norb))
-#     for icomp in range(ncomp):
-#         rspvec_1 = rspvecs_1[icomp, :, 0]
-#         rspvec_2 = rspvecs_2[icomp, :, 0]
+#     for i in range(ncomp):
+#         rspvec_1 = rspvecs_1[i, :, 0]
+#         rspvec_2 = rspvecs_2[i, :, 0]
 #         x_1 = rspvec_1[:nov_alph]
 #         y_1 = rspvec_1[nov_alph:]
 #         x_2 = rspvec_2[:nov_alph]
@@ -875,20 +870,20 @@ def test_first_hyperpolarizability_or_rhf_wigner_explicit():
 #         y_full_1 = utils.repack_vector_to_matrix(y_1, (nvirt_alph, nocc_alph))
 #         x_full_2 = utils.repack_vector_to_matrix(x_2, (nvirt_alph, nocc_alph))
 #         y_full_2 = utils.repack_vector_to_matrix(y_2, (nvirt_alph, nocc_alph))
-#         rspmats_1[icomp, :nocc_alph, nocc_alph:] = y_full_1.T
-#         rspmats_1[icomp, nocc_alph:, :nocc_alph] = x_full_1
-#         rspmats_2[icomp, :nocc_alph, nocc_alph:] = y_full_2.T
-#         rspmats_2[icomp, nocc_alph:, :nocc_alph] = x_full_2
+#         rspmats_1[i, :nocc_alph, nocc_alph:] = y_full_1.T
+#         rspmats_1[i, nocc_alph:, :nocc_alph] = x_full_1
+#         rspmats_2[i, :nocc_alph, nocc_alph:] = y_full_2.T
+#         rspmats_2[i, nocc_alph:, :nocc_alph] = x_full_2
 
 #     rhsmats = np.zeros(shape=(ncomp, norb, norb))
-#     for icomp in range(ncomp):
-#         rhsvec = rhsvecs[icomp, :, 0]
+#     for i in range(ncomp):
+#         rhsvec = rhsvecs[i, :, 0]
 #         rhsvec_top = rhsvec[:nov_alph]
 #         rhsvec_bot = rhsvec[nov_alph:]
 #         rhsvec_top_mat = utils.repack_vector_to_matrix(rhsvec_top, (nvirt_alph, nocc_alph))
 #         rhsvec_bot_mat = utils.repack_vector_to_matrix(rhsvec_bot, (nvirt_alph, nocc_alph))
-#         rhsmats[icomp, :nocc_alph, nocc_alph:] = rhsvec_top_mat.T
-#         rhsmats[icomp, nocc_alph:, :nocc_alph] = rhsvec_bot_mat
+#         rhsmats[i, :nocc_alph, nocc_alph:] = rhsvec_top_mat.T
+#         rhsmats[i, nocc_alph:, :nocc_alph] = rhsvec_bot_mat
 
 #     polarizability_full_1 = np.empty_like(polarizability_1)
 #     polarizability_full_2 = np.empty_like(polarizability_2)
@@ -903,8 +898,8 @@ def test_first_hyperpolarizability_or_rhf_wigner_explicit():
 #     # V_{p,q} <- full MO transformation of right hand side
 #     integrals_ao = operator.ao_integrals
 #     integrals_mo = np.empty_like(integrals_ao)
-#     for icomp in range(ncomp):
-#         integrals_mo[icomp, ...] = (C[0, ...].T).dot(integrals_ao[icomp, ...]).dot(C[0, ...])
+#     for i in range(ncomp):
+#         integrals_mo[i, ...] = (C[0, ...].T).dot(integrals_ao[i, ...]).dot(C[0, ...])
 
 #     # from pyresponse.ao2mo import AO2MOpyscf
 #     # ao2mo = AO2MOpyscf(C, pyscfmol=mol)
@@ -916,13 +911,13 @@ def test_first_hyperpolarizability_or_rhf_wigner_explicit():
 #     C = mf.mo_coeff
 #     # TODO I feel as though if I have all the MO-basis two-electron
 #     # integrals, I shouldn't need another JK build.
-#     for icomp in range(ncomp):
-#         V = integrals_mo[icomp, ...]
-#         Dl_1 = (C[:, :nocc_alph]).dot(rspmats_1[icomp, :nocc_alph, :]).dot(C.T)
-#         Dr_1 = (-C).dot(rspmats_1[icomp, :, :nocc_alph]).dot(C[:, :nocc_alph].T)
+#     for i in range(ncomp):
+#         V = integrals_mo[i, ...]
+#         Dl_1 = (C[:, :nocc_alph]).dot(rspmats_1[i, :nocc_alph, :]).dot(C.T)
+#         Dr_1 = (-C).dot(rspmats_1[i, :, :nocc_alph]).dot(C[:, :nocc_alph].T)
 #         D_1 = Dl_1 + Dr_1
-#         Dl_2 = (C[:, :nocc_alph]).dot(rspmats_2[icomp, :nocc_alph, :]).dot(C.T)
-#         Dr_2 = (-C).dot(rspmats_2[icomp, :, :nocc_alph]).dot(C[:, :nocc_alph].T)
+#         Dl_2 = (C[:, :nocc_alph]).dot(rspmats_2[i, :nocc_alph, :]).dot(C.T)
+#         Dr_2 = (-C).dot(rspmats_2[i, :, :nocc_alph]).dot(C[:, :nocc_alph].T)
 #         D_2 = Dl_2 + Dr_2
 #         J_1, K_1 = mf.get_jk(mol, D_1, hermi=0)
 #         J_2, K_2 = mf.get_jk(mol, D_2, hermi=0)
@@ -930,19 +925,19 @@ def test_first_hyperpolarizability_or_rhf_wigner_explicit():
 #         F_AO_2 = 2*J_2 - K_2
 #         F_MO_1 = (C.T).dot(F_AO_1).dot(C)
 #         F_MO_2 = (C.T).dot(F_AO_2).dot(C)
-#         G_1[icomp, ...] = V + F_MO_1
-#         G_2[icomp, ...] = V + F_MO_2
+#         G_1[i, ...] = V + F_MO_1
+#         G_2[i, ...] = V + F_MO_2
 
 #     E_diag = np.diag(E[0, ...])
 #     epsilon_1 = G_1.copy()
 #     epsilon_2 = G_2.copy()
-#     for icomp in range(ncomp):
-#         eoU_1 = (E_diag[..., np.newaxis] + f1) * rspmats_1[icomp, ...]
-#         Ue_1 = rspmats_1[icomp, ...] * E_diag[np.newaxis, ...]
-#         epsilon_1[icomp, ...] += (eoU_1 - Ue_1)
-#         eoU_2 = (E_diag[..., np.newaxis] + f2) * rspmats_2[icomp, ...]
-#         Ue_2 = rspmats_2[icomp, ...] * E_diag[np.newaxis, ...]
-#         epsilon_2[icomp, ...] += (eoU_2 - Ue_2)
+#     for i in range(ncomp):
+#         eoU_1 = (E_diag[..., np.newaxis] + f1) * rspmats_1[i, ...]
+#         Ue_1 = rspmats_1[i, ...] * E_diag[np.newaxis, ...]
+#         epsilon_1[i, ...] += (eoU_1 - Ue_1)
+#         eoU_2 = (E_diag[..., np.newaxis] + f2) * rspmats_2[i, ...]
+#         Ue_2 = rspmats_2[i, ...] * E_diag[np.newaxis, ...]
+#         epsilon_2[i, ...] += (eoU_2 - Ue_2)
 
 #     mU = (rspmats_1, rspmats_2)
 #     mG = (G_1, G_2)
