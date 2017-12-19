@@ -68,10 +68,10 @@ Q-Chem Developer Version! Running on 127.0.0.*
 Compilation information
 -----------------------
 
- SVN revision             | 26487
- SVN branch               | trunk
- Last SVN revision        | 26480
- Last SVN author          | zgan
+ SVN revision             | 26488
+ SVN branch               | branches/libresponse
+ Last SVN revision        | 26488
+ Last SVN author          | ericb
  System                   | Linux-4.13.6-1-ARCH
  Processor                | x86_64
  Compiler                 | GNU
@@ -80,12 +80,12 @@ Compilation information
  Fortran compiler version | 7.2.0
 
 
- Q-Chem begins on Sun Nov 26 15:36:27 2017  
+ Q-Chem begins on Mon Dec 18 21:18:29 2017  
 
 Host: copper
 0
 
-     Scratch files written to /tmp/qchem/qchem30448//
+     Scratch files written to /tmp/qchem/qchem32710//
 
 Checking the input file for inconsistencies... 	...done.
 
@@ -105,7 +105,7 @@ $rem
 $end
 
 $fdpfreq
-eopockels
+optrect
 0.0773178
 au
 $end
@@ -170,7 +170,7 @@ $end
    13     -76.0033540252      2.46E-10
    14     -76.0033540252      2.68E-11 Convergence criterion met
  ---------------------------------------
- SCF time:  CPU 0.15 s  wall 0.17 s
+ SCF time:  CPU 0.17 s  wall 1.16 s
  SCF   energy in the final basis set = -76.00335403
  Total energy in the final basis set = -76.00335403
 
@@ -856,7 +856,7 @@ Now forming Dipole-matrix (explicitly)...
   ===== TDSCF converged after 22 iterations... =====
 
 
- TDSCF (1st order) time:  CPU       1.66 s  wall       1.67 s
+ TDSCF (1st order) time:  CPU       1.72 s  wall       1.72 s
 
                ======================================================= 
                ===                                                 === 
@@ -912,7 +912,7 @@ Now forming Dipole-matrix (explicitly)...
 
                ========================================================== 
                ===                                                    === 
-               ===       Electro-optical Pockels effect (a.u.)        === 
+               ===       Optical Rectification          (a.u.)        === 
                ===                                                    === 
                ========================================================== 
 
@@ -927,16 +927,16 @@ Now forming Dipole-matrix (explicitly)...
 
                           x                     y                     z
 
-       xx             0.00000000           -0.00000000            0.39625203
-       yy             0.00000000           -0.00000000          -27.09167342
+       xx             0.00000000           -0.00000000           -0.54942694
+       yy             0.00000000           -0.00000000          -27.07221782
        zz             0.00000000           -0.00000000          -11.71166032
        xy            -0.00000000            0.00000000            0.00000000
        xz             0.39625203            0.00000000            0.00000000
        yz             0.00000000          -27.09167342           -0.00000000
 
   Averages:               x                     y                     z
-                     -0.00000000            0.00000000           38.40708171
-                     38.40708171
+                     -0.00000000            0.00000000           38.71582284
+                     38.71582284
 
 
 
@@ -955,7 +955,7 @@ WARNING: no symmetry was used (preliminary integrals)
       =            (2007)                                    = 
       ======================================================== 
 
- MO-PROP time:  CPU 1.67 s  wall 1.70 s 
+ MO-PROP time:  CPU 1.72 s  wall 1.73 s 
 
 
  --------------------------------------------------------------
@@ -1008,10 +1008,10 @@ WARNING: no symmetry was used (preliminary integrals)
       XZZZ       0.0000   YZZZ      -0.0000   ZZZZ      -8.3774
  -----------------------------------------------------------------
 Archival summary:
-1\1\copper\SP\HF\BasisUnspecified\12\eric\SunNov2615:36:292017SunNov2615:36:292017\0\\#,HF,BasisUnspecified,\\0,1\O\H,1,1.1\H,1,1.1,2,104\\HF=-76.003354\\@
+1\1\copper\SP\HF\BasisUnspecified\12\eric\MonDec1821:18:332017MonDec1821:18:332017\0\\#,HF,BasisUnspecified,\\0,1\O\H,1,1.1\H,1,1.1,2,104\\HF=-76.003354\\@
 
- Total job time:  2.50s(wall), 1.90s(cpu) 
- Sun Nov 26 15:36:29 2017
+ Total job time:  3.78s(wall), 1.98s(cpu) 
+ Mon Dec 18 21:18:33 2017
 
         *************************************************************
         *                                                           *

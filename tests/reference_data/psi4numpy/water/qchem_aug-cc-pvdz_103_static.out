@@ -68,10 +68,10 @@ Q-Chem Developer Version! Running on 127.0.0.*
 Compilation information
 -----------------------
 
- SVN revision             | 26487
- SVN branch               | trunk
- Last SVN revision        | 26480
- Last SVN author          | zgan
+ SVN revision             | 26488
+ SVN branch               | branches/libresponse
+ Last SVN revision        | 26488
+ Last SVN author          | ericb
  System                   | Linux-4.13.6-1-ARCH
  Processor                | x86_64
  Compiler                 | GNU
@@ -80,12 +80,12 @@ Compilation information
  Fortran compiler version | 7.2.0
 
 
- Q-Chem begins on Sun Nov 26 15:36:45 2017  
+ Q-Chem begins on Mon Dec 18 21:18:49 2017  
 
 Host: copper
 0
 
-     Scratch files written to /tmp/qchem/qchem30598//
+     Scratch files written to /tmp/qchem/qchem478//
 
 Checking the input file for inconsistencies... 	...done.
 
@@ -168,7 +168,7 @@ $end
    13     -76.0033540252      2.46E-10
    14     -76.0033540252      2.68E-11 Convergence criterion met
  ---------------------------------------
- SCF time:  CPU 0.15 s  wall 0.15 s
+ SCF time:  CPU 0.23 s  wall 0.23 s
  SCF   energy in the final basis set = -76.00335403
  Total energy in the final basis set = -76.00335403
 
@@ -498,7 +498,7 @@ Now forming Dipole-matrix (explicitly)...
   ===== TDSCF converged after 18 iterations... =====
 
 
- TDSCF (1st order) time:  CPU       0.74 s  wall       0.74 s
+ TDSCF (1st order) time:  CPU       0.76 s  wall       0.76 s
 
                ======================================================= 
                ===                                                 === 
@@ -579,7 +579,7 @@ WARNING: no symmetry was used (preliminary integrals)
       =            (2007)                                    = 
       ======================================================== 
 
- MO-PROP time:  CPU 0.74 s  wall 0.74 s 
+ MO-PROP time:  CPU 0.77 s  wall 0.77 s 
 
 
  --------------------------------------------------------------
@@ -632,10 +632,10 @@ WARNING: no symmetry was used (preliminary integrals)
       XZZZ       0.0000   YZZZ      -0.0000   ZZZZ      -8.3774
  -----------------------------------------------------------------
 Archival summary:
-1\1\copper\SP\HF\BasisUnspecified\12\eric\SunNov2615:36:462017SunNov2615:36:462017\0\\#,HF,BasisUnspecified,\\0,1\O\H,1,1.1\H,1,1.1,2,104\\HF=-76.003354\\@
+1\1\copper\SP\HF\BasisUnspecified\12\eric\MonDec1821:18:502017MonDec1821:18:502017\0\\#,HF,BasisUnspecified,\\0,1\O\H,1,1.1\H,1,1.1,2,104\\HF=-76.003354\\@
 
- Total job time:  0.97s(wall), 0.97s(cpu) 
- Sun Nov 26 15:36:46 2017
+ Total job time:  1.11s(wall), 1.10s(cpu) 
+ Mon Dec 18 21:18:50 2017
 
         *************************************************************
         *                                                           *
