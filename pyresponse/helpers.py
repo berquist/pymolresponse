@@ -1,3 +1,5 @@
+"""Utility functions that do calculate physical values."""
+
 import numpy as np
 import numpy.linalg as npl
 

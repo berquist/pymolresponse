@@ -1,3 +1,5 @@
+r"""Storage of common physical constants. Uses `scipy.constants`: https://docs.scipy.org/doc/scipy/reference/constants.html."""
+
 import scipy.constants as spc
 
 

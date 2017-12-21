@@ -1,7 +1,11 @@
+"""Tools for performing AO-to-MO transformations of two-electron integrals."""
+
 from .utils import fix_mocoeffs_shape
 
 
 class AO2MO(object):
+    """Interface for performing AO-to-MO tranformations of two-electron integrals.
+    """
 
     # TODO see
     # https://github.com/psi4/psi4numpy/blob/master/Tutorials/01_Psi4NumPy-Basics/1f_tensor-manipulation.ipynb
@@ -14,19 +18,24 @@ class AO2MO(object):
         self.tei_mo = tuple()
 
     def perform_rhf_full(self):
+        r"""Perform the transformation :math:`(\mu\nu|\lambda\sigma) \rightarrow (pq|rs)`."""
         raise NotImplementedError
 
     def perform_rhf_partial(self):
+        r"""Perform the transformation :math:`(\mu\nu|\lambda\sigma) \rightarrow (ia|jb), (ij|ab)`."""
         raise NotImplementedError
 
     def perform_uhf_full(self):
+        r"""Perform the transformation :math:`(\mu\nu|\lambda\sigma) \rightarrow (p^{\alpha}q^{\alpha}|r^{\alpha}s^{\alpha}), (p^{\alpha}q^{\alpha}|r^{\beta}s^{\beta}), (p^{\beta}q^{\beta}|r^{\alpha}s^{\alpha}), (p^{\beta}q^{\beta}|r^{\beta}s^{\beta})`."""
         raise NotImplementedError
 
     def perform_uhf_partial(self):
+        r"""Perform the transformation :math:`(\mu\nu|\lambda\sigma) \rightarrow (i^{\alpha}a^{\alpha}|j^{\alpha}b^{\alpha}), (i^{\alpha}a^{\alpha}|j^{\beta}b^{\beta}), (i^{\beta}a^{\beta}|j^{\alpha}b^{\alpha}), (i^{\beta}a^{\beta}|j^{\beta}b^{\beta}), (i^{\alpha}j^{\alpha}|a^{\alpha}b^{\alpha}), (i^{\beta}j^{\beta}|a^{\beta}b^{\beta})`."""
         raise NotImplementedError
 
 
 class AO2MOpyscf(AO2MO):
+    """Perform AO-to-MO transformations using pyscf."""
 
     # TODO what does the pyscf compact kwarg do?
     def __init__(self, C, verbose=1, pyscfmol=None):

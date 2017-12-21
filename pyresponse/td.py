@@ -1,3 +1,5 @@
+"""Drivers for solving the time-dependent Hartree-Fock (TDHF) equations."""
+
 import numpy as np
 
 from .cphf import CPHF
@@ -7,6 +9,7 @@ from .utils import form_results
 
 
 class TDHF(CPHF):
+    """Driver for solving the time-dependent Hartree-Fock (TDHF) equations, also called the random phase approximation (RPA) equations."""
 
     def __init__(self, solver, *args, **kwargs):
         super().__init__(solver, *args, **kwargs)
@@ -88,6 +91,7 @@ class TDHF(CPHF):
 
 
 class TDA(TDHF):
+    """Driver for solving the time-dependent Hartree-Fock equations with the Tamm-Dancoff approximation (TDA), also called the configuration interaction with single excitation (CIS) equations."""
 
     def __init__(self, solver, *args, **kwargs):
         super().__init__(solver, *args, **kwargs)

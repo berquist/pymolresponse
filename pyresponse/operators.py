@@ -5,6 +5,7 @@ from .utils import repack_matrix_to_vector
 
 
 class Operator(object):
+    """Handle property integrals, taking them from the AO basis to a representation of a right-hand side perturbation for CPHF or transition properties."""
 
     def __init__(self, label='', is_imaginary=False, is_spin_dependent=False, triplet=False, slice_idx=-1, *args, **kwargs):
         self.label = label
@@ -26,6 +27,7 @@ class Operator(object):
         return 'Operator(label="{label}", is_imaginary={is_imaginary}, is_spin_dependent={is_spin_dependent}, triplet={triplet}, slice_idx={slice_idx})'.format(label=self.label, is_imaginary=self.is_imaginary, is_spin_dependent=self.is_spin_dependent, triplet=self.triplet, slice_idx=self.slice_idx)
 
     def form_rhs(self, C, occupations):
+        """Form the right-hand side for CPHF."""
         assert hasattr(self, 'ao_integrals')
         # pylint: disable=no-member
         assert isinstance(self.ao_integrals, np.ndarray)

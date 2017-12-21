@@ -12,6 +12,8 @@ pyresponse\.ao2mo module
     :undoc-members:
     :show-inheritance:
 
+.. inheritance-diagram:: pyresponse.ao2mo
+
 pyresponse\.constants module
 ----------------------------
 
@@ -19,6 +21,8 @@ pyresponse\.constants module
     :members:
     :undoc-members:
     :show-inheritance:
+
+.. inheritance-diagram:: pyresponse.constants
 
 pyresponse\.cphf module
 -----------------------
@@ -28,6 +32,8 @@ pyresponse\.cphf module
     :undoc-members:
     :show-inheritance:
 
+.. inheritance-diagram:: pyresponse.cphf
+
 pyresponse\.ecd module
 ----------------------
 
@@ -35,6 +41,8 @@ pyresponse\.ecd module
     :members:
     :undoc-members:
     :show-inheritance:
+
+.. inheritance-diagram:: pyresponse.ecd
 
 pyresponse\.electric module
 ---------------------------
@@ -44,6 +52,8 @@ pyresponse\.electric module
     :undoc-members:
     :show-inheritance:
 
+.. inheritance-diagram:: pyresponse.electric
+
 pyresponse\.explicit\_equations\_full module
 --------------------------------------------
 
@@ -51,6 +61,8 @@ pyresponse\.explicit\_equations\_full module
     :members:
     :undoc-members:
     :show-inheritance:
+
+.. inheritance-diagram:: pyresponse.explicit_equations_full
 
 pyresponse\.explicit\_equations\_partial module
 -----------------------------------------------
@@ -60,6 +72,8 @@ pyresponse\.explicit\_equations\_partial module
     :undoc-members:
     :show-inheritance:
 
+.. inheritance-diagram:: pyresponse.explicit_equations_partial
+
 pyresponse\.helpers module
 --------------------------
 
@@ -67,6 +81,8 @@ pyresponse\.helpers module
     :members:
     :undoc-members:
     :show-inheritance:
+
+.. inheritance-diagram:: pyresponse.helpers
 
 pyresponse\.integrals module
 ----------------------------
@@ -76,6 +92,8 @@ pyresponse\.integrals module
     :undoc-members:
     :show-inheritance:
 
+.. inheritance-diagram:: pyresponse.integrals
+
 pyresponse\.iterators module
 ----------------------------
 
@@ -83,6 +101,8 @@ pyresponse\.iterators module
     :members:
     :undoc-members:
     :show-inheritance:
+
+.. inheritance-diagram:: pyresponse.iterators
 
 pyresponse\.magnetic module
 ---------------------------
@@ -92,6 +112,8 @@ pyresponse\.magnetic module
     :undoc-members:
     :show-inheritance:
 
+.. inheritance-diagram:: pyresponse.magnetic
+
 pyresponse\.molecular\_property module
 --------------------------------------
 
@@ -99,6 +121,8 @@ pyresponse\.molecular\_property module
     :members:
     :undoc-members:
     :show-inheritance:
+
+.. inheritance-diagram:: pyresponse.molecular_property
 
 pyresponse\.operators module
 ----------------------------
@@ -108,6 +132,8 @@ pyresponse\.operators module
     :undoc-members:
     :show-inheritance:
 
+.. inheritance-diagram:: pyresponse.operators
+
 pyresponse\.optrot module
 -------------------------
 
@@ -115,6 +141,8 @@ pyresponse\.optrot module
     :members:
     :undoc-members:
     :show-inheritance:
+
+.. inheritance-diagram:: pyresponse.optrot
 
 pyresponse\.td module
 ---------------------
@@ -124,6 +152,8 @@ pyresponse\.td module
     :undoc-members:
     :show-inheritance:
 
+.. inheritance-diagram:: pyresponse.td
+
 pyresponse\.utils module
 ------------------------
 
@@ -132,6 +162,7 @@ pyresponse\.utils module
     :undoc-members:
     :show-inheritance:
 
+.. inheritance-diagram:: pyresponse.utils
 
 Module contents
 ---------------
@@ -140,3 +171,5 @@ Module contents
     :members:
     :undoc-members:
     :show-inheritance:
+
+.. inheritance-diagram:: pyresponse

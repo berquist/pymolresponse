@@ -1,8 +1,11 @@
+"""Wrapper for performing a dipole polarizability calculation."""
+
 from .molecular_property import ResponseProperty
 from .operators import Operator
 
 
 class Polarizability(ResponseProperty):
+    """Wrapper for performing a dipole polarizability calculation."""
 
     def __init__(self, pyscfmol, mocoeffs, moenergies, occupations, frequencies, *args, **kwargs):
         super().__init__(pyscfmol, mocoeffs, moenergies, occupations, frequencies, *args, **kwargs)

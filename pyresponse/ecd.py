@@ -1,3 +1,5 @@
+"""Wrapper for performing an electronic circular dichroism (ECD) calculation."""
+
 import numpy as np
 
 from .operators import Operator
@@ -5,6 +7,7 @@ from .molecular_property import TransitionProperty
 
 
 class ECD(TransitionProperty):
+    """Wrapper for performing an electronic circular dichroism (ECD) calculation."""
 
     def __init__(self, pyscfmol, mocoeffs, moenergies, occupations, do_dipvel=False, *args, **kwargs):
         super().__init__(pyscfmol, mocoeffs, moenergies, occupations, do_dipvel, *args, **kwargs)

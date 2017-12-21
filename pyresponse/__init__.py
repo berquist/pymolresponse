@@ -1,6 +1,3 @@
-# check_dipole.py
-# check_fermi_contact.py
-# check_hessian.py
 from . import ao2mo
 from . import constants
 from . import cphf

@@ -1,3 +1,5 @@
+"""Driver for solving the coupled perturbed Hartree-Fock (CPHF) equations."""
+
 import numpy as np
 
 from .iterators import LineqSolver, ExactLineqSolver
@@ -6,6 +8,7 @@ from .utils import (form_results, form_vec_energy_differences, np_load,
 
 
 class CPHF(object):
+    """Driver for solving the coupled perturbed Hartree-Fock (CPHF) equations."""
 
     def __init__(self, solver, *args, **kwargs):
 
@@ -19,12 +22,16 @@ class CPHF(object):
         self.results = []
 
     def set_frequencies(self, frequencies=None):
+        r"""Set the frequencies :math:`\omega_f` for which frequency-dependent CPHF is performed."""
 
+        # :type frequencies float or list
+        # :param frequencies one or more frequencies in atomic units; if None, do the static case (0.0)
         assert self.solver is not None
         self.solver.set_frequencies(frequencies)
         self.frequencies = self.solver.frequencies
 
     def add_operator(self, operator):
+        """Add an operator to the list of operators that will be used as the right-hand side perturbation."""
 
         assert self.solver is not None
         self.solver.add_operator(operator)

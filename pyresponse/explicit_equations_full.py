@@ -1,3 +1,5 @@
+r"""Explicit equations for orbital Hessian terms using fully-transformed MO-basis two-electron integrals (i.e., :math:`(pq|rs)`)."""
+
 import numpy as np
 
 from .utils import form_vec_energy_differences
@@ -11,7 +13,6 @@ basis. [singlet]
     :math:`\left<aj||ib\right> = \left<aj|ib\right> -
     \left<aj|bi\right> = [ai|jb] - [ab|ji] = 2(ai|jb) - (ab|ji)`. It
     also includes the virt-occ energy difference on the diagonal.
-
     """
 
     norb = E_MO.shape[0]
