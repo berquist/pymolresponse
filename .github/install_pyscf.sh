@@ -22,4 +22,4 @@ cmake \
     ..
 make
 cd ../../.. || exit
-python setup.py install
+# python setup.py install
