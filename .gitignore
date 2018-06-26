@@ -1,5 +1,5 @@
-*.html
 tmp*
+html/
 untracked
 
 ## Psi4
