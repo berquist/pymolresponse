@@ -46,3 +46,4 @@ script:
 
 after_success:
   - codecov
+  - cd docs && bash ./deploy_pyresponse_docs_repo.sh
