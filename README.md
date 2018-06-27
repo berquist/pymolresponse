@@ -6,6 +6,8 @@ Molecular frequency-dependent response properties for arbitrary operators.
 [![codecov](https://codecov.io/gh/berquist/pyresponse/branch/master/graph/badge.svg)](https://codecov.io/gh/berquist/pyresponse)
 [![license](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg?style=flat)](https://github.com/berquist/pyresponse/blob/master/LICENSE)
 
+For documentation, go to https://berquist.github.io/pyresponse_docs/.
+
 Currently, the goal is to provide:
 
 1. a pedagogical example of a working molecular orbital response program as an almost direct translation from equations to code,
@@ -17,7 +19,7 @@ Currently, the goal is to provide:
 * Python >= 3.2 because of pyscf.
 * [pyscf](https://github.com/sunqm/pyscf) and its dependencies
 
-## Python dependencies
+## Other Python dependencies
 
 * [periodictable](https://github.com/pkienzle/periodictable) (for calculating the center of mass)
 * [pytest](http://doc.pytest.org/en/latest/) (for testing)
