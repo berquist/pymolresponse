@@ -1,0 +1,4 @@
+[submodule "docs/pyresponse_docs"]
+	path = docs/pyresponse_docs
+	url = git@github.com:berquist/pyresponse_docs
+	branch = master

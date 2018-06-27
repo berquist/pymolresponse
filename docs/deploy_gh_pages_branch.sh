@@ -8,7 +8,8 @@
 # mv buiid/html berquist.github.io/docs/pyresponse
 
 
-# Follow the workflow found here: https://gist.github.com/cobyism/4730490#gistcomment-2375522
+# In order to push to the gh-pages branch, follow the workflow found
+# here: https://gist.github.com/cobyism/4730490#gistcomment-2375522
 
 make html
 mkdir -p html
