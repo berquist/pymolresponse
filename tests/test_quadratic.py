@@ -155,12 +155,13 @@ def test_first_hyperpolarizability_static_rhf_wigner_explicit():
     # Check that the elements of the reduced and full tensors are
     # equivalent.
 
+    thresh = 1.0e-14
     for r in range(6):
         b = off1[r]
         c = off2[r]
         for a in range(3):
             diff = hyperpolarizability[r, a] - hyperpolarizability_full[a, b, c]
-            assert abs(diff) < 1.0e-14
+            assert abs(diff) < thresh
 
     # Compute averages and compare to reference.
     # This is the slow way.
@@ -427,12 +428,13 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit():
     # Check that the elements of the reduced and full tensors are
     # equivalent.
 
+    thresh = 1.0e-13
     for r in range(6):
         b = off1[r]
         c = off2[r]
         for a in range(3):
             diff = hyperpolarizability[r, a] - hyperpolarizability_full[a, b, c]
-            assert abs(diff) < 1.0e-14
+            assert abs(diff) < thresh
 
     # Compute averages and compare to reference.
 
