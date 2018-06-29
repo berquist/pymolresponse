@@ -6,6 +6,7 @@
 
 # git submodule add -b master git@github.com:berquist/pyresponse_docs pyresponse_docs
 # git submodule add -b master https://github.com/berquist/pyresponse_docs.git pyresponse_docs
+git clone git@github.com:berquist/pyresponse_docs.git
 make html
 cp -a build/html/* pyresponse_docs
 cd pyresponse_docs
