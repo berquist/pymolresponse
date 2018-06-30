@@ -46,4 +46,4 @@ script:
 
 after_success:
   - codecov
-  - cd docs && bash ./deploy_pyresponse_docs_repo.sh
+  - if [[ $TRAVIS_BRANCH == master ]]; then cd docs; bash ./deploy_pyresponse_docs_repo.sh; fi
