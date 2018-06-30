@@ -11,15 +11,10 @@ addons:
       - libopenblas-dev
       - libhdf5-dev
 
-# before_install:
-
 cache:
   pip: true
-  # directories:
-  #   - "$HOME/pyscf"
 
 install:
-  - bash .github/install_pyscf.sh
   - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
   - bash miniconda.sh -b -p $HOME/miniconda
   - export PATH="$HOME/miniconda/bin:$PATH"
@@ -31,18 +26,16 @@ install:
   - source activate p4env
   - pip install -r requirements.txt
   - conda install -q -c conda-forge pytest-cov codecov
+  - conda install -q -c pyscf pyscf
   - conda list
   - mkdir "$HOME/tmp"
   - export PSI_SCRATCH="$HOME/tmp"
 
 before_script:
-  - export "PYTHONPATH=$HOME/pyscf:$PYTHONPATH"
   - export "PYTHONPATH=$(pwd):$PYTHONPATH"
 
 script:
   - make test
-
-# after_script:
 
 after_success:
   - codecov
