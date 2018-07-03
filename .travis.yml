@@ -32,6 +32,6 @@ script:
 after_success:
   - codecov
   - export GH_REPO_NAME=pyresponse_docs
-  - export GH_REPO_REF=pyresponse_docs
+  - export GH_REPO_REF=github.com/berquist/pyresponse_docs.git
   - export DOCS_BRANCH_NAME=master
   - if [[ $TRAVIS_BRANCH == master ]]; then cd docs; pip install Sphinx; bash ./deploy_pyresponse_docs_repo_travis.sh; fi
