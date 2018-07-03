@@ -43,6 +43,7 @@ script:
         cd docs
         conda install sphinx sphinx-psi-theme cloud_sptheme sphinx-automodapi graphviz python-graphviz -c conda-forge -c psi4
         bash ./deploy_pyresponse_docs_repo_travis.sh
+        cd ..
     fi
 
 after_success:
