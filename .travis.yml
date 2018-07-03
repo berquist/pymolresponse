@@ -3,12 +3,19 @@ language: python
 python:
   - 3.6
 
+before_cache:
+  - >-
+    if [ ! -d "$HOME/miniconda" ]; then
+        wget -q https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
+        bash miniconda.sh -b -p $HOME/miniconda
+    fi
+
 cache:
   pip: true
+  directories:
+    - $HOME/miniconda
 
 install:
-  - wget -q https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
-  - bash miniconda.sh -b -p $HOME/miniconda
   - export PATH="$HOME/miniconda/bin:$PATH"
   - hash -r
   - conda config --set always_yes yes --set changeps1 no
@@ -32,6 +39,6 @@ script:
 after_success:
   - codecov
   - export GH_REPO_NAME=pyresponse_docs
-  - export GH_REPO_REF=github.com/berquist/pyresponse_docs.git
+  - export GH_REPO_REF=github.com/berquist/${GH_REPO_NAME}.git
   - export DOCS_BRANCH_NAME=master
   - if [[ $TRAVIS_BRANCH == master ]]; then cd docs; pip install Sphinx; bash ./deploy_pyresponse_docs_repo_travis.sh; fi
