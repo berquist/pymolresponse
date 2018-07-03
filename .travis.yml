@@ -5,12 +5,13 @@ python:
 
 cache:
   pip: true
-  directories:
-    - $HOME/miniconda
+  # directories:
+  #   - $HOME/miniconda
 
 install:
   - >-
     if [ ! -d "$HOME/miniconda/bin" ]; then
+        rm -rf $HOME/miniconda
         wget -q https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
         bash miniconda.sh -b -p $HOME/miniconda
     fi
@@ -39,4 +40,9 @@ after_success:
   - export GH_REPO_NAME=pyresponse_docs
   - export GH_REPO_REF=github.com/berquist/${GH_REPO_NAME}.git
   - export DOCS_BRANCH_NAME=master
-  - if [[ $TRAVIS_BRANCH == master ]]; then cd docs; pip install Sphinx; bash ./deploy_pyresponse_docs_repo_travis.sh; fi
+  - >-
+    if [[ $TRAVIS_BRANCH == master ]]; then
+        cd docs
+        conda install sphinx sphinx-psi-theme cloud_sptheme sphinx-automodapi graphviz python-graphviz -c conda-forge -c psi4
+        bash ./deploy_pyresponse_docs_repo_travis.sh
+    fi
