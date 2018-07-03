@@ -3,14 +3,6 @@ language: python
 python:
   - 3.6
 
-addons:
-  apt:
-    packages:
-      - cmake
-      - gfortran
-      - libopenblas-dev
-      - libhdf5-dev
-
 cache:
   pip: true
 
@@ -39,4 +31,7 @@ script:
 
 after_success:
   - codecov
-  - if [[ $TRAVIS_BRANCH == master ]]; then cd docs; bash ./deploy_pyresponse_docs_repo.sh; fi
+  - export GH_REPO_NAME=pyresponse_docs
+  - export GH_REPO_REF=pyresponse_docs
+  - export DOCS_BRANCH_NAME=master
+  - if [[ $TRAVIS_BRANCH == master ]]; then cd docs; pip install Sphinx; bash ./deploy_pyresponse_docs_repo_travis.sh; fi
