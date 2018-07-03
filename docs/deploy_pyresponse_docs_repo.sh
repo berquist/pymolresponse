@@ -6,13 +6,29 @@
 
 set -o errexit
 
-# git submodule add -b master git@github.com:berquist/pyresponse_docs pyresponse_docs
-# git submodule add -b master https://github.com/berquist/pyresponse_docs.git pyresponse_docs
-git clone git@github.com:berquist/pyresponse_docs.git
+GH_USER=berquist
+GH_REPO_NAME=pyresponse_docs
+DOCS_BRANCH_NAME=master
+GH_REPO_REF=github.com:$GH_USER/$GH_REPO_NAME.git
+
 make html
-cp -a build/html/* pyresponse_docs
-cd pyresponse_docs
+
+if [ ! -d $GH_REPO_NAME ]; then
+    echo "Cloning $DOCS_BRANCH_NAME branch of $GH_REPO_REF..."
+    git clone -b $DOCS_BRANCH_NAME git@$GH_REPO_REF
+fi
+cd $GH_REPO_NAME
+rm -rf ./*
+echo "" > .nojekyll
+echo "Copying built HTML..."
+cp -a ../build/html/* .
+
+echo "Adding changes..."
 git add --all
-git commit -m "Deploy documentation `date`"
-git push origin master
+echo "Committing..."
+# This will return 1 if there are no changes, which should not result
+# in failure.
+git commit -m "Deploy documentation `date`" || ret=$?
+git push --force origin $DOCS_BRANCH_NAME
+
 cd ..
