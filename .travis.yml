@@ -38,12 +38,16 @@ script:
   - >-
     if [[ $TRAVIS_BRANCH == master ]]; then
         export GH_REPO_NAME=pyresponse_docs
-        export GH_REPO_REF=github.com/berquist/${GH_REPO_NAME}.git
+        export GH_REPO_SLUG=berquist/${GH_REPO_NAME}
+        export GH_REPO_REF=github.com/${GH_REPO_SLUG}.git
         export DOCS_BRANCH_NAME=master
-        cd docs
+        # cd docs
         conda install sphinx sphinx-psi-theme cloud_sptheme sphinx-automodapi graphviz python-graphviz -c conda-forge -c psi4
-        bash ./deploy_pyresponse_docs_repo_travis.sh
-        cd ..
+        pip install travis-sphinx
+        travis-sphinx build
+        travis-sphinx deploy
+        # bash ./deploy_pyresponse_docs_repo_travis.sh
+        # cd ..
     fi
 
 after_success:
