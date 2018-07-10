@@ -40,12 +40,12 @@ script:
     export GH_REPO_SLUG=berquist/${GH_REPO_NAME}
     export GH_REPO_REF=github.com/${GH_REPO_SLUG}.git
     export DOCS_BRANCH_NAME=master
-    export HTML_DIR="${TRAVIS_BUILD_DIR}"/docs/build/html
+    export DOCS_BUILD_DIR="${TRAVIS_BUILD_DIR}"/doc/build
   - conda install sphinx sphinx-psi-theme cloud_sptheme sphinx-automodapi graphviz python-graphviz -c conda-forge -c psi4
   - pip install travis-sphinx
-  - travis-sphinx --verbose build --nowarn
-  - install -dm755 "${HTML_DIR}"
-  - touch "${HTML_DIR}"/.nojekyll
+  - travis-sphinx --verbose --outdir="${DOCS_BUILD_DIR}" build --source="${DOCS_BUILD_DIR}"/../source --nowarn
+  - install -dm755 "${DOCS_BUILD_DIR}"/html
+  - touch "${DOCS_BUILD_DIR}"/html/.nojekyll
   - >-
     if [[ $TRAVIS_BRANCH == master ]]; then
         travis-sphinx --verbose deploy
