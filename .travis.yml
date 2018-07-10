@@ -39,13 +39,14 @@ script:
     export GH_REPO_NAME=pyresponse_docs
     export GH_REPO_SLUG=berquist/${GH_REPO_NAME}
     export GH_REPO_REF=github.com/${GH_REPO_SLUG}.git
-    export DOCS_BRANCH_NAME=master
-    export DOCS_BUILD_DIR="${TRAVIS_BUILD_DIR}"/doc/build
-  - conda install sphinx sphinx-psi-theme cloud_sptheme sphinx-automodapi graphviz python-graphviz -c conda-forge -c psi4
+    export DOCS_BRANCH_NAME=gh-pages
+    export DOCS_DIR="${TRAVIS_BUILD_DIR}"/doc
+  - conda install sphinx sphinx-automodapi graphviz python-graphviz -c conda-forge -c psi4
   - pip install travis-sphinx
-  - travis-sphinx --verbose --outdir="${DOCS_BUILD_DIR}" build --source="${DOCS_BUILD_DIR}"/../source --nowarn
-  - install -dm755 "${DOCS_BUILD_DIR}"/html
-  - touch "${DOCS_BUILD_DIR}"/html/.nojekyll
+  - travis-sphinx --verbose --outdir="${DOCS_DIR}"/build build --source="${DOCS_DIR}"/source --nowarn
+  - install -dm755 "${DOCS_DIR}"/build/html
+  - touch "${DOCS_DIR}"/build/html/.nojekyll
+  - env
   - >-
     if [[ $TRAVIS_BRANCH == master ]]; then
         MESSAGE="Deploy code docs to GitHub Pages Travis build: ${TRAVIS_BUILD_NUMBER}\n\nCommit: ${TRAVIS_COMMIT}"
