@@ -35,14 +35,17 @@ before_script:
 
 script:
   - make test
-  - export GH_REPO_NAME=pyresponse_docs
-  - export GH_REPO_SLUG=berquist/${GH_REPO_NAME}
-  - export GH_REPO_REF=github.com/${GH_REPO_SLUG}.git
-  - export DOCS_BRANCH_NAME=master
+  - >-    
+    export GH_REPO_NAME=pyresponse_docs
+    export GH_REPO_SLUG=berquist/${GH_REPO_NAME}
+    export GH_REPO_REF=github.com/${GH_REPO_SLUG}.git
+    export DOCS_BRANCH_NAME=master
+    export HTML_DIR="${TRAVIS_BUILD_DIR}"/docs/build/html
   - conda install sphinx sphinx-psi-theme cloud_sptheme sphinx-automodapi graphviz python-graphviz -c conda-forge -c psi4
   - pip install travis-sphinx
-  - travis-sphinx --verbose build
-  - echo "" > ${TRAVIS_BUILD_DIR}/docs/build/html/.nojekyll
+  - travis-sphinx --verbose build --nowarn
+  - install -dm755 "${HTML_DIR}"
+  - touch "${HTML_DIR}"/.nojekyll
   - >-
     if [[ $TRAVIS_BRANCH == master ]]; then
         travis-sphinx --verbose deploy
