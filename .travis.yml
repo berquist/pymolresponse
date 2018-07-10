@@ -26,34 +26,31 @@ install:
   - pip install -r requirements.txt
   - conda install -q -c conda-forge pytest-cov codecov
   - conda install -q -c pyscf pyscf
+  - conda install sphinx sphinx-automodapi graphviz python-graphviz -c conda-forge -c psi4
+  - pip install travis-sphinx
   - conda list
-  - mkdir "$HOME/tmp"
-  - export PSI_SCRATCH="$HOME/tmp"
 
 before_script:
+  - mkdir "$HOME/tmp"
+  - export PSI_SCRATCH="$HOME/tmp"
   - export "PYTHONPATH=$(pwd):$PYTHONPATH"
+  - export GH_REPO_NAME=pyresponse_docs
+  - export GH_REPO_SLUG=berquist/${GH_REPO_NAME}
+  - export GH_REPO_REF=github.com/${GH_REPO_SLUG}.git
+  - export DOCS_BRANCH_NAME=gh-pages
+  - export DOCS_DIR="${TRAVIS_BUILD_DIR}"/doc
 
 script:
   - make test
-  - >-    
-    export GH_REPO_NAME=pyresponse_docs
-    export GH_REPO_SLUG=berquist/${GH_REPO_NAME}
-    export GH_REPO_REF=github.com/${GH_REPO_SLUG}.git
-    export DOCS_BRANCH_NAME=gh-pages
-    export DOCS_DIR="${TRAVIS_BUILD_DIR}"/doc
-  - conda install sphinx sphinx-automodapi graphviz python-graphviz -c conda-forge -c psi4
-  - pip install travis-sphinx
   - travis-sphinx --verbose --outdir="${DOCS_DIR}"/build build --source="${DOCS_DIR}"/source --nowarn
   - install -dm755 "${DOCS_DIR}"/build/html
   - touch "${DOCS_DIR}"/build/html/.nojekyll
-  - env
   - >-
-    if [[ $TRAVIS_BRANCH == master ]]; then
-        MESSAGE="Deploy code docs to GitHub Pages Travis build: ${TRAVIS_BUILD_NUMBER}\n\nCommit: ${TRAVIS_COMMIT}"
-        travis-sphinx --verbose deploy --message="${MESSAGE}"
-        # cd docs
-        # bash ./deploy_pyresponse_docs_repo_travis.sh
-        # cd ..
+    if [[ "${TRAVIS_BRANCH}" == master ]]; then
+        bash "${DOCS_DIR}"/deploy_pyresponse_docs_repo_travis-sphinx.sh;
+        # cd docs;
+        # bash ./deploy_pyresponse_docs_repo_travis.sh;
+        # cd ..;
     fi
 
 after_success:
