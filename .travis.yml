@@ -48,7 +48,8 @@ script:
   - touch "${DOCS_BUILD_DIR}"/html/.nojekyll
   - >-
     if [[ $TRAVIS_BRANCH == master ]]; then
-        travis-sphinx --verbose deploy
+        MESSAGE="Deploy code docs to GitHub Pages Travis build: ${TRAVIS_BUILD_NUMBER}\n\nCommit: ${TRAVIS_COMMIT}"
+        travis-sphinx --verbose deploy --message="${MESSAGE}"
         # cd docs
         # bash ./deploy_pyresponse_docs_repo_travis.sh
         # cd ..
