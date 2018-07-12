@@ -8,9 +8,15 @@ import sys
 if sys.version_info.major == 2 or sys.version_info.minor <= 3:
     import operator
     def accumulate(iterable, func=operator.add):
-        """Return running totals"""
-        # accumulate([1,2,3,4,5]) --> 1 3 6 10 15
-        # accumulate([1,2,3,4,5], operator.mul) --> 1 2 6 24 120
+        """Return running totals.
+
+        >>> acc = accumulate([1, 2, 3, 4, 5])
+        >>> [x for x in acc]
+        [1, 3, 6, 10, 15]
+        >>> acc = accumulate([1, 2, 3, 4, 5], operator.mul)
+        >>> [x for x in acc]
+        [1, 2, 6, 24, 120]
+        """
         it = iter(iterable)
         try:
             total = next(it)
