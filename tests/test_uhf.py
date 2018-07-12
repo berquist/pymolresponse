@@ -1,3 +1,5 @@
+"""Hard-coded response equations for unrestricted wavefunctions."""
+
 import numpy as np
 
 import pyscf

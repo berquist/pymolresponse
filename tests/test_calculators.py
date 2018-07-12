@@ -7,7 +7,7 @@ try:
 except:
     pass
 
-from cclib.parser import utils
+from cclib.parser.utils import convertor
 from cclib.io import ccopen
 
 import pyscf
@@ -208,7 +208,7 @@ def calculate_rhf(dalton_tmpdir, hamiltonian=None, spin=None, operator_label=Non
         job = ccopen(os.path.join(dalton_tmpdir, 'DALTON.OUT'))
         data = job.parse()
         # pylint: disable=no-member
-        E = np.diag([utils.convertor(x, 'eV', 'hartree')
+        E = np.diag([convertor(x, 'eV', 'hartree')
                      for x in data.moenergies[0]])[np.newaxis, ...]
     else:
         pass
@@ -312,7 +312,7 @@ def calculate_uhf(dalton_tmpdir, hamiltonian=None, spin=None, operator_label=Non
         job = ccopen(os.path.join(dalton_tmpdir, 'DALTON.OUT'))
         data = job.parse()
         # pylint: disable=no-member
-        E = np.diag([utils.convertor(x, 'eV', 'hartree')
+        E = np.diag([convertor(x, 'eV', 'hartree')
                      for x in data.moenergies[0]])[np.newaxis, ...]
         E = np.concatenate((E, E), axis=0)
     else:

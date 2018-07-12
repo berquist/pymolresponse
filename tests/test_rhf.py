@@ -1,14 +1,17 @@
+"""Hard-coded response equations for restricted wavefunctions."""
+
 import numpy as np
 
 import pyscf
 
-from pyresponse import iterators, cphf, operators, utils
+from pyresponse import utils
 from pyresponse import explicit_equations_full as eqns
 from pyresponse.ao2mo import AO2MOpyscf
 from . import molecules_pyscf as molecules
 
 
 def test_explicit_rhf_outside_solver_off_diagonal_blocks():
+
     mol = molecules.molecule_water_sto3g()
     mol.build()
 
