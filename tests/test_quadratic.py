@@ -222,11 +222,11 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit():
 
     # each operator contains multiple sets of response vectors, one
     # set of components for each frequency
-    assert type(calculator.driver.solver.operators) == list
+    assert isinstance(calculator.driver.solver.operators, list)
     assert len(calculator.driver.solver.operators) == 1
     operator = calculator.driver.solver.operators[0]
     rhsvecs = operator.mo_integrals_ai_supervector_alph
-    assert type(operator.rspvecs_alph) == list
+    assert isinstance(operator.rspvecs_alph, list)
     assert len(operator.rspvecs_alph) == 2
     rspvecs_1 = operator.rspvecs_alph[0]
     rspvecs_2 = operator.rspvecs_alph[1]
@@ -478,11 +478,11 @@ def test_first_hyperpolarizability_eope_rhf_wigner_explicit():
 
     # each operator contains multiple sets of response vectors, one
     # set of components for each frequency
-    assert type(calculator.driver.solver.operators) == list
+    assert isinstance(calculator.driver.solver.operators, list)
     assert len(calculator.driver.solver.operators) == 1
     operator = calculator.driver.solver.operators[0]
     rhsvecs = operator.mo_integrals_ai_supervector_alph
-    assert type(operator.rspvecs_alph) == list
+    assert isinstance(operator.rspvecs_alph, list)
     assert len(operator.rspvecs_alph) == 2
     rspvecs_1 = operator.rspvecs_alph[0]
     rspvecs_2 = operator.rspvecs_alph[1]
@@ -659,11 +659,11 @@ def test_first_hyperpolarizability_or_rhf_wigner_explicit():
 
     # each operator contains multiple sets of response vectors, one
     # set of components for each frequency
-    assert type(calculator.driver.solver.operators) == list
+    assert isinstance(calculator.driver.solver.operators, list)
     assert len(calculator.driver.solver.operators) == 1
     operator = calculator.driver.solver.operators[0]
     rhsvecs = operator.mo_integrals_ai_supervector_alph
-    assert type(operator.rspvecs_alph) == list
+    assert isinstance(operator.rspvecs_alph, list)
     assert len(operator.rspvecs_alph) == 2
     rspvecs_1 = operator.rspvecs_alph[0]
     rspvecs_2 = operator.rspvecs_alph[1]
@@ -840,11 +840,11 @@ def test_first_hyperpolarizability_or_rhf_wigner_explicit():
 
 #     # each operator contains multiple sets of response vectors, one
 #     # set of components for each frequency
-#     assert type(calculator.driver.solver.operators) == list
+#     assert isinstance(calculator.driver.solver.operators, list)
 #     assert len(calculator.driver.solver.operators) == 1
 #     operator = calculator.driver.solver.operators[0]
 #     rhsvecs = operator.mo_integrals_ai_supervector_alph
-#     assert type(operator.rspvecs_alph) == list
+#     assert isinstance(operator.rspvecs_alph, list)
 #     assert len(operator.rspvecs_alph) == 2
 #     rspvecs_1 = operator.rspvecs_alph[0]
 #     rspvecs_2 = operator.rspvecs_alph[1]
