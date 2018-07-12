@@ -19,4 +19,4 @@ nosetest-cov:
 
 docs:
 	# sphinx-apidoc -o docs/source pyresponse
-	cd docs && make html
+	cd doc && make html
