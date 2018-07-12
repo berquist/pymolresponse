@@ -5,7 +5,7 @@
 
 set -o errexit
 
-git config user.name "Travis CI"
+git config user.name "Travis CI User"
 git config user.email "travis@travis-ci.org"
 
 make html
