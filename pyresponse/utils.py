@@ -1,3 +1,5 @@
+"""Utility functions that are not core to calculating physical values."""
+
 import os.path
 
 import numpy as np
@@ -39,6 +41,7 @@ def form_results(vecs_property, vecs_response):
 
 
 def np_load(filename):
+    """Read a file using NumPy."""
     arr = np.load(filename)
     if isinstance(arr, np.lib.npyio.NpzFile):
         # Make the assumption that there's only a single array
@@ -67,6 +70,13 @@ def repack_vector_to_matrix(vec, shape):
 
 
 def clean_dalton_label(original_label):
+    """Operator/integral labels in DALTON are in uppercase and may have
+    spaces in them; replace spaces with underscores and make all
+    letters lowercase.
+
+    >>> clean_dalton_label("PSO 002")
+    "pso_002"
+    """
     cleaned_label = original_label.lower().replace(' ', '_')
     return cleaned_label
 
@@ -186,8 +196,7 @@ def get_reference_value_from_file(filename, hamiltonian, spin, frequency, label_
                 found = True
 
     if not found:
-        # TODO blow up, "Could not find reference value"
-        pass
+        raise ValueError("Could not find reference value")
 
     return ref
 
@@ -297,18 +306,30 @@ def moenergies_from_psi4wfn(wfn):
 
 
 class Splitter:
+    """Split a line based not on a character, but a given number of field
+    widths.
+    """
+
     def __init__(self, widths):
         self.start_indices = [0] + list(accumulate(widths))[:-1]
         self.end_indices = list(accumulate(widths))
 
-    def split(self, line):
+    def split(self, line, truncate=True):
+        """Split the given line using the field widths passed in on class
+        initialization.
+
+        Handle lines that contain fewer fields than specified in the
+        widths; they are added as empty strings. If `truncate`, remove
+        them.
+        """
         elements = [line[start:end].strip()
                     for (start, end) in zip(self.start_indices, self.end_indices)]
-        for i in range(1, len(elements)):
-            if elements[-1] == '':
-                elements.pop()
-            else:
-                break
+        if truncate:
+            for i in range(1, len(elements)):
+                if elements[-1] == '':
+                    elements.pop()
+                else:
+                    break
         return elements
 
 

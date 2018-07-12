@@ -1,4 +1,4 @@
-"""Utility functions that do calculate physical values."""
+"""Utility functions that are core to calculating physical values."""
 
 import numpy as np
 import numpy.linalg as npl
