@@ -1,4 +1,4 @@
-r"""Explicit equations for orbital Hessian terms using fully-transformed MO-basis two-electron integrals (i.e., :math:`(pq|rs)`)."""
+r"""Explicit equations for orbital Hessian terms using fully-transformed MO-basis two-electron integrals, *e.g.*, :math:`(pq|rs)`."""
 
 import numpy as np
 
@@ -6,8 +6,7 @@ from .utils import form_vec_energy_differences
 
 
 def form_rpa_a_matrix_mo_singlet_full(E_MO, TEI_MO, nocc):
-    r"""Form the A (CIS) matrix for RPA in the molecular orbital (MO)
-basis. [singlet]
+    r"""Form the A (CIS) matrix in the MO basis. [singlet]
 
     The equation for element :math:`\{ia,jb\}` is
     :math:`\left<aj||ib\right> = \left<aj|ib\right> -
@@ -38,12 +37,11 @@ basis. [singlet]
 
 
 def form_rpa_a_matrix_mo_triplet_full(E_MO, TEI_MO, nocc):
-    """Form the A (CIS) matrix for RPA in the molecular orbital (MO)
-    basis. [triplet]
+    r"""Form the A (CIS) matrix in the MO basis. [triplet]
 
-    The equation for element {ia,jb} is - <aj|bi> = - [ab|ji] = -
-    (ab|ji). It also includes the virt-occ energy difference on the
-    diagonal.
+    The equation for element :math:`\{ia,jb\}` is :math:`-
+    \left<aj|bi\right> = - [ab|ji] = - (ab|ji)`. It also includes the
+    virt-occ energy difference on the diagonal.
     """
 
     norb = E_MO.shape[0]
@@ -69,11 +67,11 @@ def form_rpa_a_matrix_mo_triplet_full(E_MO, TEI_MO, nocc):
 
 
 def form_rpa_b_matrix_mo_singlet_full(TEI_MO, nocc):
-    """Form the B matrix for RPA in the molecular orbital (MO)
-    basis. [singlet]
+    r"""Form the B matrix for RPA in the MO basis. [singlet]
 
-    The equation for element {ia,jb} is <ab||ij> = <ab|ij> - <ab|ji> =
-    [ai|bj] - [aj|bi] = 2*(ai|bj) - (aj|bi).
+    The equation for element :math:`\{ia,jb\}` is
+    :math:`\left<ab||ij\right> = \left<ab|ij\right> -
+    \left<ab|ji\right> = [ai|bj] - [aj|bi] = 2(ai|bj) - (aj|bi)`.
     """
 
     norb = TEI_MO.shape[0]
@@ -94,6 +92,10 @@ def form_rpa_b_matrix_mo_singlet_full(TEI_MO, nocc):
 
 
 def form_rpa_b_matrix_mo_triplet_full(TEI_MO, nocc):
+    r"""Form the B matrix for RPA in the MO basis. [triplet]
+
+    The equation for element :math:`\{ia,jb\}` is :math:`????`.
+    """
 
     norb = TEI_MO.shape[0]
     nvirt = norb - nocc
@@ -113,6 +115,11 @@ def form_rpa_b_matrix_mo_triplet_full(TEI_MO, nocc):
 
 
 def form_rpa_a_matrix_mo_singlet_ss_full(E_MO, TEI_MO, nocc):
+    r"""Form the same-spin part of the A (CIS) matrix in the MO
+    basis. [singlet]
+
+    The equation for element :math:`\{ia,jb\}` is :math:`????`.
+    """
 
     norb = E_MO.shape[0]
     nvirt = norb - nocc
@@ -137,6 +144,11 @@ def form_rpa_a_matrix_mo_singlet_ss_full(E_MO, TEI_MO, nocc):
 
 
 def form_rpa_a_matrix_mo_singlet_os_full(TEI_MO_xxyy, nocc_x, nocc_y):
+    r"""Form the opposite-spin part of the A (CIS) matrix in the MO
+    basis. [singlet]
+
+    The equation for element :math:`\{ia,jb\}` is :math:`????`.
+    """
 
     nvirt_x = TEI_MO_xxyy.shape[0] - nocc_x
     nvirt_y = TEI_MO_xxyy.shape[2] - nocc_y
@@ -158,6 +170,11 @@ def form_rpa_a_matrix_mo_singlet_os_full(TEI_MO_xxyy, nocc_x, nocc_y):
 
 
 def form_rpa_b_matrix_mo_singlet_ss_full(TEI_MO, nocc):
+    r"""Form the same-spin part of the RPA B matrix in the MO
+    basis. [singlet]
+
+    The equation for element :math:`\{ia,jb\}` is :math:`????`.
+    """
 
     norb = TEI_MO.shape[0]
     nvirt = norb - nocc
@@ -177,6 +194,11 @@ def form_rpa_b_matrix_mo_singlet_ss_full(TEI_MO, nocc):
 
 
 def form_rpa_b_matrix_mo_singlet_os_full(TEI_MO_xxyy, nocc_x, nocc_y):
+    r"""Form the opposite-spin part of the RPA B matrix in the MO
+    basis. [singlet]
+
+    The equation for element :math:`\{ia,jb\}` is :math:`????`.
+    """
 
     nvirt_x = TEI_MO_xxyy.shape[0] - nocc_x
     nvirt_y = TEI_MO_xxyy.shape[2] - nocc_y

@@ -1,4 +1,4 @@
-r"""Explicit equations for orbital Hessian terms using partially-transformed MO-basis two-electron integrals (i.e., :math:`(ia|jb), (ij|ab))`)."""
+r"""Explicit equations for orbital Hessian terms using partially-transformed MO-basis two-electron integrals, *e.g.*, :math:`(ia|jb), (ij|ab)`."""
 
 
 import numpy as np
@@ -7,12 +7,12 @@ from .utils import form_vec_energy_differences
 
 
 def form_rpa_a_matrix_mo_singlet_partial(E_MO, TEI_MO_iajb, TEI_MO_ijab):
-    """Form the A (CIS) matrix for RPA in the molecular orbital (MO)
-    basis. [singlet]
+    r"""Form the A (CIS) matrix in the MO basis. [singlet]
 
-    The equation for element {ia,jb} is <aj||ib> = <aj|ib> - <aj|bi> =
-    [ai|jb] - [ab|ji] = 2(ai|jb) - (ab|ji). It also includes the
-    virt-occ energy difference on the diagonal.
+    The equation for element :math:`\{ia,jb\}` is
+    :math:`\left<aj||ib\right> = \left<aj|ib\right> -
+    \left<aj|bi\right> = [ai|jb] - [ab|ji] = 2(ai|jb) - (ab|ji)`. It
+    also includes the virt-occ energy difference on the diagonal.
     """
 
     shape_iajb = TEI_MO_iajb.shape
@@ -40,12 +40,11 @@ def form_rpa_a_matrix_mo_singlet_partial(E_MO, TEI_MO_iajb, TEI_MO_ijab):
 
 
 def form_rpa_a_matrix_mo_triplet_partial(E_MO, TEI_MO_ijab):
-    """Form the A (CIS) matrix for RPA in the molecular orbital (MO)
-    basis. [triplet]
+    r"""Form the A (CIS) matrix in the MO basis. [triplet]
 
-    The equation for element {ia,jb} is - <aj|bi> = - [ab|ji] = -
-    (ab|ji). It also includes the virt-occ energy difference on the
-    diagonal.
+    The equation for element :math:`\{ia,jb\}` is :math:`-
+    \left<aj|bi\right> = - [ab|ji] = - (ab|ji)`. It also includes the
+    virt-occ energy difference on the diagonal.
     """
 
     shape_ijab = TEI_MO_ijab.shape
@@ -72,11 +71,11 @@ def form_rpa_a_matrix_mo_triplet_partial(E_MO, TEI_MO_ijab):
 
 
 def form_rpa_b_matrix_mo_singlet_partial(TEI_MO_iajb):
-    """Form the B matrix for RPA in the molecular orbital (MO)
-    basis. [singlet]
+    r"""Form the B matrix for RPA in the MO basis. [singlet]
 
-    The equation for element {ia,jb} is <ab||ij> = <ab|ij> - <ab|ji> =
-    [ai|bj] - [aj|bi] = 2*(ai|bj) - (aj|bi).
+    The equation for element :math:`\{ia,jb\}` is
+    :math:`\left<ab||ij\right> = \left<ab|ij\right> -
+    \left<ab|ji\right> = [ai|bj] - [aj|bi] = 2(ai|bj) - (aj|bi)`.
     """
 
     shape_iajb = TEI_MO_iajb.shape
@@ -95,6 +94,10 @@ def form_rpa_b_matrix_mo_singlet_partial(TEI_MO_iajb):
 
 
 def form_rpa_b_matrix_mo_triplet_partial(TEI_MO_iajb):
+    r"""Form the B matrix for RPA in the MO basis. [triplet]
+
+    The equation for element :math:`\{ia,jb\}` is :math:`????`.
+    """
 
     shape_iajb = TEI_MO_iajb.shape
     assert len(shape_iajb) == 4
@@ -112,6 +115,11 @@ def form_rpa_b_matrix_mo_triplet_partial(TEI_MO_iajb):
 
 
 def form_rpa_a_matrix_mo_singlet_ss_partial(E_MO, TEI_MO_iajb, TEI_MO_ijab):
+    r"""Form the same-spin part of the A (CIS) matrix in the MO
+    basis. [singlet]
+
+    The equation for element :math:`\{ia,jb\}` is :math:`????`.
+    """
 
     shape_iajb = TEI_MO_iajb.shape
     shape_ijab = TEI_MO_ijab.shape
@@ -138,6 +146,11 @@ def form_rpa_a_matrix_mo_singlet_ss_partial(E_MO, TEI_MO_iajb, TEI_MO_ijab):
 
 
 def form_rpa_a_matrix_mo_singlet_os_partial(TEI_MO_iajb_xxyy):
+    r"""Form the opposite-spin part of the A (CIS) matrix in the MO
+    basis. [singlet]
+
+    The equation for element :math:`\{ia,jb\}` is :math:`????`.
+    """
 
     shape = TEI_MO_iajb_xxyy.shape
     assert len(shape) == 4
@@ -152,6 +165,11 @@ def form_rpa_a_matrix_mo_singlet_os_partial(TEI_MO_iajb_xxyy):
 
 
 def form_rpa_b_matrix_mo_singlet_ss_partial(TEI_MO_iajb):
+    r"""Form the same-spin part of the RPA B matrix in the MO
+    basis. [singlet]
+
+    The equation for element :math:`\{ia,jb\}` is :math:`????`.
+    """
 
     shape_iajb = TEI_MO_iajb.shape
     assert len(shape_iajb) == 4
@@ -169,6 +187,11 @@ def form_rpa_b_matrix_mo_singlet_ss_partial(TEI_MO_iajb):
 
 
 def form_rpa_b_matrix_mo_singlet_os_partial(TEI_MO_iajb_xxyy):
+    r"""Form the opposite-spin part of the RPA B matrix in the MO
+    basis. [singlet]
+
+    The equation for element :math:`\{ia,jb\}` is :math:`????`.
+    """
 
     shape = TEI_MO_iajb_xxyy.shape
     assert len(shape) == 4
