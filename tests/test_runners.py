@@ -13,7 +13,7 @@ def run_dalton_label_to_operator(dalton_label, operator_label, slice_idx, is_ima
     assert operator.slice_idx == slice_idx
     assert operator.is_imaginary == is_imaginary
     assert operator.is_spin_dependent == is_spin_dependent
-    return
+    return operator
 
 
 # def run_reference_disk_rhf(testcase):

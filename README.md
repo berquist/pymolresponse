@@ -16,7 +16,7 @@ Currently, the goal is to provide:
 
 # Requirements
 
-* Python >= 3.2 because of pyscf.
+* Python >= ~~3.2 because of pyscf~~3.6 because of [f-strings](https://cito.github.io/blog/f-strings/).
 * [pyscf](https://github.com/sunqm/pyscf) and its dependencies
 
 ## Other Python dependencies

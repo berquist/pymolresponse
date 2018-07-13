@@ -24,7 +24,7 @@ class Operator(object):
         self.rspvecs_beta = []
 
     def __str__(self):
-        return 'Operator(label="{label}", is_imaginary={is_imaginary}, is_spin_dependent={is_spin_dependent}, triplet={triplet}, slice_idx={slice_idx})'.format(label=self.label, is_imaginary=self.is_imaginary, is_spin_dependent=self.is_spin_dependent, triplet=self.triplet, slice_idx=self.slice_idx)
+        return f'Operator(label="{self.label}", is_imaginary={self.is_imaginary}, is_spin_dependent={self.is_spin_dependent}, triplet={self.triplet}, slice_idx={self.slice_idx})'
 
     def form_rhs(self, C, occupations):
         """Form the right-hand side for CPHF."""
