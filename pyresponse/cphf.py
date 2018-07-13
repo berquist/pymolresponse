@@ -82,7 +82,7 @@ class CPHF(object):
         # here. The dynamic frequency contribution will be handled
         # inside the main loop.
         nocc_a, _, nocc_b, _ = self.solver.occupations
-        moene_alph = np.diag(self.solver.moenergies[0, ...])
+        moene_alph = np.diag(self.solver.moenergies[0])
         moene_occ_alph = moene_alph[:nocc_a]
         moene_virt_alph = moene_alph[nocc_a:]
         ediff_alph = form_vec_energy_differences(moene_occ_alph, moene_virt_alph)
@@ -90,7 +90,7 @@ class CPHF(object):
         ediff_supervector_alph_static = ediff_supervector_alph[..., np.newaxis]
         nov_alph = len(ediff_alph)
         if self.solver.is_uhf:
-            moene_beta = np.diag(self.solver.moenergies[1, ...])
+            moene_beta = np.diag(self.solver.moenergies[1])
             moene_occ_beta = moene_beta[:nocc_b]
             moene_virt_beta = moene_beta[nocc_b:]
             ediff_beta = form_vec_energy_differences(moene_occ_beta, moene_virt_beta)
@@ -104,12 +104,12 @@ class CPHF(object):
 
             frequency = self.solver.frequencies[f]
             ediff_supervector_alph = ediff_supervector_alph_static.copy()
-            ediff_supervector_alph[:nov_alph, ...] = ediff_supervector_alph_static[:nov_alph, ...] - frequency
-            ediff_supervector_alph[nov_alph:, ...] = ediff_supervector_alph_static[nov_alph:, ...] + frequency
+            ediff_supervector_alph[:nov_alph] = ediff_supervector_alph_static[:nov_alph] - frequency
+            ediff_supervector_alph[nov_alph:] = ediff_supervector_alph_static[nov_alph:] + frequency
             if self.solver.is_uhf:
                 ediff_supervector_beta = ediff_supervector_beta_static.copy()
-                ediff_supervector_beta[:nov_beta, ...] = ediff_supervector_beta_static[:nov_beta, ...] - frequency
-                ediff_supervector_beta[nov_beta:, ...] = ediff_supervector_beta_static[nov_beta:, ...] + frequency
+                ediff_supervector_beta[:nov_beta] = ediff_supervector_beta_static[:nov_beta] - frequency
+                ediff_supervector_beta[nov_beta:] = ediff_supervector_beta_static[nov_beta:] + frequency
 
             # dim_rows -> (number of operators) * (number of components for each operator)
             # dim_cols -> total number of response vectors

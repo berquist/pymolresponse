@@ -170,29 +170,29 @@ class ExactLineqSolver(LineqSolver):
 
             if self.tei_mo_type == 'full':
                 if hamiltonian == 'rpa' and spin == 'singlet':
-                    A = form_rpa_a_matrix_mo_singlet_full(self.moenergies[0, ...], tei_mo, nocc_alph)
+                    A = form_rpa_a_matrix_mo_singlet_full(self.moenergies[0], tei_mo, nocc_alph)
                     B = form_rpa_b_matrix_mo_singlet_full(tei_mo, nocc_alph)
                 elif hamiltonian == 'rpa' and spin == 'triplet':
-                    A = form_rpa_a_matrix_mo_triplet_full(self.moenergies[0, ...], tei_mo, nocc_alph)
+                    A = form_rpa_a_matrix_mo_triplet_full(self.moenergies[0], tei_mo, nocc_alph)
                     B = form_rpa_b_matrix_mo_triplet_full(tei_mo, nocc_alph)
                 elif hamiltonian == 'tda' and spin == 'singlet':
-                    A = form_rpa_a_matrix_mo_singlet_full(self.moenergies[0, ...], tei_mo, nocc_alph)
+                    A = form_rpa_a_matrix_mo_singlet_full(self.moenergies[0], tei_mo, nocc_alph)
                     B = np.zeros(shape=(nov_alph, nov_alph))
                 elif hamiltonian == 'tda' and spin == 'triplet':
-                    A = form_rpa_a_matrix_mo_triplet_full(self.moenergies[0, ...], tei_mo, nocc_alph)
+                    A = form_rpa_a_matrix_mo_triplet_full(self.moenergies[0], tei_mo, nocc_alph)
                     B = np.zeros(shape=(nov_alph, nov_alph))
             elif self.tei_mo_type == 'partial':
                 if hamiltonian == 'rpa' and spin == 'singlet':
-                    A = form_rpa_a_matrix_mo_singlet_partial(self.moenergies[0, ...], tei_mo_ovov, tei_mo_oovv)
+                    A = form_rpa_a_matrix_mo_singlet_partial(self.moenergies[0], tei_mo_ovov, tei_mo_oovv)
                     B = form_rpa_b_matrix_mo_singlet_partial(tei_mo_ovov)
                 elif hamiltonian == 'rpa' and spin == 'triplet':
-                    A = form_rpa_a_matrix_mo_triplet_partial(self.moenergies[0, ...], tei_mo_oovv)
+                    A = form_rpa_a_matrix_mo_triplet_partial(self.moenergies[0], tei_mo_oovv)
                     B = form_rpa_b_matrix_mo_triplet_partial(tei_mo_ovov)
                 elif hamiltonian == 'tda' and spin == 'singlet':
-                    A = form_rpa_a_matrix_mo_singlet_partial(self.moenergies[0, ...], tei_mo_ovov, tei_mo_oovv)
+                    A = form_rpa_a_matrix_mo_singlet_partial(self.moenergies[0], tei_mo_ovov, tei_mo_oovv)
                     B = np.zeros(shape=(nov_alph, nov_alph))
                 elif hamiltonian == 'tda' and spin == 'triplet':
-                    A = form_rpa_a_matrix_mo_triplet_partial(self.moenergies[0, ...], tei_mo_oovv)
+                    A = form_rpa_a_matrix_mo_triplet_partial(self.moenergies[0], tei_mo_oovv)
                     B = np.zeros(shape=(nov_alph, nov_alph))
 
             G = np.asarray(np.bmat([[A, B],
@@ -226,8 +226,8 @@ class ExactLineqSolver(LineqSolver):
             else:
                 pass
 
-            E_a = self.moenergies[0, ...]
-            E_b = self.moenergies[1, ...]
+            E_a = self.moenergies[0]
+            E_b = self.moenergies[1]
 
             # TODO clean this up...
             if self.tei_mo_type == 'full':
@@ -360,11 +360,11 @@ class ExactLineqSolver(LineqSolver):
             if not self.is_uhf:
                 rspvecs_operator = []
                 for idx_operator_component in range(operator.ao_integrals.shape[0]):
-                    shape = operator.mo_integrals_ai_supervector_alph[idx_operator_component, ...].shape
+                    shape = operator.mo_integrals_ai_supervector_alph[idx_operator_component].shape
                     assert len(shape) == 2
                     assert shape[1] == 1
                     rspvec_operator_component = np.dot(self.explicit_hessian_inv,
-                                                       operator.mo_integrals_ai_supervector_alph[idx_operator_component, ...])
+                                                       operator.mo_integrals_ai_supervector_alph[idx_operator_component])
                     assert rspvec_operator_component.shape == shape
                     rspvecs_operator.append(rspvec_operator_component)
                 # TODO this isn't working and I don't know why
@@ -374,7 +374,7 @@ class ExactLineqSolver(LineqSolver):
                 tmp = np.empty(shape=(len(rspvecs_operator), shape[0], 1),
                                dtype=rspvec_operator_component.dtype)
                 for idx, rspvec_operator_component in enumerate(rspvecs_operator):
-                    tmp[idx, ...] = rspvec_operator_component
+                    tmp[idx] = rspvec_operator_component
                 rspvecs_operator = tmp
                 operator.rspvecs_alph.append(rspvecs_operator)
             else:
@@ -382,8 +382,8 @@ class ExactLineqSolver(LineqSolver):
                 rspvecs_operator_alph = []
                 rspvecs_operator_beta = []
                 for idx_operator_component in range(operator.ao_integrals.shape[0]):
-                    operator_component_alph = operator.mo_integrals_ai_supervector_alph[idx_operator_component, ...]
-                    operator_component_beta = operator.mo_integrals_ai_supervector_beta[idx_operator_component, ...]
+                    operator_component_alph = operator.mo_integrals_ai_supervector_alph[idx_operator_component]
+                    operator_component_beta = operator.mo_integrals_ai_supervector_beta[idx_operator_component]
                     shape_alph = operator_component_alph.shape
                     shape_beta = operator_component_beta.shape
                     assert len(shape_alph) == len(shape_beta) == 2
@@ -399,9 +399,9 @@ class ExactLineqSolver(LineqSolver):
                 tmp_beta = np.empty(shape=(len(rspvecs_operator_beta), shape_beta[0], 1),
                                     dtype=operator_component_beta.dtype)
                 for idx_alph, operator_component_alph in enumerate(rspvecs_operator_alph):
-                    tmp_alph[idx_alph, ...] = operator_component_alph
+                    tmp_alph[idx_alph] = operator_component_alph
                 for idx_beta, operator_component_beta in enumerate(rspvecs_operator_beta):
-                    tmp_beta[idx_beta, ...] = operator_component_beta
+                    tmp_beta[idx_beta] = operator_component_beta
                 rspvecs_operator_alph = tmp_alph
                 rspvecs_operator_beta = tmp_beta
                 operator.rspvecs_alph.append(rspvecs_operator_alph)
@@ -536,29 +536,29 @@ class ExactDiagonalizationSolver(EigSolver):
 
             if self.tei_mo_type == 'full':
                 if hamiltonian == 'rpa' and spin == 'singlet':
-                    A = form_rpa_a_matrix_mo_singlet_full(self.moenergies[0, ...], tei_mo, nocc_alph)
+                    A = form_rpa_a_matrix_mo_singlet_full(self.moenergies[0], tei_mo, nocc_alph)
                     B = form_rpa_b_matrix_mo_singlet_full(tei_mo, nocc_alph)
                 elif hamiltonian == 'rpa' and spin == 'triplet':
-                    A = form_rpa_a_matrix_mo_triplet_full(self.moenergies[0, ...], tei_mo, nocc_alph)
+                    A = form_rpa_a_matrix_mo_triplet_full(self.moenergies[0], tei_mo, nocc_alph)
                     B = form_rpa_b_matrix_mo_triplet_full(tei_mo, nocc_alph)
                 elif hamiltonian == 'tda' and spin == 'singlet':
-                    A = form_rpa_a_matrix_mo_singlet_full(self.moenergies[0, ...], tei_mo, nocc_alph)
+                    A = form_rpa_a_matrix_mo_singlet_full(self.moenergies[0], tei_mo, nocc_alph)
                     B = np.zeros(shape=(nov_alph, nov_alph))
                 elif hamiltonian == 'tda' and spin == 'triplet':
-                    A = form_rpa_a_matrix_mo_triplet_full(self.moenergies[0, ...], tei_mo, nocc_alph)
+                    A = form_rpa_a_matrix_mo_triplet_full(self.moenergies[0], tei_mo, nocc_alph)
                     B = np.zeros(shape=(nov_alph, nov_alph))
             elif self.tei_mo_type == 'partial':
                 if hamiltonian == 'rpa' and spin == 'singlet':
-                    A = form_rpa_a_matrix_mo_singlet_partial(self.moenergies[0, ...], tei_mo_ovov, tei_mo_oovv)
+                    A = form_rpa_a_matrix_mo_singlet_partial(self.moenergies[0], tei_mo_ovov, tei_mo_oovv)
                     B = form_rpa_b_matrix_mo_singlet_partial(tei_mo_ovov)
                 elif hamiltonian == 'rpa' and spin == 'triplet':
-                    A = form_rpa_a_matrix_mo_triplet_partial(self.moenergies[0, ...], tei_mo_oovv)
+                    A = form_rpa_a_matrix_mo_triplet_partial(self.moenergies[0], tei_mo_oovv)
                     B = form_rpa_b_matrix_mo_triplet_partial(tei_mo_ovov)
                 elif hamiltonian == 'tda' and spin == 'singlet':
-                    A = form_rpa_a_matrix_mo_singlet_partial(self.moenergies[0, ...], tei_mo_ovov, tei_mo_oovv)
+                    A = form_rpa_a_matrix_mo_singlet_partial(self.moenergies[0], tei_mo_ovov, tei_mo_oovv)
                     B = np.zeros(shape=(nov_alph, nov_alph))
                 elif hamiltonian == 'tda' and spin == 'triplet':
-                    A = form_rpa_a_matrix_mo_triplet_partial(self.moenergies[0, ...], tei_mo_oovv)
+                    A = form_rpa_a_matrix_mo_triplet_partial(self.moenergies[0], tei_mo_oovv)
                     B = np.zeros(shape=(nov_alph, nov_alph))
 
             # pylint: disable=bad-whitespace
@@ -636,14 +636,14 @@ class ExactDiagonalizationSolverTDA(ExactDiagonalizationSolver, EigSolverTDA):
 
             if self.tei_mo_type == 'full':
                 if spin == 'singlet':
-                    A = form_rpa_a_matrix_mo_singlet_full(self.moenergies[0, ...], tei_mo, nocc_alph)
+                    A = form_rpa_a_matrix_mo_singlet_full(self.moenergies[0], tei_mo, nocc_alph)
                 elif spin == 'triplet':
-                    A = form_rpa_a_matrix_mo_triplet_full(self.moenergies[0, ...], tei_mo, nocc_alph)
+                    A = form_rpa_a_matrix_mo_triplet_full(self.moenergies[0], tei_mo, nocc_alph)
             elif self.tei_mo_type == 'partial':
                 if spin == 'singlet':
-                    A = form_rpa_a_matrix_mo_singlet_partial(self.moenergies[0, ...], tei_mo_ovov, tei_mo_oovv)
+                    A = form_rpa_a_matrix_mo_singlet_partial(self.moenergies[0], tei_mo_ovov, tei_mo_oovv)
                 elif spin == 'triplet':
-                    A = form_rpa_a_matrix_mo_triplet_partial(self.moenergies[0, ...], tei_mo_oovv)
+                    A = form_rpa_a_matrix_mo_triplet_partial(self.moenergies[0], tei_mo_oovv)
 
             self.explicit_hessian = A
 

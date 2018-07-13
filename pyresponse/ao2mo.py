@@ -48,7 +48,7 @@ class AO2MOpyscf(AO2MO):
     def perform_rhf_full(self):
         norb = self.C.shape[-1]
         from pyscf.ao2mo import full
-        tei_mo = full(self.pyscfmol, self.C[0, ...], aosym='s4', compact=False, verbose=self.verbose).reshape(norb, norb, norb, norb)
+        tei_mo = full(self.pyscfmol, self.C[0], aosym='s4', compact=False, verbose=self.verbose).reshape(norb, norb, norb, norb)
         self.tei_mo = (tei_mo, )
 
     def perform_rhf_partial(self):
@@ -64,8 +64,8 @@ class AO2MOpyscf(AO2MO):
 
     def perform_uhf_full(self):
         norb = self.C.shape[-1]
-        C_a = self.C[0, ...]
-        C_b = self.C[1, ...]
+        C_a = self.C[0]
+        C_b = self.C[1]
         C_aaaa = (C_a, C_a, C_a, C_a)
         C_aabb = (C_a, C_a, C_b, C_b)
         C_bbaa = (C_b, C_b, C_a, C_a)

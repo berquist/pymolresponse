@@ -32,13 +32,13 @@ class Operator(object):
         # pylint: disable=no-member
         assert isinstance(self.ao_integrals, np.ndarray)
         if len(C.shape) == 2:
-            C = C[np.newaxis, ...]
+            C = C[np.newaxis]
         assert len(C.shape) == 3
         assert (C.shape[0] == 1) or (C.shape[0] == 2)
         is_uhf = (C.shape[0] == 2)
-        C_alph = C[0, ...]
+        C_alph = C[0]
         if is_uhf:
-            C_beta = C[1, ...]
+            C_beta = C[1]
         assert len(occupations) == 4
         nocc_alph, _, nocc_beta, _ = occupations
         b_prefactor = -1
@@ -53,7 +53,7 @@ class Operator(object):
         # pylint: disable=no-member
         for idx in range(self.ao_integrals.shape[0]):
             operator_component_ai_alph = np.dot(C_alph[:, nocc_alph:].T,
-                                                np.dot(self.ao_integrals[idx, ...],
+                                                np.dot(self.ao_integrals[idx],
                                                        C_alph[:, :nocc_alph]))
             # If the operator is a triplet operator and doing singlet
             # response, remove inactive -> secondary excitations.
@@ -70,7 +70,7 @@ class Operator(object):
             operator_ai_supervector_alph.append(operator_component_ai_supervector_alph)
             if is_uhf:
                 operator_component_ai_beta = np.dot(C_beta[:, nocc_beta:].T,
-                                                    np.dot(self.ao_integrals[idx, ...],
+                                                    np.dot(self.ao_integrals[idx],
                                                            C_beta[:, :nocc_beta]))
                 if self.triplet:
                     for (i, a) in self.indices_closed_secondary:

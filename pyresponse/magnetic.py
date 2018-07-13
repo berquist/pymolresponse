@@ -45,14 +45,14 @@ class ElectronicGTensor(ResponseProperty):
             charges = pyscfmol.atom_charges()
             is_uhf = mocoeffs.shape[0] == 2
             if is_uhf:
-                Ca = mocoeffs[0, ...]
-                Cb = mocoeffs[1, ...]
+                Ca = mocoeffs[0]
+                Cb = mocoeffs[1]
                 nocc_a, _, nocc_b, _ = occupations
                 Da = np.dot(Ca[:, :nocc_a], Ca[:, :nocc_a].T)
                 Db = np.dot(Cb[:, :nocc_b], Cb[:, :nocc_b].T)
                 D = Da + Db
             else:
-                C = mocoeffs[0, ...]
+                C = mocoeffs[0]
                 nocc_a, _, _, _ = occupations
                 D = 2 * np.dot(C[:, :nocc_a], C[:, :nocc_a].T)
             self.gauge_origin = helpers.calculate_origin_pyscf(gauge_origin, coords, charges, D, pyscfmol, do_print=True)
