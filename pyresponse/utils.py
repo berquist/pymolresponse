@@ -432,6 +432,17 @@ def form_vec_energy_differences(moene_occ, moene_virt):
 def screen(mat, thresh=1.0e-16):
     """Set all values smaller than the given threshold to zero
     (considering them as numerical noise).
+
+    Parameters
+    ----------
+    mat : np.ndarray
+    thresh : float
+        Threshold below which all elements of `mat` smaller than
+        `thresh` are set to zero.
+
+    Returns
+    -------
+    np.ndarray
     """
     mat_screened = mat.copy()
     mat_screened[np.abs(mat) <= thresh] = 0.0
@@ -439,14 +450,24 @@ def screen(mat, thresh=1.0e-16):
 
 
 def matsym(amat, thrzer=1.0e-14):
-    """This function returns
-       1 if the matrix is symmetric to threshold THRZER
-       2 if the matrix is antisymmetric to threshold THRZER
-       3 if all elements are below THRZER
-       0 otherwise (the matrix is unsymmetric about the diagonal)
+    """
+    - Copied from ``DALTON/gp/gphjj.F/MATSYM``.
+    - `thrzer` taken from ``DALTON/include/thrzer.h``.
 
-    Copied from DALTON/gp/gphjj.F/MATSYM.
-    thrzer taken from DALTON/include/thrzer.h
+    Parameters
+    ----------
+    amat : np.ndarray
+    thrzer : float
+        Threshold below which a (floating point) number is considered
+        zero.
+
+    Returns
+    -------
+    int
+        - 1 if the matrix is symmetric to threshold `thrzer`
+        - 2 if the matrix is antisymmetric to threshold `thrzer`
+        - 3 if all elements are below `thrzer`
+        - 0 otherwise (the matrix is unsymmetric about the diagonal)
     """
 
     assert amat.shape[0] == amat.shape[1]
@@ -472,6 +493,15 @@ def matsym(amat, thrzer=1.0e-14):
 def flip_triangle_sign(A, triangle='lower'):
     """Flip the sign of either the lower or upper triangle of a sqare
     matrix. Assume nothing about its symmetry.
+
+    Parameters
+    ----------
+    A : np.ndarray
+    triangle : {'lower', 'upper'}
+
+    Returns
+    -------
+    np.ndarray
     """
     assert len(A.shape) == 2
     assert A.shape[0] == A.shape[1]

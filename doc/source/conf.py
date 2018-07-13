@@ -42,6 +42,7 @@ extensions = [
     'sphinx.ext.githubpages',
     'sphinx.ext.graphviz',
     'sphinx.ext.inheritance_diagram',
+    'numpydoc',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -178,3 +179,11 @@ texinfo_documents = [
      author, 'pyresponse', 'One line description of project.',
      'Miscellaneous'),
 ]
+
+
+# -- Options for numpydoc
+
+numpydoc_use_plots = True
+numpydoc_show_class_members = False
+numpydoc_show_inherited_class_members = False
+numpydoc_class_members_toctree = False

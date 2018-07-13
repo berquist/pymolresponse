@@ -5,6 +5,7 @@ import scipy.constants as spc
 
 ## Dipole
 
+# Convert a dipole moment from atomic units (a.u.) to Debye.
 convfac_au_to_debye = 2.541746230211
 
 ## Electronic circular dichroism (ECD)
