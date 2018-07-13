@@ -1,11 +1,15 @@
-"""Drivers for solving the time-dependent Hartree-Fock (TDHF) equations."""
+"""Drivers for solving the time-dependent Hartree-Fock (TDHF)
+equations."""
 
 import numpy as np
+import scipy.constants as spc
 
 from .cphf import CPHF
 from .iterators import EigSolver, ExactDiagonalizationSolver
 from .operators import Operator
 from .utils import form_results
+
+HARTREE_TO_EV = spc.physical_constants["Hartree energy in eV"][0]
 
 
 class TDHF(CPHF):
@@ -54,6 +58,7 @@ class TDHF(CPHF):
         nov_alph = nocc_alph * nvirt_alph
         nov_beta = nocc_beta * nvirt_beta
         self.solver.eigvecs_normed = self.solver.eigvecs.copy()
+        # This is because we've calculated all possible roots.
         for idx in range(nov_alph):
             print('=' * 78)
             eigvec = self.solver.eigvecs[:, idx]
@@ -61,23 +66,24 @@ class TDHF(CPHF):
             eigvec_normed = np.concatenate((x_normed.flatten(), y_normed.flatten()), axis=0)
             self.solver.eigvecs_normed[:, idx] = eigvec_normed
             eigval = self.solver.eigvals[idx].real
-            print(' State: {}'.format(idx + 1))
-            print(' Excitation energy [a.u.]: {}'.format(eigval))
-            print(' Excitation energy [eV]  : {}'.format(eigval * 27.2114))
+            print(f' State: {idx + 1}')
+            print(f' Excitation energy [a.u.]: {eigval}')
+            print(f' Excitation energy [eV]  : {eigval * HARTREE_TO_EV}')
             # contract the components of every operator with every
             # eigenvector
             for operator in self.solver.operators:
                 print('-' * 78)
-                print(' Operator: {}'.format(operator.label))
+                print(f' Operator: {operator.label}')
                 integrals = operator.mo_integrals_ai_supervector_alph[:, :, 0]
                 # TODO why the 2?
                 res_normed = 2 * np.dot(integrals, eigvec_normed)
                 transition_moment = res_normed
                 oscillator_strength = (2 / 3) * eigval * transition_moment ** 2
-                total_oscillator_strength = (2 / 3) * eigval * np.dot(transition_moment, transition_moment)
-                print(' Transition moment: {}'.format(transition_moment))
-                print(' Oscillator strength: {}'.format(oscillator_strength))
-                print(' Oscillator strength (total): {}'.format(total_oscillator_strength))
+                total_oscillator_strength = (2 / 3) * eigval * np.dot(transition_moment,
+                                                                      transition_moment)
+                print(f' Transition moment: {transition_moment}')
+                print(f' Oscillator strength: {oscillator_strength}')
+                print(f' Oscillator strength (total): {total_oscillator_strength}')
                 if not hasattr(operator, 'transition_moments'):
                     operator.transition_moments = []
                 if not hasattr(operator, 'oscillator_strengths'):
@@ -94,7 +100,9 @@ class TDHF(CPHF):
 
 
 class TDA(TDHF):
-    """Driver for solving the time-dependent Hartree-Fock equations with the Tamm-Dancoff approximation (TDA), also called the configuration interaction with single excitation (CIS) equations."""
+    """Driver for solving the time-dependent Hartree-Fock equations with
+    the Tamm-Dancoff approximation (TDA), also called the configuration
+    interaction with single excitation (CIS) equations."""
 
     def __init__(self, solver, *args, **kwargs):
         super().__init__(solver, *args, **kwargs)
@@ -104,6 +112,7 @@ class TDA(TDHF):
         nov_alph = nocc_alph * nvirt_alph
         nov_beta = nocc_beta * nvirt_beta
         self.solver.eigvecs_normed = self.solver.eigvecs.copy()
+        # This is because we've calculated all possible roots.
         for idx in range(nov_alph):
             print('=' * 78)
             norm = (1 / np.sqrt(2))
@@ -111,23 +120,24 @@ class TDA(TDHF):
             eigvec_normed = self.solver.eigvecs[:, idx] * norm
             self.solver.eigvecs_normed[:, idx] = eigvec_normed
             eigval = self.solver.eigvals[idx].real
-            print(' State: {}'.format(idx + 1))
-            print(' Excitation energy [a.u.]: {}'.format(eigval))
-            print(' Excitation energy [eV]  : {}'.format(eigval * 27.2114))
+            print(f' State: {idx + 1}')
+            print(f' Excitation energy [a.u.]: {eigval}')
+            print(f' Excitation energy [eV]  : {eigval * HARTREE_TO_EV}')
             # contract the components of every operator with every
             # eigenvector
             for operator in self.solver.operators:
                 print('-' * 78)
-                print(' Operator: {}'.format(operator.label))
+                print(f' Operator: {operator.label}')
                 integrals = operator.mo_integrals_ai_alph[:, :, 0]
                 # TODO why the 2?
                 res_normed = 2 * np.dot(integrals, eigvec_normed)
                 transition_moment = res_normed
                 oscillator_strength = (2 / 3) * eigval * transition_moment ** 2
-                total_oscillator_strength = (2 / 3) * eigval * np.dot(transition_moment, transition_moment)
-                print(' Transition moment: {}'.format(transition_moment))
-                print(' Oscillator strength: {}'.format(oscillator_strength))
-                print(' Oscillator strength (total): {}'.format(total_oscillator_strength))
+                total_oscillator_strength = (2 / 3) * eigval * np.dot(transition_moment,
+                                                                      transition_moment)
+                print(f' Transition moment: {transition_moment}')
+                print(f' Oscillator strength: {oscillator_strength}')
+                print(f' Oscillator strength (total): {total_oscillator_strength}')
                 if not hasattr(operator, 'transition_moments'):
                     operator.transition_moments = []
                 if not hasattr(operator, 'oscillator_strengths'):
