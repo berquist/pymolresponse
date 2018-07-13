@@ -27,7 +27,7 @@ install:
   - conda install -q -c conda-forge pytest-cov codecov
   - conda install -q -c pyscf pyscf
   - conda install sphinx sphinx-automodapi graphviz python-graphviz -c conda-forge -c psi4
-  - pip install numpydoc
+  - pip install sphinx_rtd_theme numpydoc
   - pip install travis-sphinx
   - conda list
 

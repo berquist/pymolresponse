@@ -50,12 +50,11 @@ Currently, the goal is to provide:
 
 ## Desired features that don't fix the caveats
 
-* Open-ended response: see [Ringholm, Jonsson, and Ruud](http://dx.doi.org/10.1002/jcc.23533).
+* Open-ended response: see [Ringholm, Jonsson, and Ruud](https://doi.org/10.1002/jcc.23533).
 * Finite-difference for testing and higher-order response.
 * Independence from pyscf, requires molecule/basis set handling, AO integral engine, and RHF/UHF solver.
 * Interface to [PyQuante](https://github.com/berquist/pyquante) and/or [pyquante2](https://github.com/rpmuller/pyquante2).
 * Interface to [Psi4](https://github.com/psi4/psi4) (through Python, not C++).
-* Sphinx-based documentation.
 * Jupyter Notebook-based tutorials.
 * Argument type-checking using [mypy](http://mypy-lang.org/).
 
