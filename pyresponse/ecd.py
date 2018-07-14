@@ -3,7 +3,7 @@ calculation."""
 
 import numpy as np
 
-from .constants import esuecd, HARTREE_TO_EV, HARTREE_TO_INVCM
+from .constants import alpha, HARTREE_TO_EV, HARTREE_TO_INVCM, esuecd
 from .operators import Operator
 from .molecular_property import TransitionProperty
 
@@ -84,36 +84,38 @@ class ECD(TransitionProperty):
         energies = self.driver.solver.eigvals.real
         energies_ev = energies * HARTREE_TO_EV
         op_diplen = self.driver.solver.operators[1]
+        tmom_diplen = op_diplen.transition_moments
         etoscslen = op_diplen.total_oscillator_strengths
         op_angmom = self.driver.solver.operators[0]
+        tmom_angmom = op_angmom.transition_moments
         rotstrlen = self.rotational_strengths_diplen
         if self.do_dipvel:
             op_dipvel = self.driver.solver.operators[2]
             rotstrvel = self.rotational_strengths_dipvel
+            tmom_dipvel = op_dipvel.transition_moments
             etoscsvel = op_dipvel.total_oscillator_strengths
         nstates = len(energies)
         for state in range(nstates):
             lines.append('  ----------------------------------------------------------------------------')
             lines.append(f'  Root {state + 1:>3d} singlet a{energies[state]:>25.9f} a.u.{energies_ev[state]:>22.4f} eV')
             lines.append('  ----------------------------------------------------------------------------')
-            lines.append(f'     Transition Moments    X{op_diplen.transition_moments[state, 0]:>9.5f}   Y{op_diplen.transition_moments[state, 1]:>9.5f}   Z{op_diplen.transition_moments[state, 2]:>9.5f}')
+            lines.append(f'     Transition Moments    X{tmom_diplen[state, 0]:>9.5f}   Y{tmom_diplen[state, 1]:>9.5f}   Z{tmom_diplen[state, 2]:>9.5f}')
             ## TODO these require second moment (length) integrals
             ## lines.append(f'     Transition Moments   XX -0.28379  XY  0.08824  XZ -0.17416')
             ## lines.append(f'     Transition Moments   YY -0.40247  YZ -0.45981  ZZ  0.59211')
             lines.append(f'     Dipole Oscillator Strength {etoscslen[state]:>31.5f}')
             lines.append('')
             lines.append('     Electric Transition Dipole:')
-            lines.append(f'            X{op_diplen.transition_moments[state, 0]:>13.7f}   Y{op_diplen.transition_moments[state, 1]:>13.7f}   Z{op_diplen.transition_moments[state, 2]:>13.7f}')
+            lines.append(f'            X{tmom_diplen[state, 0]:>13.7f}   Y{tmom_diplen[state, 1]:>13.7f}   Z{tmom_diplen[state, 2]:>13.7f}')
             lines.append('     Magnetic Transition Dipole (Length):')
-            lines.append(f'            X{op_angmom.transition_moments[state, 0]:>13.7f}   Y{op_angmom.transition_moments[state, 1]:>13.7f}   Z{op_angmom.transition_moments[state, 2]:>13.7f}')
-            # TODO conversion?
-            # lines.append('     Magnetic Transition Dipole * 1/c :')
-            # lines.append(f'            X   -0.0032796   Y  -0.0006302   Z  -0.0002774')
+            lines.append(f'            X{tmom_angmom[state, 0]:>13.7f}   Y{tmom_angmom[state, 1]:>13.7f}   Z{tmom_angmom[state, 2]:>13.7f}')
+            lines.append('     Magnetic Transition Dipole * 1/c :')
+            lines.append(f'            X{tmom_angmom[state, 0] * alpha:>13.7f}   Y{tmom_angmom[state, 1] * alpha:>13.7f}   Z{tmom_angmom[state, 2] * alpha:>13.7f}')
             lines.append(f'     Rotatory Strength (1E-40 esu**2cm**2):{rotstrlen[state]:>21.7f}')
             lines.append('')
             if self.do_dipvel:
                 lines.append('     Electric Transition Dipole (velocity representation):')
-                lines.append(f'            X{op_dipvel.transition_moments[state, 0]:>13.7f}   Y{op_dipvel.transition_moments[state, 1]:>13.7f}   Z{op_dipvel.transition_moments[state, 2]:>13.7f}')
+                lines.append(f'            X{tmom_dipvel[state, 0]:>13.7f}   Y{tmom_dipvel[state, 1]:>13.7f}   Z{tmom_dipvel[state, 2]:>13.7f}')
                 # lines.append(f'     Oscillator Strength (velocity repr.) :            0.0069989')
                 lines.append(f'     Oscillator Strength (velocity repr.) :{etoscsvel[state]:>21.7f}')
                 # lines.append(f'     Oscillator Strength (mixed repr.   ) :            0.0074981')
