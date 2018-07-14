@@ -2,14 +2,12 @@
 equations."""
 
 import numpy as np
-import scipy.constants as spc
 
+from .constants import HARTREE_TO_EV
 from .cphf import CPHF
 from .iterators import EigSolver, ExactDiagonalizationSolver
 from .operators import Operator
 from .utils import form_results
-
-HARTREE_TO_EV = spc.physical_constants["Hartree energy in eV"][0]
 
 
 class TDHF(CPHF):

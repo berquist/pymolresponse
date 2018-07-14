@@ -1,9 +1,13 @@
+import os.path
+
 import numpy as np
 
 import pyscf
 
 from pyresponse import utils, ecd
 from . import molecules_pyscf as molecules
+
+refdir = molecules.refdir
 
 
 BC2H4_cation_HF_STO3G_RPA_singlet_nwchem = {
@@ -173,6 +177,12 @@ def test_ECD_RPA_singlet_BC2H4_cation_HF_STO3G():
     for i in range(nroots):
         abs_diff = abs(ref_etrotstrvel[i] - res_etrotstrvel[i])
         assert abs_diff < thresh
+
+    # with open(os.path.join(refdir, 'BC2H4_cation', 'nwchem_singlet_rpa_velocity_root.str')) as fh:
+    #     ref_str = fh.read()
+    res_str = ecd_dipvel_rpa.make_results_nwchem()
+    # assert res_str == ref_str
+    print(res_str)
 
     return
 
