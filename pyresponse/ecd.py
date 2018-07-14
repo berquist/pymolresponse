@@ -79,7 +79,7 @@ class ECD(TransitionProperty):
         if self.do_dipvel:
             self.rotational_strengths_dipvel = np.array(rotational_strengths_dipvel)
 
-    def make_results_nwchem(self):
+    def print_results_nwchem(self):
         lines = []
         energies = self.driver.solver.eigvals.real
         energies_ev = energies * HARTREE_TO_EV
@@ -127,8 +127,8 @@ class ECD(TransitionProperty):
 
         return '\n'.join(lines)
 
-    def make_results_orca(self):
-        excitation_block = self.driver.make_results_orca()
+    def print_results_orca(self):
+        excitation_block = self.driver.print_results_orca()
         lines = [excitation_block]
         energies = self.driver.solver.eigvals.real
         energies_to_invcm = energies * HARTREE_TO_INVCM
@@ -178,7 +178,7 @@ class ECD(TransitionProperty):
         lines.append('')
         return '\n'.join(lines)
 
-    def make_results_qchem(self):
+    def print_results_qchem(self):
         energies = self.driver.solver.eigvals.real
         energies_ev = energies * HARTREE_TO_EV
         op_diplen = self.driver.solver.operators[1]

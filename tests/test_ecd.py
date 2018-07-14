@@ -180,11 +180,11 @@ def test_ECD_RPA_singlet_BC2H4_cation_HF_STO3G():
 
     # with open(os.path.join(refdir, 'BC2H4_cation', 'nwchem_singlet_rpa_velocity_root.str')) as fh:
     #     ref_str = fh.read()
-    res_str = ecd_dipvel_rpa.make_results_nwchem()
+    # res_str = ecd_dipvel_rpa.print_results_nwchem()
     # assert res_str == ref_str
-    print(res_str)
-    print(ecd_dipvel_rpa.make_results_orca())
-    print(ecd_dipvel_rpa.make_results_qchem())
+    print(ecd_dipvel_rpa.print_results_nwchem())
+    print(ecd_dipvel_rpa.print_results_orca())
+    print(ecd_dipvel_rpa.print_results_qchem())
 
     return
 

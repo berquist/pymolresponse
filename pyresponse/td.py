@@ -58,20 +58,14 @@ class TDHF(CPHF):
         self.solver.eigvecs_normed = self.solver.eigvecs.copy()
         # This is because we've calculated all possible roots.
         for idx in range(nov_alph):
-            print('=' * 78)
             eigvec = self.solver.eigvecs[:, idx]
             x_normed, y_normed = self.solver.norm_xy(self.solver.eigvecs[:, idx], nocc_alph, nvirt_alph)
             eigvec_normed = np.concatenate((x_normed.flatten(), y_normed.flatten()), axis=0)
             self.solver.eigvecs_normed[:, idx] = eigvec_normed
             eigval = self.solver.eigvals[idx].real
-            print(f' State: {idx + 1}')
-            print(f' Excitation energy [a.u.]: {eigval}')
-            print(f' Excitation energy [eV]  : {eigval * HARTREE_TO_EV}')
             # contract the components of every operator with every
             # eigenvector
             for operator in self.solver.operators:
-                print('-' * 78)
-                print(f' Operator: {operator.label}')
                 integrals = operator.mo_integrals_ai_supervector_alph[:, :, 0]
                 # TODO why the 2?
                 res_normed = 2 * np.dot(integrals, eigvec_normed)
@@ -79,9 +73,6 @@ class TDHF(CPHF):
                 oscillator_strength = (2 / 3) * eigval * transition_moment ** 2
                 total_oscillator_strength = (2 / 3) * eigval * np.dot(transition_moment,
                                                                       transition_moment)
-                print(f' Transition moment: {transition_moment}')
-                print(f' Oscillator strength: {oscillator_strength}')
-                print(f' Oscillator strength (total): {total_oscillator_strength}')
                 if not hasattr(operator, 'transition_moments'):
                     operator.transition_moments = []
                 if not hasattr(operator, 'oscillator_strengths'):
@@ -95,13 +86,32 @@ class TDHF(CPHF):
             operator.transition_moments = np.array(operator.transition_moments)
             operator.oscillator_strengths = np.array(operator.oscillator_strengths)
             operator.total_oscillator_strengths = np.array(operator.total_oscillator_strengths)
+        return
+
+    def print_results(self):
+        energies = self.solver.eigvals.real
+        for idx in len(energies):
+            print('=' * 78)
+            print(f' State: {idx + 1}')
+            print(f' Excitation energy [a.u.]: {energies[idx]}')
+            print(f' Excitation energy [eV]  : {energies[idx] * HARTREE_TO_EV}')
+            for operator in self.solver.operators:
+                transition_moment = operator.transition_moments[idx]
+                oscillator_strength = operator.oscillator_strengths[idx]
+                total_oscillator_strength = operator.total_oscillator_strengths[idx]
+                print('-' * 78)
+                print(f' Operator: {operator.label}')
+                print(f' Transition moment: {transition_moment}')
+                print(f' Oscillator strength: {oscillator_strength}')
+                print(f' Oscillator strength (total): {total_oscillator_strength}')
+        return
 
     _SPIN_MAP_ORCA = {
         'singlet': 'SINGLETS',
         'triplet': 'TRIPLETS',
     }
 
-    def make_results_orca(self):
+    def print_results_orca(self):
         energies = self.solver.eigvals.real
         energies_ev = energies * HARTREE_TO_EV
         energies_invcm = energies * HARTREE_TO_INVCM
