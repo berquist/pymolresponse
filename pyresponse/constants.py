@@ -2,8 +2,9 @@ r"""Storage of common physical constants. Uses `scipy.constants`: https://docs.s
 
 import scipy.constants as spc
 
-## Excitation energies
+## (Excitation) energies
 HARTREE_TO_EV = spc.physical_constants['Hartree energy in eV'][0]
+HARTREE_TO_INVCM = spc.physical_constants['hartree-inverse meter relationship'][0] * (1 / 100)
 
 ## Dipole
 

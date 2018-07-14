@@ -183,6 +183,7 @@ def test_ECD_RPA_singlet_BC2H4_cation_HF_STO3G():
     res_str = ecd_dipvel_rpa.make_results_nwchem()
     # assert res_str == ref_str
     print(res_str)
+    print(ecd_dipvel_rpa.make_results_orca())
 
     return
 

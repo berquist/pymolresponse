@@ -3,7 +3,7 @@ calculation."""
 
 import numpy as np
 
-from .constants import esuecd, HARTREE_TO_EV
+from .constants import esuecd, HARTREE_TO_EV, HARTREE_TO_INVCM
 from .operators import Operator
 from .molecular_property import TransitionProperty
 
@@ -82,52 +82,92 @@ class ECD(TransitionProperty):
     def make_results_nwchem(self):
         lines = []
         energies = self.driver.solver.eigvals.real
-        op_angmom = self.driver.solver.operators[0]
+        energies_ev = energies * HARTREE_TO_EV
         op_diplen = self.driver.solver.operators[1]
+        op_angmom = self.driver.solver.operators[0]
         if self.do_dipvel:
             op_dipvel = self.driver.solver.operators[2]
         rotstrlen = self.rotational_strengths_diplen
         if self.do_dipvel:
             rotstrvel = self.rotational_strengths_dipvel
         nstates = len(op_diplen.transition_moments)
-        # for state in range(nstates):
-        for state in [0]:
+        for state in range(nstates):
             lines.append('  ----------------------------------------------------------------------------')
-            # lines.append(f'  Root   1 singlet a              0.116938283 a.u.                3.1821 eV')
-            lines.append(f'  Root {state + 1:>3d} singlet a{energies[state]:>25.9f} a.u.{energies[state] * HARTREE_TO_EV:>22.4f} eV')
+            lines.append(f'  Root {state + 1:>3d} singlet a{energies[state]:>25.9f} a.u.{energies_ev[state]:>22.4f} eV')
             lines.append('  ----------------------------------------------------------------------------')
-            # lines.append(f'     Transition Moments    X  0.34800   Y  0.12900   Z -0.07337')
             lines.append(f'     Transition Moments    X{op_diplen.transition_moments[state, 0]:>9.5f}   Y{op_diplen.transition_moments[state, 1]:>9.5f}   Z{op_diplen.transition_moments[state, 2]:>9.5f}')
             ## TODO these require second moment (length) integrals
             ## lines.append(f'     Transition Moments   XX -0.28379  XY  0.08824  XZ -0.17416')
             ## lines.append(f'     Transition Moments   YY -0.40247  YZ -0.45981  ZZ  0.59211')
-            # lines.append(f'     Dipole Oscillator Strength                         0.01116')
             lines.append(f'     Dipole Oscillator Strength {op_diplen.total_oscillator_strengths[state]:>31.5f}')
             lines.append('')
             lines.append('     Electric Transition Dipole:')
-            # lines.append(f'            X    0.3480026   Y   0.1290024   Z  -0.0733682')
             lines.append(f'            X{op_diplen.transition_moments[state, 0]:>13.7f}   Y{op_diplen.transition_moments[state, 1]:>13.7f}   Z{op_diplen.transition_moments[state, 2]:>13.7f}')
             lines.append('     Magnetic Transition Dipole (Length):')
-            # lines.append(f'            X   -0.4494206   Y  -0.0863542   Z  -0.0380096')
             lines.append(f'            X{op_angmom.transition_moments[state, 0]:>13.7f}   Y{op_angmom.transition_moments[state, 1]:>13.7f}   Z{op_angmom.transition_moments[state, 2]:>13.7f}')
             # TODO conversion?
             # lines.append('     Magnetic Transition Dipole * 1/c :')
             # lines.append(f'            X   -0.0032796   Y  -0.0006302   Z  -0.0002774')
-            # lines.append(f'     Rotatory Strength (1E-40 esu**2cm**2):          -77.6721763')
             lines.append(f'     Rotatory Strength (1E-40 esu**2cm**2):{rotstrlen[state]:>21.7f}')
             lines.append('')
             if self.do_dipvel:
                 lines.append('     Electric Transition Dipole (velocity representation):')
-                # lines.append(f'            X    0.2577363   Y  -0.0343840   Z  -0.1488831')
                 lines.append(f'            X{op_dipvel.transition_moments[state, 0]:>13.7f}   Y{op_dipvel.transition_moments[state, 1]:>13.7f}   Z{op_dipvel.transition_moments[state, 2]:>13.7f}')
                 # lines.append(f'     Oscillator Strength (velocity repr.) :            0.0069989')
-                # lines.append(f'     Oscillator Strength (velocity repr.) :{>21.7f}')
+                lines.append(f'     Oscillator Strength (velocity repr.) :{op_dipvel.total_oscillator_strengths[state]:>21.7f}')
                 # lines.append(f'     Oscillator Strength (mixed repr.   ) :            0.0074981')
                 # lines.append(f'     Oscillator Strength (mixed repr.   ) :{>21.7f}')
-                # lines.append(f'     Rotatory Strength   (velocity repr.) :          -50.5415342')
                 lines.append(f'     Rotatory Strength   (velocity repr.) :{rotstrvel[state]:>21.7f}')
                 lines.append('')
             # lines.append(str(self.driver.solver.eigvecs[:, state]))
             # lines.append(str(self.driver.solver.eigvecs_normed[:, state]))
 
+        return '\n'.join(lines)
+
+    def make_results_orca(self):
+        lines = []
+        energies = self.driver.solver.eigvals.real
+        energies_to_invcm = energies * HARTREE_TO_INVCM
+        energies_to_nm = 10000000 / energies_to_invcm
+        op_diplen = self.driver.solver.operators[1]
+        tmom_diplen = op_diplen.transition_moments
+        t2_diplen = np.asarray([np.dot(tmom_diplen[x], tmom_diplen[x])
+                                for x in range(len(tmom_diplen))])
+        rotstrlen = self.rotational_strengths_diplen
+        op_angmom = self.driver.solver.operators[0]
+        tmom_angmom = op_angmom.transition_moments
+        if self.do_dipvel:
+            op_dipvel = self.driver.solver.operators[2]
+            rotstrvel = self.rotational_strengths_dipvel
+            tmom_dipvel = op_dipvel.transition_moments
+            t2_dipvel = np.asarray([np.dot(tmom_dipvel[x], tmom_dipvel[x])
+                                    for x in range(len(tmom_dipvel))])
+        nstates = len(op_diplen.transition_moments)
+        lines.append('-----------------------------------------------------------------------------')
+        lines.append('         ABSORPTION SPECTRUM VIA TRANSITION ELECTRIC DIPOLE MOMENTS')
+        lines.append('-----------------------------------------------------------------------------')
+        lines.append('State   Energy  Wavelength   fosc         T2         TX        TY        TZ  ')
+        lines.append('        (cm-1)    (nm)                  (au**2)     (au)      (au)      (au) ')
+        lines.append('-----------------------------------------------------------------------------')
+        for state in range(nstates):
+            lines.append(f'{state + 1:>4d}{energies_to_invcm[state]:>10.1f}{energies_to_nm[state]:>9.1f}{op_diplen.total_oscillator_strengths[state]:>14.9f}{t2_diplen[state]:>10.5f}{op_diplen.transition_moments[state, 0]:>10.5f}{op_diplen.transition_moments[state, 1]:>10.5f}{op_diplen.transition_moments[state, 2]:>10.5f}')
+        lines.append('')
+        lines.append('-----------------------------------------------------------------------------')
+        lines.append('         ABSORPTION SPECTRUM VIA TRANSITION VELOCITY DIPOLE MOMENTS')
+        lines.append('-----------------------------------------------------------------------------')
+        lines.append('State   Energy  Wavelength   fosc         P2         PX        PY        PZ  ')
+        lines.append('        (cm-1)    (nm)                  (au**2)     (au)      (au)      (au) ')
+        lines.append('-----------------------------------------------------------------------------')
+        for state in range(nstates):
+            lines.append(f'{state + 1:>4d}{energies_to_invcm[state]:>10.1f}{energies_to_nm[state]:>9.1f}{op_dipvel.total_oscillator_strengths[state]:>14.9f}{t2_dipvel[state]:>10.5f}{op_dipvel.transition_moments[state, 0]:>10.5f}{op_dipvel.transition_moments[state, 1]:>10.5f}{op_dipvel.transition_moments[state, 2]:>10.5f}')
+        lines.append('')
+        lines.append('-------------------------------------------------------------------')
+        lines.append('                             CD SPECTRUM')
+        lines.append('-------------------------------------------------------------------')
+        lines.append('State   Energy Wavelength       R         MX        MY        MZ   ')
+        lines.append('        (cm-1)   (nm)       (1e40*cgs)   (au)      (au)      (au)  ')
+        lines.append('-------------------------------------------------------------------')
+        for state in range(nstates):
+            lines.append(f'{state + 1:>4d}{energies_to_invcm[state]:>10.1f}{energies_to_nm[state]:>9.1f}{rotstrlen[state]:>13.5f}{op_angmom.transition_moments[state, 0]:>10.5f}{op_angmom.transition_moments[state, 1]:>10.5f}{op_angmom.transition_moments[state, 2]:>10.5f}')
+        lines.append('')
         return '\n'.join(lines)
