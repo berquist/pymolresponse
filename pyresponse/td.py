@@ -3,7 +3,7 @@ equations."""
 
 import numpy as np
 
-from .constants import HARTREE_TO_EV
+from .constants import HARTREE_TO_EV, HARTREE_TO_INVCM
 from .cphf import CPHF
 from .iterators import EigSolver, ExactDiagonalizationSolver
 from .operators import Operator
@@ -95,6 +95,32 @@ class TDHF(CPHF):
             operator.transition_moments = np.array(operator.transition_moments)
             operator.oscillator_strengths = np.array(operator.oscillator_strengths)
             operator.total_oscillator_strengths = np.array(operator.total_oscillator_strengths)
+
+    _SPIN_MAP_ORCA = {
+        'singlet': 'SINGLETS',
+        'triplet': 'TRIPLETS',
+    }
+
+    def make_results_orca(self):
+        energies = self.solver.eigvals.real
+        energies_ev = energies * HARTREE_TO_EV
+        energies_invcm = energies * HARTREE_TO_INVCM
+        lines = []
+        lines.append('-----------------------------')
+        lines.append(f'RPA EXCITED STATES ({self._SPIN_MAP_ORCA[self.spin]})')
+        lines.append('-----------------------------')
+        lines.append('')
+        lines.append('the weight of the individual excitations are printed if larger than 0.01')
+        lines.append('')
+        nstates = len(energies)
+        for state in range(nstates):
+            lines.append(f'STATE{state + 1:>3d}:  E={energies[state]:>11.6f} au{energies_ev[state]:>11.3f} eV{energies_invcm[state]:>11.1f} cm**-1')
+        return '\n'.join(lines)
+
+    _SPIN_MAP_QCHEM = {
+        'singlet': 'Singlet',
+        'triplet': 'Triplet',
+    }
 
 
 class TDA(TDHF):
