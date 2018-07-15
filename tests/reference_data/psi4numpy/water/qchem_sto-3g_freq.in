@@ -1,0 +1,16 @@
+$rem
+  jobtype = freq
+  method = hf
+  basis = sto-3g
+  scf_convergence = 9
+  thresh = 14
+  symmetry = false
+  sym_ignore = true
+$end
+
+$molecule
+0 1
+O          0.000000000000     0.000000000000    -0.075791843589
+H          0.000000000000    -0.866811828967     0.601435779270
+H          0.000000000000     0.866811828967     0.601435779270
+$end

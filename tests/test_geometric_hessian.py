@@ -1,3 +1,4 @@
+import os.path
 import time
 
 import numpy as np
@@ -6,6 +7,11 @@ np.set_printoptions(precision=15, linewidth=200, suppress=True)
 import psi4
 
 from . import molecules_psi4 as molecules
+
+
+__filedir__ = os.path.realpath(os.path.dirname(__file__))
+refdir = os.path.join(__filedir__, 'reference_data')
+datadir = os.path.join(refdir, 'psi4numpy', 'water')
 
 
 def test_geometric_hessian_outside_solver_psi4numpy():
@@ -17,6 +23,7 @@ def test_geometric_hessian_outside_solver_psi4numpy():
     H 1 1.1 2 104
     symmetry c1
     """)
+
     psi4.core.set_active_molecule(mol)
 
     options = {
@@ -51,6 +58,9 @@ def test_geometric_hessian_outside_solver_psi4numpy():
 
     F = H + 2.0 * np.einsum('pmqm->pq', MO[:, :occ, :, :occ])
     F -= np.einsum('pmmq->pq', MO[:, :occ, :occ, :])
+    # np.save(os.path.join(datadir, 'F.npy'), F)
+    F_ref = np.load(os.path.join(datadir, 'F.npy'))
+    np.testing.assert_allclose(F, F_ref, rtol=0, atol=1.0e-10)
     natoms = mol.natom()
     cart = ['_X', '_Y', '_Z']
     oei_dict = {"S" : "OVERLAP", "T" : "KINETIC", "V" : "POTENTIAL"}
@@ -61,11 +71,14 @@ def test_geometric_hessian_outside_solver_psi4numpy():
     # 1st Derivative of OEIs
 
     for atom in range(natoms):
-        for key in  oei_dict:
+        for key in oei_dict:
             deriv1_mat[key + str(atom)] = mints.mo_oei_deriv1(oei_dict[key], atom, C, C)
             for p in range(3):
                 map_key = key + str(atom) + cart[p]
                 deriv1[map_key] = np.asarray(deriv1_mat[key + str(atom)][p])
+                # np.save(os.path.join(datadir, f'{map_key}.npy'), deriv1[map_key])
+                deriv1_ref = np.load(os.path.join(datadir, f'{map_key}.npy'))
+                np.testing.assert_allclose(deriv1[map_key], deriv1_ref, rtol=0, atol=1.0e-10)
 
     # 1st Derivative of TEIs
 
@@ -75,6 +88,9 @@ def test_geometric_hessian_outside_solver_psi4numpy():
         for p in range(3):
             map_key = string + cart[p]
             deriv1[map_key] = np.asarray(deriv1_mat[string][p])
+            # np.save(os.path.join(datadir, f'{map_key}.npy'), deriv1[map_key])
+            deriv1_ref = np.load(os.path.join(datadir, f'{map_key}.npy'))
+            np.testing.assert_allclose(deriv1[map_key], deriv1_ref, rtol=0, atol=1.0e-10)
 
     Hes = {};
     deriv2_mat = {}
@@ -100,7 +116,7 @@ def test_geometric_hessian_outside_solver_psi4numpy():
 
     for atom1 in range(natoms):
         for atom2 in range(atom1 + 1):
-            for key in  oei_dict:
+            for key in oei_dict:
                 string = key + str(atom1) + str(atom2)
                 deriv2_mat[string] = mints.mo_oei_deriv2(oei_dict[key], atom1, atom2, C, C)
                 pq = 0
@@ -108,6 +124,9 @@ def test_geometric_hessian_outside_solver_psi4numpy():
                     for q in range(3):
                         map_key = string + cart[p] + cart[q]
                         deriv2[map_key] = np.asarray(deriv2_mat[string][pq])
+                        # np.save(os.path.join(datadir, f'{map_key}.npy'), deriv2[map_key])
+                        deriv2_ref = np.load(os.path.join(datadir, f'{map_key}.npy'))
+                        np.testing.assert_allclose(deriv2[map_key], deriv2_ref, rtol=0, atol=1.0e-10)
                         pq = pq+1
                         row = 3 * atom1 + p
                         col = 3 * atom2 + q
@@ -117,6 +136,9 @@ def test_geometric_hessian_outside_solver_psi4numpy():
                             Hes[key][row][col] = 2.0 * np.einsum("ii->", deriv2[map_key][:occ,:occ])
                         Hes[key][col][row] = Hes[key][row][col]
                         Hes[key][col][row] = Hes[key][row][col]
+                        # np.save(os.path.join(datadir, f'Hes_{map_key}.npy'), Hes[key])
+                        Hes_ref = np.load(os.path.join(datadir, f'Hes_{map_key}.npy'))
+                        np.testing.assert_allclose(Hes[key], Hes_ref, rtol=0, atol=1.0e-10)
 
 
     for key in Hes:
@@ -138,6 +160,9 @@ def test_geometric_hessian_outside_solver_psi4numpy():
                 for q in range(3):
                     map_key = string + cart[p] + cart[q]
                     deriv2[map_key] = np.asarray(deriv2_mat[string][pq])
+                    # np.save(os.path.join(datadir, f'{map_key}.npy'), deriv2[map_key])
+                    deriv2_ref = np.load(os.path.join(datadir, f'{map_key}.npy'))
+                    np.testing.assert_allclose(deriv2[map_key], deriv2_ref, rtol=0, atol=1.0e-10)
                     pq = pq + 1
                     row = 3 * atom1 + p
                     col = 3 * atom2 + q
@@ -311,7 +336,7 @@ def test_geometric_hessian_outside_solver():
     C = wfn.Ca_subset("AO", "ALL")
     npC = np.asarray(C)
 
-    mints = psi4.core.MintsHelper(wfn.basisset())
+    mints = psi4.core.MintsHelper(wfn)
     T = np.asarray(mints.ao_kinetic())
     V = np.asarray(mints.ao_potential())
     H_ao = T + V
@@ -324,6 +349,8 @@ def test_geometric_hessian_outside_solver():
 
     F = H + 2.0 * np.einsum('pmqm->pq', MO[:, o, :, o])
     F -= np.einsum('pmmq->pq', MO[:, o, o, :])
+    F_ref = np.load(os.path.join(datadir, 'F.npy'))
+    np.testing.assert_allclose(F, F_ref, rtol=0, atol=1.0e-10)
     natoms = mol.natom()
     cart = ['_X', '_Y', '_Z']
     oei_dict = {"S" : "OVERLAP", "T" : "KINETIC", "V" : "POTENTIAL"}
@@ -334,11 +361,13 @@ def test_geometric_hessian_outside_solver():
     # 1st Derivative of OEIs
 
     for atom in range(natoms):
-        for key in  oei_dict:
+        for key in oei_dict:
             deriv1_mat[key + str(atom)] = mints.mo_oei_deriv1(oei_dict[key], atom, C, C)
             for p in range(3):
                 map_key = key + str(atom) + cart[p]
                 deriv1[map_key] = np.asarray(deriv1_mat[key + str(atom)][p])
+                deriv1_ref = np.load(os.path.join(datadir, f'{map_key}.npy'))
+                np.testing.assert_allclose(deriv1[map_key], deriv1_ref, rtol=0, atol=1.0e-10)
 
     # 1st Derivative of TEIs
 
@@ -348,6 +377,8 @@ def test_geometric_hessian_outside_solver():
         for p in range(3):
             map_key = string + cart[p]
             deriv1[map_key] = np.asarray(deriv1_mat[string][p])
+            deriv1_ref = np.load(os.path.join(datadir, f'{map_key}.npy'))
+            np.testing.assert_allclose(deriv1[map_key], deriv1_ref, rtol=0, atol=1.0e-10)
 
     Hes = {};
     deriv2_mat = {}
@@ -373,7 +404,7 @@ def test_geometric_hessian_outside_solver():
 
     for atom1 in range(natoms):
         for atom2 in range(atom1 + 1):
-            for key in  oei_dict:
+            for key in oei_dict:
                 string = key + str(atom1) + str(atom2)
                 deriv2_mat[string] = mints.mo_oei_deriv2(oei_dict[key], atom1, atom2, C, C)
                 pq = 0
