@@ -132,6 +132,11 @@ class TDHF(CPHF):
         lines.append('--------------------------------------------------------')
         return '\n'.join(lines)
 
+    _HAMILTONIAN_MAP_ORCA = {
+        'tda': 'CIS-',
+        'rpa': 'RPA ',
+    }
+
     _SPIN_MAP_ORCA = {
         'singlet': 'SINGLETS',
         'triplet': 'TRIPLETS',
@@ -143,7 +148,7 @@ class TDHF(CPHF):
         energies_invcm = energies * HARTREE_TO_INVCM
         lines = []
         lines.append('-----------------------------')
-        lines.append(f'RPA EXCITED STATES ({self._SPIN_MAP_ORCA[self.spin]})')
+        lines.append(f'{self._HAMILTONIAN_MAP_ORCA[self.hamiltonian]}EXCITED STATES ({self._SPIN_MAP_ORCA[self.spin]})')
         lines.append('-----------------------------')
         lines.append('')
         lines.append('the weight of the individual excitations are printed if larger than 0.01')
@@ -174,20 +179,14 @@ class TDA(TDHF):
         self.solver.eigvecs_normed = self.solver.eigvecs.copy()
         # This is because we've calculated all possible roots.
         for idx in range(nov_alph):
-            print('=' * 78)
             norm = (1 / np.sqrt(2))
             eigvec = self.solver.eigvecs[:, idx]
             eigvec_normed = self.solver.eigvecs[:, idx] * norm
             self.solver.eigvecs_normed[:, idx] = eigvec_normed
             eigval = self.solver.eigvals[idx].real
-            print(f' State: {idx + 1}')
-            print(f' Excitation energy [a.u.]: {eigval}')
-            print(f' Excitation energy [eV]  : {eigval * HARTREE_TO_EV}')
             # contract the components of every operator with every
             # eigenvector
             for operator in self.solver.operators:
-                print('-' * 78)
-                print(f' Operator: {operator.label}')
                 integrals = operator.mo_integrals_ai_alph[:, :, 0]
                 # TODO why the 2?
                 res_normed = 2 * np.dot(integrals, eigvec_normed)
@@ -195,9 +194,6 @@ class TDA(TDHF):
                 oscillator_strength = (2 / 3) * eigval * transition_moment ** 2
                 total_oscillator_strength = (2 / 3) * eigval * np.dot(transition_moment,
                                                                       transition_moment)
-                print(f' Transition moment: {transition_moment}')
-                print(f' Oscillator strength: {oscillator_strength}')
-                print(f' Oscillator strength (total): {total_oscillator_strength}')
                 if not hasattr(operator, 'transition_moments'):
                     operator.transition_moments = []
                 if not hasattr(operator, 'oscillator_strengths'):
