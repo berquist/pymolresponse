@@ -1,5 +1,4 @@
 import os.path
-import time
 
 import numpy as np
 np.set_printoptions(precision=15, linewidth=200, suppress=True)
@@ -35,7 +34,7 @@ def test_geometric_hessian_rhf_outside_solver_psi4numpy():
 
     psi4.set_options(options)
 
-    rhf_e, wfn = psi4.energy('SCF', return_wfn=True)
+    _, wfn = psi4.energy('SCF', return_wfn=True)
 
     # Assuming C1 symmetry
     occ = wfn.doccpi()[0]
@@ -54,7 +53,7 @@ def test_geometric_hessian_rhf_outside_solver_psi4numpy():
     # Integral generation from Psi4's MintsHelper
     MO = np.asarray(mints.mo_eri(C, C, C, C))
     # Physicist notation
-    MO = MO.swapaxes(1,2)
+    MO = MO.swapaxes(1, 2)
 
     F = H + 2.0 * np.einsum('pmqm->pq', MO[:, :occ, :, :occ])
     F -= np.einsum('pmmq->pq', MO[:, :occ, :occ, :])
@@ -131,9 +130,9 @@ def test_geometric_hessian_rhf_outside_solver_psi4numpy():
                         row = 3 * atom1 + p
                         col = 3 * atom2 + q
                         if key == "S":
-                            Hes[key][row][col] = -2.0 * np.einsum("ii,ii->", F[:occ,:occ], deriv2[map_key][:occ,:occ])
+                            Hes[key][row][col] = -2.0 * np.einsum("ii,ii->", F[:occ, :occ], deriv2[map_key][:occ, :occ])
                         else:
-                            Hes[key][row][col] = 2.0 * np.einsum("ii->", deriv2[map_key][:occ,:occ])
+                            Hes[key][row][col] = 2.0 * np.einsum("ii->", deriv2[map_key][:occ, :occ])
                         Hes[key][col][row] = Hes[key][row][col]
                         Hes[key][col][row] = Hes[key][row][col]
                         # np.save(os.path.join(datadir, f'Hes_{map_key}.npy'), Hes[key])
@@ -166,8 +165,8 @@ def test_geometric_hessian_rhf_outside_solver_psi4numpy():
                     pq = pq + 1
                     row = 3 * atom1 + p
                     col = 3 * atom2 + q
-                    Hes["J"][row][col] =  2.0 * np.einsum("iijj->", deriv2[map_key][:occ,:occ,:occ,:occ])
-                    Hes["K"][row][col] = -1.0 * np.einsum("ijij->", deriv2[map_key][:occ,:occ,:occ,:occ])
+                    Hes["J"][row][col] =  2.0 * np.einsum("iijj->", deriv2[map_key][:occ, :occ, :occ, :occ])
+                    Hes["K"][row][col] = -1.0 * np.einsum("ijij->", deriv2[map_key][:occ, :occ, :occ, :occ])
 
                     Hes["J"][col][row] = Hes["J"][row][col]
                     Hes["K"][col][row] = Hes["K"][row][col]
@@ -209,7 +208,7 @@ def test_geometric_hessian_rhf_outside_solver_psi4numpy():
 
     # Inverse of G
     Ginv = np.linalg.inv(G.reshape(occ * vir, -1))
-    Ginv = Ginv.reshape(occ,vir,occ,vir)
+    Ginv = Ginv.reshape(occ, vir, occ, vir)
 
     B = {}
     F_grad = {}
@@ -222,8 +221,8 @@ def test_geometric_hessian_rhf_outside_solver_psi4numpy():
             key = str(atom) + cart[p]
             F_grad[key] =  deriv1["T" + key]
             F_grad[key] += deriv1["V" + key]
-            F_grad[key] += 2.0 * np.einsum('pqmm->pq', deriv1["TEI" + key][:,:,:occ,:occ])
-            F_grad[key] -= 1.0 * np.einsum('pmmq->pq', deriv1["TEI" + key][:,:occ,:occ,:])
+            F_grad[key] += 2.0 * np.einsum('pqmm->pq', deriv1["TEI" + key][:, :, :occ, :occ])
+            F_grad[key] -= 1.0 * np.einsum('pmmq->pq', deriv1["TEI" + key][:, :occ, :occ, :])
             # np.save(os.path.join(datadir, f'F_grad_{key}.npy'), F_grad[key])
             F_grad_ref = np.load(os.path.join(datadir, f'F_grad_{key}.npy'))
             np.testing.assert_allclose(F_grad[key], F_grad_ref, rtol=0, atol=1.0e-10)
@@ -236,10 +235,10 @@ def test_geometric_hessian_rhf_outside_solver_psi4numpy():
     for atom in range(natoms):
         for p in range(3):
             key = str(atom) + cart[p]
-            B[key] =  np.einsum("ai,ii->ai", deriv1["S" + key][occ:,:occ], F[:occ,:occ])
-            B[key] -= F_grad[key][occ:,:occ]
-            B[key] +=  2.0 * np.einsum("amin,mn->ai", MO[occ:,:occ,:occ,:occ], deriv1["S" + key][:occ,:occ])
-            B[key] += -1.0 * np.einsum("amni,mn->ai", MO[occ:,:occ,:occ,:occ], deriv1["S" + key][:occ,:occ])
+            B[key] =  np.einsum("ai,ii->ai", deriv1["S" + key][occ:, :occ], F[:occ, :occ])
+            B[key] -= F_grad[key][occ:, :occ]
+            B[key] +=  2.0 * np.einsum("amin,mn->ai", MO[occ:, :occ, :occ, :occ], deriv1["S" + key][:occ, :occ])
+            B[key] += -1.0 * np.einsum("amni,mn->ai", MO[occ:, :occ, :occ, :occ], deriv1["S" + key][:occ, :occ])
 
             # np.save(os.path.join(datadir, f'B_{key}.npy'), B[key])
             B_ref = np.load(os.path.join(datadir, f'B_{key}.npy'))
@@ -260,7 +259,7 @@ def test_geometric_hessian_rhf_outside_solver_psi4numpy():
     # Build the response Hessian
 
     for atom1 in range(natoms):
-        for atom2 in range(atom1+1):
+        for atom2 in range(atom1 + 1):
             for p in range(3):
                 for q in range(3):
                     key1  = str(atom1) + cart[p]
@@ -270,12 +269,12 @@ def test_geometric_hessian_rhf_outside_solver_psi4numpy():
                     r = 3 * atom1 + p
                     c = 3 * atom2 + q
 
-                    Hes["R"][r][c] = -2.0 * np.einsum("ij,ij->", deriv1[key1S][:occ,:occ], F_grad[key2][:occ,:occ])
-                    Hes["R"][r][c] -= 2.0 * np.einsum("ij,ij->", deriv1[key2S][:occ,:occ], F_grad[key1][:occ,:occ])
-                    Hes["R"][r][c] += 4.0 * np.einsum("ii,mi,mi->", F[:occ,:occ], deriv1[key2S][:occ,:occ], deriv1[key1S][:occ,:occ])
+                    Hes["R"][r][c] = -2.0 * np.einsum("ij,ij->", deriv1[key1S][:occ, :occ], F_grad[key2][:occ, :occ])
+                    Hes["R"][r][c] -= 2.0 * np.einsum("ij,ij->", deriv1[key2S][:occ, :occ], F_grad[key1][:occ, :occ])
+                    Hes["R"][r][c] += 4.0 * np.einsum("ii,mi,mi->", F[:occ, :occ], deriv1[key2S][:occ, :occ], deriv1[key1S][:occ, :occ])
 
-                    Hes["R"][r][c] += 4.0 * np.einsum("ij,mn,imjn->", deriv1[key1S][:occ,:occ], deriv1[key2S][:occ,:occ], MO[:occ,:occ,:occ,:occ])
-                    Hes["R"][r][c] -= 2.0 * np.einsum("ij,mn,imnj->", deriv1[key1S][:occ,:occ], deriv1[key2S][:occ,:occ], MO[:occ,:occ,:occ,:occ])
+                    Hes["R"][r][c] += 4.0 * np.einsum("ij,mn,imjn->", deriv1[key1S][:occ, :occ], deriv1[key2S][:occ, :occ], MO[:occ, :occ, :occ, :occ])
+                    Hes["R"][r][c] -= 2.0 * np.einsum("ij,mn,imnj->", deriv1[key1S][:occ, :occ], deriv1[key2S][:occ, :occ], MO[:occ, :occ, :occ, :occ])
 
                     Hes["R"][r][c] -= 4.0 * np.einsum("ai,ai->", U[key2], B[key1])
                     Hes["R"][c][r] = Hes["R"][r][c]
@@ -312,16 +311,17 @@ def test_geometric_hessian_rhf_outside_solver_psi4numpy():
     Mat.name = " TOTAL HESSIAN"
     Mat.print_out()
 
+    # pylint: disable=bad-whitespace
     H_psi4 = psi4.core.Matrix.from_list([
-    [ 0.07613952484989, 0.00000000000000, 0.00000000000000,-0.03806976242497, 0.00000000000000,-0.00000000000000,-0.03806976242497,-0.00000000000000, 0.00000000000000],
-    [ 0.00000000000000, 0.48290536165172,-0.00000000000000,-0.00000000000000,-0.24145268082589, 0.15890015082364, 0.00000000000000,-0.24145268082590,-0.15890015082364],
-    [ 0.00000000000000,-0.00000000000000, 0.43734495429393,-0.00000000000000, 0.07344233387869,-0.21867247714697,-0.00000000000000,-0.07344233387869,-0.21867247714697],
-    [-0.03806976242497,-0.00000000000000,-0.00000000000000, 0.04537741867538,-0.00000000000000, 0.00000000000000,-0.00730765625041, 0.00000000000000,-0.00000000000000],
-    [ 0.00000000000000,-0.24145268082589, 0.07344233387869,-0.00000000000000, 0.25786500091002,-0.11617124235117, 0.00000000000000,-0.01641232008412, 0.04272890847247],
-    [-0.00000000000000, 0.15890015082364,-0.21867247714697, 0.00000000000000,-0.11617124235117, 0.19775197798054, 0.00000000000000,-0.04272890847247, 0.02092049916645],
-    [-0.03806976242497, 0.00000000000000,-0.00000000000000,-0.00730765625041, 0.00000000000000, 0.00000000000000, 0.04537741867538,-0.00000000000000, 0.00000000000000],
-    [-0.00000000000000,-0.24145268082590,-0.07344233387869, 0.00000000000000,-0.01641232008412,-0.04272890847247,-0.00000000000000, 0.25786500091002, 0.11617124235117],
-    [ 0.00000000000000,-0.15890015082364,-0.21867247714697,-0.00000000000000, 0.04272890847247, 0.02092049916645, 0.00000000000000, 0.11617124235117, 0.19775197798054]
+        [ 0.07613952484989,  0.00000000000000,  0.00000000000000, -0.03806976242497,  0.00000000000000,  0.00000000000000, -0.03806976242497,  0.00000000000000,  0.00000000000000],
+        [ 0.00000000000000,  0.48290536165172,  0.00000000000000,  0.00000000000000, -0.24145268082589,  0.15890015082364,  0.00000000000000, -0.24145268082590, -0.15890015082364],
+        [ 0.00000000000000,  0.00000000000000,  0.43734495429393,  0.00000000000000,  0.07344233387869, -0.21867247714697, -0.00000000000000, -0.07344233387869, -0.21867247714697],
+        [-0.03806976242497,  0.00000000000000,  0.00000000000000,  0.04537741867538,  0.00000000000000,  0.00000000000000, -0.00730765625041,  0.00000000000000,  0.00000000000000],
+        [ 0.00000000000000, -0.24145268082589,  0.07344233387869,  0.00000000000000,  0.25786500091002, -0.11617124235117,  0.00000000000000, -0.01641232008412,  0.04272890847247],
+        [-0.00000000000000,  0.15890015082364, -0.21867247714697,  0.00000000000000, -0.11617124235117,  0.19775197798054,  0.00000000000000, -0.04272890847247,  0.02092049916645],
+        [-0.03806976242497,  0.00000000000000,  0.00000000000000, -0.00730765625041,  0.00000000000000,  0.00000000000000,  0.04537741867538,  0.00000000000000,  0.00000000000000],
+        [ 0.00000000000000, -0.24145268082590, -0.07344233387869,  0.00000000000000, -0.01641232008412, -0.04272890847247,  0.00000000000000,  0.25786500091002,  0.11617124235117],
+        [ 0.00000000000000, -0.15890015082364, -0.21867247714697,  0.00000000000000,  0.04272890847247,  0.02092049916645,  0.00000000000000,  0.11617124235117,  0.19775197798054]
     ])
 
     H_python_mat = psi4.core.Matrix.from_array(Hessian)
@@ -346,7 +346,7 @@ def test_geometric_hessian_rhf_outside_solver():
 
     psi4.set_options(options)
 
-    rhf_e, wfn = psi4.energy('hf', return_wfn=True)
+    _, wfn = psi4.energy('hf', return_wfn=True)
 
     norb = wfn.nmo()
     nocc = wfn.nalpha()
@@ -400,7 +400,7 @@ def test_geometric_hessian_rhf_outside_solver():
             deriv1_ref = np.load(os.path.join(datadir, f'{map_key}.npy'))
             np.testing.assert_allclose(deriv1[map_key], deriv1_ref, rtol=0, atol=1.0e-10)
 
-    Hes = {};
+    Hes = {}
     deriv2_mat = {}
     deriv2 = {}
 
@@ -610,16 +610,17 @@ def test_geometric_hessian_rhf_outside_solver():
     Mat.name = " TOTAL HESSIAN"
     Mat.print_out()
 
+    # pylint: disable=bad-whitespace
     H_psi4 = psi4.core.Matrix.from_list([
-    [ 0.07613952484989, 0.00000000000000, 0.00000000000000,-0.03806976242497, 0.00000000000000,-0.00000000000000,-0.03806976242497,-0.00000000000000, 0.00000000000000],
-    [ 0.00000000000000, 0.48290536165172,-0.00000000000000,-0.00000000000000,-0.24145268082589, 0.15890015082364, 0.00000000000000,-0.24145268082590,-0.15890015082364],
-    [ 0.00000000000000,-0.00000000000000, 0.43734495429393,-0.00000000000000, 0.07344233387869,-0.21867247714697,-0.00000000000000,-0.07344233387869,-0.21867247714697],
-    [-0.03806976242497,-0.00000000000000,-0.00000000000000, 0.04537741867538,-0.00000000000000, 0.00000000000000,-0.00730765625041, 0.00000000000000,-0.00000000000000],
-    [ 0.00000000000000,-0.24145268082589, 0.07344233387869,-0.00000000000000, 0.25786500091002,-0.11617124235117, 0.00000000000000,-0.01641232008412, 0.04272890847247],
-    [-0.00000000000000, 0.15890015082364,-0.21867247714697, 0.00000000000000,-0.11617124235117, 0.19775197798054, 0.00000000000000,-0.04272890847247, 0.02092049916645],
-    [-0.03806976242497, 0.00000000000000,-0.00000000000000,-0.00730765625041, 0.00000000000000, 0.00000000000000, 0.04537741867538,-0.00000000000000, 0.00000000000000],
-    [-0.00000000000000,-0.24145268082590,-0.07344233387869, 0.00000000000000,-0.01641232008412,-0.04272890847247,-0.00000000000000, 0.25786500091002, 0.11617124235117],
-    [ 0.00000000000000,-0.15890015082364,-0.21867247714697,-0.00000000000000, 0.04272890847247, 0.02092049916645, 0.00000000000000, 0.11617124235117, 0.19775197798054]
+        [ 0.07613952484989,  0.00000000000000,  0.00000000000000, -0.03806976242497,  0.00000000000000,  0.00000000000000, -0.03806976242497,  0.00000000000000,  0.00000000000000],
+        [ 0.00000000000000,  0.48290536165172,  0.00000000000000,  0.00000000000000, -0.24145268082589,  0.15890015082364,  0.00000000000000, -0.24145268082590, -0.15890015082364],
+        [ 0.00000000000000,  0.00000000000000,  0.43734495429393,  0.00000000000000,  0.07344233387869, -0.21867247714697, -0.00000000000000, -0.07344233387869, -0.21867247714697],
+        [-0.03806976242497,  0.00000000000000,  0.00000000000000,  0.04537741867538,  0.00000000000000,  0.00000000000000, -0.00730765625041,  0.00000000000000,  0.00000000000000],
+        [ 0.00000000000000, -0.24145268082589,  0.07344233387869,  0.00000000000000,  0.25786500091002, -0.11617124235117,  0.00000000000000, -0.01641232008412,  0.04272890847247],
+        [-0.00000000000000,  0.15890015082364, -0.21867247714697,  0.00000000000000, -0.11617124235117,  0.19775197798054,  0.00000000000000, -0.04272890847247,  0.02092049916645],
+        [-0.03806976242497,  0.00000000000000,  0.00000000000000, -0.00730765625041,  0.00000000000000,  0.00000000000000,  0.04537741867538,  0.00000000000000,  0.00000000000000],
+        [ 0.00000000000000, -0.24145268082590, -0.07344233387869,  0.00000000000000, -0.01641232008412, -0.04272890847247,  0.00000000000000,  0.25786500091002,  0.11617124235117],
+        [ 0.00000000000000, -0.15890015082364, -0.21867247714697,  0.00000000000000,  0.04272890847247,  0.02092049916645,  0.00000000000000,  0.11617124235117,  0.19775197798054]
     ])
 
     H_python_mat = psi4.core.Matrix.from_array(Hessian)
