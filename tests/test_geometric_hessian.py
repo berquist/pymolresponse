@@ -492,7 +492,7 @@ def test_geometric_hessian_rhf_outside_solver():
     # G_iajb = delta_ij * delta_ab * epsilon_ij * epsilon_ab + 4(ia|jb) - (ij|ab) - (ib|ja),
     # where epsilon_ij = epsilon_i - epsilon_j, (epsilon -> orbital energies),
     # x refers to the perturbation, U_jb^x are the corresponsing CPHF coefficients
-    # and B_ia^x = S_ia^x * epsilon_ii - F_ia^x + S_mn^x * [2() - ()],
+    # and B_ia^x = S_ia^x * epsilon_ii - F_ia^x + S_mn^x * [2(ia|mn) - (in|ma)],
     # where S^x = del(S)/del(x), F^x =  del(F)/del(x).
 
     I_occ = np.diag(np.ones(nocc))

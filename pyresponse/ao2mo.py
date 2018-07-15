@@ -1,5 +1,7 @@
 """Tools for performing AO-to-MO transformations of two-electron integrals."""
 
+import numpy as np
+
 from .utils import fix_mocoeffs_shape
 
 
@@ -10,20 +12,43 @@ class AO2MO(object):
     # TODO see
     # https://github.com/psi4/psi4numpy/blob/master/Tutorials/01_Psi4NumPy-Basics/1f_tensor-manipulation.ipynb
 
-    def __init__(self, C, verbose=1):
+    def __init__(self, C, occupations, verbose=1, I=None):
 
         self.C = fix_mocoeffs_shape(C)
+        self.occupations = occupations
         self.verbose = verbose
+        self.I = I
+
+        self.nocc_alph, self.nvirt_alph, self.nocc_beta, self.nvirt_beta = occupations
 
         self.tei_mo = tuple()
 
+    @staticmethod
+    def transform(I, C1, C2, C3, C4):
+        """
+        Transforms the 4-index ERI I with the 4 transformation matrices C1 to C4.
+        """
+        nao = I.shape[0]
+        MO = np.dot(C1.T, I.reshape(nao, -1)).reshape(C1.shape[1], nao, nao, nao)
+
+        MO = np.einsum('qB,Aqrs->ABrs', C2, MO)
+        MO = np.einsum('rC,ABrs->ABCs', C3, MO)
+        MO = np.einsum('sD,ABCs->ABCD', C4, MO)
+        return MO
+
     def perform_rhf_full(self):
         r"""Perform the transformation :math:`(\mu\nu|\lambda\sigma) \rightarrow (pq|rs)`."""
-        raise NotImplementedError
+        tei_mo = self.transform(self.I, self.C[0], self.C[0], self.C[0], self.C[0])
+        self.tei_mo = (tei_mo, )
 
     def perform_rhf_partial(self):
         r"""Perform the transformation :math:`(\mu\nu|\lambda\sigma) \rightarrow (ia|jb), (ij|ab)`."""
-        raise NotImplementedError
+        norb = self.nocc_alph + self.nvirt_alph
+        oa = slice(0, self.nocc_alph)
+        va = slice(self.nocc_alph, norb)
+        tei_mo_ovov = self.transform(self.I, self.C[0, :, oa], self.C[0, :, va], self.C[0, :, oa], self.C[0, :, va])
+        tei_mo_oovv = self.transform(self.I, self.C[0, :, oa], self.C[0, :, oa], self.C[0, :, va], self.C[0, :, va])
+        self.tei_mo = (tei_mo_ovov, tei_mo_oovv)
 
     def perform_uhf_full(self):
         r"""Perform the transformation :math:`(\mu\nu|\lambda\sigma) \rightarrow (p^{\alpha}q^{\alpha}|r^{\alpha}s^{\alpha}), (p^{\alpha}q^{\alpha}|r^{\beta}s^{\beta}), (p^{\beta}q^{\beta}|r^{\alpha}s^{\alpha}), (p^{\beta}q^{\beta}|r^{\beta}s^{\beta})`."""
@@ -39,19 +64,20 @@ class AO2MOpyscf(AO2MO):
 
     # TODO what does the pyscf compact kwarg do?
     def __init__(self, C, verbose=1, pyscfmol=None):
-        super().__init__(C, verbose)
-
         self.pyscfmol = pyscfmol
         from .utils import occupations_from_pyscf_mol
-        self.occupations = occupations_from_pyscf_mol(self.pyscfmol, self.C)
+        occupations = occupations_from_pyscf_mol(self.pyscfmol, C)
+        super().__init__(C, occupations, verbose, I=None)
 
     def perform_rhf_full(self):
+        assert self.pyscfmol is not None
         norb = self.C.shape[-1]
         from pyscf.ao2mo import full
         tei_mo = full(self.pyscfmol, self.C[0], aosym='s4', compact=False, verbose=self.verbose).reshape(norb, norb, norb, norb)
         self.tei_mo = (tei_mo, )
 
     def perform_rhf_partial(self):
+        assert self.pyscfmol is not None
         nocc_a, nvirt_a, _, _ = self.occupations
         C_occ = self.C[0, :, :nocc_a]
         C_virt = self.C[0, :, nocc_a:]
@@ -63,6 +89,7 @@ class AO2MOpyscf(AO2MO):
         self.tei_mo = (tei_mo_ovov, tei_mo_oovv)
 
     def perform_uhf_full(self):
+        assert self.pyscfmol is not None
         norb = self.C.shape[-1]
         C_a = self.C[0]
         C_b = self.C[1]
@@ -79,6 +106,7 @@ class AO2MOpyscf(AO2MO):
 
     # pylint: disable=too-many-locals
     def perform_uhf_partial(self):
+        assert self.pyscfmol is not None
         nocc_a, nvirt_a, nocc_b, nvirt_b = self.occupations
         C_occ_alph = self.C[0, :, :nocc_a]
         C_virt_alph = self.C[0, :, nocc_a:]
@@ -97,4 +125,7 @@ class AO2MOpyscf(AO2MO):
         tei_mo_ovov_bbbb = general(self.pyscfmol, C_ovov_bbbb, aosym='s4', compact=False, verbose=self.verbose).reshape(nocc_b, nvirt_b, nocc_b, nvirt_b)
         tei_mo_oovv_aaaa = general(self.pyscfmol, C_oovv_aaaa, aosym='s4', compact=False, verbose=self.verbose).reshape(nocc_a, nocc_a, nvirt_a, nvirt_a)
         tei_mo_oovv_bbbb = general(self.pyscfmol, C_oovv_bbbb, aosym='s4', compact=False, verbose=self.verbose).reshape(nocc_b, nocc_b, nvirt_b, nvirt_b)
-        self.tei_mo = (tei_mo_ovov_aaaa, tei_mo_ovov_aabb, tei_mo_ovov_bbaa, tei_mo_ovov_bbbb, tei_mo_oovv_aaaa, tei_mo_oovv_bbbb)
+        self.tei_mo = (tei_mo_ovov_aaaa, tei_mo_ovov_aabb,
+                       tei_mo_ovov_bbaa, tei_mo_ovov_bbbb,
+                       tei_mo_oovv_aaaa,
+                       tei_mo_oovv_bbbb)
