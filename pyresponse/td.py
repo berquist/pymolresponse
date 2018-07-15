@@ -7,7 +7,7 @@ from .constants import HARTREE_TO_EV, HARTREE_TO_INVCM
 from .cphf import CPHF
 from .iterators import EigSolver, ExactDiagonalizationSolver
 from .operators import Operator
-from .utils import form_results
+from .utils import form_results, form_vec_energy_differences
 
 
 class TDHF(CPHF):
@@ -105,6 +105,32 @@ class TDHF(CPHF):
                 print(f' Oscillator strength: {oscillator_strength}')
                 print(f' Oscillator strength (total): {total_oscillator_strength}')
         return
+
+    def print_results_nwchem(self):
+        # TODO UHF
+        nocc_tot, nvirt_tot, _, _ = self.solver.occupations
+        moene = np.diag(self.solver.moenergies[0])
+        moene_occ = moene[:nocc_tot]
+        moene_virt = moene[nocc_tot:]
+        ediff = form_vec_energy_differences(moene_occ, moene_virt) * HARTREE_TO_EV
+        idxsort = np.argsort(ediff)
+        ediff_sorted = ediff[idxsort]
+        def form_indices_orbwin(nocc, nvirt):
+            norb = nocc + nvirt
+            return [(i, a) for i in range(0, nocc) for a in range(nocc, norb)]
+        indices_unrestricted_orbwin = form_indices_orbwin(nocc_tot, nvirt_tot)
+        indices_sorted = [indices_unrestricted_orbwin[i] for i in idxsort]
+        ndiff = 10
+        lines = []
+        lines.append(f'   {ndiff:>2d} smallest eigenvalue differences (eV) ')
+        lines.append('--------------------------------------------------------')
+        lines.append('  No. Spin  Occ  Vir  Irrep   E(Occ)    E(Vir)   E(Diff)')
+        lines.append('--------------------------------------------------------')
+        for idx in range(ndiff):
+            iocc, ivirt = indices_sorted[idx]
+            lines.append(f'{idx + 1:>5d}{1:>5d}{iocc + 1:>5d}{ivirt + 1:>5d} {"X":<5}{moene[iocc]:>10.3f}{moene[ivirt]:>10.3f}{ediff_sorted[idx]:>10.3f}')
+        lines.append('--------------------------------------------------------')
+        return '\n'.join(lines)
 
     _SPIN_MAP_ORCA = {
         'singlet': 'SINGLETS',
