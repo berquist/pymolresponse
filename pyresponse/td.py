@@ -7,7 +7,7 @@ from .constants import HARTREE_TO_EV, HARTREE_TO_INVCM
 from .cphf import CPHF
 from .iterators import EigSolver, ExactDiagonalizationSolver
 from .operators import Operator
-from .utils import form_results, form_vec_energy_differences
+from .utils import form_results, form_vec_energy_differences, form_indices_orbwin
 
 
 class TDHF(CPHF):
@@ -115,9 +115,6 @@ class TDHF(CPHF):
         ediff = form_vec_energy_differences(moene_occ, moene_virt) * HARTREE_TO_EV
         idxsort = np.argsort(ediff)
         ediff_sorted = ediff[idxsort]
-        def form_indices_orbwin(nocc, nvirt):
-            norb = nocc + nvirt
-            return [(i, a) for i in range(0, nocc) for a in range(nocc, norb)]
         indices_unrestricted_orbwin = form_indices_orbwin(nocc_tot, nvirt_tot)
         indices_sorted = [indices_unrestricted_orbwin[i] for i in idxsort]
         ndiff = 10
@@ -142,20 +139,44 @@ class TDHF(CPHF):
         'triplet': 'TRIPLETS',
     }
 
-    def print_results_orca(self):
+    def print_results_orca(self, cutoff=0.01):
         energies = self.solver.eigvals.real
         energies_ev = energies * HARTREE_TO_EV
         energies_invcm = energies * HARTREE_TO_INVCM
+        nocc_tot, nvirt_tot, _, _ = self.solver.occupations
+        indices = form_indices_orbwin(nocc_tot, nvirt_tot)
+        eigvecs = self.solver.eigvecs
+        # eigvecs_normed = self.solver.eigvecs_normed
+        square_eigvecs = np.power(eigvecs, 2)
+        # square_eigvecs_normed = np.power(eigvecs_normed, 2)
+        # mask = square_eigvecs > cutoff
+        # print(square_eigvecs.shape)
+        # print(mask.shape)
+        # mask_normed = square_eigvecs_normed > cutoff
+        # print(eigvecs[mask].shape)
+        # print(eigvecs_normed[mask_normed])
+        # print(square_eigvecs[mask].shape)
+        # print(square_eigvecs_normed[mask_normed])
         lines = []
         lines.append('-----------------------------')
         lines.append(f'{self._HAMILTONIAN_MAP_ORCA[self.hamiltonian]}EXCITED STATES ({self._SPIN_MAP_ORCA[self.spin]})')
         lines.append('-----------------------------')
         lines.append('')
-        lines.append('the weight of the individual excitations are printed if larger than 0.01')
+        lines.append(f'the weight of the individual excitations are printed if larger than {cutoff:>4.2f}')
         lines.append('')
         nstates = len(energies)
         for state in range(nstates):
             lines.append(f'STATE{state + 1:>3d}:  E={energies[state]:>11.6f} au{energies_ev[state]:>11.3f} eV{energies_invcm[state]:>11.1f} cm**-1')
+            eigvec_state = eigvecs[:, state]
+            square_eigvec_state = square_eigvecs[:, state]
+            mask = square_eigvec_state > cutoff
+            coeffs_cutoff = eigvec_state[mask]
+            weight_cutoff = square_eigvec_state[mask]
+            mask_indices = np.array([p for (p, b) in enumerate(mask) if b])
+            for i in range(len(weight_cutoff)):
+                iocc, ivirt = indices[mask_indices[i]]
+                lines.append(f'{iocc:>6d}a ->{ivirt:>4d}a  :{weight_cutoff[i]:>13.6f} (c={coeffs_cutoff[i]:>12.8f})')
+            lines.append('')
         return '\n'.join(lines)
 
     _SPIN_MAP_QCHEM = {

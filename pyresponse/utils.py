@@ -524,3 +524,8 @@ def form_first_hyperpolarizability_averages(beta):
                        np.einsum('jji->i', beta))
     avg = np.sum(avgs ** 2) ** (1 / 2)
     return avgs, avg
+
+
+def form_indices_orbwin(nocc, nvirt):
+    norb = nocc + nvirt
+    return [(i, a) for i in range(0, nocc) for a in range(nocc, norb)]
