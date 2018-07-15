@@ -115,42 +115,40 @@ def form_rhs_geometric(natoms, MO, wfn):
     K = np.einsum('piqi->pq', MO[:, o, :, o])
     F = H + (2 * J) - K
 
-    deriv1_mat = dict()
     deriv1 = dict()
     for atom in range(natoms):
         for key in oei_dict:
-            deriv1_mat[key + str(atom)] = mints.mo_oei_deriv1(oei_dict[key], atom, C, C)
+            deriv1_mat = mints.mo_oei_deriv1(oei_dict[key], atom, C, C)
             for p in range(3):
                 map_key = key + str(atom) + cart[p]
-                deriv1[map_key] = np.asarray(deriv1_mat[key + str(atom)][p])
+                deriv1[map_key] = np.asarray(deriv1_mat[p])
     for atom in range(natoms):
         string = "TEI" + str(atom)
-        deriv1_mat[string] = mints.mo_tei_deriv1(atom, C, C, C, C)
+        deriv1_mat = mints.mo_tei_deriv1(atom, C, C, C, C)
         for p in range(3):
             map_key = string + cart[p]
-            deriv1[map_key] = np.asarray(deriv1_mat[string][p])
-    deriv2_mat = dict()
+            deriv1[map_key] = np.asarray(deriv1_mat[p])
     deriv2 = dict()
     for atom1 in range(natoms):
         for atom2 in range(atom1 + 1):
             for key in oei_dict:
                 string = key + str(atom1) + str(atom2)
-                deriv2_mat[string] = mints.mo_oei_deriv2(oei_dict[key], atom1, atom2, C, C)
+                deriv2_mat = mints.mo_oei_deriv2(oei_dict[key], atom1, atom2, C, C)
                 pq = 0
                 for p in range(3):
                     for q in range(3):
                         map_key = string + cart[p] + cart[q]
-                        deriv2[map_key] = np.asarray(deriv2_mat[string][pq])
+                        deriv2[map_key] = np.asarray(deriv2_mat[pq])
                         pq += 1
     for atom1 in range(natoms):
         for atom2 in range(atom1 + 1):
             string = "TEI" + str(atom1) + str(atom2)
-            deriv2_mat[string] = mints.mo_tei_deriv2(atom1, atom2, C, C, C, C)
+            deriv2_mat = mints.mo_tei_deriv2(atom1, atom2, C, C, C, C)
             pq = 0
             for p in range(3):
                 for q in range(3):
                     map_key = string + cart[p] + cart[q]
-                    deriv2[map_key] = np.asarray(deriv2_mat[string][pq])
+                    deriv2[map_key] = np.asarray(deriv2_mat[pq])
                     pq += 1
     F_grad = dict()
     B = dict()
