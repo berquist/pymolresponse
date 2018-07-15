@@ -91,7 +91,7 @@ def test_geometric_hessian_rhf_outside_solver_psi4numpy():
             deriv1_ref = np.load(os.path.join(datadir, f'{map_key}.npy'))
             np.testing.assert_allclose(deriv1[map_key], deriv1_ref, rtol=0, atol=1.0e-10)
 
-    Hes = {};
+    Hes = {}
     deriv2_mat = {}
     deriv2 = {}
 
@@ -329,7 +329,7 @@ def test_geometric_hessian_rhf_outside_solver_psi4numpy():
     return
 
 
-def test_geometric_hessian_rhf_outside_solver():
+def test_geometric_hessian_rhf_outside_solver_chemists():
     psi4.core.set_output_file('output2.dat', False)
 
     mol = molecules.molecule_physicists_water_sto3g()
@@ -628,6 +628,159 @@ def test_geometric_hessian_rhf_outside_solver():
     return
 
 
+def test_geometric_hessian_rhf_right_hand_side():
+
+    mol = molecules.molecule_physicists_water_sto3g()
+    mol.reset_point_group("c1")
+    mol.update_geometry()
+    psi4.core.set_active_molecule(mol)
+
+    options = {
+        'BASIS':'STO-3G',
+        'SCF_TYPE':'PK',
+        'E_CONVERGENCE':1e-10,
+        'D_CONVERGENCE':1e-10
+    }
+
+    psi4.set_options(options)
+
+    _, wfn = psi4.energy('hf', return_wfn=True)
+
+    # ao2mo = AO2MO(C, occupations, I=np.asarray(mints.ao_eri()))
+    # ao2mo.perform_rhf_full()
+
+    # solver = iterators.ExactInv(C, E, occupations)
+    # driver = cphf.CPHF(solver)
+    # driver.set_frequencies()
+    # driver.run()
+
+    norb = wfn.nmo()
+    nocc = wfn.nalpha()
+    nvir = norb - nocc
+
+    o = slice(0, nocc)
+    v = slice(nocc, norb)
+
+    C = wfn.Ca_subset("AO", "ALL")
+    npC = np.asarray(C)
+
+    mints = psi4.core.MintsHelper(wfn)
+    T = np.asarray(mints.ao_kinetic())
+    V = np.asarray(mints.ao_potential())
+    H_ao = T + V
+
+    H = np.einsum('up,vq,uv->pq', npC, npC, H_ao)
+
+    MO = np.asarray(mints.mo_eri(C, C, C, C))
+
+    F = H + 2.0 * np.einsum('pqii->pq', MO[:, :, o, o])
+    F -= np.einsum('piqi->pq', MO[:, o, :, o])
+    F_ref = np.load(os.path.join(datadir, 'F.npy'))
+    np.testing.assert_allclose(F, F_ref, rtol=0, atol=1.0e-10)
+    natoms = mol.natom()
+    cart = ['_X', '_Y', '_Z']
+    oei_dict = {"S" : "OVERLAP", "T" : "KINETIC", "V" : "POTENTIAL"}
+
+    deriv1_mat = dict()
+    deriv1 = dict()
+
+    # 1st Derivative of OEIs
+
+    for atom in range(natoms):
+        for key in oei_dict:
+            deriv1_mat[key + str(atom)] = mints.mo_oei_deriv1(oei_dict[key], atom, C, C)
+            for p in range(3):
+                map_key = key + str(atom) + cart[p]
+                deriv1[map_key] = np.asarray(deriv1_mat[key + str(atom)][p])
+                deriv1_ref = np.load(os.path.join(datadir, f'{map_key}.npy'))
+                np.testing.assert_allclose(deriv1[map_key], deriv1_ref, rtol=0, atol=1.0e-10)
+
+    # 1st Derivative of TEIs
+
+    for atom in range(natoms):
+        string = "TEI" + str(atom)
+        deriv1_mat[string] = mints.mo_tei_deriv1(atom, C, C, C, C)
+        for p in range(3):
+            map_key = string + cart[p]
+            deriv1[map_key] = np.asarray(deriv1_mat[string][p])
+            deriv1_ref = np.load(os.path.join(datadir, f'{map_key}.npy'))
+            np.testing.assert_allclose(deriv1[map_key], deriv1_ref, rtol=0, atol=1.0e-10)
+
+    deriv2_mat = dict()
+    deriv2 = dict()
+
+    # 2nd Derivative of OEIs
+
+    for atom1 in range(natoms):
+        for atom2 in range(atom1 + 1):
+            for key in oei_dict:
+                string = key + str(atom1) + str(atom2)
+                deriv2_mat[string] = mints.mo_oei_deriv2(oei_dict[key], atom1, atom2, C, C)
+                pq = 0
+                for p in range(3):
+                    for q in range(3):
+                        map_key = string + cart[p] + cart[q]
+                        deriv2[map_key] = np.asarray(deriv2_mat[string][pq])
+                        deriv2_ref = np.load(os.path.join(datadir, f'{map_key}.npy'))
+                        np.testing.assert_allclose(deriv2[map_key], deriv2_ref, rtol=0, atol=1.0e-10)
+                        pq += 1
+
+
+    # 2nd Derivative of TEIs
+
+    for atom1 in range(natoms):
+        for atom2 in range(atom1 + 1):
+            string = "TEI" + str(atom1) + str(atom2)
+            deriv2_mat[string] = mints.mo_tei_deriv2(atom1, atom2, C, C, C, C)
+            pq = 0
+            for p in range(3):
+                for q in range(3):
+                    map_key = string + cart[p] + cart[q]
+                    deriv2[map_key] = np.asarray(deriv2_mat[string][pq])
+                    deriv2_ref = np.load(os.path.join(datadir, f'{map_key}.npy'))
+                    np.testing.assert_allclose(deriv2[map_key], deriv2_ref, rtol=0, atol=1.0e-10)
+                    pq += 1
+
+    # B_ia^x = S_ia^x * epsilon_ii - F_ia^x + S_mn^x * [2(ia|mn) - (in|ma)]
+
+    F_grad = dict()
+    B = dict()
+
+    # Build F_pq^x now
+
+    for atom in range(natoms):
+        for p in range(3):
+            key = str(atom) + cart[p]
+            F_grad[key] =  deriv1["T" + key]
+            F_grad[key] += deriv1["V" + key]
+            F_grad[key] += 2.0 * np.einsum('pqmm->pq', deriv1["TEI" + key][:, :, o, o])
+            F_grad[key] -= 1.0 * np.einsum('pmmq->pq', deriv1["TEI" + key][:, o, o, :])
+            F_grad_ref = np.load(os.path.join(datadir, f'F_grad_{key}.npy'))
+            np.testing.assert_allclose(F_grad[key], F_grad_ref, rtol=0, atol=1.0e-10)
+
+    # Build B_ia^x now
+
+    for atom in range(natoms):
+        for p in range(3):
+            key = str(atom) + cart[p]
+            B[key]  =  np.einsum("ia,ii->ia", deriv1["S" + key][o, v], F[o, o])
+            B[key] -=  F_grad[key][o, v]
+            B[key] +=  2.0 * np.einsum("iamn,mn->ia", MO[o, v, o, o], deriv1["S" + key][o, o])
+            B[key] += -1.0 * np.einsum("inma,mn->ia", MO[o, o, o, v], deriv1["S" + key][o, o])
+
+            B_ref = np.load(os.path.join(datadir, f'B_{key}.npy'))
+            np.testing.assert_allclose(B[key], B_ref.T, rtol=0, atol=1.0e-10)
+
+    from pyresponse.integrals import form_rhs_geometric
+    B_func = form_rhs_geometric(natoms, MO, wfn)
+    assert B_func.keys() == B.keys()
+    for k in B_func:
+        np.testing.assert_allclose(B_func[k], B[k], rtol=0, atol=1.0e-12)
+
+    return
+
+
 if __name__ == "__main__":
     test_geometric_hessian_rhf_outside_solver_psi4numpy()
-    test_geometric_hessian_rhf_outside_solver()
+    test_geometric_hessian_rhf_outside_solver_chemists()
+    test_geometric_hessian_rhf_right_hand_side()

@@ -1,6 +1,3 @@
-import os
-import math
-
 import numpy as np
 
 STARS = '********'
@@ -96,6 +93,81 @@ def parse_aoproper(integralfilename):
             integral_dict[label] = record_dict
 
     return integral_dict
+
+
+def form_rhs_geometric(natoms, MO, wfn):
+    import psi4
+    C = wfn.Ca()
+    npC = np.asarray(C)
+    norb = wfn.nmo()
+    nocc = wfn.nalpha()
+    o = slice(0, nocc)
+    v = slice(nocc, norb)
+    cart = ['_X', '_Y', '_Z']
+    oei_dict = {"S" : "OVERLAP", "T" : "KINETIC", "V" : "POTENTIAL"}
+    mints = psi4.core.MintsHelper(wfn)
+
+    # Fock matrix (MO)
+    T = (npC.T).dot(np.asarray(mints.ao_kinetic())).dot(npC)
+    V = (npC.T).dot(np.asarray(mints.ao_potential())).dot(npC)
+    H = T + V
+    J = np.einsum('pqii->pq', MO[:, :, o, o])
+    K = np.einsum('piqi->pq', MO[:, o, :, o])
+    F = H + (2 * J) - K
+
+    deriv1_mat = dict()
+    deriv1 = dict()
+    for atom in range(natoms):
+        for key in oei_dict:
+            deriv1_mat[key + str(atom)] = mints.mo_oei_deriv1(oei_dict[key], atom, C, C)
+            for p in range(3):
+                map_key = key + str(atom) + cart[p]
+                deriv1[map_key] = np.asarray(deriv1_mat[key + str(atom)][p])
+    for atom in range(natoms):
+        string = "TEI" + str(atom)
+        deriv1_mat[string] = mints.mo_tei_deriv1(atom, C, C, C, C)
+        for p in range(3):
+            map_key = string + cart[p]
+            deriv1[map_key] = np.asarray(deriv1_mat[string][p])
+    deriv2_mat = dict()
+    deriv2 = dict()
+    for atom1 in range(natoms):
+        for atom2 in range(atom1 + 1):
+            for key in oei_dict:
+                string = key + str(atom1) + str(atom2)
+                deriv2_mat[string] = mints.mo_oei_deriv2(oei_dict[key], atom1, atom2, C, C)
+                pq = 0
+                for p in range(3):
+                    for q in range(3):
+                        map_key = string + cart[p] + cart[q]
+                        deriv2[map_key] = np.asarray(deriv2_mat[string][pq])
+                        pq += 1
+    for atom1 in range(natoms):
+        for atom2 in range(atom1 + 1):
+            string = "TEI" + str(atom1) + str(atom2)
+            deriv2_mat[string] = mints.mo_tei_deriv2(atom1, atom2, C, C, C, C)
+            pq = 0
+            for p in range(3):
+                for q in range(3):
+                    map_key = string + cart[p] + cart[q]
+                    deriv2[map_key] = np.asarray(deriv2_mat[string][pq])
+                    pq += 1
+    F_grad = dict()
+    B = dict()
+    for atom in range(natoms):
+        for p in range(3):
+            key = str(atom) + cart[p]
+            contr1 = np.einsum('pqmm->pq', deriv1["TEI" + key][:, :, o, o])
+            contr2 = np.einsum('pmmq->pq', deriv1["TEI" + key][:, o, o, :])
+            F_grad[key] = deriv1["T" + key] + deriv1["V" + key] + (2 * contr1) - contr2
+    for atom in range(natoms):
+        for p in range(3):
+            key = str(atom) + cart[p]
+            contr1 = np.einsum("ia,ii->ia", deriv1["S" + key][o, v], F[o, o])
+            contr2 = np.einsum("iamn,mn->ia", MO[o, v, o, o], deriv1["S" + key][o, o])
+            contr3 = np.einsum("inma,mn->ia", MO[o, o, o, v], deriv1["S" + key][o, o])
+            B[key] = contr1 - F_grad[key][o, v] + (2 * contr2) - contr3
+    return B
 
 if __name__ == '__main__':
     dalton_integrals = parse_aoproper('r_lih_hf_sto-3g/dalton_response_rpa_singlet/AOPROPER')
