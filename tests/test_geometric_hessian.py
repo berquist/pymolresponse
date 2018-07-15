@@ -14,7 +14,7 @@ refdir = os.path.join(__filedir__, 'reference_data')
 datadir = os.path.join(refdir, 'psi4numpy', 'water')
 
 
-def test_geometric_hessian_outside_solver_psi4numpy():
+def test_geometric_hessian_rhf_outside_solver_psi4numpy():
     psi4.core.set_output_file('output.dat', False)
 
     mol = psi4.geometry("""
@@ -171,6 +171,10 @@ def test_geometric_hessian_outside_solver_psi4numpy():
 
                     Hes["J"][col][row] = Hes["J"][row][col]
                     Hes["K"][col][row] = Hes["K"][row][col]
+    for map_key in ("J", "K"):
+        # np.save(os.path.join(datadir, f'Hes_{map_key}.npy'), Hes[map_key])
+        Hes_ref = np.load(os.path.join(datadir, f'Hes_{map_key}.npy'))
+        np.testing.assert_allclose(Hes[map_key], Hes_ref, rtol=0, atol=1.0e-10)
 
     JMat = psi4.core.Matrix.from_array(Hes["J"])
     KMat = psi4.core.Matrix.from_array(Hes["K"])
@@ -199,6 +203,9 @@ def test_geometric_hessian_outside_solver_psi4numpy():
     G -= MO[:occ, occ:, :occ, occ:].swapaxes(1,2)
     G = G.swapaxes(1,2)
     G += np.einsum('ai,ij,ab->iajb', eps_diag, I_occ, I_vir)
+    # np.save(os.path.join(datadir, 'G.npy'), G)
+    G_ref = np.load(os.path.join(datadir, 'G.npy'))
+    np.testing.assert_allclose(G, G_ref, rtol=0, atol=1.0e-10)
 
     # Inverse of G
     Ginv = np.linalg.inv(G.reshape(occ * vir, -1))
@@ -209,6 +216,7 @@ def test_geometric_hessian_outside_solver_psi4numpy():
     U = {}
 
     # Build Fpq^x now
+
     for atom in range(natoms):
         for p in range(3):
             key = str(atom) + cart[p]
@@ -216,9 +224,12 @@ def test_geometric_hessian_outside_solver_psi4numpy():
             F_grad[key] += deriv1["V" + key]
             F_grad[key] += 2.0 * np.einsum('pqmm->pq', deriv1["TEI" + key][:,:,:occ,:occ])
             F_grad[key] -= 1.0 * np.einsum('pmmq->pq', deriv1["TEI" + key][:,:occ,:occ,:])
+            # np.save(os.path.join(datadir, f'F_grad_{key}.npy'), F_grad[key])
+            F_grad_ref = np.load(os.path.join(datadir, f'F_grad_{key}.npy'))
+            np.testing.assert_allclose(F_grad[key], F_grad_ref, rtol=0, atol=1.0e-10)
 
 
-    psi4.core.print_out("\n\n CPHF Coefficentsn:\n")
+    psi4.core.print_out("\n\n CPHF Coefficients:\n")
 
     # Build Bai^x now
 
@@ -230,6 +241,10 @@ def test_geometric_hessian_outside_solver_psi4numpy():
             B[key] +=  2.0 * np.einsum("amin,mn->ai", MO[occ:,:occ,:occ,:occ], deriv1["S" + key][:occ,:occ])
             B[key] += -1.0 * np.einsum("amni,mn->ai", MO[occ:,:occ,:occ,:occ], deriv1["S" + key][:occ,:occ])
 
+            # np.save(os.path.join(datadir, f'B_{key}.npy'), B[key])
+            B_ref = np.load(os.path.join(datadir, f'B_{key}.npy'))
+            np.testing.assert_allclose(B[key], B_ref, rtol=0, atol=1.0e-10)
+
             # Compute U^x now: U_ai^x = G^(-1)_aibj * B_bj^x
 
             U[key] = np.einsum("iajb,bj->ai", Ginv, B[key])
@@ -238,8 +253,11 @@ def test_geometric_hessian_outside_solver_psi4numpy():
             UMat.name = key
             UMat.print_out()
 
+            # np.save(os.path.join(datadir, f'U_{key}.npy'), U[key])
+            U_ref = np.load(os.path.join(datadir, f'U_{key}.npy'))
+            np.testing.assert_allclose(U[key], U_ref, rtol=0, atol=1.0e-10)
 
-    # Build the response hessian now
+    # Build the response Hessian
 
     for atom1 in range(natoms):
         for atom2 in range(atom1+1):
@@ -262,6 +280,10 @@ def test_geometric_hessian_outside_solver_psi4numpy():
                     Hes["R"][r][c] -= 4.0 * np.einsum("ai,ai->", U[key2], B[key1])
                     Hes["R"][c][r] = Hes["R"][r][c]
 
+    # np.save(os.path.join(datadir, 'Hes_R.npy'), Hes["R"])
+    Hes_ref = np.load(os.path.join(datadir, 'Hes_R.npy'))
+    np.testing.assert_allclose(Hes["R"], Hes_ref, rtol=0, atol=1.0e-10)
+
     Mat = psi4.core.Matrix.from_array(Hes["R"])
     Mat.name = " RESPONSE HESSIAN"
     Mat.print_out()
@@ -269,22 +291,22 @@ def test_geometric_hessian_outside_solver_psi4numpy():
     for key in Hes:
         Hessian += Hes[key]
 
-    print('deriv1_mat')
-    print(deriv1_mat.keys())
-    print('deriv1')
-    print(deriv1.keys())
-    print('deriv2_mat')
-    print(deriv2_mat.keys())
-    print('deriv2')
-    print(deriv2.keys())
-    print('B')
-    print(B.keys())
-    print('F_grad')
-    print(F_grad.keys())
-    print('U')
-    print(U.keys())
-    print('Hes')
-    print(Hes.keys())
+    # print('deriv1_mat')
+    # print(deriv1_mat.keys())
+    # print('deriv1')
+    # print(deriv1.keys())
+    # print('deriv2_mat')
+    # print(deriv2_mat.keys())
+    # print('deriv2')
+    # print(deriv2.keys())
+    # print('B')
+    # print(B.keys())
+    # print('F_grad')
+    # print(F_grad.keys())
+    # print('U')
+    # print(U.keys())
+    # print('Hes')
+    # print(Hes.keys())
 
     Mat = psi4.core.Matrix.from_array(Hessian)
     Mat.name = " TOTAL HESSIAN"
@@ -307,7 +329,7 @@ def test_geometric_hessian_outside_solver_psi4numpy():
     return
 
 
-def test_geometric_hessian_outside_solver():
+def test_geometric_hessian_rhf_outside_solver():
     psi4.core.set_output_file('output2.dat', False)
 
     mol = molecules.molecule_physicists_water_sto3g()
@@ -344,11 +366,9 @@ def test_geometric_hessian_outside_solver():
     H = np.einsum('up,vq,uv->pq', npC, npC, H_ao)
 
     MO = np.asarray(mints.mo_eri(C, C, C, C))
-    # Physicist's notation
-    MO = MO.swapaxes(1,2)
 
-    F = H + 2.0 * np.einsum('pmqm->pq', MO[:, o, :, o])
-    F -= np.einsum('pmmq->pq', MO[:, o, o, :])
+    F = H + 2.0 * np.einsum('pqii->pq', MO[:, :, o, o])
+    F -= np.einsum('piqi->pq', MO[:, o, :, o])
     F_ref = np.load(os.path.join(datadir, 'F.npy'))
     np.testing.assert_allclose(F, F_ref, rtol=0, atol=1.0e-10)
     natoms = mol.natom()
@@ -412,6 +432,8 @@ def test_geometric_hessian_outside_solver():
                     for q in range(3):
                         map_key = string + cart[p] + cart[q]
                         deriv2[map_key] = np.asarray(deriv2_mat[string][pq])
+                        deriv2_ref = np.load(os.path.join(datadir, f'{map_key}.npy'))
+                        np.testing.assert_allclose(deriv2[map_key], deriv2_ref, rtol=0, atol=1.0e-10)
                         pq = pq+1
                         row = 3 * atom1 + p
                         col = 3 * atom2 + q
@@ -421,6 +443,8 @@ def test_geometric_hessian_outside_solver():
                             Hes[key][row][col] = 2.0 * np.einsum("ii->", deriv2[map_key][o, o])
                         Hes[key][col][row] = Hes[key][row][col]
                         Hes[key][col][row] = Hes[key][row][col]
+                        Hes_ref = np.load(os.path.join(datadir, f'Hes_{map_key}.npy'))
+                        np.testing.assert_allclose(Hes[key], Hes_ref, rtol=0, atol=1.0e-10)
 
 
     for key in Hes:
@@ -442,6 +466,8 @@ def test_geometric_hessian_outside_solver():
                 for q in range(3):
                     map_key = string + cart[p] + cart[q]
                     deriv2[map_key] = np.asarray(deriv2_mat[string][pq])
+                    deriv2_ref = np.load(os.path.join(datadir, f'{map_key}.npy'))
+                    np.testing.assert_allclose(deriv2[map_key], deriv2_ref, rtol=0, atol=1.0e-10)
                     pq = pq + 1
                     row = 3 * atom1 + p
                     col = 3 * atom2 + q
@@ -450,6 +476,9 @@ def test_geometric_hessian_outside_solver():
 
                     Hes["J"][col][row] = Hes["J"][row][col]
                     Hes["K"][col][row] = Hes["K"][row][col]
+    for map_key in ("J", "K"):
+        Hes_ref = np.load(os.path.join(datadir, f'Hes_{map_key}.npy'))
+        np.testing.assert_allclose(Hes[map_key], Hes_ref, rtol=0, atol=1.0e-10)
 
     JMat = psi4.core.Matrix.from_array(Hes["J"])
     KMat = psi4.core.Matrix.from_array(Hes["K"])
@@ -458,13 +487,13 @@ def test_geometric_hessian_outside_solver():
     JMat.print_out()
     KMat.print_out()
 
-    # Solve the CPHF equations here,  G_aibj Ubj^x = Bai^x (Einstein summation),
+    # Solve the CPHF equations here,  G_iajb U_jb^x = B_ia^x (Einstein summation),
     # where G is the electronic hessian,
-    # G_aibj = delta_ij * delta_ab * epsilon_ij * epsilon_ab + 4 <ij|ab> - <ij|ba> - <ia|jb>,
+    # G_iajb = delta_ij * delta_ab * epsilon_ij * epsilon_ab + 4(ia|jb) - (ij|ab) - (ib|ja),
     # where epsilon_ij = epsilon_i - epsilon_j, (epsilon -> orbital energies),
-    # x refers to the perturbation, Ubj^x are the corresponsing CPHF coefficients
-    # and Bai^x = Sai^x * epsilon_ii - Fai^x + Smn^x  * (2<am|in> - <am|ni>),
-    # where, S^x =  del(S)/del(x), F^x =  del(F)/del(x).
+    # x refers to the perturbation, U_jb^x are the corresponsing CPHF coefficients
+    # and B_ia^x = S_ia^x * epsilon_ii - F_ia^x + S_mn^x * [2() - ()],
+    # where S^x = del(S)/del(x), F^x =  del(F)/del(x).
 
     I_occ = np.diag(np.ones(nocc))
     I_vir = np.diag(np.ones(nvir))
@@ -473,11 +502,12 @@ def test_geometric_hessian_outside_solver():
 
     #  Build the electronic hessian G
 
-    G =  4 * MO[o, o, v, v]
-    G -= MO[o, o, v, v].swapaxes(2,3)
-    G -= MO[o, v, o, v].swapaxes(1,2)
-    G = G.swapaxes(1,2)
+    G =  4 * MO[o, v, o, v]
+    G -= MO[o, o, v, v].swapaxes(1, 2)
+    G -= MO[o, v, o, v].swapaxes(1, 3)
     G += np.einsum('ai,ij,ab->iajb', eps_diag, I_occ, I_vir)
+    G_ref = np.load(os.path.join(datadir, 'G.npy'))
+    np.testing.assert_allclose(G, G_ref, rtol=0, atol=1.0e-10)
 
     # Inverse of G
     Ginv = np.linalg.inv(G.reshape(nocc * nvir, -1))
@@ -487,7 +517,8 @@ def test_geometric_hessian_outside_solver():
     F_grad = {}
     U = {}
 
-    # Build Fpq^x now
+    # Build F_pq^x now
+
     for atom in range(natoms):
         for p in range(3):
             key = str(atom) + cart[p]
@@ -495,30 +526,37 @@ def test_geometric_hessian_outside_solver():
             F_grad[key] += deriv1["V" + key]
             F_grad[key] += 2.0 * np.einsum('pqmm->pq', deriv1["TEI" + key][:, :, o, o])
             F_grad[key] -= 1.0 * np.einsum('pmmq->pq', deriv1["TEI" + key][:, o, o, :])
+            F_grad_ref = np.load(os.path.join(datadir, f'F_grad_{key}.npy'))
+            np.testing.assert_allclose(F_grad[key], F_grad_ref, rtol=0, atol=1.0e-10)
 
 
-    psi4.core.print_out("\n\n CPHF Coefficentsn:\n")
+    psi4.core.print_out("\n\n CPHF Coefficients:\n")
 
-    # Build Bai^x now
+    # Build B_ia^x now
 
     for atom in range(natoms):
         for p in range(3):
             key = str(atom) + cart[p]
-            B[key] =  np.einsum("ai,ii->ai", deriv1["S" + key][v, o], F[o, o])
-            B[key] -= F_grad[key][v, o]
-            B[key] +=  2.0 * np.einsum("amin,mn->ai", MO[v, o, o, o], deriv1["S" + key][o, o])
-            B[key] += -1.0 * np.einsum("amni,mn->ai", MO[v, o, o, o], deriv1["S" + key][o, o])
+            B[key]  =  np.einsum("ia,ii->ia", deriv1["S" + key][o, v], F[o, o])
+            B[key] -=  F_grad[key][o, v]
+            B[key] +=  2.0 * np.einsum("iamn,mn->ia", MO[o, v, o, o], deriv1["S" + key][o, o])
+            B[key] += -1.0 * np.einsum("inma,mn->ia", MO[o, o, o, v], deriv1["S" + key][o, o])
 
-            # Compute U^x now: U_ai^x = G^(-1)_aibj * B_bj^x
+            B_ref = np.load(os.path.join(datadir, f'B_{key}.npy'))
+            np.testing.assert_allclose(B[key], B_ref.T, rtol=0, atol=1.0e-10)
 
-            U[key] = np.einsum("iajb,bj->ai", Ginv, B[key])
+            # Compute U^x now: U_ia^x = G^(-1)_iajb * B_jb^x
+
+            U[key] = np.einsum("iajb,jb->ia", Ginv, B[key])
             psi4.core.print_out("\n")
             UMat = psi4.core.Matrix.from_array(U[key])
             UMat.name = key
             UMat.print_out()
 
+            U_ref = np.load(os.path.join(datadir, f'U_{key}.npy'))
+            np.testing.assert_allclose(U[key], U_ref.T, rtol=0, atol=1.0e-10)
 
-    # Build the response hessian now
+    # Build the response Hessian
 
     for atom1 in range(natoms):
         for atom2 in range(atom1+1):
@@ -533,13 +571,16 @@ def test_geometric_hessian_outside_solver():
 
                     Hes["R"][r][c]  = -2.0 * np.einsum("ij,ij->", deriv1[key1S][o, o], F_grad[key2][o, o])
                     Hes["R"][r][c] -=  2.0 * np.einsum("ij,ij->", deriv1[key2S][o, o], F_grad[key1][o, o])
-                    Hes["R"][r][c] +=  4.0 * np.einsum("ii,mi,mi->", F[o,o], deriv1[key2S][o, o], deriv1[key1S][o, o])
+                    Hes["R"][r][c] +=  4.0 * np.einsum("ii,mi,mi->", F[o, o], deriv1[key2S][o, o], deriv1[key1S][o, o])
 
-                    Hes["R"][r][c] +=  4.0 * np.einsum("ij,mn,imjn->", deriv1[key1S][o, o], deriv1[key2S][o, o], MO[o, o, o, o])
-                    Hes["R"][r][c] -=  2.0 * np.einsum("ij,mn,imnj->", deriv1[key1S][o, o], deriv1[key2S][o, o], MO[o, o, o, o])
+                    Hes["R"][r][c] +=  4.0 * np.einsum("ij,mn,ijmn->", deriv1[key1S][o, o], deriv1[key2S][o, o], MO[o, o, o, o])
+                    Hes["R"][r][c] -=  2.0 * np.einsum("ij,mn,inmj->", deriv1[key1S][o, o], deriv1[key2S][o, o], MO[o, o, o, o])
 
-                    Hes["R"][r][c] -=  4.0 * np.einsum("ai,ai->", U[key2], B[key1])
+                    Hes["R"][r][c] -=  4.0 * np.einsum("ia,ia->", U[key2], B[key1])
                     Hes["R"][c][r]  =  Hes["R"][r][c]
+
+    Hes_ref = np.load(os.path.join(datadir, 'Hes_R.npy'))
+    np.testing.assert_allclose(Hes["R"], Hes_ref, rtol=0, atol=1.0e-10)
 
     Mat = psi4.core.Matrix.from_array(Hes["R"])
     Mat.name = " RESPONSE HESSIAN"
@@ -548,22 +589,22 @@ def test_geometric_hessian_outside_solver():
     for key in Hes:
         Hessian += Hes[key]
 
-    print('deriv1_mat')
-    print(deriv1_mat.keys())
-    print('deriv1')
-    print(deriv1.keys())
-    print('deriv2_mat')
-    print(deriv2_mat.keys())
-    print('deriv2')
-    print(deriv2.keys())
-    print('B')
-    print(B.keys())
-    print('F_grad')
-    print(F_grad.keys())
-    print('U')
-    print(U.keys())
-    print('Hes')
-    print(Hes.keys())
+    # print('deriv1_mat')
+    # print(deriv1_mat.keys())
+    # print('deriv1')
+    # print(deriv1.keys())
+    # print('deriv2_mat')
+    # print(deriv2_mat.keys())
+    # print('deriv2')
+    # print(deriv2.keys())
+    # print('B')
+    # print(B.keys())
+    # print('F_grad')
+    # print(F_grad.keys())
+    # print('U')
+    # print(U.keys())
+    # print('Hes')
+    # print(Hes.keys())
 
     Mat = psi4.core.Matrix.from_array(Hessian)
     Mat.name = " TOTAL HESSIAN"
@@ -587,5 +628,5 @@ def test_geometric_hessian_outside_solver():
 
 
 if __name__ == "__main__":
-    test_geometric_hessian_outside_solver_psi4numpy()
-    test_geometric_hessian_outside_solver()
+    test_geometric_hessian_rhf_outside_solver_psi4numpy()
+    test_geometric_hessian_rhf_outside_solver()
