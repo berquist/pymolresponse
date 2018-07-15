@@ -80,7 +80,8 @@ class ECD(TransitionProperty):
             self.rotational_strengths_dipvel = np.array(rotational_strengths_dipvel)
 
     def print_results_nwchem(self):
-        lines = []
+        excitation_block = self.driver.print_results_nwchem()
+        lines = [excitation_block]
         energies = self.driver.solver.eigvals.real
         energies_ev = energies * HARTREE_TO_EV
         op_diplen = self.driver.solver.operators[1]
