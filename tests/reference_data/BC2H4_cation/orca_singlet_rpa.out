@@ -111,22 +111,23 @@ NAME = orca_singlet_rpa.in
 |  1> ! rhf sto-3g nori verytightscf noautostart
 |  2> 
 |  3> %tddft
-|  4>  maxdim 100
-|  5>  nroots 90
-|  6>  tda false
-|  7>  end
-|  8> 
-|  9> * xyz 1 1
-| 10> C     -0.0008286620   -0.0004493055   -0.0003241160
-| 11> H      0.0005419438   -0.0005510523    1.0881223132
-| 12> B      0.7614042004    0.0000912434   -1.2402303969
-| 13> H      1.5507850082   -0.3250641117   -2.0682935236
-| 14> C     -0.5677515230    0.9696516240   -0.9682785376
-| 15> H     -0.6787643958    2.0262293122   -0.6791165638
-| 16> H     -1.3308161697    0.6715931113   -1.7152165963
-| 17> *
-| 18> 
-| 19>                          ****END OF INPUT****
+|  4>  ewin -10000,10000
+|  5>  maxdim 100
+|  6>  nroots 100
+|  7>  tda false
+|  8>  end
+|  9> 
+| 10> * xyz 1 1
+| 11> C     -0.0008286620   -0.0004493055   -0.0003241160
+| 12> H      0.0005419438   -0.0005510523    1.0881223132
+| 13> B      0.7614042004    0.0000912434   -1.2402303969
+| 14> H      1.5507850082   -0.3250641117   -2.0682935236
+| 15> C     -0.5677515230    0.9696516240   -0.9682785376
+| 16> H     -0.6787643958    2.0262293122   -0.6791165638
+| 17> H     -1.3308161697    0.6715931113   -1.7152165963
+| 18> *
+| 19> 
+| 20>                          ****END OF INPUT****
 ================================================================================
 
                        ****************************
@@ -317,7 +318,7 @@ Average number of large basis fcns per batch ...    16.08 (94.06%)
 Maximum spatial batch extension              ...  26.49, 30.26, 24.26 au
 Average spatial batch extension              ...   5.22,  5.43,  5.11 au
 
-Time for grid setup =    0.039 sec
+Time for grid setup =    0.037 sec
 
 ------------------------------
 INITIAL GUESS: MODEL POTENTIAL
@@ -335,7 +336,7 @@ Diagonalizing the Hamiltonian                      ... done (   0.0 sec)
 Back transforming the eigenvectors                 ... done (   0.0 sec)
 Now organizing SCF variables                       ... done
                       ------------------
-                      INITIAL GUESS DONE (   0.1 sec)
+                      INITIAL GUESS DONE (   0.2 sec)
                       ------------------
 --------------
 SCF ITERATIONS
@@ -532,18 +533,18 @@ TIMINGS
 
 Total SCF time: 0 days 0 hours 0 min 1 sec 
 
-Total time                  ....       1.747 sec
-Sum of individual times     ....       1.739 sec  ( 99.6%)
+Total time                  ....       1.883 sec
+Sum of individual times     ....       1.876 sec  ( 99.6%)
 
-Fock matrix formation       ....       1.574 sec  ( 90.1%)
-Diagonalization             ....       0.001 sec  (  0.1%)
+Fock matrix formation       ....       1.694 sec  ( 90.0%)
+Diagonalization             ....       0.002 sec  (  0.1%)
 Density matrix formation    ....       0.000 sec  (  0.0%)
 Population analysis         ....       0.001 sec  (  0.0%)
-Initial guess               ....       0.107 sec  (  6.1%)
+Initial guess               ....       0.124 sec  (  6.6%)
 Orbital Transformation      ....       0.000 sec  (  0.0%)
 Orbital Orthonormalization  ....       0.000 sec  (  0.0%)
 DIIS solution               ....       0.001 sec  (  0.0%)
-SOSCF solution              ....       0.017 sec  (  1.0%)
+SOSCF solution              ....       0.018 sec  (  0.9%)
 ------------------------------------------------------------------------------
                          ORCA CIS CALCULATION
 ------------------------------------------------------------------------------
@@ -620,8 +621,8 @@ Number of trial vectors determined             ...     63
    Number of batches             ...     1
    Time for densities:     0.001
    Using LibInt in JK Direct
-   Time for J+K (Direct):     0.183
-   Time for Sigma-Completion:     0.002
+   Time for J+K (Direct):     0.196
+   Time for Sigma-Completion:     0.001
    Size of expansion space: 63
    Lowest Energy          :     0.116957460470
    Maximum Energy change  :     1.749607614769 (vector 62)
@@ -633,7 +634,7 @@ Storing the converged CI vectors               ... orca_singlet_rpa.cis1
 
                  *** DAVIDSON DONE ***
 
-Total time for solving the RPA problem:     0.358sec
+Total time for solving the RPA problem:     0.294sec
 
 Warning: NRoots is different from the actual no of eigenvectors?!
 
@@ -1535,7 +1536,7 @@ State   Energy Wavelength       R         MX        MY        MZ
   62  334431.2     29.9      0.51703  -0.00866  -0.06140  -0.01646
   63  383994.5     26.0     -0.62535   0.04552   0.04195   0.03507
 
-Total run time:        0.502 sec
+Total run time:        0.400 sec
 
            *** ORCA-CIS/TD-DFT FINISHED WITHOUT ERROR ***
 
@@ -1590,9 +1591,9 @@ Magnitude (Debye)      :      0.49530
 
 Timings for individual modules:
 
-Sum of individual times         ...        2.536 sec (=   0.042 min)
-GTO integral calculation        ...        0.223 sec (=   0.004 min)   8.8 %
-SCF iterations                  ...        1.782 sec (=   0.030 min)  70.3 %
-CIS module                      ...        0.531 sec (=   0.009 min)  21.0 %
+Sum of individual times         ...        2.587 sec (=   0.043 min)
+GTO integral calculation        ...        0.238 sec (=   0.004 min)   9.2 %
+SCF iterations                  ...        1.920 sec (=   0.032 min)  74.2 %
+CIS module                      ...        0.429 sec (=   0.007 min)  16.6 %
                              ****ORCA TERMINATED NORMALLY****
-TOTAL RUN TIME: 0 days 0 hours 0 minutes 2 seconds 646 msec
+TOTAL RUN TIME: 0 days 0 hours 0 minutes 2 seconds 702 msec

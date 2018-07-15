@@ -4,7 +4,7 @@
  ewin -10000,10000
  maxdim 100
  nroots 100
- tda false
+ tda true
  end
 
 * xyz 1 1

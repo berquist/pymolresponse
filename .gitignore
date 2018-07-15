@@ -15,6 +15,12 @@ timer.dat
 *.db
 *.movecs
 
+## ORCA
+*.cis
+*.gbw
+*.prop
+*_property.txt
+
 ## Q-Chem
 pathtable
 

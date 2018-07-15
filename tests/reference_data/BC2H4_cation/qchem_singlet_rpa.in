@@ -1,13 +1,16 @@
-! rhf sto-3g nori verytightscf noautostart
+$rem
+  method = hf
+  basis = sto-3g
+  scf_convergence = 9
+  thresh = 14
+  cis_singlets = true
+  cis_triplets = false
+  cis_n_roots = 90
+  rpa = true
+$end
 
-%tddft
- ewin -10000,10000
- maxdim 100
- nroots 100
- tda false
- end
-
-* xyz 1 1
+$molecule
+1 1
 C     -0.0008286620   -0.0004493055   -0.0003241160
 H      0.0005419438   -0.0005510523    1.0881223132
 B      0.7614042004    0.0000912434   -1.2402303969
@@ -15,4 +18,4 @@ H      1.5507850082   -0.3250641117   -2.0682935236
 C     -0.5677515230    0.9696516240   -0.9682785376
 H     -0.6787643958    2.0262293122   -0.6791165638
 H     -1.3308161697    0.6715931113   -1.7152165963
-*
+$end
