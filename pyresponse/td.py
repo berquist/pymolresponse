@@ -173,7 +173,7 @@ class TDHF(CPHF):
             coeffs_cutoff = eigvec_state[mask]
             weight_cutoff = square_eigvec_state[mask]
             mask_indices = np.array([p for (p, b) in enumerate(mask) if b])
-            for i in range(len(weight_cutoff)):
+            for i in range(len(coeffs_cutoff)):
                 iocc, ivirt = indices[mask_indices[i]]
                 lines.append(f'{iocc:>6d}a ->{ivirt:>4d}a  :{weight_cutoff[i]:>13.6f} (c={coeffs_cutoff[i]:>12.8f})')
             lines.append('')

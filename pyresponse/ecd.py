@@ -6,6 +6,7 @@ import numpy as np
 from .constants import alpha, HARTREE_TO_EV, HARTREE_TO_INVCM, esuecd
 from .operators import Operator
 from .molecular_property import TransitionProperty
+from .utils import form_indices_zero
 
 
 class ECD(TransitionProperty):
@@ -179,15 +180,26 @@ class ECD(TransitionProperty):
         lines.append('')
         return '\n'.join(lines)
 
-    def print_results_qchem(self):
+    _HAMILTONIAN_PREFIX_QCHEM = {
+        'tda': '',
+        'rpa': 'X: ',
+    }
+
+    # TODO cutoff taken from ORCA, check the source code to see the
+    # real criterion
+    def print_results_qchem(self, cutoff=0.01):
         energies = self.driver.solver.eigvals.real
         energies_ev = energies * HARTREE_TO_EV
         op_diplen = self.driver.solver.operators[1]
         tmom_diplen = op_diplen.transition_moments
         etoscslen = op_diplen.total_oscillator_strengths
+        nocc_tot, nvirt_tot, _, _ = self.driver.solver.occupations
+        indices = form_indices_zero(nocc_tot, nvirt_tot)
+        eigvecs = self.driver.solver.eigvecs
+        square_eigvecs = np.power(eigvecs, 2)
         lines = []
         lines.append(' ---------------------------------------------------')
-        lines.append('               RPA Excitation Energies              ')
+        lines.append(f'               {self.driver._HAMILTONIAN_MAP_ORCA[self.driver.hamiltonian]} Excitation Energies              ')
         lines.append(' ---------------------------------------------------')
         lines.append('')
         nstates = len(energies)
@@ -197,5 +209,13 @@ class ECD(TransitionProperty):
             lines.append(f'    Multiplicity: {self.driver._SPIN_MAP_QCHEM[self.driver.spin]}')
             lines.append(f'    Trans. Mom.:{tmom_diplen[state, 0]:>8.4f} X{tmom_diplen[state, 1]:>9.4f} Y{tmom_diplen[state, 2]:>9.4f} Z')
             lines.append(f'    Strength   :{etoscslen[state]:>17.10f}')
+            eigvec_state = eigvecs[:, state]
+            square_eigvec_state = square_eigvecs[:, state]
+            mask = square_eigvec_state > cutoff
+            coeffs_cutoff = eigvec_state[mask]
+            mask_indices = np.array([p for (p, b) in enumerate(mask) if b])
+            for i in range(len(coeffs_cutoff)):
+                iocc, ivirt = indices[mask_indices[i]]
+                lines.append(f'    {self._HAMILTONIAN_PREFIX_QCHEM[self.driver.hamiltonian]}D({iocc + 1:>3d}) --> V({ivirt + 1:>3d}) amplitude ={coeffs_cutoff[i]:>8.4f}')
             lines.append('')
         return '\n'.join(lines)
