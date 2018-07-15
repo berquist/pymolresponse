@@ -705,40 +705,6 @@ def test_geometric_hessian_rhf_right_hand_side():
             deriv1_ref = np.load(os.path.join(datadir, f'{map_key}.npy'))
             np.testing.assert_allclose(deriv1[map_key], deriv1_ref, rtol=0, atol=1.0e-10)
 
-    deriv2 = dict()
-
-    # 2nd Derivative of OEIs
-
-    for atom1 in range(natoms):
-        for atom2 in range(atom1 + 1):
-            for key in oei_dict:
-                string = key + str(atom1) + str(atom2)
-                deriv2_mat= mints.mo_oei_deriv2(oei_dict[key], atom1, atom2, C, C)
-                pq = 0
-                for p in range(3):
-                    for q in range(3):
-                        map_key = string + cart[p] + cart[q]
-                        deriv2[map_key] = np.asarray(deriv2_mat[pq])
-                        deriv2_ref = np.load(os.path.join(datadir, f'{map_key}.npy'))
-                        np.testing.assert_allclose(deriv2[map_key], deriv2_ref, rtol=0, atol=1.0e-10)
-                        pq += 1
-
-
-    # 2nd Derivative of TEIs
-
-    for atom1 in range(natoms):
-        for atom2 in range(atom1 + 1):
-            string = "TEI" + str(atom1) + str(atom2)
-            deriv2_mat = mints.mo_tei_deriv2(atom1, atom2, C, C, C, C)
-            pq = 0
-            for p in range(3):
-                for q in range(3):
-                    map_key = string + cart[p] + cart[q]
-                    deriv2[map_key] = np.asarray(deriv2_mat[pq])
-                    deriv2_ref = np.load(os.path.join(datadir, f'{map_key}.npy'))
-                    np.testing.assert_allclose(deriv2[map_key], deriv2_ref, rtol=0, atol=1.0e-10)
-                    pq += 1
-
     # B_ia^x = S_ia^x * epsilon_ii - F_ia^x + S_mn^x * [2(ia|mn) - (in|ma)]
 
     F_grad = dict()
