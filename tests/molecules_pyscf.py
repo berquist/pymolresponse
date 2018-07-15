@@ -48,7 +48,7 @@ def molecule_physicists_water_sto3g(verbose=0):
     mol.verbose = verbose
     mol.output = None
 
-    with open(os.path.join(refdir, 'psi4numpy/water/water.xyz')) as fh:
+    with open(os.path.join(refdir, 'psi4numpy', 'water', 'water.xyz')) as fh:
         next(fh)
         next(fh)
         mol.atom = fh.read()
@@ -65,7 +65,7 @@ def molecule_physicists_water_augccpvdz(verbose=0):
     mol.verbose = verbose
     mol.output = None
 
-    with open(os.path.join(refdir, 'psi4numpy/water/water.xyz')) as fh:
+    with open(os.path.join(refdir, 'psi4numpy', 'water', 'water.xyz')) as fh:
         next(fh)
         next(fh)
         mol.atom = fh.read()

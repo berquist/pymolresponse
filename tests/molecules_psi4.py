@@ -28,7 +28,7 @@ def molecule_water_sto3g():
 
 def molecule_physicists_water_sto3g(verbose=0):
 
-    with open(os.path.join(refdir, 'psi4numpy/water/water.xyz')) as fh:
+    with open(os.path.join(refdir, 'psi4numpy', 'water', 'water.xyz')) as fh:
         mol = psi4.geometry('\n'.join(fh.readlines()[2:]))
 
     mol.set_basis_all_atoms('sto-3g', 'BASIS')
@@ -42,7 +42,7 @@ def molecule_physicists_water_sto3g(verbose=0):
 
 def molecule_physicists_water_augccpvdz(verbose=0):
 
-    with open(os.path.join(refdir, 'psi4numpy/water/water.xyz')) as fh:
+    with open(os.path.join(refdir, 'psi4numpy', 'water', 'water.xyz')) as fh:
         mol = psi4.geometry('\n'.join(fh.readlines()[2:]))
 
     mol.set_basis_all_atoms('aug-cc-pvdz', 'BASIS')
