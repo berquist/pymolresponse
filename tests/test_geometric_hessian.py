@@ -5,6 +5,9 @@ np.set_printoptions(precision=15, linewidth=200, suppress=True)
 
 import psi4
 
+from pyresponse.operators import Operator
+from pyresponse.utils import occupations_from_psi4wfn
+
 from . import molecules_psi4 as molecules
 
 
@@ -646,17 +649,9 @@ def test_geometric_hessian_rhf_right_hand_side():
 
     _, wfn = psi4.energy('hf', return_wfn=True)
 
-    # ao2mo = AO2MO(C, occupations, I=np.asarray(mints.ao_eri()))
-    # ao2mo.perform_rhf_full()
-
-    # solver = iterators.ExactInv(C, E, occupations)
-    # driver = cphf.CPHF(solver)
-    # driver.set_frequencies()
-    # driver.run()
-
-    norb = wfn.nmo()
-    nocc = wfn.nalpha()
-    nvir = norb - nocc
+    occupations = occupations_from_psi4wfn(wfn)
+    nocc, nvir, _, _ = occupations
+    norb = nocc + nvir
 
     o = slice(0, nocc)
     v = slice(nocc, norb)
@@ -735,13 +730,16 @@ def test_geometric_hessian_rhf_right_hand_side():
             B_ref = np.load(os.path.join(datadir, f'B_{key}.npy'))
             np.testing.assert_allclose(B[key], B_ref.T, rtol=0, atol=1.0e-10)
 
-    from pyresponse.integrals import form_rhs_geometric
-    B_func = form_rhs_geometric(natoms, MO, wfn)
+    from pyresponse.integrals import _form_rhs_geometric
+    B_func = _form_rhs_geometric(npC, occupations, natoms, MO, mints)
     assert B_func.keys() == B.keys()
     for k in B_func:
         np.testing.assert_allclose(B_func[k], B[k], rtol=0, atol=1.0e-12)
 
-    return
+    operator = Operator()
+    B = operator.form_rhs_geometric(npC, occupations, natoms, MO, mints)
+
+    return operator
 
 
 if __name__ == "__main__":

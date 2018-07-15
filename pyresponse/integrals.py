@@ -95,21 +95,19 @@ def parse_aoproper(integralfilename):
     return integral_dict
 
 
-def form_rhs_geometric(natoms, MO, wfn):
+def _form_rhs_geometric(C, occupations, natoms, MO, mints):
     import psi4
-    C = wfn.Ca()
-    npC = np.asarray(C)
-    norb = wfn.nmo()
-    nocc = wfn.nalpha()
+    pC = psi4.core.Matrix.from_array(C)
+    nocc, nvirt, _, _ = occupations
+    norb = nocc + nvirt
     o = slice(0, nocc)
     v = slice(nocc, norb)
     cart = ['_X', '_Y', '_Z']
     oei_dict = {"S" : "OVERLAP", "T" : "KINETIC", "V" : "POTENTIAL"}
-    mints = psi4.core.MintsHelper(wfn)
 
     # Fock matrix (MO)
-    T = (npC.T).dot(np.asarray(mints.ao_kinetic())).dot(npC)
-    V = (npC.T).dot(np.asarray(mints.ao_potential())).dot(npC)
+    T = (C.T).dot(np.asarray(mints.ao_kinetic())).dot(C)
+    V = (C.T).dot(np.asarray(mints.ao_potential())).dot(C)
     H = T + V
     J = np.einsum('pqii->pq', MO[:, :, o, o])
     K = np.einsum('piqi->pq', MO[:, o, :, o])
@@ -118,13 +116,13 @@ def form_rhs_geometric(natoms, MO, wfn):
     deriv1 = dict()
     for atom in range(natoms):
         for key in oei_dict:
-            deriv1_mat = mints.mo_oei_deriv1(oei_dict[key], atom, C, C)
+            deriv1_mat = mints.mo_oei_deriv1(oei_dict[key], atom, pC, pC)
             for p in range(3):
                 map_key = key + str(atom) + cart[p]
                 deriv1[map_key] = np.asarray(deriv1_mat[p])
     for atom in range(natoms):
         string = "TEI" + str(atom)
-        deriv1_mat = mints.mo_tei_deriv1(atom, C, C, C, C)
+        deriv1_mat = mints.mo_tei_deriv1(atom, pC, pC, pC, pC)
         for p in range(3):
             map_key = string + cart[p]
             deriv1[map_key] = np.asarray(deriv1_mat[p])
@@ -133,7 +131,7 @@ def form_rhs_geometric(natoms, MO, wfn):
     #     for atom2 in range(atom1 + 1):
     #         for key in oei_dict:
     #             string = key + str(atom1) + str(atom2)
-    #             deriv2_mat = mints.mo_oei_deriv2(oei_dict[key], atom1, atom2, C, C)
+    #             deriv2_mat = mints.mo_oei_deriv2(oei_dict[key], atom1, atom2, pC, pC)
     #             pq = 0
     #             for p in range(3):
     #                 for q in range(3):
@@ -143,7 +141,7 @@ def form_rhs_geometric(natoms, MO, wfn):
     # for atom1 in range(natoms):
     #     for atom2 in range(atom1 + 1):
     #         string = "TEI" + str(atom1) + str(atom2)
-    #         deriv2_mat = mints.mo_tei_deriv2(atom1, atom2, C, C, C, C)
+    #         deriv2_mat = mints.mo_tei_deriv2(atom1, atom2, pC, pC, pC, pC)
     #         pq = 0
     #         for p in range(3):
     #             for q in range(3):

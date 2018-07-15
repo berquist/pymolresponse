@@ -1,11 +1,13 @@
 import numpy as np
 import scipy.constants as spc
 
-from .utils import repack_matrix_to_vector
+from .utils import repack_matrix_to_vector, fix_mocoeffs_shape
 
 
 class Operator(object):
-    """Handle property integrals, taking them from the AO basis to a representation of a right-hand side perturbation for CPHF or transition properties."""
+    """Handle property integrals, taking them from the AO basis to a
+    representation of a right-hand side perturbation for CPHF or
+    transition properties."""
 
     def __init__(self, label='', is_imaginary=False, is_spin_dependent=False, triplet=False, slice_idx=-1, *args, **kwargs):
         self.label = label
@@ -87,3 +89,12 @@ class Operator(object):
         if is_uhf:
             self.mo_integrals_ai_beta = np.stack(operator_ai_beta, axis=0)
             self.mo_integrals_ai_supervector_beta = np.stack(operator_ai_supervector_beta, axis=0)
+
+    def form_rhs_geometric(self, C, occupations, natoms, MO_full, mints, return_dict=False):
+        from .integrals import _form_rhs_geometric
+        C_ = fix_mocoeffs_shape(C)
+        B_dict = _form_rhs_geometric(C_[0], occupations, natoms, MO_full, mints)
+        B = []
+        if return_dict:
+            return B_dict
+        return B
