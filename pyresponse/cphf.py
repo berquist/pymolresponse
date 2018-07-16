@@ -18,7 +18,7 @@ class CPHF(object):
         self.hamiltonian = 'rpa'
         self.spin = 'singlet'
 
-        self.solver_type = 'explicit'
+        self.solver_type = 'exact'
 
         self.results = []
 
@@ -52,7 +52,7 @@ class CPHF(object):
         if not spin:
             spin = self.spin
         if not hasattr(self, 'frequencies'):
-            self.frequencies = [0.0]
+            self.set_frequencies([0.0])
 
         assert isinstance(solver_type, str)
         assert isinstance(hamiltonian, str)
