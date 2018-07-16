@@ -798,6 +798,22 @@ def test_atomic_polar_tensor_rhf():
 
     driver.run()
     print(driver.results[0])
+    print(driver.results[0].T)
+    print(driver.results[0] - driver.results[0].T)
+    print(operator_geometric.rspvecs_alph[0])
+    # Nuclear contribution to dipole gradient
+    # Electronic contributions to static part of dipole gradient
+    # Reorthonormalization part of dipole gradient
+    # Static contribution to dipole gradient
+    # Relaxation part of dipole gradient
+    # Total dipole gradient - TRAROT
+
+    print("Nuclear contribution to dipole gradient")
+    natom = mol.natom()
+    Z = np.asarray([mol.Z(i) for i in range(natom)])
+    nuclear_contrib = np.concatenate([np.diag(Z.take(3 * [i]))
+                                      for i in range(natom)])
+    print(nuclear_contrib)
 
     return locals()
 
