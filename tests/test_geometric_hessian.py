@@ -1,12 +1,16 @@
 import os.path
 
 import numpy as np
-np.set_printoptions(precision=15, linewidth=200, suppress=True)
+np.set_printoptions(precision=8, linewidth=200, suppress=True)
 
 import psi4
 
+from pyresponse.ao2mo import AO2MO
+from pyresponse.cphf import CPHF
+from pyresponse.iterators import ExactInv
 from pyresponse.operators import Operator
-from pyresponse.utils import occupations_from_psi4wfn
+from pyresponse.utils import (occupations_from_psi4wfn,
+                              mocoeffs_from_psi4wfn, moenergies_from_psi4wfn)
 
 from . import molecules_psi4 as molecules
 
@@ -243,6 +247,8 @@ def test_geometric_hessian_rhf_outside_solver_psi4numpy():
             B[key] +=  2.0 * np.einsum("amin,mn->ai", MO[occ:, :occ, :occ, :occ], deriv1["S" + key][:occ, :occ])
             B[key] += -1.0 * np.einsum("amni,mn->ai", MO[occ:, :occ, :occ, :occ], deriv1["S" + key][:occ, :occ])
 
+            print(f'B[{key}]')
+            print(B[key])
             # np.save(os.path.join(datadir, f'B_{key}.npy'), B[key])
             B_ref = np.load(os.path.join(datadir, f'B_{key}.npy'))
             np.testing.assert_allclose(B[key], B_ref, rtol=0, atol=1.0e-10)
@@ -545,6 +551,8 @@ def test_geometric_hessian_rhf_outside_solver_chemists():
             B[key] +=  2.0 * np.einsum("iamn,mn->ia", MO[o, v, o, o], deriv1["S" + key][o, o])
             B[key] += -1.0 * np.einsum("inma,mn->ia", MO[o, o, o, v], deriv1["S" + key][o, o])
 
+            print(f'B[{key}]')
+            print(B[key])
             B_ref = np.load(os.path.join(datadir, f'B_{key}.npy'))
             np.testing.assert_allclose(B[key], B_ref.T, rtol=0, atol=1.0e-10)
 
@@ -736,13 +744,66 @@ def test_geometric_hessian_rhf_right_hand_side():
     for k in B_func:
         np.testing.assert_allclose(B_func[k], B[k], rtol=0, atol=1.0e-12)
 
-    operator = Operator()
-    B = operator.form_rhs_geometric(npC, occupations, natoms, MO, mints)
+    return B_func
 
-    return operator
+
+def test_atomic_polar_tensor_rhf():
+    mol = molecules.molecule_physicists_water_sto3g()
+    mol.reset_point_group("c1")
+    mol.update_geometry()
+    psi4.core.set_active_molecule(mol)
+
+    options = {
+        'BASIS':'STO-3G',
+        'SCF_TYPE':'PK',
+        'E_CONVERGENCE':1e-10,
+        'D_CONVERGENCE':1e-10
+    }
+
+    psi4.set_options(options)
+
+    _, wfn = psi4.energy('hf', return_wfn=True)
+    mints = psi4.core.MintsHelper(wfn)
+
+    C = mocoeffs_from_psi4wfn(wfn)
+    E = moenergies_from_psi4wfn(wfn)
+    occupations = occupations_from_psi4wfn(wfn)
+    nocc, nvir, _, _ = occupations
+    norb = nocc + nvir
+
+    # electric perturbation part
+    ao2mo = AO2MO(C, occupations, I=np.asarray(mints.ao_eri()))
+    ao2mo.perform_rhf_full()
+    solver = ExactInv(C, E, occupations)
+    solver.tei_mo = ao2mo.tei_mo
+    solver.tei_mo_type = 'full'
+    driver = CPHF(solver)
+    operator_diplen = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False, triplet=False)
+    # integrals_diplen_ao = self.pyscfmol.intor('cint1e_r_sph', comp=3)
+    M = np.stack([np.asarray(Mc) for Mc in mints.ao_dipole()])
+    operator_diplen.ao_integrals = M
+    driver.add_operator(operator_diplen)
+
+    # geometric perturbation part
+    operator_geometric = Operator(label='nuclear', is_imaginary=False, is_spin_dependent=False, triplet=False)
+    operator_geometric.form_rhs_geometric(C, occupations, mol.natom(), solver.tei_mo[0], mints)
+    print(operator_geometric.label)
+    print(operator_geometric.mo_integrals_ai_alph)
+    print(operator_diplen.label)
+    print(operator_diplen.mo_integrals_ai_alph)
+    # hack for dim check in solver
+    operator_geometric.ao_integrals = np.zeros((3 * mol.natom(), M.shape[1], M.shape[2]))
+    # bypass driver's call to form_rhs
+    driver.solver.operators.append(operator_geometric)
+
+    driver.run()
+    print(driver.results[0])
+
+    return locals()
 
 
 if __name__ == "__main__":
     test_geometric_hessian_rhf_outside_solver_psi4numpy()
     test_geometric_hessian_rhf_outside_solver_chemists()
     test_geometric_hessian_rhf_right_hand_side()
+    var = test_atomic_polar_tensor_rhf()

@@ -94,7 +94,13 @@ class Operator(object):
         from .integrals import _form_rhs_geometric
         C_ = fix_mocoeffs_shape(C)
         B_dict = _form_rhs_geometric(C_[0], occupations, natoms, MO_full, mints)
-        B = []
         if return_dict:
             return B_dict
-        return B
+        # TODO I think this is wrong, because the matrices are [i, a]
+        B_matrices = [B_dict[k].T for k in sorted(B_dict.keys())]
+        B_vectors = [repack_matrix_to_vector(B)[:, np.newaxis]
+                     for B in B_matrices]
+        mo_integrals_ai_alph = np.stack(B_vectors)
+        self.mo_integrals_ai_alph = mo_integrals_ai_alph
+        self.mo_integrals_ai_supervector_alph = np.concatenate((mo_integrals_ai_alph,
+                                                                -mo_integrals_ai_alph), axis=1)
