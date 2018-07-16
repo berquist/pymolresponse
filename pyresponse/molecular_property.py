@@ -32,6 +32,12 @@ class MolecularProperty(object):
         assert self.driver.solver is not None
         self.driver.run(solver_type='exact', hamiltonian=hamiltonian.lower(), spin=spin.lower())
 
+    def form_operators(self):
+        raise NotImplementedError("This must be implemented in a grandchild class.")
+
+    def form_results(self):
+        raise NotImplementedError("This must be implemented in a grandchild class.")
+
 
 class ResponseProperty(MolecularProperty):
 
@@ -62,6 +68,12 @@ class ResponseProperty(MolecularProperty):
 
         self.driver.set_frequencies(frequencies)
 
+    def form_operators(self):
+        raise NotImplementedError("This must be implemented in a child class.")
+
+    def form_results(self):
+        raise NotImplementedError("This must be implemented in a child class.")
+
 
 class TransitionProperty(MolecularProperty):
 
@@ -87,3 +99,9 @@ class TransitionProperty(MolecularProperty):
             driver = TDHF
         self.driver = driver(solver)
         assert isinstance(self.driver, (TDHF,))
+
+    def form_operators(self):
+        raise NotImplementedError("This must be implemented in a child class.")
+
+    def form_results(self):
+        raise NotImplementedError("This must be implemented in a child class.")
