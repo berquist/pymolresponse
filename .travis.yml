@@ -6,11 +6,9 @@ python:
 cache:
   timeout: 6000
   pip: true
-  # directories:
-  #   - $HOME/miniconda
 
 install:
-  - >-
+  - |
     if [ ! -d "$HOME/miniconda/bin" ]; then
         rm -rf $HOME/miniconda
         wget -q https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
@@ -32,26 +30,27 @@ install:
   - conda list
 
 before_script:
-  - mkdir "$HOME/tmp"
-  - export PSI_SCRATCH="$HOME/tmp"
-  - export "PYTHONPATH=$(pwd):$PYTHONPATH"
-  - export GH_REPO_NAME=pyresponse_docs
-  - export GH_REPO_SLUG=berquist/${GH_REPO_NAME}
-  - export GH_REPO_REF=github.com/${GH_REPO_SLUG}.git
-  - export DOCS_BRANCH_NAME=gh-pages
-  - export DOCS_DIR="${TRAVIS_BUILD_DIR}"/doc
+  - mkdir "${HOME}/tmp"
+  - |
+    export PSI_SCRATCH="${HOME}"/tmp
+    export "PYTHONPATH=$(pwd):$PYTHONPATH"
+    export GH_REPO_NAME=pyresponse_docs
+    export GH_REPO_SLUG=berquist/${GH_REPO_NAME}
+    export GH_REPO_REF=github.com/${GH_REPO_SLUG}.git
+    export DOCS_BRANCH_NAME=gh-pages
+    export DOCS_DIR="${TRAVIS_BUILD_DIR}"/doc
 
 script:
   - make test
   - travis-sphinx --verbose --outdir="${DOCS_DIR}"/build build --source="${DOCS_DIR}"/source --nowarn
   - install -dm755 "${DOCS_DIR}"/build/html
   - touch "${DOCS_DIR}"/build/html/.nojekyll
-  - >-
+  - |
     if [[ "${TRAVIS_BRANCH}" == master ]]; then
         bash "${DOCS_DIR}"/deploy_pyresponse_docs_repo_travis-sphinx.sh;
-        # cd docs;
+        # cd docs
         # bash ./deploy_pyresponse_docs_repo_travis.sh;
-        # cd ..;
+        # cd ..
     fi
 
 after_success:
