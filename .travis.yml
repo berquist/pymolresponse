@@ -47,9 +47,9 @@ script:
   - touch "${DOCS_DIR}"/build/html/.nojekyll
   - |
     if [[ "${TRAVIS_BRANCH}" == master ]]; then
-        bash "${DOCS_DIR}"/deploy_pyresponse_docs_repo_travis-sphinx.sh;
+        bash "${DOCS_DIR}"/deploy_pyresponse_docs_repo_travis-sphinx.bash
         # cd docs
-        # bash ./deploy_pyresponse_docs_repo_travis.sh;
+        # bash ./deploy_pyresponse_docs_repo_travis.bash
         # cd ..
     fi
 

@@ -5,7 +5,7 @@ untracked
 
 ## Psi4
 input.dat
-output.dat
+output*.dat
 timer.dat
 
 ## NWChem
