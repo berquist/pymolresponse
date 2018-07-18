@@ -1,6 +1,8 @@
 README.html
 tmp*
 html/
+miniconda.sh
+miniconda/
 untracked
 
 ## Psi4
