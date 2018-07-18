@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-## make_conda_env.bash:
+## make_conda_env.bash: Make a conda-based environment with all
+## dependencies, install the package, run the tests, and build the
+## HTML documentation.
 
 set -o errexit
 set -v
@@ -36,7 +38,6 @@ pip install "${PROJECT_ROOT}"
 ## before_script
 mkdir -p "${PROJECT_ROOT}"/PSI_SCRATCH
 PSI_SCRATCH="${PROJECT_ROOT}"/PSI_SCRATCH
-# PYTHONPATH="$(pwd):${PYTHONPATH}"
 GH_REPO_NAME=pyresponse_docs
 GH_REPO_SLUG=berquist/${GH_REPO_NAME}
 GH_REPO_REF=github.com/${GH_REPO_SLUG}.git
@@ -48,6 +49,3 @@ make test
 travis-sphinx --verbose --outdir="${DOCS_DIR}"/build build --source="${DOCS_DIR}"/source --nowarn
 install -dm755 "${DOCS_DIR}"/build/html
 touch "${DOCS_DIR}"/build/html/.nojekyll
-
-## after_success
-# codecov

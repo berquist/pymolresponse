@@ -8,7 +8,7 @@ cache:
   timeout: 6000
   pip: true
 
-install:
+before_install:
   - |
     if [ ! -d "$HOME/miniconda/bin" ]; then
         rm -rf $HOME/miniconda
@@ -23,17 +23,18 @@ install:
   - conda create -q -n p4env python=$TRAVIS_PYTHON_VERSION numpy scipy h5py psi4 psi4-rt -c psi4/label/dev -c psi4
   - source activate p4env
   - pip install -r requirements.txt
-  - conda install -q -c conda-forge pytest-cov codecov
   - conda install -q -c pyscf pyscf
   - conda install -q -c conda-forge pytest-cov codecov sphinx sphinx-automodapi sphinx_rtd_theme numpydoc graphviz python-graphviz
   - pip install travis-sphinx
   - conda list
 
+install:
+  - pip install .
+
 before_script:
   - mkdir "${HOME}/tmp"
   - |
     export PSI_SCRATCH="${HOME}"/tmp
-    export "PYTHONPATH=$(pwd):$PYTHONPATH"
     export GH_REPO_NAME=pyresponse_docs
     export GH_REPO_SLUG=berquist/${GH_REPO_NAME}
     export GH_REPO_REF=github.com/${GH_REPO_SLUG}.git
@@ -48,9 +49,6 @@ script:
   - |
     if [[ "${TRAVIS_BRANCH}" == master ]]; then
         bash "${DOCS_DIR}"/deploy_pyresponse_docs_repo_travis-sphinx.bash
-        # cd docs
-        # bash ./deploy_pyresponse_docs_repo_travis.bash
-        # cd ..
     fi
 
 after_success:
