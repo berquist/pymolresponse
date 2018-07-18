@@ -1,3 +1,4 @@
+dist: trusty
 sudo: false
 language: python
 python:
@@ -11,7 +12,7 @@ install:
   - |
     if [ ! -d "$HOME/miniconda/bin" ]; then
         rm -rf $HOME/miniconda
-        wget -q https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
+        curl -s https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -o miniconda.sh
         bash miniconda.sh -b -p $HOME/miniconda
     fi
   - export PATH="$HOME/miniconda/bin:$PATH"
@@ -24,8 +25,7 @@ install:
   - pip install -r requirements.txt
   - conda install -q -c conda-forge pytest-cov codecov
   - conda install -q -c pyscf pyscf
-  - conda install sphinx sphinx-automodapi graphviz python-graphviz -c conda-forge -c psi4
-  - pip install sphinx_rtd_theme numpydoc
+  - conda install -q -c conda-forge pytest-cov codecov sphinx sphinx-automodapi sphinx_rtd_theme numpydoc graphviz python-graphviz
   - pip install travis-sphinx
   - conda list
 
