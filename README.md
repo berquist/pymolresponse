@@ -34,7 +34,7 @@ bash ${PROJECT_DIR}/scripts/make_conda_env.bash
 * [daltools](https://github.com/vahtras/daltools) (for testing?)
 * [cclib](https://github.com/cclib/cclib) (for testing)
 
-Psi4 is also required for testing, and is installed as part of the [conda environment setup](scripts/make_conda_env.bash) from their conda channel.
+Psi4 is also required for testing, and is installed as part of the [conda environment setup](scripts/make_conda_env.bash) from their conda channel. See the conda script for all dependencies.
 
 ## Testing
 
