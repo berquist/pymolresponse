@@ -14,23 +14,35 @@ Currently, the goal is to provide:
 2. an implementation that gives "exact" results for testing, and
 3. an example of testing and documenting scientific code using modern software development tools.
 
-# Requirements
+## Installation
+
+To set up a conda environment with all dependencies for running, testing, and building the documentation:
+
+```bash
+bash ${PROJECT_DIR}/scripts/make_conda_env.bash
+```
+
+## Requirements
 
 * Python >= ~~3.2 because of pyscf~~3.6 because of [f-strings](https://cito.github.io/blog/f-strings/).
-* [pyscf](https://github.com/sunqm/pyscf) and its dependencies
+* [pyscf](https://github.com/sunqm/pyscf) and its dependencies: CMake, NumPy, SciPy, HDF5 + h5py
 
-## Other Python dependencies
+### Other Python dependencies
 
 * [periodictable](https://github.com/pkienzle/periodictable) (for calculating the center of mass)
 * [pytest](http://doc.pytest.org/en/latest/) (for testing)
 * [daltools](https://github.com/vahtras/daltools) (for testing?)
-* [cclib](https://github.com/cclib/cclib) (for ?)
+* [cclib](https://github.com/cclib/cclib) (for testing)
 
-# Testing
+Psi4 is also required for testing, and is installed as part of the [conda environment setup](scripts/make_conda_env.bash) from their conda channel.
 
-    make pytest
+## Testing
 
-# Caveats
+```bash
+make pytest
+```
+
+## Caveats
 
 * RHF and UHF references only.
 * Hartree-Fock and DFT only; no post-HF methods yet.
@@ -39,7 +51,7 @@ Currently, the goal is to provide:
 * Linear response and single residues only.
 * _unrestricted diagonalization-based properties are not implemented/working_
 
-# Desired features (in no specific order)
+## Desired features (in no specific order)
 
 * Non-orthogonal orbitals. Requires switch from using MO energies to full Fock matrices.
 * ROHF reference (compare against DALTON). Requires equations for the ROHF orbital Hessian.
@@ -48,16 +60,16 @@ Currently, the goal is to provide:
 * At least one iterative method for each property type, for example DIIS for inversion and Davidson for diagonalization. Requires matrix-vector products.
 * Quadratic response and associated single residues (needed for phosphorescence) and double residues (excited state expectation values and transition moments of linear operators). Requires permutation of linear response solution vectors.
 
-## Desired features that don't fix the caveats
+### Desired features that don't fix the caveats
 
 * Open-ended response: see [Ringholm, Jonsson, and Ruud](https://doi.org/10.1002/jcc.23533).
 * Finite-difference for testing and higher-order response.
-* Independence from pyscf, requires molecule/basis set handling, AO integral engine, and RHF/UHF solver.
+* Independence from pyscf, requires AO property integral and JK wrapper.
 * Interface to [PyQuante](https://github.com/berquist/pyquante) and/or [pyquante2](https://github.com/rpmuller/pyquante2).
-* Interface to [Psi4](https://github.com/psi4/psi4) (through Python, not C++).
+* Plugin-based interface to [Psi4](https://github.com/psi4/psi4).
 * Jupyter Notebook-based tutorials.
 * Argument type-checking using [mypy](http://mypy-lang.org/).
 
-# References
+## References
 
 Forthcoming...
