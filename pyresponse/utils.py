@@ -46,7 +46,9 @@ def np_load(filename):
     if isinstance(arr, np.lib.npyio.NpzFile):
         # Make the assumption that there's only a single array
         # present, even though *.npz files can hold multiple arrays.
-        arr = arr.items()[0][1]
+        for _arr_name, _arr in arr.items():
+            arr = _arr
+            break
     return arr
 
 
