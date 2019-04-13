@@ -5,7 +5,11 @@ test:
 
 .PHONY: pylint
 pylint:
-	pylint pyresponse/*.py tests/*.py
+	pylint pyresponse tests
+
+.PHONY: mypy
+mypy:
+	mypy pyresponse tests | perl -ne 'print if !/(No library stub file for module|Cannot find module named)/'
 
 .PHONY: docs
 docs:
