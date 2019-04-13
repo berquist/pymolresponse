@@ -23,9 +23,9 @@ before_install:
   - conda create -q -n p4env python=$TRAVIS_PYTHON_VERSION numpy scipy h5py psi4 psi4-rt -c psi4/label/dev -c psi4
   - source activate p4env
   - pip install -r requirements.txt
+  - pip install -r requirements-dev.txt
   - conda install -q -c pyscf pyscf
-  - conda install -q -c conda-forge pytest-cov codecov sphinx sphinx-automodapi sphinx_rtd_theme numpydoc graphviz python-graphviz
-  - pip install travis-sphinx
+  - conda install -q -c conda-forge graphviz python-graphviz # is this `graphviz`, `pygraphviz`, or `graphviz-python`?
   - conda list
 
 install:
@@ -35,20 +35,23 @@ before_script:
   - mkdir "${HOME}/tmp"
   - |
     export PSI_SCRATCH="${HOME}"/tmp
-    export GH_REPO_NAME=pyresponse_docs
-    export GH_REPO_SLUG=berquist/${GH_REPO_NAME}
-    export GH_REPO_REF=github.com/${GH_REPO_SLUG}.git
     export DOCS_BRANCH_NAME=gh-pages
-    export DOCS_DIR="${TRAVIS_BUILD_DIR}"/doc
+    export DOCS_REPO_NAME=pyresponse_docs
+    export DOCS_REPO_OWNER=berquist
+    DOCS_ROOT_DIR="${TRAVIS_BUILD_DIR}"/doc
+    export DOCS_BUILD_DIR="${DOCS_ROOT_DIR}"/build/html
 
 script:
   - make test
-  - travis-sphinx --verbose --outdir="${DOCS_DIR}"/build build --source="${DOCS_DIR}"/source --nowarn
+  - make docs
   - install -dm755 "${DOCS_DIR}"/build/html
   - touch "${DOCS_DIR}"/build/html/.nojekyll
+  # this doesn't live in the `after_success` step in order to catch failure
   - |
-    if [[ "${TRAVIS_BRANCH}" == master ]]; then
-        bash "${DOCS_DIR}"/deploy_pyresponse_docs_repo_travis-sphinx.bash
+    if [[ "${TRAVIS_BRANCH}" == master && "${TRAVIS_PULL_REQUEST}" == false ]]; then
+        # Commits to master that are not pull requests, that is, only actual
+        # addition (merges) of code to master, should deploy the docs.
+        bash "${DOCS_DIR}"/deploy_pyresponse_docs_repo_travis.bash
     fi
 
 after_success:
