@@ -46,14 +46,12 @@ before_script:
 script:
   - make test
   - make docs
-  - install -dm755 "${DOCS_DIR}"/build/html
-  - touch "${DOCS_DIR}"/build/html/.nojekyll
   # this doesn't live in the `after_success` step in order to catch failure
   - |
     if [[ "${TRAVIS_BRANCH}" == master && "${TRAVIS_PULL_REQUEST}" == false ]]; then
         # Commits to master that are not pull requests, that is, only actual
         # addition (merges) of code to master, should deploy the docs.
-        bash "${DOCS_DIR}"/deploy_pyresponse_docs_repo_travis.bash
+        bash "${DOCS_ROOT_DIR}"/deploy_pyresponse_docs_repo_travis.bash
     fi
 
 after_success:
