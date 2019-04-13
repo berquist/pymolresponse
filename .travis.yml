@@ -7,15 +7,17 @@ python:
 cache:
   timeout: 6000
   pip: true
+  directories:
+    - "${HOME}/miniconda"
 
 before_install:
   - |
-    if [ ! -d "$HOME/miniconda/bin" ]; then
-        rm -rf $HOME/miniconda
+    if [[ ! -d "${HOME}/miniconda/bin" ]]; then
+        rm -rf "${HOME}/miniconda"
         curl -s https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -o miniconda.sh
         bash miniconda.sh -b -p $HOME/miniconda
     fi
-  - export PATH="$HOME/miniconda/bin:$PATH"
+  - export PATH="${HOME}/miniconda/bin:${PATH}"
   - hash -r
   - conda config --set always_yes yes --set changeps1 no
   - conda update -q conda
