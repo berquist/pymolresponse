@@ -31,8 +31,8 @@ def test_explicit_rhf_outside_solver_off_diagonal_blocks():
     A = eqns.form_rpa_a_matrix_mo_singlet_full(E, tei_mo, nocc)
     B = eqns.form_rpa_b_matrix_mo_singlet_full(tei_mo, nocc)
 
-    G = np.asarray(np.bmat([[A, B],
-                            [B, A]]))
+    G = np.block([[A, B],
+                  [B, A]])
     assert G.shape == (2*nocc*nvirt, 2*nocc*nvirt)
 
     G_inv = np.linalg.inv(G)
@@ -86,8 +86,8 @@ def test_explicit_rhf_outside_solver_off_diagonal_blocks():
 #     A = eqns.form_rpa_a_matrix_mo_singlet_full(E, tei_mo, nocc)
 #     B = eqns.form_rpa_b_matrix_mo_singlet_full(tei_mo, nocc)
 
-#     # G = np.asarray(np.bmat([[A, B],
-#     #                         [B, A]]))
+#     # G = np.block([[A, B],
+#     #               [B, A]])
 #     # assert G.shape == (2*nocc*nvirt, 2*nocc*nvirt)
 #     G = A + B
 #     assert G.shape == (nocc*nvirt, nocc*nvirt)

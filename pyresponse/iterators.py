@@ -153,8 +153,8 @@ class ExactLineqSolver(LineqSolver):
         nov_alph = nocc_alph * nvirt_alph
         nov_beta = nocc_beta * nvirt_beta
 
-        superoverlap_alph = np.asarray(np.bmat([[np.eye(nov_alph), np.zeros(shape=(nov_alph, nov_alph))],
-                                                [np.zeros(shape=(nov_alph, nov_alph)), -np.eye(nov_alph)]]))
+        superoverlap_alph = np.block([[np.eye(nov_alph), np.zeros(shape=(nov_alph, nov_alph))],
+                                      [np.zeros(shape=(nov_alph, nov_alph)), -np.eye(nov_alph)]])
         superoverlap_alph = superoverlap_alph * frequency
 
         if not self.is_uhf:
@@ -195,8 +195,8 @@ class ExactLineqSolver(LineqSolver):
                     A = form_rpa_a_matrix_mo_triplet_partial(self.moenergies[0], tei_mo_oovv)
                     B = np.zeros(shape=(nov_alph, nov_alph))
 
-            G = np.asarray(np.bmat([[A, B],
-                                    [B, A]]))
+            G = np.block([[A, B],
+                          [B, A]])
             self.explicit_hessian = G - superoverlap_alph
 
         else:
@@ -332,18 +332,18 @@ class ExactLineqSolver(LineqSolver):
                     B_ss_b = zeros_bb
                     B_os_b = zeros_ba
 
-            superoverlap_beta = np.asarray(np.bmat([[np.eye(nov_beta), np.zeros(shape=(nov_beta, nov_beta))],
-                                                    [np.zeros(shape=(nov_beta, nov_beta)), -np.eye(nov_beta)]]))
+            superoverlap_beta = np.block([[np.eye(nov_beta), np.zeros(shape=(nov_beta, nov_beta))],
+                                          [np.zeros(shape=(nov_beta, nov_beta)), -np.eye(nov_beta)]])
             superoverlap_beta = superoverlap_beta * frequency
 
-            G_aa = np.asarray(np.bmat([[A_ss_a, B_ss_a],
-                                       [B_ss_a, A_ss_a]]))
-            G_ab = np.asarray(np.bmat([[A_os_a, B_os_a],
-                                       [B_os_a, A_os_a]]))
-            G_ba = np.asarray(np.bmat([[A_os_b, B_os_b],
-                                       [B_os_b, A_os_b]]))
-            G_bb = np.asarray(np.bmat([[A_ss_b, B_ss_b],
-                                       [B_ss_b, A_ss_b]]))
+            G_aa = np.block([[A_ss_a, B_ss_a],
+                             [B_ss_a, A_ss_a]])
+            G_ab = np.block([[A_os_a, B_os_a],
+                             [B_os_a, A_os_a]])
+            G_ba = np.block([[A_os_b, B_os_b],
+                             [B_os_b, A_os_b]])
+            G_bb = np.block([[A_ss_b, B_ss_b],
+                             [B_ss_b, A_ss_b]])
 
             self.explicit_hessian = (
                 G_aa - superoverlap_alph,
@@ -562,8 +562,8 @@ class ExactDiagonalizationSolver(EigSolver):
                     B = np.zeros(shape=(nov_alph, nov_alph))
 
             # pylint: disable=bad-whitespace
-            G = np.asarray(np.bmat([[ A,  B],
-                                    [-B, -A]]))
+            G = np.block([[ A,  B],
+                          [-B, -A]])
             self.explicit_hessian = G
 
         else:

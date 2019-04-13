@@ -57,14 +57,14 @@ def test_explicit_uhf_outside_solver():
     # (xx|yy) is only in the Coulomb part, there is no ss/os
     # separation for the triplet part.
 
-    G_aa = np.asarray(np.bmat([[A_s_ss_a, B_s_ss_a],
-                               [B_s_ss_a, A_s_ss_a]]))
-    G_bb = np.asarray(np.bmat([[A_s_ss_b, B_s_ss_b],
-                               [B_s_ss_b, A_s_ss_b]]))
-    G_ab = np.asarray(np.bmat([[A_s_os_a, B_s_os_a],
-                               [B_s_os_a, A_s_os_a]]))
-    G_ba = np.asarray(np.bmat([[A_s_os_b, B_s_os_b],
-                               [B_s_os_b, A_s_os_b]]))
+    G_aa = np.block([[A_s_ss_a, B_s_ss_a],
+                     [B_s_ss_a, A_s_ss_a]])
+    G_bb = np.block([[A_s_ss_b, B_s_ss_b],
+                     [B_s_ss_b, A_s_ss_b]])
+    G_ab = np.block([[A_s_os_a, B_s_os_a],
+                     [B_s_os_a, A_s_os_a]])
+    G_ba = np.block([[A_s_os_b, B_s_os_b],
+                     [B_s_os_b, A_s_os_b]])
 
     G_aa_inv = np.linalg.inv(G_aa)
     G_bb_inv = np.linalg.inv(G_bb)
