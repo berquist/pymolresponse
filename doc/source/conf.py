@@ -59,7 +59,7 @@ master_doc = 'contents'
 
 # General information about the project.
 project = 'pyresponse'
-copyright = '2018, Eric Berquist'
+copyright = '2019, Eric Berquist'
 author = 'Eric Berquist'
 
 # The version info for the project you're documenting, acts as replacement for

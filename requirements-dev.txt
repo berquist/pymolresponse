@@ -1,0 +1,9 @@
+# testing
+pytest-cov
+pylint
+mypy
+
+# documentation
+sphinx
+numpydoc
+sphinx-rtd-theme

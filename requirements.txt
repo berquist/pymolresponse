@@ -1,7 +1,6 @@
 deepdiff
 h5py
 pint
-pytest-cov
 
 cclib
 periodictable

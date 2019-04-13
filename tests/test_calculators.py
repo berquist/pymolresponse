@@ -77,7 +77,7 @@ def calculate_disk_rhf(testcasedir, hamiltonian, spin, frequency, label_1, label
     diff = abs(abs(bl) - abs(tr))
     # Results should be symmetric w.r.t. interchange between operators
     # in the LR equations.
-    thresh = 1.0e-14
+    thresh = 1.0e-13
     assert diff < thresh
 
     return bl
