@@ -1,15 +1,15 @@
 .PHONY: test
 test:
 	bash check_pytest.bash
-	pytest -v --doctest-modules --cov=pyresponse tests
+	pytest -v --doctest-modules --cov=pyresponse pyresponse/tests
 
 .PHONY: pylint
 pylint:
-	pylint pyresponse tests
+	pylint pyresponse
 
 .PHONY: mypy
 mypy:
-	mypy pyresponse tests | perl -ne 'print if !/(No library stub file for module|Cannot find module named)/'
+	mypy pyresponse | perl -ne 'print if !/(No library stub file for module|Cannot find module named)/'
 
 .PHONY: docs
 docs:
