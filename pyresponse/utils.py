@@ -1,7 +1,5 @@
 """Utility functions that are not core to calculating physical values."""
 
-import os.path
-
 import numpy as np
 
 # Define for any Python version <= 3.3,
@@ -387,7 +385,7 @@ def fix_moenergies_shape(moenergies):
 
 def read_dalton_propfile(tmpdir):
     proplist = []
-    with open(os.path.join(tmpdir, 'DALTON.PROP')) as propfile:
+    with open(tmpdir / "DALTON.PROP") as propfile:
         proplines = propfile.readlines()
     splitter = Splitter([5, 3, 4, 11, 23, 9, 9, 9, 9, 23, 23, 23, 4, 4, 4])
     for line in proplines:
