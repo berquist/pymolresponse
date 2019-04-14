@@ -1,7 +1,7 @@
 import numpy as np
 import scipy.constants as spc
 
-from .utils import repack_matrix_to_vector, fix_mocoeffs_shape
+from pyresponse.utils import repack_matrix_to_vector, fix_mocoeffs_shape
 
 
 class Operator:
@@ -91,7 +91,7 @@ class Operator:
             self.mo_integrals_ai_supervector_beta = np.stack(operator_ai_supervector_beta, axis=0)
 
     def form_rhs_geometric(self, C, occupations, natoms, MO_full, mints, return_dict=False):
-        from .integrals import _form_rhs_geometric
+        from pyresponse.integrals import _form_rhs_geometric
         C_ = fix_mocoeffs_shape(C)
         B_dict = _form_rhs_geometric(C_[0], occupations, natoms, MO_full, mints)
         if return_dict:

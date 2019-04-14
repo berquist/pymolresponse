@@ -5,7 +5,7 @@ import numpy.linalg as npl
 
 import periodictable
 
-from .constants import convfac_au_to_debye
+from pyresponse.constants import convfac_au_to_debye
 
 
 def get_most_abundant_isotope(element):

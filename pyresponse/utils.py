@@ -85,7 +85,7 @@ def dalton_label_to_operator(label):
 
     label = clean_dalton_label(label)
 
-    from .operators import Operator
+    from pyresponse.operators import Operator
 
     coord1_to_slice = {
         'x': 0, 'y': 1, 'z': 2,

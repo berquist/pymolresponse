@@ -3,7 +3,7 @@ import scipy as sp
 
 from pyresponse.pyscf.ao2mo import AO2MOpyscf
 
-from .explicit_equations_full import \
+from pyresponse.explicit_equations_full import \
     (form_rpa_a_matrix_mo_singlet_full,
      form_rpa_a_matrix_mo_singlet_ss_full,
      form_rpa_a_matrix_mo_singlet_os_full,
@@ -12,7 +12,7 @@ from .explicit_equations_full import \
      form_rpa_b_matrix_mo_singlet_ss_full,
      form_rpa_b_matrix_mo_singlet_os_full,
      form_rpa_b_matrix_mo_triplet_full)
-from .explicit_equations_partial import \
+from pyresponse.explicit_equations_partial import \
     (form_rpa_a_matrix_mo_singlet_partial,
      form_rpa_a_matrix_mo_singlet_ss_partial,
      form_rpa_a_matrix_mo_singlet_os_partial,
@@ -485,6 +485,7 @@ class EigSolver(Solver):
         norm = 2 * (np.linalg.norm(x)**2 - np.linalg.norm(y)**2)
         norm = 1 / np.sqrt(norm)
         return (x*norm).flatten(), (y*norm).flatten()
+
 
 class EigSolverTDA(EigSolver):
 

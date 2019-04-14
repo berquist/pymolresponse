@@ -1,10 +1,8 @@
 import numpy as np
-import scipy.constants as spc
 
-from . import helpers
-from .operators import Operator
-from .molecular_property import ResponseProperty
-from .utils import tensor_printer
+from pyresponse import helpers
+from pyresponse.operators import Operator
+from pyresponse.molecular_property import ResponseProperty
 
 
 class Magnetizability(ResponseProperty):

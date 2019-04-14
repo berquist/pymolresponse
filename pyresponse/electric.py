@@ -1,7 +1,7 @@
 """Wrapper for performing a dipole polarizability calculation."""
 
-from .molecular_property import ResponseProperty
-from .operators import Operator
+from pyresponse.molecular_property import ResponseProperty
+from pyresponse.operators import Operator
 
 
 class Polarizability(ResponseProperty):

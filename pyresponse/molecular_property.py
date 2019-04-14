@@ -1,8 +1,8 @@
 import numpy as np
 
-from . import iterators
-from .cphf import CPHF
-from .td import TDHF, TDA
+from pyresponse import iterators
+from pyresponse.cphf import CPHF
+from pyresponse.td import TDHF, TDA
 
 
 class MolecularProperty:

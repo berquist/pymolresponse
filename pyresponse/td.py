@@ -3,11 +3,10 @@ equations."""
 
 import numpy as np
 
-from .constants import HARTREE_TO_EV, HARTREE_TO_INVCM
-from .cphf import CPHF
-from .iterators import EigSolver, ExactDiagonalizationSolver
-from .operators import Operator
-from .utils import form_results, form_vec_energy_differences, form_indices_orbwin
+from pyresponse.iterators import EigSolver, ExactDiagonalizationSolver
+from pyresponse.constants import HARTREE_TO_EV, HARTREE_TO_INVCM
+from pyresponse.cphf import CPHF
+from pyresponse.utils import form_vec_energy_differences, form_indices_orbwin
 
 
 class TDHF(CPHF):

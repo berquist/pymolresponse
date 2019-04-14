@@ -3,7 +3,7 @@ r"""Explicit equations for orbital Hessian terms using partially-transformed MO-
 
 import numpy as np
 
-from .utils import form_vec_energy_differences
+from pyresponse.utils import form_vec_energy_differences
 
 
 def form_rpa_a_matrix_mo_singlet_partial(E_MO, TEI_MO_iajb, TEI_MO_ijab):

@@ -2,7 +2,7 @@ r"""Explicit equations for orbital Hessian terms using fully-transformed MO-basi
 
 import numpy as np
 
-from .utils import form_vec_energy_differences
+from pyresponse.utils import form_vec_energy_differences
 
 
 def form_rpa_a_matrix_mo_singlet_full(E_MO, TEI_MO, nocc):

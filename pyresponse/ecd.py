@@ -3,10 +3,10 @@ calculation."""
 
 import numpy as np
 
-from .constants import alpha, HARTREE_TO_EV, HARTREE_TO_INVCM, esuecd
-from .operators import Operator
-from .molecular_property import TransitionProperty
-from .utils import form_indices_zero
+from pyresponse.constants import alpha, HARTREE_TO_EV, HARTREE_TO_INVCM, esuecd
+from pyresponse.operators import Operator
+from pyresponse.molecular_property import TransitionProperty
+from pyresponse.utils import form_indices_zero
 
 
 class ECD(TransitionProperty):

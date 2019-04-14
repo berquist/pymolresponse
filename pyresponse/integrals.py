@@ -165,9 +165,10 @@ def _form_rhs_geometric(C, occupations, natoms, MO, mints):
             B[key] = contr1 - F_grad[key][o, v] + (2 * contr2) - contr3
     return B
 
+
 if __name__ == '__main__':
     dalton_integrals = parse_aoproper('r_lih_hf_sto-3g/dalton_response_rpa_singlet/AOPROPER')
-    from .utils import dalton_label_to_operator
+    from pyresponse.utils import dalton_label_to_operator
     labels = dalton_integrals.keys()
     for label in labels:
         print(dalton_label_to_operator(label))

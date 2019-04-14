@@ -1,9 +1,5 @@
-import numpy as np
-import scipy.constants as spc
-
-from .operators import Operator
-from .molecular_property import ResponseProperty
-from .utils import tensor_printer
+from pyresponse.molecular_property import ResponseProperty
+from pyresponse.operators import Operator
 
 
 class ORD(ResponseProperty):
