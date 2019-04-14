@@ -6,7 +6,7 @@ import pyscf
 
 from pyresponse import utils
 from pyresponse import explicit_equations_full as eqns
-from pyresponse.ao2mo import AO2MOpyscf
+from pyresponse.pyscf.ao2mo import AO2MOpyscf
 from . import molecules_pyscf as molecules
 
 

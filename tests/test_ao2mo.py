@@ -2,7 +2,8 @@ import numpy as np
 
 import pyscf
 
-from pyresponse.ao2mo import AO2MO, AO2MOpyscf
+from pyresponse.ao2mo import AO2MO
+from pyresponse.pyscf.ao2mo import AO2MOpyscf
 from pyresponse.utils import fix_mocoeffs_shape, occupations_from_pyscf_mol
 from . import molecules_psi4
 from . import molecules_pyscf

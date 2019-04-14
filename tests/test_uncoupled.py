@@ -3,7 +3,7 @@ import numpy as np
 import pyscf
 
 from pyresponse import utils, cphf, iterators, operators
-from pyresponse.ao2mo import AO2MOpyscf
+from pyresponse.pyscf.ao2mo import AO2MOpyscf
 from . import molecules_pyscf as molecules
 
 

@@ -1,6 +1,8 @@
 import numpy as np
 import scipy as sp
 
+from pyresponse.pyscf.ao2mo import AO2MOpyscf
+
 from .explicit_equations_full import \
     (form_rpa_a_matrix_mo_singlet_full,
      form_rpa_a_matrix_mo_singlet_ss_full,
@@ -58,7 +60,6 @@ class Solver:
         assert tei_mo_type in ('partial', 'full')
         nden = self.mocoeffs.shape[0]
         assert nden in (1, 2)
-        from .ao2mo import AO2MOpyscf
         ao2mo = AO2MOpyscf(self.mocoeffs, pyscfmol.verbose, pyscfmol)
         if tei_mo_type == 'partial' and nden == 2:
             ao2mo.perform_uhf_partial()

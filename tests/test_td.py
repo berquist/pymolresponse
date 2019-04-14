@@ -1,7 +1,7 @@
 import pyscf
 
 from pyresponse import utils, iterators, td
-from pyresponse.ao2mo import AO2MOpyscf
+from pyresponse.pyscf.ao2mo import AO2MOpyscf
 
 
 def test_HF_both_singlet_HF_STO3G():
