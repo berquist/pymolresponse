@@ -8,7 +8,7 @@ from .utils import (form_results, form_vec_energy_differences,
                     repack_matrix_to_vector)
 
 
-class CPHF(object):
+class CPHF:
     """Driver for solving the coupled perturbed Hartree-Fock (CPHF) equations."""
 
     def __init__(self, solver, *args, **kwargs):

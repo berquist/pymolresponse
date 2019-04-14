@@ -4,7 +4,7 @@ import scipy.constants as spc
 from .utils import repack_matrix_to_vector, fix_mocoeffs_shape
 
 
-class Operator(object):
+class Operator:
     """Handle property integrals, taking them from the AO basis to a
     representation of a right-hand side perturbation for CPHF or
     transition properties."""

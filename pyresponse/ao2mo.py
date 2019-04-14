@@ -5,7 +5,7 @@ import numpy as np
 from .utils import fix_mocoeffs_shape
 
 
-class AO2MO(object):
+class AO2MO:
     """Interface for performing AO-to-MO tranformations of two-electron integrals.
     """
 

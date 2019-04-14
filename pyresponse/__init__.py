@@ -1,3 +1,5 @@
+# pylint: disable=unused-import
+
 from . import ao2mo
 from . import constants
 from . import cphf

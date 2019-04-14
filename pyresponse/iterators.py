@@ -21,7 +21,7 @@ from .explicit_equations_partial import \
      form_rpa_b_matrix_mo_triplet_partial)
 
 
-class Solver(object):
+class Solver:
 
     def __init__(self, mocoeffs, moenergies, occupations, *args, **kwargs):
 

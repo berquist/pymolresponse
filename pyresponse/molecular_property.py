@@ -5,7 +5,7 @@ from .cphf import CPHF
 from .td import TDHF, TDA
 
 
-class MolecularProperty(object):
+class MolecularProperty:
 
     def __init__(self, pyscfmol, mocoeffs, moenergies, occupations, *args, **kwargs):
         # TODO add more type assertions (pyscfmol)
