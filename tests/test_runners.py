@@ -1,10 +1,5 @@
-import os.path
-
 from pyresponse import utils
-
-
-__filedir__ = os.path.realpath(os.path.dirname(__file__))
-refdir = os.path.join(__filedir__, 'reference_data')
+from pyresponse.data import REFDIR
 
 
 def run_dalton_label_to_operator(dalton_label, operator_label, slice_idx, is_imaginary, is_spin_dependent):
@@ -22,7 +17,7 @@ def run_as_many_tests_as_possible_rhf_disk(testcase):
 
     from .test_calculators import calculate_disk_rhf
 
-    testcasedir = os.path.join(refdir, testcase)
+    testcasedir = REFDIR / testcase
 
     thresh = 5.0e-3
 
@@ -33,7 +28,7 @@ def run_as_many_tests_as_possible_rhf_disk(testcase):
 
     entries = []
 
-    with open(os.path.join(testcasedir, 'ref')) as fh:
+    with open(testcasedir / "ref") as fh:
         for line in fh:
             tokens = line.split()
             assert len(tokens) == 6
@@ -66,7 +61,7 @@ def run_as_many_tests_as_possible_uhf_disk(testcase):
 
     from .test_calculators import calculate_disk_uhf
 
-    testcasedir = os.path.join(refdir, testcase)
+    testcasedir = REFDIR / testcase
 
     thresh = 1.0e-1
 
@@ -77,7 +72,7 @@ def run_as_many_tests_as_possible_uhf_disk(testcase):
 
     entries = []
 
-    with open(os.path.join(testcasedir, 'ref')) as fh:
+    with open(testcasedir / "ref") as fh:
         for line in fh:
             tokens = line.split()
             assert len(tokens) == 6

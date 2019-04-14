@@ -3,10 +3,9 @@ import numpy as np
 import pyscf
 
 from pyresponse.ao2mo import AO2MO
+from pyresponse.pyscf import molecules as molecules_pyscf
 from pyresponse.pyscf.ao2mo import AO2MOpyscf
 from pyresponse.utils import fix_mocoeffs_shape, occupations_from_pyscf_mol
-from . import molecules_psi4
-from . import molecules_pyscf
 
 
 def test_ao2mo_hand_against_pyscf_rhf_full():

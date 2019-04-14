@@ -1,10 +1,6 @@
-import os.path
-
 import psi4
 
-
-__filedir__ = os.path.realpath(os.path.dirname(__file__))
-refdir = os.path.join(__filedir__, "reference_data")
+from pyresponse.data import COORDDIR
 
 
 # TODO molecule_water_sto3g_angstrom
@@ -12,7 +8,7 @@ refdir = os.path.join(__filedir__, "reference_data")
 def molecule_water_sto3g():
 
     # TODO this isn"t a proper xyz file. Why?
-    with open(os.path.join(refdir, "water.xyz")) as fh:
+    with open(COORDDIR / "water.xyz") as fh:
         mol = psi4.geometry("\n".join(fh.readlines()))
 
     # TODO This is supposed to be in bohr.
@@ -31,7 +27,7 @@ def molecule_water_sto3g():
 
 def molecule_physicists_water_sto3g(verbose=0):
 
-    with open(os.path.join(refdir, "psi4numpy", "water", "water.xyz")) as fh:
+    with open(COORDDIR / "water_psi4numpy.xyz") as fh:
         mol = psi4.geometry("\n".join(fh.readlines()[2:]))
 
     basis = "sto-3g"
@@ -48,7 +44,7 @@ def molecule_physicists_water_sto3g(verbose=0):
 
 def molecule_physicists_water_augccpvdz(verbose=0):
 
-    with open(os.path.join(refdir, "psi4numpy", "water", "water.xyz")) as fh:
+    with open(COORDDIR / "water_psi4numpy.xyz") as fh:
         mol = psi4.geometry("\n".join(fh.readlines()[2:]))
 
     basis = "aug-cc-pvdz"
@@ -65,7 +61,7 @@ def molecule_physicists_water_augccpvdz(verbose=0):
 
 def molecule_glycine_sto3g():
 
-    with open(os.path.join(refdir, "glycine.xyz")) as fh:
+    with open(COORDDIR / "glycine.xyz") as fh:
         mol = psi4.geometry("\n".join(fh.readlines()[2:]))
 
     basis = "sto-3g"
@@ -82,7 +78,7 @@ def molecule_glycine_sto3g():
 
 def molecule_trithiolane_sto3g():
 
-    with open(os.path.join(refdir, "trithiolane.xyz")) as fh:
+    with open(COORDDIR / "trithiolane.xyz") as fh:
         mol = psi4.geometry("\n".join(fh.readlines()[2:]))
 
     basis = "sto-3g"
@@ -116,7 +112,7 @@ H
 
 def molecule_bc2h4_cation_sto3g():
 
-    with open(os.path.join(refdir, "BC2H4.xyz")) as fh:
+    with open(COORDDIR / "BC2H4.xyz") as fh:
         mol = psi4.geometry("\n".join(fh.readlines()[2:]))
 
     basis = "sto-3g"
@@ -145,7 +141,7 @@ def molecule_bc2h4_cation_sto3g():
 
 def molecule_lih_cation_sto3g():
 
-    with open(os.path.join(refdir, "LiH.xyz")) as fh:
+    with open(COORDDIR / "LiH.xyz") as fh:
         mol = psi4.geometry("\n".join(fh.readlines()[2:]))
 
     basis = "sto-3g"
@@ -162,7 +158,7 @@ def molecule_lih_cation_sto3g():
 
 def molecule_0w4a_dication_321g():
 
-    with open(os.path.join(refdir, "0w4a.xyz")) as fh:
+    with open(COORDDIR / "0w4a.xyz") as fh:
         mol = psi4.geometry("\n".join(fh.readlines()[2:]))
 
     basis = "3-21g"

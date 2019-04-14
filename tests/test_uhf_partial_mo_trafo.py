@@ -3,8 +3,8 @@ import numpy as np
 import pyscf
 
 from pyresponse import iterators, cphf, operators
-from . import molecules_pyscf as molecules
 from pyresponse import explicit_equations_partial as eqns
+from pyresponse.pyscf import molecules
 from .test_uhf import ref_water_cation_UHF_HF_STO3G
 
 

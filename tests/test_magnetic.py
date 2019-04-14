@@ -4,7 +4,7 @@ import scipy.constants as spc
 import pyscf
 
 from pyresponse import utils, magnetic
-from . import molecules_pyscf as molecules
+from pyresponse.pyscf import molecules
 
 
 # These were generated using DALTON.

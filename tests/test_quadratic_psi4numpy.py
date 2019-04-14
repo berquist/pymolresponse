@@ -3,12 +3,9 @@ from itertools import permutations, product
 import numpy as np
 
 import pyscf
-import psi4
 
 from pyresponse import utils, electric
-from .molecules_pyscf import molecule_physicists_water_sto3g
-from .molecules_pyscf import molecule_physicists_water_augccpvdz
-from .molecules_psi4 import molecule_physicists_water_sto3g as molecule_physicists_water_sto3g_psi4
+from pyresponse.pyscf.molecules import molecule_physicists_water_sto3g, molecule_physicists_water_augccpvdz
 
 
 def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_small():

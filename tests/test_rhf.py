@@ -6,8 +6,8 @@ import pyscf
 
 from pyresponse import utils
 from pyresponse import explicit_equations_full as eqns
+from pyresponse.pyscf import molecules
 from pyresponse.pyscf.ao2mo import AO2MOpyscf
-from . import molecules_pyscf as molecules
 
 
 def test_explicit_rhf_outside_solver_off_diagonal_blocks():

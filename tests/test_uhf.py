@@ -6,8 +6,8 @@ import pyscf
 
 from pyresponse import iterators, cphf, operators, utils
 from pyresponse import explicit_equations_full as eqns
+from pyresponse.pyscf import molecules
 from pyresponse.pyscf.ao2mo import AO2MOpyscf
-from . import molecules_pyscf as molecules
 
 
 def test_explicit_uhf_from_rhf_outside_solver():

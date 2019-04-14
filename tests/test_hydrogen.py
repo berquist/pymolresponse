@@ -1,7 +1,7 @@
 import pyscf
 
 from pyresponse import utils, electric
-from . import molecules_pyscf as molecules
+from pyresponse.pyscf import molecules
 
 
 # def test_hydrogen_atom_electric():

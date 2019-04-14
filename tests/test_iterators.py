@@ -1,15 +1,18 @@
 import numpy as np
 import scipy as sp
 
+import psi4
 import pyscf
 
 from pyresponse import iterators, utils, magnetic
-from . import molecules_pyscf as molecules
+from pyresponse.electric import Polarizability
+from pyresponse.psi4 import molecules as molecules_psi4
+from pyresponse.pyscf import molecules as molecules_pyscf
 
 
 def test_iterators():
 
-    mol = molecules.molecule_glycine_sto3g()
+    mol = molecules_pyscf.molecule_glycine_sto3g()
     mol.charge = 1
     mol.spin = 1
     mol.build()

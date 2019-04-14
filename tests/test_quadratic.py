@@ -5,7 +5,7 @@ import numpy as np
 import pyscf
 
 from pyresponse import utils, electric
-from .molecules_pyscf import molecule_water_sto3g_angstrom
+from pyresponse.pyscf.molecules import molecule_water_sto3g_angstrom
 
 
 def test_first_hyperpolarizability_static_rhf_wigner_explicit():

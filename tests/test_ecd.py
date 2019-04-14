@@ -1,13 +1,9 @@
-import os.path
-
 import numpy as np
 
 import pyscf
 
 from pyresponse import utils, ecd
-from . import molecules_pyscf as molecules
-
-refdir = molecules.refdir
+from pyresponse.pyscf import molecules
 
 
 BC2H4_cation_HF_STO3G_RPA_singlet_nwchem = {

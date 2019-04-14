@@ -3,7 +3,7 @@ import numpy as np
 import pyscf
 
 from pyresponse import utils, optrot
-from . import molecules_pyscf as molecules
+from pyresponse.pyscf import molecules
 
 
 BC2H4_cation_HF_STO3G_RPA_singlet_nwchem = {

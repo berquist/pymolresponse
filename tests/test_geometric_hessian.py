@@ -7,17 +7,15 @@ import psi4
 
 from pyresponse.ao2mo import AO2MO
 from pyresponse.cphf import CPHF
+from pyresponse.data import REFDIR
 from pyresponse.iterators import ExactInv
 from pyresponse.operators import Operator
+from pyresponse.psi4 import molecules
 from pyresponse.utils import (occupations_from_psi4wfn,
                               mocoeffs_from_psi4wfn, moenergies_from_psi4wfn)
 
-from . import molecules_psi4 as molecules
 
-
-__filedir__ = os.path.realpath(os.path.dirname(__file__))
-refdir = os.path.join(__filedir__, 'reference_data')
-datadir = os.path.join(refdir, 'psi4numpy', 'water')
+datadir = REFDIR / "psi4numpy" / "water"
 
 
 def test_geometric_hessian_rhf_outside_solver_psi4numpy():
