@@ -2,7 +2,6 @@ import psi4
 
 from pyresponse.data import COORDDIR
 
-
 # TODO molecule_water_sto3g_angstrom
 
 def molecule_water_sto3g():

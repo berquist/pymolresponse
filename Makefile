@@ -1,7 +1,11 @@
 .PHONY: test
 test:
 	bash check_pytest.bash
-	pytest -v --doctest-modules --cov=pyresponse pyresponse/tests
+	pytest -v --doctest-modules --isort --cov=pyresponse pyresponse
+
+.PHONY: isort
+isort:
+	isort -rc .
 
 .PHONY: pylint
 pylint:

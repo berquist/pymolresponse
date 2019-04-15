@@ -1,8 +1,8 @@
 import numpy as np
 
 from pyresponse import helpers
-from pyresponse.operators import Operator
 from pyresponse.molecular_property import ResponseProperty
+from pyresponse.operators import Operator
 
 
 class Magnetizability(ResponseProperty):

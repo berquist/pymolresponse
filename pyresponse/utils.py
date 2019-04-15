@@ -1,10 +1,11 @@
 """Utility functions that are not core to calculating physical values."""
 
-import numpy as np
-
 # Define for any Python version <= 3.3,
 # See https://github.com/kachayev/fn.py/commit/391824c43fb388e0eca94e568ff62cc35b543ecb
 import sys
+
+import numpy as np
+
 if sys.version_info.major == 2 or sys.version_info.minor <= 3:
     import operator
     def accumulate(iterable, func=operator.add):
@@ -75,7 +76,7 @@ def clean_dalton_label(original_label):
     letters lowercase.
 
     >>> clean_dalton_label("PSO 002")
-    "pso_002"
+    'pso_002'
     """
     cleaned_label = original_label.lower().replace(' ', '_')
     return cleaned_label

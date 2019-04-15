@@ -1,6 +1,6 @@
 import pyscf
 
-from pyresponse import utils, iterators, td
+from pyresponse import iterators, td, utils
 from pyresponse.pyscf.ao2mo import AO2MOpyscf
 
 

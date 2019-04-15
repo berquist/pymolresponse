@@ -2,7 +2,7 @@ import numpy as np
 
 from pyresponse import iterators
 from pyresponse.cphf import CPHF
-from pyresponse.td import TDHF, TDA
+from pyresponse.td import TDA, TDHF
 
 
 class MolecularProperty:

@@ -4,8 +4,9 @@ import numpy as np
 
 import pyscf
 
-from pyresponse import iterators, cphf, operators, utils
+from pyresponse import cphf
 from pyresponse import explicit_equations_full as eqns
+from pyresponse import iterators, operators, utils
 from pyresponse.pyscf import molecules
 from pyresponse.pyscf.ao2mo import AO2MOpyscf
 

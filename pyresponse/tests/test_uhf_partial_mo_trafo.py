@@ -2,9 +2,11 @@ import numpy as np
 
 import pyscf
 
-from pyresponse import iterators, cphf, operators
+from pyresponse import cphf
 from pyresponse import explicit_equations_partial as eqns
+from pyresponse import iterators, operators
 from pyresponse.pyscf import molecules
+
 from .test_uhf import ref_water_cation_UHF_HF_STO3G
 
 

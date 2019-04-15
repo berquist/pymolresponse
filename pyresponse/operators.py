@@ -1,7 +1,7 @@
 import numpy as np
 import scipy.constants as spc
 
-from pyresponse.utils import repack_matrix_to_vector, fix_mocoeffs_shape
+from pyresponse.utils import fix_mocoeffs_shape, repack_matrix_to_vector
 
 
 class Operator:

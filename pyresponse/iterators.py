@@ -1,26 +1,27 @@
 import numpy as np
 import scipy as sp
 
+from pyresponse.explicit_equations_full import (
+    form_rpa_a_matrix_mo_singlet_full,
+    form_rpa_a_matrix_mo_singlet_os_full,
+    form_rpa_a_matrix_mo_singlet_ss_full,
+    form_rpa_a_matrix_mo_triplet_full,
+    form_rpa_b_matrix_mo_singlet_full,
+    form_rpa_b_matrix_mo_singlet_os_full,
+    form_rpa_b_matrix_mo_singlet_ss_full,
+    form_rpa_b_matrix_mo_triplet_full
+)
+from pyresponse.explicit_equations_partial import (
+    form_rpa_a_matrix_mo_singlet_os_partial,
+    form_rpa_a_matrix_mo_singlet_partial,
+    form_rpa_a_matrix_mo_singlet_ss_partial,
+    form_rpa_a_matrix_mo_triplet_partial,
+    form_rpa_b_matrix_mo_singlet_os_partial,
+    form_rpa_b_matrix_mo_singlet_partial,
+    form_rpa_b_matrix_mo_singlet_ss_partial,
+    form_rpa_b_matrix_mo_triplet_partial
+)
 from pyresponse.pyscf.ao2mo import AO2MOpyscf
-
-from pyresponse.explicit_equations_full import \
-    (form_rpa_a_matrix_mo_singlet_full,
-     form_rpa_a_matrix_mo_singlet_ss_full,
-     form_rpa_a_matrix_mo_singlet_os_full,
-     form_rpa_a_matrix_mo_triplet_full,
-     form_rpa_b_matrix_mo_singlet_full,
-     form_rpa_b_matrix_mo_singlet_ss_full,
-     form_rpa_b_matrix_mo_singlet_os_full,
-     form_rpa_b_matrix_mo_triplet_full)
-from pyresponse.explicit_equations_partial import \
-    (form_rpa_a_matrix_mo_singlet_partial,
-     form_rpa_a_matrix_mo_singlet_ss_partial,
-     form_rpa_a_matrix_mo_singlet_os_partial,
-     form_rpa_a_matrix_mo_triplet_partial,
-     form_rpa_b_matrix_mo_singlet_partial,
-     form_rpa_b_matrix_mo_singlet_ss_partial,
-     form_rpa_b_matrix_mo_singlet_os_partial,
-     form_rpa_b_matrix_mo_triplet_partial)
 
 
 class Solver:

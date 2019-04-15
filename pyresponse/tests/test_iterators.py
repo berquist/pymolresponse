@@ -4,7 +4,7 @@ import scipy as sp
 import psi4
 import pyscf
 
-from pyresponse import iterators, utils, magnetic
+from pyresponse import iterators, magnetic, utils
 from pyresponse.electric import Polarizability
 from pyresponse.psi4 import molecules as molecules_psi4
 from pyresponse.pyscf import molecules as molecules_pyscf

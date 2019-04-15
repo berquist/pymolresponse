@@ -4,8 +4,11 @@ import numpy as np
 
 import pyscf
 
-from pyresponse import utils, electric
-from pyresponse.pyscf.molecules import molecule_physicists_water_sto3g, molecule_physicists_water_augccpvdz
+from pyresponse import electric, utils
+from pyresponse.pyscf.molecules import (
+    molecule_physicists_water_augccpvdz,
+    molecule_physicists_water_sto3g
+)
 
 
 def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_small():

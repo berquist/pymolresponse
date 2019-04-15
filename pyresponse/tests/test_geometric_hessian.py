@@ -1,7 +1,6 @@
 import os.path
 
 import numpy as np
-np.set_printoptions(precision=8, linewidth=200, suppress=True)
 
 import psi4
 
@@ -11,8 +10,15 @@ from pyresponse.data import REFDIR
 from pyresponse.iterators import ExactInv
 from pyresponse.operators import Operator
 from pyresponse.psi4 import molecules
-from pyresponse.utils import (occupations_from_psi4wfn,
-                              mocoeffs_from_psi4wfn, moenergies_from_psi4wfn)
+from pyresponse.utils import (
+    mocoeffs_from_psi4wfn,
+    moenergies_from_psi4wfn,
+    occupations_from_psi4wfn
+)
+
+np.set_printoptions(precision=8, linewidth=200, suppress=True)
+
+
 
 
 datadir = REFDIR / "psi4numpy" / "water"

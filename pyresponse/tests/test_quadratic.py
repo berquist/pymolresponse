@@ -4,7 +4,7 @@ import numpy as np
 
 import pyscf
 
-from pyresponse import utils, electric
+from pyresponse import electric, utils
 from pyresponse.pyscf.molecules import molecule_water_sto3g_angstrom
 
 

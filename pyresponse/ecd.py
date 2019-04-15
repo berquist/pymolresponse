@@ -3,9 +3,9 @@ calculation."""
 
 import numpy as np
 
-from pyresponse.constants import alpha, HARTREE_TO_EV, HARTREE_TO_INVCM, esuecd
-from pyresponse.operators import Operator
+from pyresponse.constants import HARTREE_TO_EV, HARTREE_TO_INVCM, alpha, esuecd
 from pyresponse.molecular_property import TransitionProperty
+from pyresponse.operators import Operator
 from pyresponse.utils import form_indices_zero
 
 

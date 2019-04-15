@@ -3,9 +3,8 @@ import scipy.constants as spc
 
 import pyscf
 
-from pyresponse import utils, magnetic
+from pyresponse import magnetic, utils
 from pyresponse.pyscf import molecules
-
 
 # These were generated using DALTON.
 ref_magnetizability_rhf = np.array([[9.491770490066, -0.000297478459, -2.237615614426],

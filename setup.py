@@ -3,8 +3,9 @@ pyresponse
 Molecular frequency-dependent response properties for arbitrary operators
 """
 from pathlib import Path
-from setuptools import setup, find_packages
 from typing import List, Sequence
+
+from setuptools import find_packages, setup
 
 import versioneer
 

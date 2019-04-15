@@ -1,9 +1,12 @@
 import numpy as np
 
-from pyresponse import utils, cphf, electric, iterators, operators
+from pyresponse import cphf, electric, iterators, operators, utils
 from pyresponse.data import REFDIR
 from pyresponse.pyscf import molecules
-from .test_runners import run_as_many_tests_as_possible_rhf_disk, run_as_many_tests_as_possible_uhf_disk
+from pyresponse.tests.test_runners import (
+    run_as_many_tests_as_possible_rhf_disk,
+    run_as_many_tests_as_possible_uhf_disk
+)
 
 
 def test_final_result_rhf_h2o_sto3g_rpa_singlet():

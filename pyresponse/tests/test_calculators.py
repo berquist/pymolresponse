@@ -1,4 +1,10 @@
 import numpy as np
+from cclib.io import ccopen
+from cclib.parser.utils import convertor
+
+import pyscf
+
+from pyresponse import ao2mo, cphf, iterators, operators, utils
 
 try:
     from daltools import sirifc
@@ -6,12 +12,8 @@ try:
 except:
     pass
 
-from cclib.parser.utils import convertor
-from cclib.io import ccopen
 
-import pyscf
 
-from pyresponse import operators, iterators, cphf, utils, ao2mo
 
 
 def calculate_disk_rhf(testcasedir, hamiltonian, spin, frequency, label_1, label_2):

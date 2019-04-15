@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from pyresponse.iterators import LineqSolver, ExactLineqSolver
+from pyresponse.iterators import ExactLineqSolver, LineqSolver
 from pyresponse.utils import form_results, form_vec_energy_differences
 
 
