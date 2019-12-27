@@ -17,7 +17,7 @@ class IntegralsPyscf(Integrals):
 
 class JKPyscf(JK):
     def __init__(self, pyscfmol, *args, **kwargs):
-        super().__init(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.mol = pyscfmol
 

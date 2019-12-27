@@ -486,9 +486,10 @@ class IterativeLinEqSolver(LineqSolver):
     def __init__(self, mocoeffs, moenergies, occupations, *args, **kwargs):
         super().__init__(mocoeffs, moenergies, occupations, *args, **kwargs)
 
-        # TODO initialize how we get JK
+        # TODO
+        self.jk_engine = None
 
-    def run(self, jk):
+    def run(self):
         pass
 
 

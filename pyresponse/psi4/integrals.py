@@ -22,7 +22,7 @@ class JKPsi4(JK):
     def __init__(self, wfn, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self._jk = psi4.core.JK.build(self.wfn.basisset())
+        self._jk = psi4.core.JK.build(wfn.basisset())
         self._jk.initialize()
 
     def compute_from_density(self, D):

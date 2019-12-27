@@ -15,3 +15,11 @@ def test_integrals_pyscf():
         mol.intor("cint1e_cg_irxp_sph", comp=3),
         integral_generator.integrals(integral_generator.ANGMOM_COMMON_GAUGE),
     )
+
+
+def test_jk_pyscf():
+    mol = molecules.molecule_water_sto3g()
+    mol.build()
+    jk_generator = integrals.JKPyscf(mol)
+
+    # print(jk_generator.compute_from_mocoeffs())
