@@ -26,7 +26,14 @@ class Operator:
         self.rspvecs_beta = []
 
     def __str__(self):
-        return f'Operator(label="{self.label}", is_imaginary={self.is_imaginary}, is_spin_dependent={self.is_spin_dependent}, triplet={self.triplet}, slice_idx={self.slice_idx})'
+        return (
+            f'Operator(label="{self.label}", is_imaginary={self.is_imaginary}, '
+            f'is_spin_dependent={self.is_spin_dependent}, triplet={self.triplet}, '
+            f'slice_idx={self.slice_idx})'
+        )
+
+    def calculate_ao_integrals(self):
+        pass
 
     def form_rhs(self, C, occupations):
         """Form the right-hand side for CPHF."""

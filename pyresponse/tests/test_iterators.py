@@ -11,6 +11,7 @@ from pyresponse.pyscf import molecules as molecules_pyscf
 
 
 def test_iterators():
+    """Test that each kind of iterator gives identical results."""
 
     mol = molecules_pyscf.molecule_glycine_sto3g()
     mol.charge = 1
@@ -60,5 +61,25 @@ def test_iterators():
     return
 
 
+# def test_final_result_rhf_h2o_sto3g_rpa_singlet_iter():
+#     hamiltonian = "rpa"
+#     spin = "singlet"
+
+#     mol = molecules_psi4.molecule_glycine_sto3g()
+#     # import pdb; pdb.set_trace()
+#     _, wfn = psi4.energy("hf", return_wfn=True)
+#     C = utils.mocoeffs_from_psi4wfn(wfn)
+#     E = utils.moenergies_from_psi4wfn(wfn)
+#     occupations = utils.occupations_from_psi4wfn(wfn)
+#     frequencies = [0.0]
+
+#     polarizability = Polarizability(mol, C, E, occupations, frequencies)
+#     polarizability.form_operators()
+#     polarizability.run(hamiltonian=hamiltonian, spin=spin)
+#     polarizability.form_results()
+
+
+
 if __name__ == '__main__':
     test_iterators()
+    # test_final_result_rhf_h2o_sto3g_rpa_singlet_iter()

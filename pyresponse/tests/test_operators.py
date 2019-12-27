@@ -1,4 +1,4 @@
-from .test_runners import run_dalton_label_to_operator
+from pyresponse.tests.test_runners import run_dalton_label_to_operator
 
 
 def test_dalton_label_to_operator():

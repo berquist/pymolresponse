@@ -1,3 +1,5 @@
+from abc import ABC, abstractmethod
+
 import numpy as np
 import scipy as sp
 
@@ -24,7 +26,7 @@ from pyresponse.explicit_equations_partial import (
 from pyresponse.pyscf.ao2mo import AO2MOpyscf
 
 
-class Solver:
+class Solver(ABC):
 
     def __init__(self, mocoeffs, moenergies, occupations, *args, **kwargs):
 
@@ -118,8 +120,9 @@ class Solver:
         operator.form_rhs(self.mocoeffs, self.occupations)
         self.operators.append(operator)
 
-    def form_explicit_hessian(self, hamiltonian=None, spin=None, frequency=None):
-        raise NotImplementedError
+    # @abstractmethod
+    # def run(self):
+    #     """Run the solver."""
 
 
 class LineqSolver(Solver):
@@ -127,7 +130,7 @@ class LineqSolver(Solver):
         super().__init__(mocoeffs, moenergies, occupations, *args, **kwargs)
 
 
-class ExactLineqSolver(LineqSolver):
+class ExactLineqSolver(LineqSolver, ABC):
     def __init__(self, mocoeffs, moenergies, occupations, *args, **kwargs):
         super().__init__(mocoeffs, moenergies, occupations, *args, **kwargs)
 
@@ -354,6 +357,10 @@ class ExactLineqSolver(LineqSolver):
                 G_bb - superoverlap_beta,
             )
 
+    @abstractmethod
+    def invert_explicit_hessian(self):
+        """Invert the full explicitly-constructed electronic Hessian."""
+
     def form_response_vectors(self):
         if self.is_uhf:
             G_aa, G_ab, G_ba, G_bb = self.explicit_hessian
@@ -473,6 +480,16 @@ class ExactInvCholesky(ExactLineqSolver):
             left_beta_R_inv = sp.linalg.inv(left_beta_R)
             self.left_alph = np.dot(left_alph_R_inv, left_alph_R_inv.T)
             self.left_beta = np.dot(left_beta_R_inv, left_beta_R_inv.T)
+
+
+class IterativeLinEqSolver(LineqSolver):
+    def __init__(self, mocoeffs, moenergies, occupations, *args, **kwargs):
+        super().__init__(mocoeffs, moenergies, occupations, *args, **kwargs)
+
+        # TODO initialize how we get JK
+
+    def run(self, jk):
+        pass
 
 
 class EigSolver(Solver):

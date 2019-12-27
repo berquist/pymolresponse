@@ -1,6 +1,39 @@
+from abc import ABC, abstractmethod
+
 import numpy as np
 
 STARS = '********'
+
+
+class Integrals(ABC):
+    def __init__(self, *args, **kwargs):
+        pass
+
+    def integrals(self, label) -> np.ndarray:
+        if label is None:
+            raise RuntimeError
+        return self._compute(label)
+
+    @abstractmethod
+    def _compute(self, label) -> np.ndarray:
+        """Compute the integrals of some operator using some implementation."""
+
+
+class JK(ABC):
+    """Interface for computing Coulomb and exchange integrals pre-contracted with
+    the density.
+    """
+
+    def __init__(self, *args, **kwargs):
+        pass
+
+    @abstractmethod
+    def compute_from_density(self, D):
+        """Compute J and K from some density."""
+
+    @abstractmethod
+    def compute_from_mocoeffs(self, C_left, C_right=None):
+        """Compute J and K from MO coefficients."""
 
 
 def read_binary(binaryfilename):
