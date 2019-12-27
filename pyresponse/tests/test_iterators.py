@@ -20,7 +20,7 @@ def test_iterators():
     mf = pyscf.scf.uhf.UHF(mol)
     mf.scf()
 
-    assert isinstance(mf.mo_coeff, tuple)
+    assert isinstance(mf.mo_coeff, np.ndarray)
     assert len(mf.mo_coeff) == 2
     C = utils.fix_mocoeffs_shape(mf.mo_coeff)
     E = utils.fix_moenergies_shape(mf.mo_energy)
