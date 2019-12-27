@@ -84,7 +84,7 @@ def electronic_dipole_contribution_pyscf(D, pyscfmol, origin_in_bohrs):
     assert origin_in_bohrs.shape == (3,)
     # TODO what to assert about pyscfmol? at least isinstance
 
-    M_AO = pyscfmol.intor('cint1e_r_sph', comp=3)
+    M_AO = pyscfmol.intor("cint1e_r_sph", comp=3)
     assert isinstance(M_AO, np.ndarray)
     assert len(M_AO.shape) == 3
     assert M_AO.shape[1] == M_AO.shape[2]
@@ -97,7 +97,9 @@ def electronic_dipole_contribution_pyscf(D, pyscfmol, origin_in_bohrs):
     M010_MO = D * M010_AO
     M001_MO = D * M001_AO
 
-    dipole_electronic_atomic_units = -np.asarray([np.sum(M100_MO), np.sum(M010_MO), np.sum(M001_MO)])
+    dipole_electronic_atomic_units = -np.asarray(
+        [np.sum(M100_MO), np.sum(M010_MO), np.sum(M001_MO)]
+    )
     return dipole_electronic_atomic_units
 
 
@@ -116,49 +118,79 @@ def calculate_dipole_pyscf(nuccoords, nuccharges, origin, D, pyscfmol, do_print=
         nuclear_norm_debye = nuclear_norm_au * convfac_au_to_debye
         electronic_norm_debye = electronic_norm_au * convfac_au_to_debye
         total_norm_debye = total_norm_au * convfac_au_to_debye
-        print(' origin                        [a.u.]: {} {} {}'.format(*origin))
-        print(' dipole components, electronic [a.u.]: {} {} {}'.format(*electronic_components_au))
-        print(' dipole components, nuclear    [a.u.]: {} {} {}'.format(*nuclear_components_au))
-        print(' dipole components, total      [a.u.]: {} {} {}'.format(*total_components_au))
-        print(' dipole moment, electronic     [a.u.]: {}'.format(electronic_norm_au))
-        print(' dipole moment, nuclear        [a.u.]: {}'.format(nuclear_norm_au))
-        print(' dipole moment, total          [a.u.]: {}'.format(total_norm_au))
-        print(' dipole components, electronic [D]   : {} {} {}'.format(*electronic_components_debye))
-        print(' dipole components, nuclear    [D]   : {} {} {}'.format(*nuclear_components_debye))
-        print(' dipole components, total      [D]   : {} {} {}'.format(*total_components_debye))
-        print(' dipole moment, electronic     [D]   : {}'.format(electronic_norm_debye))
-        print(' dipole moment, nuclear        [D]   : {}'.format(nuclear_norm_debye))
-        print(' dipole moment, total          [D]   : {}'.format(total_norm_debye))
+        print(" origin                        [a.u.]: {} {} {}".format(*origin))
+        print(
+            " dipole components, electronic [a.u.]: {} {} {}".format(
+                *electronic_components_au
+            )
+        )
+        print(
+            " dipole components, nuclear    [a.u.]: {} {} {}".format(
+                *nuclear_components_au
+            )
+        )
+        print(
+            " dipole components, total      [a.u.]: {} {} {}".format(*total_components_au)
+        )
+        print(" dipole moment, electronic     [a.u.]: {}".format(electronic_norm_au))
+        print(" dipole moment, nuclear        [a.u.]: {}".format(nuclear_norm_au))
+        print(" dipole moment, total          [a.u.]: {}".format(total_norm_au))
+        print(
+            " dipole components, electronic [D]   : {} {} {}".format(
+                *electronic_components_debye
+            )
+        )
+        print(
+            " dipole components, nuclear    [D]   : {} {} {}".format(
+                *nuclear_components_debye
+            )
+        )
+        print(
+            " dipole components, total      [D]   : {} {} {}".format(
+                *total_components_debye
+            )
+        )
+        print(" dipole moment, electronic     [D]   : {}".format(electronic_norm_debye))
+        print(" dipole moment, nuclear        [D]   : {}".format(nuclear_norm_debye))
+        print(" dipole moment, total          [D]   : {}".format(total_norm_debye))
     return total_components_au
 
 
-def calculate_origin_pyscf(origin_string, nuccoords, nuccharges, D, pyscfmol, do_print=False):
+def calculate_origin_pyscf(
+    origin_string, nuccoords, nuccharges, D, pyscfmol, do_print=False
+):
     assert isinstance(origin_string, str)
     origin_string = origin_string.lower()
-    assert origin_string in ('explicitly-set', 'zero',
-                             'com', 'centerofmass',
-                             'ecc', 'centerofelcharge',
-                             'ncc', 'centerofnuccharge')
+    assert origin_string in (
+        "explicitly-set",
+        "zero",
+        "com",
+        "centerofmass",
+        "ecc",
+        "centerofelcharge",
+        "ncc",
+        "centerofnuccharge",
+    )
     zerovec = np.zeros(3)
 
-    if origin_string == 'explicitly-set':
+    if origin_string == "explicitly-set":
         if do_print:
             print(" --- Origin: explicitly-set ---")
         origin = zerovec
-    elif origin_string == 'zero':
+    elif origin_string == "zero":
         if do_print:
             print(" --- Origin: zero ---")
         origin = zerovec
-    elif origin_string in ('com', 'centerofmass'):
+    elif origin_string in ("com", "centerofmass"):
         if do_print:
             print(" --- Origin: center of mass ---")
         masses = get_isotopic_masses(nuccharges[:, 0])
         origin = calc_center_of_mass(nuccoords, masses)
-    elif origin_string in ('ecc', 'centerofelcharge'):
+    elif origin_string in ("ecc", "centerofelcharge"):
         if do_print:
             print(" --- Origin: center of electronic charge ---")
         origin = calc_center_of_electronic_charge_pyscf(D, pyscfmol)
-    elif origin_string in ('ncc', 'centerofnuccharge'):
+    elif origin_string in ("ncc", "centerofnuccharge"):
         if do_print:
             print(" --- Origin: center of nuclear charge ---")
         origin = calc_center_of_nuclear_charge(nuccoords, nuccharges)
@@ -166,7 +198,7 @@ def calculate_origin_pyscf(origin_string, nuccoords, nuccharges, D, pyscfmol, do
         pass
 
     if do_print:
-        print(' Calculating the dipole at the requested origin...')
+        print(" Calculating the dipole at the requested origin...")
         calculate_dipole_pyscf(nuccoords, nuccharges, origin, D, pyscfmol, do_print)
 
     return origin
@@ -187,8 +219,12 @@ def get_uhf_values(mat_uhf_a, mat_uhf_b, pair_rohf, nocc_a, nvirt_a, nocc_b, nvi
     # These are the indices for unique pairs considering the full
     # dimensionality of the system (correct orbital window), [norb,
     # norb], starting from 1.
-    indices_display_uhf_a = [(p+1, q+1) for p in range_uhf_a_closed for q in range_uhf_a_virt]
-    indices_display_uhf_b = [(p+1, q+1) for p in range_uhf_b_closed for q in range_uhf_b_virt]
+    indices_display_uhf_a = [
+        (p + 1, q + 1) for p in range_uhf_a_closed for q in range_uhf_a_virt
+    ]
+    indices_display_uhf_b = [
+        (p + 1, q + 1) for p in range_uhf_b_closed for q in range_uhf_b_virt
+    ]
 
     values = []
     if pair_rohf in indices_display_uhf_a:

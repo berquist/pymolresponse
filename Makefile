@@ -1,11 +1,12 @@
 .PHONY: test
 test:
 	bash check_pytest.bash
-	pytest -v --doctest-modules --isort --cov=pyresponse pyresponse
+	pytest -v --doctest-modules --black --cov=pyresponse pyresponse
 
-.PHONY: isort
-isort:
+.PHONY: precommit
+precommit:
 	isort -rc .
+	black .
 
 .PHONY: pylint
 pylint:

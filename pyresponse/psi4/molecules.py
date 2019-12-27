@@ -4,6 +4,7 @@ from pyresponse.data import COORDDIR
 
 # TODO molecule_water_sto3g_angstrom
 
+
 def molecule_water_sto3g():
 
     # TODO this isn"t a proper xyz file. Why?
@@ -94,10 +95,12 @@ def molecule_trithiolane_sto3g():
 
 def hydrogen_atom_sto3g():
 
-    mol = psi4.geometry("""
+    mol = psi4.geometry(
+        """
 0 2
 H
-""")
+"""
+    )
 
     basis = "sto-3g"
     mol.set_basis_all_atoms(basis, "BASIS")
@@ -174,11 +177,13 @@ def molecule_0w4a_dication_321g():
 
 def molecule_bh_cation_def2_svp():
 
-    mol = psi4.geometry("""
+    mol = psi4.geometry(
+        """
 1 2
 B 0.0000 0.0000 0.0000
 H 0.0000 0.0000 1.2340
-""")
+"""
+    )
 
     basis = "def2-svp"
     mol.set_basis_all_atoms(basis, "BASIS")

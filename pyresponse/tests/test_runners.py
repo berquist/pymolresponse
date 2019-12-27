@@ -2,7 +2,9 @@ from pyresponse import utils
 from pyresponse.data import REFDIR
 
 
-def run_dalton_label_to_operator(dalton_label, operator_label, slice_idx, is_imaginary, is_spin_dependent):
+def run_dalton_label_to_operator(
+    dalton_label, operator_label, slice_idx, is_imaginary, is_spin_dependent
+):
     operator = utils.dalton_label_to_operator(dalton_label)
     assert operator.label == operator_label
     assert operator.slice_idx == slice_idx
@@ -13,6 +15,7 @@ def run_dalton_label_to_operator(dalton_label, operator_label, slice_idx, is_ima
 
 # def run_reference_disk_rhf(testcase):
 
+
 def run_as_many_tests_as_possible_rhf_disk(testcase):
 
     from .test_calculators import calculate_disk_rhf
@@ -22,9 +25,7 @@ def run_as_many_tests_as_possible_rhf_disk(testcase):
     thresh = 5.0e-3
 
     # These are operators that we can't run for some reason.
-    exclude_parts = (
-        '_spnorb',
-    )
+    exclude_parts = ("_spnorb",)
 
     entries = []
 
@@ -48,10 +49,12 @@ def run_as_many_tests_as_possible_rhf_disk(testcase):
         ignore_label_1 = any(exclude_part in label_1 for exclude_part in exclude_parts)
         ignore_label_2 = any(exclude_part in label_2 for exclude_part in exclude_parts)
         if not ignore_label_1 and not ignore_label_2:
-            res = calculate_disk_rhf(testcasedir, hamiltonian, spin, frequency, label_1, label_2)
+            res = calculate_disk_rhf(
+                testcasedir, hamiltonian, spin, frequency, label_1, label_2
+            )
             diff = abs(ref) - abs(res)
             format_list = (testcase, hamiltonian, spin, label_1, label_2, ref, res, diff)
-            print('{} {} {} {:10} {:10} {:+10e} {:+10e} {:+10e}'.format(*format_list))
+            print("{} {} {} {:10} {:10} {:+10e} {:+10e} {:+10e}".format(*format_list))
             assert diff < thresh
 
     return
@@ -66,9 +69,7 @@ def run_as_many_tests_as_possible_uhf_disk(testcase):
     thresh = 1.0e-1
 
     # These are operators that we can't run for some reason.
-    exclude_parts = (
-        '_spnorb',
-    )
+    exclude_parts = ("_spnorb",)
 
     entries = []
 
@@ -92,10 +93,12 @@ def run_as_many_tests_as_possible_uhf_disk(testcase):
         ignore_label_1 = any(exclude_part in label_1 for exclude_part in exclude_parts)
         ignore_label_2 = any(exclude_part in label_2 for exclude_part in exclude_parts)
         if not ignore_label_1 and not ignore_label_2:
-            res = calculate_disk_uhf(testcasedir, hamiltonian, spin, frequency, label_1, label_2)
+            res = calculate_disk_uhf(
+                testcasedir, hamiltonian, spin, frequency, label_1, label_2
+            )
             diff = abs(ref) - abs(res)
             format_list = (testcase, hamiltonian, spin, label_1, label_2, ref, res, diff)
-            print('{} {} {} {:10} {:10} {:+10e} {:+10e} {:+10e}'.format(*format_list))
+            print("{} {} {} {:10} {:10} {:+10e} {:+10e} {:+10e}".format(*format_list))
             assert diff < thresh
 
     return

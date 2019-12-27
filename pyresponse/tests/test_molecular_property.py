@@ -8,7 +8,9 @@ def test_molecular_property():
     mocoeffs = np.array([])
     moenergies = np.array([])
     occupations = np.array([])
-    cls = molecular_property.MolecularProperty(pyscfmol, mocoeffs, moenergies, occupations)
+    cls = molecular_property.MolecularProperty(
+        pyscfmol, mocoeffs, moenergies, occupations
+    )
     try:
         cls.form_operators()
     except NotImplementedError as e:
@@ -62,7 +64,7 @@ def test_transition_property():
     return
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     test_molecular_property()
     # test_response_property()
     # test_transition_property()

@@ -24,6 +24,6 @@ from pyresponse.pyscf import molecules
 
 #     return
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # test_hydrogen_atom_electric()
     pass

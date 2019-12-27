@@ -7,8 +7,10 @@ import scipy.constants as spc
 alpha = spc.alpha
 
 ## (Excitation) energies
-HARTREE_TO_EV = spc.physical_constants['Hartree energy in eV'][0]
-HARTREE_TO_INVCM = spc.physical_constants['hartree-inverse meter relationship'][0] * (1 / 100)
+HARTREE_TO_EV = spc.physical_constants["Hartree energy in eV"][0]
+HARTREE_TO_INVCM = spc.physical_constants["hartree-inverse meter relationship"][0] * (
+    1 / 100
+)
 
 ## Dipole
 
@@ -19,7 +21,7 @@ convfac_au_to_debye = 2.541746230211
 
 # ESUECD =  ECHARGE*XTANG*CCM*1D36*ECHARGE*HBAR/EMASS
 echarge = spc.elementary_charge
-xtang = spc.physical_constants['atomic unit of length'][0] * 1.0e10
+xtang = spc.physical_constants["atomic unit of length"][0] * 1.0e10
 ccm = spc.c
 hbar = spc.hbar
 emass = spc.electron_mass

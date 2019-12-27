@@ -6,7 +6,6 @@ from pyresponse.td import TDA, TDHF
 
 
 class MolecularProperty:
-
     def __init__(self, pyscfmol, mocoeffs, moenergies, occupations, *args, **kwargs):
         # TODO add more type assertions (pyscfmol)
         assert isinstance(mocoeffs, np.ndarray)
@@ -21,16 +20,18 @@ class MolecularProperty:
         self.driver = None
 
     def run(self, hamiltonian=None, spin=None):
-        assert hasattr(self, 'driver')
+        assert hasattr(self, "driver")
         assert self.driver is not None
         if hamiltonian is None:
-            hamiltonian = 'rpa'
+            hamiltonian = "rpa"
         if spin is None:
-            spin = 'singlet'
+            spin = "singlet"
         assert isinstance(hamiltonian, str)
         assert isinstance(spin, str)
         assert self.driver.solver is not None
-        self.driver.run(solver_type='exact', hamiltonian=hamiltonian.lower(), spin=spin.lower())
+        self.driver.run(
+            solver_type="exact", hamiltonian=hamiltonian.lower(), spin=spin.lower()
+        )
 
     def form_operators(self):
         raise NotImplementedError("This must be implemented in a grandchild class.")
@@ -40,8 +41,16 @@ class MolecularProperty:
 
 
 class ResponseProperty(MolecularProperty):
-
-    def __init__(self, pyscfmol, mocoeffs, moenergies, occupations, frequencies=[0.0], *args, **kwargs):
+    def __init__(
+        self,
+        pyscfmol,
+        mocoeffs,
+        moenergies,
+        occupations,
+        frequencies=[0.0],
+        *args,
+        **kwargs
+    ):
         super().__init__(pyscfmol, mocoeffs, moenergies, occupations, *args, **kwargs)
 
         # Don't allow a single number; force one of the basic
@@ -49,8 +58,8 @@ class ResponseProperty(MolecularProperty):
         assert isinstance(frequencies, (list, tuple, np.ndarray))
         self.frequencies = frequencies
 
-        if 'solver' in kwargs:
-            solver = kwargs['solver']
+        if "solver" in kwargs:
+            solver = kwargs["solver"]
         elif self.solver is not None:
             solver = self.solver
         else:
@@ -60,8 +69,8 @@ class ResponseProperty(MolecularProperty):
         if solver.tei_mo is None:
             solver.form_tei_mo(pyscfmol)
 
-        if 'driver' in kwargs:
-            driver = kwargs['driver']
+        if "driver" in kwargs:
+            driver = kwargs["driver"]
         else:
             driver = CPHF(solver)
         self.driver = driver
@@ -76,24 +85,25 @@ class ResponseProperty(MolecularProperty):
 
 
 class TransitionProperty(MolecularProperty):
-
     def __init__(self, pyscfmol, mocoeffs, moenergies, occupations, *args, **kwargs):
         super().__init__(pyscfmol, mocoeffs, moenergies, occupations, *args, **kwargs)
 
-        if 'solver' in kwargs:
-            solver = kwargs['solver']
+        if "solver" in kwargs:
+            solver = kwargs["solver"]
         elif self.solver is not None:
             solver = self.solver
         else:
-            solver = iterators.ExactDiagonalizationSolver(mocoeffs, moenergies, occupations)
+            solver = iterators.ExactDiagonalizationSolver(
+                mocoeffs, moenergies, occupations
+            )
 
         # TODO this doesn't belong here.
         if solver.tei_mo is None:
             solver.form_tei_mo(pyscfmol)
 
-        if kwargs.get('driver', None):
-            driver = kwargs['driver']
-        elif kwargs.get('do_tda', None):
+        if kwargs.get("driver", None):
+            driver = kwargs["driver"]
+        elif kwargs.get("do_tda", None):
             driver = TDA
         else:
             driver = TDHF

@@ -6,7 +6,7 @@ from pyresponse import ecd, utils
 from pyresponse.pyscf import molecules
 
 BC2H4_cation_HF_STO3G_RPA_singlet_nwchem = {
-    'etenergies': [
+    "etenergies": [
         0.116938283,
         0.153688860,
         0.302306677,
@@ -18,7 +18,7 @@ BC2H4_cation_HF_STO3G_RPA_singlet_nwchem = {
         0.534473141,
         0.567055549,
     ],
-    'etoscslen': [
+    "etoscslen": [
         0.01116,
         0.00473,
         0.00458,
@@ -30,7 +30,7 @@ BC2H4_cation_HF_STO3G_RPA_singlet_nwchem = {
         0.19604,
         0.43408,
     ],
-    'etoscsmix': [
+    "etoscsmix": [
         0.0074981,
         0.0054776,
         0.0052432,
@@ -42,7 +42,7 @@ BC2H4_cation_HF_STO3G_RPA_singlet_nwchem = {
         0.1077085,
         0.2874928,
     ],
-    'etoscsvel': [
+    "etoscsvel": [
         0.0069989,
         0.0076728,
         0.0092702,
@@ -54,7 +54,7 @@ BC2H4_cation_HF_STO3G_RPA_singlet_nwchem = {
         0.0602382,
         0.1923483,
     ],
-    'etrotstrlen': [
+    "etrotstrlen": [
         -77.6721763,
         -11.6203780,
         13.6253032,
@@ -66,7 +66,7 @@ BC2H4_cation_HF_STO3G_RPA_singlet_nwchem = {
         76.2221837,
         -106.0751407,
     ],
-    'etrotstrvel': [
+    "etrotstrvel": [
         -50.5415342,
         -38.3324307,
         -13.0716770,
@@ -78,29 +78,23 @@ BC2H4_cation_HF_STO3G_RPA_singlet_nwchem = {
         40.6989398,
         -70.9771590,
     ],
-    'nroots': 10,
+    "nroots": 10,
 }
 
 
 BC2H4_neutral_radical_HF_STO3G_RPA_singlet_nwchem = {
-    'etenergies': [
-    ],
-    'etoscslen': [
-    ],
-    'etoscsmix': [
-    ],
-    'etoscsvel': [
-    ],
-    'etrotstrlen': [
-    ],
-    'etrotstrvel': [
-    ],
-    'nroots': 10,
+    "etenergies": [],
+    "etoscslen": [],
+    "etoscsmix": [],
+    "etoscsvel": [],
+    "etrotstrlen": [],
+    "etrotstrvel": [],
+    "nroots": 10,
 }
 
 
 BC2H4_cation_HF_STO3G_TDA_singlet_orca = {
-    'etenergies': [
+    "etenergies": [
         0.125219,
         0.160132,
         0.304206,
@@ -112,7 +106,7 @@ BC2H4_cation_HF_STO3G_TDA_singlet_orca = {
         0.540485,
         0.573778,
     ],
-    'etoscslen': [
+    "etoscslen": [
         0.017454719,
         0.007513348,
         0.004928672,
@@ -124,9 +118,8 @@ BC2H4_cation_HF_STO3G_TDA_singlet_orca = {
         0.349435586,
         0.492350077,
     ],
-    'etoscsmix': [
-    ],
-    'etoscsvel': [
+    "etoscsmix": [],
+    "etoscsvel": [
         0.016456475,
         0.000843190,
         0.010314035,
@@ -138,7 +131,7 @@ BC2H4_cation_HF_STO3G_TDA_singlet_orca = {
         0.051361944,
         0.124348134,
     ],
-    'etrotstrlen': [
+    "etrotstrlen": [
         -88.56094,
         -12.35844,
         14.45593,
@@ -150,16 +143,15 @@ BC2H4_cation_HF_STO3G_TDA_singlet_orca = {
         76.23472,
         -135.00060,
     ],
-    'etrotstrvel': [
-    ],
-    'nroots': 10,
+    "etrotstrvel": [],
+    "nroots": 10,
 }
 
 
 def test_ECD_TDA_singlet_BC2H4_cation_HF_STO3G():
 
     ref = BC2H4_cation_HF_STO3G_TDA_singlet_orca
-    nroots = ref['nroots']
+    nroots = ref["nroots"]
 
     mol = molecules.molecule_bc2h4_cation_sto3g()
     mol.build()
@@ -173,13 +165,13 @@ def test_ECD_TDA_singlet_BC2H4_cation_HF_STO3G():
 
     ecd_dipvel_tda = ecd.ECD(mol, C, E, occupations, do_dipvel=True)
     ecd_dipvel_tda.form_operators()
-    ecd_dipvel_tda.run(hamiltonian='tda', spin='singlet')
+    ecd_dipvel_tda.run(hamiltonian="tda", spin="singlet")
     ecd_dipvel_tda.form_results()
 
-    print('excitation energies')
-    ref_etenergies = np.array(ref['etenergies'])
+    print("excitation energies")
+    ref_etenergies = np.array(ref["etenergies"])
     res_etenergies = ecd_dipvel_tda.driver.solver.eigvals.real[:nroots]
-    print('ref, res')
+    print("ref, res")
     for refval, resval in zip(ref_etenergies, res_etenergies):
         print(refval, resval)
     # TODO this might be from ORCA, should use NWChem instead
@@ -188,10 +180,12 @@ def test_ECD_TDA_singlet_BC2H4_cation_HF_STO3G():
         abs_diff = abs(ref_etenergies[i] - res_etenergies[i])
         assert abs_diff < thresh
 
-    print('dipole (length) oscillator strengths')
-    ref_etoscslen = np.array(ref['etoscslen'])
-    res_etoscslen = ecd_dipvel_tda.driver.solver.operators[1].total_oscillator_strengths[:nroots]
-    print('ref, res')
+    print("dipole (length) oscillator strengths")
+    ref_etoscslen = np.array(ref["etoscslen"])
+    res_etoscslen = ecd_dipvel_tda.driver.solver.operators[1].total_oscillator_strengths[
+        :nroots
+    ]
+    print("ref, res")
     for refval, resval in zip(ref_etoscslen, res_etoscslen):
         print(refval, resval)
     thresh = 1.0e-3
@@ -201,20 +195,20 @@ def test_ECD_TDA_singlet_BC2H4_cation_HF_STO3G():
         assert abs_diff < thresh
 
     # TODO
-    print('TODO dipole (mixed length/velocity) oscillator strengths')
+    print("TODO dipole (mixed length/velocity) oscillator strengths")
 
     # TODO
-    print('TODO dipole (velocity) oscillator strengths')
+    print("TODO dipole (velocity) oscillator strengths")
 
-    print('rotatory strengths (length)')
-    ref_etrotstrlen = np.array(ref['etrotstrlen'])
+    print("rotatory strengths (length)")
+    ref_etrotstrlen = np.array(ref["etrotstrlen"])
     res_etrotstrlen = ecd_dipvel_tda.rotational_strengths_diplen[:nroots]
-    print('ref, res')
+    print("ref, res")
     for refval, resval in zip(ref_etrotstrlen, res_etrotstrlen):
         print(refval, resval)
     # TODO unlike other quantities, the error isn't uniformly
     # distributed among the roots; how should this be handled?
-    thresh = 1.0e+2
+    thresh = 1.0e2
     for i in range(nroots):
         abs_diff = abs(ref_etrotstrlen[i] - res_etrotstrlen[i])
         assert abs_diff < thresh
@@ -236,10 +230,11 @@ def test_ECD_TDA_singlet_BC2H4_cation_HF_STO3G():
 
     return
 
+
 def test_ECD_RPA_singlet_BC2H4_cation_HF_STO3G():
 
     ref = BC2H4_cation_HF_STO3G_RPA_singlet_nwchem
-    nroots = ref['nroots']
+    nroots = ref["nroots"]
 
     mol = molecules.molecule_bc2h4_cation_sto3g()
     mol.build()
@@ -253,13 +248,13 @@ def test_ECD_RPA_singlet_BC2H4_cation_HF_STO3G():
 
     ecd_dipvel_rpa = ecd.ECD(mol, C, E, occupations, do_dipvel=True)
     ecd_dipvel_rpa.form_operators()
-    ecd_dipvel_rpa.run(hamiltonian='rpa', spin='singlet')
+    ecd_dipvel_rpa.run(hamiltonian="rpa", spin="singlet")
     ecd_dipvel_rpa.form_results()
 
-    print('excitation energies')
-    ref_etenergies = np.array(ref['etenergies'])
+    print("excitation energies")
+    ref_etenergies = np.array(ref["etenergies"])
     res_etenergies = ecd_dipvel_rpa.driver.solver.eigvals.real[:nroots]
-    print('ref, res')
+    print("ref, res")
     for refval, resval in zip(ref_etenergies, res_etenergies):
         print(refval, resval)
     thresh = 1.0e-7
@@ -267,10 +262,12 @@ def test_ECD_RPA_singlet_BC2H4_cation_HF_STO3G():
         abs_diff = abs(ref_etenergies[i] - res_etenergies[i])
         assert abs_diff < thresh
 
-    print('dipole (length) oscillator strengths')
-    ref_etoscslen = np.array(ref['etoscslen'])
-    res_etoscslen = ecd_dipvel_rpa.driver.solver.operators[1].total_oscillator_strengths[:nroots]
-    print('ref, res')
+    print("dipole (length) oscillator strengths")
+    ref_etoscslen = np.array(ref["etoscslen"])
+    res_etoscslen = ecd_dipvel_rpa.driver.solver.operators[1].total_oscillator_strengths[
+        :nroots
+    ]
+    print("ref, res")
     for refval, resval in zip(ref_etoscslen, res_etoscslen):
         print(refval, resval)
     thresh = 1.0e-5
@@ -279,35 +276,37 @@ def test_ECD_RPA_singlet_BC2H4_cation_HF_STO3G():
         assert abs_diff < thresh
 
     # TODO
-    print('TODO dipole (mixed length/velocity) oscillator strengths')
+    print("TODO dipole (mixed length/velocity) oscillator strengths")
 
     # TODO
-    print('TODO dipole (velocity) oscillator strengths')
-    ref_etoscsvel = np.array(ref['etoscsvel'])
-    res_etoscsvel = ecd_dipvel_rpa.driver.solver.operators[2].total_oscillator_strengths[:nroots]
+    print("TODO dipole (velocity) oscillator strengths")
+    ref_etoscsvel = np.array(ref["etoscsvel"])
+    res_etoscsvel = ecd_dipvel_rpa.driver.solver.operators[2].total_oscillator_strengths[
+        :nroots
+    ]
     # print('ref, res')
     # for refval, resval in zip(ref_etoscsvel, res_etoscsvel):
     #     print(refval, resval)
     # print(ref_etoscsvel / res_etoscsvel)
     # print(res_etoscsvel / ref_etoscsvel)
 
-    print('rotatory strengths (length)')
-    ref_etrotstrlen = np.array(ref['etrotstrlen'])
+    print("rotatory strengths (length)")
+    ref_etrotstrlen = np.array(ref["etrotstrlen"])
     res_etrotstrlen = ecd_dipvel_rpa.rotational_strengths_diplen[:nroots]
-    print('ref, res')
+    print("ref, res")
     for refval, resval in zip(ref_etrotstrlen, res_etrotstrlen):
         print(refval, resval)
     # TODO unlike other quantities, the error isn't uniformly
     # distributed among the roots; how should this be handled?
-    thresh = 1.5e+1
+    thresh = 1.5e1
     for i in range(nroots):
         abs_diff = abs(ref_etrotstrlen[i] - res_etrotstrlen[i])
         assert abs_diff < thresh
 
-    print('rotatory strengths (velocity)')
-    ref_etrotstrvel = np.array(ref['etrotstrvel'])
+    print("rotatory strengths (velocity)")
+    ref_etrotstrvel = np.array(ref["etrotstrvel"])
     res_etrotstrvel = ecd_dipvel_rpa.rotational_strengths_dipvel[:nroots]
-    print('ref, res')
+    print("ref, res")
     for refval, resval in zip(ref_etrotstrvel, res_etrotstrvel):
         print(refval, resval)
     thresh = 1.0e-2
@@ -356,6 +355,6 @@ def test_ECD_RPA_singlet_BC2H4_cation_HF_STO3G():
 #     return
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     test_ECD_TDA_singlet_BC2H4_cation_HF_STO3G()
     test_ECD_RPA_singlet_BC2H4_cation_HF_STO3G()

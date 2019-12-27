@@ -40,18 +40,34 @@ def test_explicit_uhf_outside_solver():
     C_ovov_bbbb = (C_occ_beta, C_virt_beta, C_occ_beta, C_virt_beta)
     C_oovv_aaaa = (C_occ_alph, C_occ_alph, C_virt_alph, C_virt_alph)
     C_oovv_bbbb = (C_occ_beta, C_occ_beta, C_virt_beta, C_virt_beta)
-    tei_mo_ovov_aaaa = pyscf.ao2mo.general(mol, C_ovov_aaaa, aosym='s4', compact=False, verbose=5).reshape(nocc_a, nvirt_a, nocc_a, nvirt_a)
-    tei_mo_ovov_aabb = pyscf.ao2mo.general(mol, C_ovov_aabb, aosym='s4', compact=False, verbose=5).reshape(nocc_a, nvirt_a, nocc_b, nvirt_b)
-    tei_mo_ovov_bbaa = pyscf.ao2mo.general(mol, C_ovov_bbaa, aosym='s4', compact=False, verbose=5).reshape(nocc_b, nvirt_b, nocc_a, nvirt_a)
-    tei_mo_ovov_bbbb = pyscf.ao2mo.general(mol, C_ovov_bbbb, aosym='s4', compact=False, verbose=5).reshape(nocc_b, nvirt_b, nocc_b, nvirt_b)
-    tei_mo_oovv_aaaa = pyscf.ao2mo.general(mol, C_oovv_aaaa, aosym='s4', compact=False, verbose=5).reshape(nocc_a, nocc_a, nvirt_a, nvirt_a)
-    tei_mo_oovv_bbbb = pyscf.ao2mo.general(mol, C_oovv_bbbb, aosym='s4', compact=False, verbose=5).reshape(nocc_b, nocc_b, nvirt_b, nvirt_b)
+    tei_mo_ovov_aaaa = pyscf.ao2mo.general(
+        mol, C_ovov_aaaa, aosym="s4", compact=False, verbose=5
+    ).reshape(nocc_a, nvirt_a, nocc_a, nvirt_a)
+    tei_mo_ovov_aabb = pyscf.ao2mo.general(
+        mol, C_ovov_aabb, aosym="s4", compact=False, verbose=5
+    ).reshape(nocc_a, nvirt_a, nocc_b, nvirt_b)
+    tei_mo_ovov_bbaa = pyscf.ao2mo.general(
+        mol, C_ovov_bbaa, aosym="s4", compact=False, verbose=5
+    ).reshape(nocc_b, nvirt_b, nocc_a, nvirt_a)
+    tei_mo_ovov_bbbb = pyscf.ao2mo.general(
+        mol, C_ovov_bbbb, aosym="s4", compact=False, verbose=5
+    ).reshape(nocc_b, nvirt_b, nocc_b, nvirt_b)
+    tei_mo_oovv_aaaa = pyscf.ao2mo.general(
+        mol, C_oovv_aaaa, aosym="s4", compact=False, verbose=5
+    ).reshape(nocc_a, nocc_a, nvirt_a, nvirt_a)
+    tei_mo_oovv_bbbb = pyscf.ao2mo.general(
+        mol, C_oovv_bbbb, aosym="s4", compact=False, verbose=5
+    ).reshape(nocc_b, nocc_b, nvirt_b, nvirt_b)
 
-    A_s_ss_a = eqns.form_rpa_a_matrix_mo_singlet_ss_partial(E_a, tei_mo_ovov_aaaa, tei_mo_oovv_aaaa)
+    A_s_ss_a = eqns.form_rpa_a_matrix_mo_singlet_ss_partial(
+        E_a, tei_mo_ovov_aaaa, tei_mo_oovv_aaaa
+    )
     A_s_os_a = eqns.form_rpa_a_matrix_mo_singlet_os_partial(tei_mo_ovov_aabb)
     B_s_ss_a = eqns.form_rpa_b_matrix_mo_singlet_ss_partial(tei_mo_ovov_aaaa)
     B_s_os_a = eqns.form_rpa_b_matrix_mo_singlet_os_partial(tei_mo_ovov_aabb)
-    A_s_ss_b = eqns.form_rpa_a_matrix_mo_singlet_ss_partial(E_b, tei_mo_ovov_bbbb, tei_mo_oovv_bbbb)
+    A_s_ss_b = eqns.form_rpa_a_matrix_mo_singlet_ss_partial(
+        E_b, tei_mo_ovov_bbbb, tei_mo_oovv_bbbb
+    )
     A_s_os_b = eqns.form_rpa_a_matrix_mo_singlet_os_partial(tei_mo_ovov_bbaa)
     B_s_ss_b = eqns.form_rpa_b_matrix_mo_singlet_ss_partial(tei_mo_ovov_bbbb)
     B_s_os_b = eqns.form_rpa_b_matrix_mo_singlet_os_partial(tei_mo_ovov_bbaa)
@@ -59,14 +75,10 @@ def test_explicit_uhf_outside_solver():
     # (xx|yy) is only in the Coulomb part, there is no ss/os
     # separation for the triplet part.
 
-    G_aa = np.block([[A_s_ss_a, B_s_ss_a],
-                     [B_s_ss_a, A_s_ss_a]])
-    G_bb = np.block([[A_s_ss_b, B_s_ss_b],
-                     [B_s_ss_b, A_s_ss_b]])
-    G_ab = np.block([[A_s_os_a, B_s_os_a],
-                     [B_s_os_a, A_s_os_a]])
-    G_ba = np.block([[A_s_os_b, B_s_os_b],
-                     [B_s_os_b, A_s_os_b]])
+    G_aa = np.block([[A_s_ss_a, B_s_ss_a], [B_s_ss_a, A_s_ss_a]])
+    G_bb = np.block([[A_s_ss_b, B_s_ss_b], [B_s_ss_b, A_s_ss_b]])
+    G_ab = np.block([[A_s_os_a, B_s_os_a], [B_s_os_a, A_s_os_a]])
+    G_ba = np.block([[A_s_os_b, B_s_os_b], [B_s_os_b, A_s_os_b]])
 
     G_aa_inv = np.linalg.inv(G_aa)
     G_bb_inv = np.linalg.inv(G_bb)
@@ -81,18 +93,26 @@ def test_explicit_uhf_outside_solver():
     left_a = np.linalg.inv(G_aa - np.dot(G_ab, np.dot(G_bb_inv, G_ba)))
     left_b = np.linalg.inv(G_bb - np.dot(G_ba, np.dot(G_aa_inv, G_ab)))
 
-    integrals_dipole_ao = mol.intor('cint1e_r_sph', comp=3)
+    integrals_dipole_ao = mol.intor("cint1e_r_sph", comp=3)
 
     integrals_dipole_mo_ai_a = []
     integrals_dipole_mo_ai_b = []
 
     for comp in range(3):
 
-        integrals_dipole_mo_ai_comp_a = np.dot(C_a[:, nocc_a:].T, np.dot(integrals_dipole_ao[comp, ...], C_a[:, :nocc_a]))
-        integrals_dipole_mo_ai_comp_b = np.dot(C_b[:, nocc_b:].T, np.dot(integrals_dipole_ao[comp, ...], C_b[:, :nocc_b]))
+        integrals_dipole_mo_ai_comp_a = np.dot(
+            C_a[:, nocc_a:].T, np.dot(integrals_dipole_ao[comp, ...], C_a[:, :nocc_a])
+        )
+        integrals_dipole_mo_ai_comp_b = np.dot(
+            C_b[:, nocc_b:].T, np.dot(integrals_dipole_ao[comp, ...], C_b[:, :nocc_b])
+        )
 
-        integrals_dipole_mo_ai_comp_a = np.reshape(integrals_dipole_mo_ai_comp_a, -1, order='F')
-        integrals_dipole_mo_ai_comp_b = np.reshape(integrals_dipole_mo_ai_comp_b, -1, order='F')
+        integrals_dipole_mo_ai_comp_a = np.reshape(
+            integrals_dipole_mo_ai_comp_a, -1, order="F"
+        )
+        integrals_dipole_mo_ai_comp_b = np.reshape(
+            integrals_dipole_mo_ai_comp_b, -1, order="F"
+        )
 
         integrals_dipole_mo_ai_a.append(integrals_dipole_mo_ai_comp_a)
         integrals_dipole_mo_ai_b.append(integrals_dipole_mo_ai_comp_b)
@@ -100,12 +120,20 @@ def test_explicit_uhf_outside_solver():
     integrals_dipole_mo_ai_a = np.stack(integrals_dipole_mo_ai_a, axis=0).T
     integrals_dipole_mo_ai_b = np.stack(integrals_dipole_mo_ai_b, axis=0).T
 
-    integrals_dipole_mo_ai_a_super = np.concatenate((integrals_dipole_mo_ai_a, -integrals_dipole_mo_ai_a), axis=0)
-    integrals_dipole_mo_ai_b_super = np.concatenate((integrals_dipole_mo_ai_b, -integrals_dipole_mo_ai_b), axis=0)
+    integrals_dipole_mo_ai_a_super = np.concatenate(
+        (integrals_dipole_mo_ai_a, -integrals_dipole_mo_ai_a), axis=0
+    )
+    integrals_dipole_mo_ai_b_super = np.concatenate(
+        (integrals_dipole_mo_ai_b, -integrals_dipole_mo_ai_b), axis=0
+    )
 
     # Form the operator-dependent part of the response vectors.
-    right_a = integrals_dipole_mo_ai_a_super - (np.dot(G_ab, np.dot(G_bb_inv, integrals_dipole_mo_ai_b_super)))
-    right_b = integrals_dipole_mo_ai_b_super - (np.dot(G_ba, np.dot(G_aa_inv, integrals_dipole_mo_ai_a_super)))
+    right_a = integrals_dipole_mo_ai_a_super - (
+        np.dot(G_ab, np.dot(G_bb_inv, integrals_dipole_mo_ai_b_super))
+    )
+    right_b = integrals_dipole_mo_ai_b_super - (
+        np.dot(G_ba, np.dot(G_aa_inv, integrals_dipole_mo_ai_a_super))
+    )
 
     # The total response vector for each spin is the product of the
     # operator-independent (left) and operator-dependent (right)
@@ -158,29 +186,50 @@ def test_explicit_uhf():
     C_ovov_bbbb = (C_occ_beta, C_virt_beta, C_occ_beta, C_virt_beta)
     C_oovv_aaaa = (C_occ_alph, C_occ_alph, C_virt_alph, C_virt_alph)
     C_oovv_bbbb = (C_occ_beta, C_occ_beta, C_virt_beta, C_virt_beta)
-    tei_mo_ovov_aaaa = pyscf.ao2mo.general(mol, C_ovov_aaaa, aosym='s4', compact=False, verbose=5).reshape(nocc_a, nvirt_a, nocc_a, nvirt_a)
-    tei_mo_ovov_aabb = pyscf.ao2mo.general(mol, C_ovov_aabb, aosym='s4', compact=False, verbose=5).reshape(nocc_a, nvirt_a, nocc_b, nvirt_b)
-    tei_mo_ovov_bbaa = pyscf.ao2mo.general(mol, C_ovov_bbaa, aosym='s4', compact=False, verbose=5).reshape(nocc_b, nvirt_b, nocc_a, nvirt_a)
-    tei_mo_ovov_bbbb = pyscf.ao2mo.general(mol, C_ovov_bbbb, aosym='s4', compact=False, verbose=5).reshape(nocc_b, nvirt_b, nocc_b, nvirt_b)
-    tei_mo_oovv_aaaa = pyscf.ao2mo.general(mol, C_oovv_aaaa, aosym='s4', compact=False, verbose=5).reshape(nocc_a, nocc_a, nvirt_a, nvirt_a)
-    tei_mo_oovv_bbbb = pyscf.ao2mo.general(mol, C_oovv_bbbb, aosym='s4', compact=False, verbose=5).reshape(nocc_b, nocc_b, nvirt_b, nvirt_b)
+    tei_mo_ovov_aaaa = pyscf.ao2mo.general(
+        mol, C_ovov_aaaa, aosym="s4", compact=False, verbose=5
+    ).reshape(nocc_a, nvirt_a, nocc_a, nvirt_a)
+    tei_mo_ovov_aabb = pyscf.ao2mo.general(
+        mol, C_ovov_aabb, aosym="s4", compact=False, verbose=5
+    ).reshape(nocc_a, nvirt_a, nocc_b, nvirt_b)
+    tei_mo_ovov_bbaa = pyscf.ao2mo.general(
+        mol, C_ovov_bbaa, aosym="s4", compact=False, verbose=5
+    ).reshape(nocc_b, nvirt_b, nocc_a, nvirt_a)
+    tei_mo_ovov_bbbb = pyscf.ao2mo.general(
+        mol, C_ovov_bbbb, aosym="s4", compact=False, verbose=5
+    ).reshape(nocc_b, nvirt_b, nocc_b, nvirt_b)
+    tei_mo_oovv_aaaa = pyscf.ao2mo.general(
+        mol, C_oovv_aaaa, aosym="s4", compact=False, verbose=5
+    ).reshape(nocc_a, nocc_a, nvirt_a, nvirt_a)
+    tei_mo_oovv_bbbb = pyscf.ao2mo.general(
+        mol, C_oovv_bbbb, aosym="s4", compact=False, verbose=5
+    ).reshape(nocc_b, nocc_b, nvirt_b, nvirt_b)
 
-    integrals_dipole_ao = mol.intor('cint1e_r_sph', comp=3)
+    integrals_dipole_ao = mol.intor("cint1e_r_sph", comp=3)
 
     solver = iterators.ExactInv(C, E, occupations)
 
-    solver.tei_mo = (tei_mo_ovov_aaaa, tei_mo_ovov_aabb, tei_mo_ovov_bbaa, tei_mo_ovov_bbbb, tei_mo_oovv_aaaa, tei_mo_oovv_bbbb)
-    solver.tei_mo_type = 'partial'
+    solver.tei_mo = (
+        tei_mo_ovov_aaaa,
+        tei_mo_ovov_aabb,
+        tei_mo_ovov_bbaa,
+        tei_mo_ovov_bbbb,
+        tei_mo_oovv_aaaa,
+        tei_mo_oovv_bbbb,
+    )
+    solver.tei_mo_type = "partial"
 
     driver = cphf.CPHF(solver)
 
-    operator_dipole = operators.Operator(label='dipole', is_imaginary=False, is_spin_dependent=False)
+    operator_dipole = operators.Operator(
+        label="dipole", is_imaginary=False, is_spin_dependent=False
+    )
     operator_dipole.ao_integrals = integrals_dipole_ao
     driver.add_operator(operator_dipole)
 
     driver.set_frequencies()
 
-    driver.run(solver_type='exact', hamiltonian='rpa', spin='singlet')
+    driver.run(solver_type="exact", hamiltonian="rpa", spin="singlet")
     assert len(driver.frequencies) == len(driver.results) == 1
     res = driver.results[0]
     print(res)
@@ -193,6 +242,6 @@ def test_explicit_uhf():
     return
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     test_explicit_uhf_outside_solver()
     test_explicit_uhf()

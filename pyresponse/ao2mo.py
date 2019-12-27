@@ -31,23 +31,27 @@ class AO2MO:
         nao = I.shape[0]
         MO = np.dot(C1.T, I.reshape(nao, -1)).reshape(C1.shape[1], nao, nao, nao)
 
-        MO = np.einsum('qB,Aqrs->ABrs', C2, MO)
-        MO = np.einsum('rC,ABrs->ABCs', C3, MO)
-        MO = np.einsum('sD,ABCs->ABCD', C4, MO)
+        MO = np.einsum("qB,Aqrs->ABrs", C2, MO)
+        MO = np.einsum("rC,ABrs->ABCs", C3, MO)
+        MO = np.einsum("sD,ABCs->ABCD", C4, MO)
         return MO
 
     def perform_rhf_full(self):
         r"""Perform the transformation :math:`(\mu\nu|\lambda\sigma) \rightarrow (pq|rs)`."""
         tei_mo = self.transform(self.I, self.C[0], self.C[0], self.C[0], self.C[0])
-        self.tei_mo = (tei_mo, )
+        self.tei_mo = (tei_mo,)
 
     def perform_rhf_partial(self):
         r"""Perform the transformation :math:`(\mu\nu|\lambda\sigma) \rightarrow (ia|jb), (ij|ab)`."""
         norb = self.nocc_alph + self.nvirt_alph
         oa = slice(0, self.nocc_alph)
         va = slice(self.nocc_alph, norb)
-        tei_mo_ovov = self.transform(self.I, self.C[0, :, oa], self.C[0, :, va], self.C[0, :, oa], self.C[0, :, va])
-        tei_mo_oovv = self.transform(self.I, self.C[0, :, oa], self.C[0, :, oa], self.C[0, :, va], self.C[0, :, va])
+        tei_mo_ovov = self.transform(
+            self.I, self.C[0, :, oa], self.C[0, :, va], self.C[0, :, oa], self.C[0, :, va]
+        )
+        tei_mo_oovv = self.transform(
+            self.I, self.C[0, :, oa], self.C[0, :, oa], self.C[0, :, va], self.C[0, :, va]
+        )
         self.tei_mo = (tei_mo_ovov, tei_mo_oovv)
 
     def perform_uhf_full(self):

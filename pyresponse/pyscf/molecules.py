@@ -112,9 +112,7 @@ def hydrogen_atom_sto3g(verbose=0):
     mol.verbose = verbose
     mol.output = None
 
-    mol.atom = [
-        ["H" , (0.0, 0.0, 0.0)]
-    ]
+    mol.atom = [["H", (0.0, 0.0, 0.0)]]
     mol.basis = "sto-3g"
     mol.charge = 0
     mol.spin = 1
@@ -188,10 +186,7 @@ def molecule_bh_cation_def2_svp(verbose=0):
     mol.verbose = verbose
     mol.output = None
 
-    mol.atom = [
-        ["B", (0.0000, 0.0000, 0.0000)],
-        ["H", (0.0000, 0.0000, 1.2340)],
-    ]
+    mol.atom = [["B", (0.0000, 0.0000, 0.0000)], ["H", (0.0000, 0.0000, 1.2340)]]
     mol.basis = "def2-svp"
     mol.charge = 1
     mol.spin = 1

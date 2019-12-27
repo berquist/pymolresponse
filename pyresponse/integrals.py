@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 import numpy as np
 
-STARS = '********'
+STARS = "********"
 
 
 class Integrals(ABC):
@@ -40,7 +40,7 @@ def read_binary(binaryfilename):
     """Return the bytes present in the given binary file name.
     """
 
-    with open(binaryfilename, 'rb') as binaryfile:
+    with open(binaryfilename, "rb") as binaryfile:
         readbytes = binaryfile.read()
 
     return readbytes
@@ -54,15 +54,10 @@ def parse_aoproper(integralfilename):
     integral_dict = dict()
 
     # Specify the encoding explicitly, so there's no confusion.
-    encoding = 'utf-8'
+    encoding = "utf-8"
 
     # There are a few labels we want to ignore.
-    labels_to_ignore = (
-        'HUCKOVLP',
-        'HUCKEL',
-        'HJPOPOVL',
-        'EOFLABEL',
-    )
+    labels_to_ignore = ("HUCKOVLP", "HUCKEL", "HJPOPOVL", "EOFLABEL")
 
     # For now, we naively read the whole file into memory, split
     # directly on the delimiter, *then* iterate. This will eventually
@@ -103,9 +98,9 @@ def parse_aoproper(integralfilename):
             tril_indices = np.tril_indices(nbasis)
             integrals_square[tril_indices] = integrals_tril
             diag = np.diag(integrals_square) * np.eye(nbasis)
-            if shape == 'SYMMETRI':
+            if shape == "SYMMETRI":
                 integrals_square = -diag + integrals_square + integrals_square.T
-            elif shape == 'ANTISYMM':
+            elif shape == "ANTISYMM":
                 integrals_square = -diag + integrals_square - integrals_square.T
                 # If the integrals are antisymmetrized, the whole
                 # thing should sum to zero.
@@ -118,10 +113,10 @@ def parse_aoproper(integralfilename):
             assert integrals_square[tril_indices].all() == integrals_tril.all()
 
             record_dict = {
-                'label': label,
-                'nbasis': nbasis,
-                'shape': shape,
-                'integrals': integrals_square,
+                "label": label,
+                "nbasis": nbasis,
+                "shape": shape,
+                "integrals": integrals_square,
             }
             integral_dict[label] = record_dict
 
@@ -130,20 +125,21 @@ def parse_aoproper(integralfilename):
 
 def _form_rhs_geometric(C, occupations, natoms, MO, mints):
     import psi4
+
     pC = psi4.core.Matrix.from_array(C)
     nocc, nvirt, _, _ = occupations
     norb = nocc + nvirt
     o = slice(0, nocc)
     v = slice(nocc, norb)
-    cart = ['_X', '_Y', '_Z']
-    oei_dict = {"S" : "OVERLAP", "T" : "KINETIC", "V" : "POTENTIAL"}
+    cart = ["_X", "_Y", "_Z"]
+    oei_dict = {"S": "OVERLAP", "T": "KINETIC", "V": "POTENTIAL"}
 
     # Fock matrix (MO)
     T = (C.T).dot(np.asarray(mints.ao_kinetic())).dot(C)
     V = (C.T).dot(np.asarray(mints.ao_potential())).dot(C)
     H = T + V
-    J = np.einsum('pqii->pq', MO[:, :, o, o])
-    K = np.einsum('piqi->pq', MO[:, o, :, o])
+    J = np.einsum("pqii->pq", MO[:, :, o, o])
+    K = np.einsum("piqi->pq", MO[:, o, :, o])
     F = H + (2 * J) - K
 
     deriv1 = dict()
@@ -186,8 +182,8 @@ def _form_rhs_geometric(C, occupations, natoms, MO, mints):
     for atom in range(natoms):
         for p in range(3):
             key = str(atom) + cart[p]
-            contr1 = np.einsum('pqmm->pq', deriv1["TEI" + key][:, :, o, o])
-            contr2 = np.einsum('pmmq->pq', deriv1["TEI" + key][:, o, o, :])
+            contr1 = np.einsum("pqmm->pq", deriv1["TEI" + key][:, :, o, o])
+            contr2 = np.einsum("pmmq->pq", deriv1["TEI" + key][:, o, o, :])
             F_grad[key] = deriv1["T" + key] + deriv1["V" + key] + (2 * contr1) - contr2
     for atom in range(natoms):
         for p in range(3):
@@ -199,9 +195,12 @@ def _form_rhs_geometric(C, occupations, natoms, MO, mints):
     return B
 
 
-if __name__ == '__main__':
-    dalton_integrals = parse_aoproper('r_lih_hf_sto-3g/dalton_response_rpa_singlet/AOPROPER')
+if __name__ == "__main__":
+    dalton_integrals = parse_aoproper(
+        "r_lih_hf_sto-3g/dalton_response_rpa_singlet/AOPROPER"
+    )
     from pyresponse.utils import dalton_label_to_operator
+
     labels = dalton_integrals.keys()
     for label in labels:
         print(dalton_label_to_operator(label))

@@ -27,8 +27,7 @@ def form_rpa_a_matrix_mo_singlet_partial(E_MO, TEI_MO_iajb, TEI_MO_ijab):
     assert E_MO.shape[0] == E_MO.shape[1] == norb
     nov = nocc * nvirt
 
-    ediff = form_vec_energy_differences(np.diag(E_MO)[:nocc],
-                                        np.diag(E_MO)[nocc:])
+    ediff = form_vec_energy_differences(np.diag(E_MO)[:nocc], np.diag(E_MO)[nocc:])
 
     A = 2 * TEI_MO_iajb
     A -= TEI_MO_ijab.swapaxes(1, 2)
@@ -58,8 +57,7 @@ def form_rpa_a_matrix_mo_triplet_partial(E_MO, TEI_MO_ijab):
     assert E_MO.shape[0] == E_MO.shape[1] == norb
     nov = nocc * nvirt
 
-    ediff = form_vec_energy_differences(np.diag(E_MO)[:nocc],
-                                        np.diag(E_MO)[nocc:])
+    ediff = form_vec_energy_differences(np.diag(E_MO)[:nocc], np.diag(E_MO)[nocc:])
 
     A = np.zeros((nocc, nvirt, nocc, nvirt))
     A -= TEI_MO_ijab.swapaxes(1, 2)
@@ -133,8 +131,7 @@ def form_rpa_a_matrix_mo_singlet_ss_partial(E_MO, TEI_MO_iajb, TEI_MO_ijab):
     assert E_MO.shape[0] == E_MO.shape[1] == norb
     nov = nocc * nvirt
 
-    ediff = form_vec_energy_differences(np.diag(E_MO)[:nocc],
-                                        np.diag(E_MO)[nocc:])
+    ediff = form_vec_energy_differences(np.diag(E_MO)[:nocc], np.diag(E_MO)[nocc:])
 
     A = TEI_MO_iajb.copy()
     A -= TEI_MO_ijab.swapaxes(1, 2)

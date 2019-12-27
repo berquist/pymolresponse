@@ -31,35 +31,37 @@ def test_explicit_rhf_outside_solver_off_diagonal_blocks():
     A = eqns.form_rpa_a_matrix_mo_singlet_full(E, tei_mo, nocc)
     B = eqns.form_rpa_b_matrix_mo_singlet_full(tei_mo, nocc)
 
-    G = np.block([[A, B],
-                  [B, A]])
-    assert G.shape == (2*nocc*nvirt, 2*nocc*nvirt)
+    G = np.block([[A, B], [B, A]])
+    assert G.shape == (2 * nocc * nvirt, 2 * nocc * nvirt)
 
     G_inv = np.linalg.inv(G)
 
     components = 3
 
-    integrals_dipole_ao = mol.intor('cint1e_r_sph', comp=components)
+    integrals_dipole_ao = mol.intor("cint1e_r_sph", comp=components)
 
     integrals_dipole_mo_ai = []
 
     for component in range(components):
 
-        integrals_dipole_mo_ai_component = np.dot(C[:, nocc:].T, np.dot(integrals_dipole_ao[component, ...], C[:, :nocc])).reshape(-1, order='F')
+        integrals_dipole_mo_ai_component = np.dot(
+            C[:, nocc:].T, np.dot(integrals_dipole_ao[component, ...], C[:, :nocc])
+        ).reshape(-1, order="F")
         integrals_dipole_mo_ai.append(integrals_dipole_mo_ai_component)
 
     integrals_dipole_mo_ai = np.stack(integrals_dipole_mo_ai, axis=0).T
-    integrals_dipole_mo_ai_super = np.concatenate((integrals_dipole_mo_ai,
-                                                   -integrals_dipole_mo_ai), axis=0)
+    integrals_dipole_mo_ai_super = np.concatenate(
+        (integrals_dipole_mo_ai, -integrals_dipole_mo_ai), axis=0
+    )
     rhsvecs = integrals_dipole_mo_ai_super
     rspvecs = np.dot(G_inv, rhsvecs)
 
     polarizability = 4 * np.dot(rhsvecs.T, rspvecs) / 2
 
     # pylint: disable=bad-whitespace
-    result__0_00 = np.array([[ 7.93556221,  0.,          0.        ],
-                             [ 0.,          3.06821077,  0.        ],
-                             [ 0.,          0.,          0.05038621]])
+    result__0_00 = np.array(
+        [[7.93556221, 0.0, 0.0], [0.0, 3.06821077, 0.0], [0.0, 0.0, 0.05038621]]
+    )
 
     atol = 1.0e-8
     rtol = 0.0

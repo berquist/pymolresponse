@@ -5,60 +5,61 @@ from pyresponse.data import REFDIR
 from pyresponse.pyscf import molecules
 from pyresponse.tests.test_runners import (
     run_as_many_tests_as_possible_rhf_disk,
-    run_as_many_tests_as_possible_uhf_disk
+    run_as_many_tests_as_possible_uhf_disk,
 )
 
 
 def test_final_result_rhf_h2o_sto3g_rpa_singlet():
-    hamiltonian = 'rpa'
-    spin = 'singlet'
+    hamiltonian = "rpa"
+    spin = "singlet"
 
     C = utils.fix_mocoeffs_shape(utils.np_load(REFDIR / "C.npz"))
     E = utils.fix_moenergies_shape(utils.np_load(REFDIR / "F_MO.npz"))
     TEI_MO = utils.np_load(REFDIR / "TEI_MO.npz")
     # nocc_alph, nvirt_alph, nocc_beta, nvirt_beta
     occupations = [5, 2, 5, 2]
-    stub = 'h2o_sto3g_'
+    stub = "h2o_sto3g_"
     dim = occupations[0] + occupations[1]
     mat_dipole_x = utils.parse_int_file_2(REFDIR / f"{stub}mux.dat", dim)
     mat_dipole_y = utils.parse_int_file_2(REFDIR / f"{stub}muy.dat", dim)
     mat_dipole_z = utils.parse_int_file_2(REFDIR / f"{stub}muz.dat", dim)
 
     solver = iterators.ExactInv(C, E, occupations)
-    solver.tei_mo = (TEI_MO, )
-    solver.tei_mo_type = 'full'
+    solver.tei_mo = (TEI_MO,)
+    solver.tei_mo_type = "full"
     driver = cphf.CPHF(solver)
     ao_integrals_dipole = np.stack((mat_dipole_x, mat_dipole_y, mat_dipole_z), axis=0)
-    operator_dipole = operators.Operator(label='dipole',
-                                         is_imaginary=False, is_spin_dependent=False)
+    operator_dipole = operators.Operator(
+        label="dipole", is_imaginary=False, is_spin_dependent=False
+    )
     operator_dipole.ao_integrals = ao_integrals_dipole
     driver.add_operator(operator_dipole)
     frequencies = (0.0, 0.02, 0.06, 0.1)
     driver.set_frequencies(frequencies)
 
-    driver.run(solver_type='exact', hamiltonian=hamiltonian, spin=spin)
+    driver.run(solver_type="exact", hamiltonian=hamiltonian, spin=spin)
 
     assert len(driver.results) == len(frequencies)
 
     # pylint: disable=bad-whitespace
-    result__0_00 = np.array([[ 7.93556221,  0.,          0.        ],
-                             [ 0.,          3.06821077,  0.        ],
-                             [ 0.,          0.,          0.05038621]])
+    result__0_00 = np.array(
+        [[7.93556221, 0.0, 0.0], [0.0, 3.06821077, 0.0], [0.0, 0.0, 0.05038621]]
+    )
 
     # pylint: disable=bad-whitespace
-    result__0_02 = np.array([[ 7.94312371,  0.,          0.        ],
-                             [ 0.,          3.07051688,  0.        ],
-                             [ 0.,          0.,          0.05054685]])
+    result__0_02 = np.array(
+        [[7.94312371, 0.0, 0.0], [0.0, 3.07051688, 0.0], [0.0, 0.0, 0.05054685]]
+    )
 
     # pylint: disable=bad-whitespace
-    result__0_06 = np.array([[ 8.00414009,  0.,          0.        ],
-                             [ 0.,          3.08913608,  0.        ],
-                             [ 0.,          0.,          0.05186977]])
+    result__0_06 = np.array(
+        [[8.00414009, 0.0, 0.0], [0.0, 3.08913608, 0.0], [0.0, 0.0, 0.05186977]]
+    )
 
     # pylint: disable=bad-whitespace
-    result__0_10 = np.array([[ 8.1290378,   0.,          0.        ],
-                             [ 0.,          3.12731363,  0.        ],
-                             [ 0.,          0.,          0.05473482]])
+    result__0_10 = np.array(
+        [[8.1290378, 0.0, 0.0], [0.0, 3.12731363, 0.0], [0.0, 0.0, 0.05473482]]
+    )
 
     atol = 1.0e-8
     rtol = 0.0
@@ -76,68 +77,73 @@ def test_final_result_rhf_h2o_sto3g_rpa_singlet():
     polarizability.run(hamiltonian=hamiltonian, spin=spin)
     polarizability.form_results()
 
-    np.testing.assert_allclose(polarizability.polarizabilities[0],
-                               result__0_00, rtol=rtol, atol=atol)
-    np.testing.assert_allclose(polarizability.polarizabilities[1],
-                               result__0_02, rtol=rtol, atol=atol)
-    np.testing.assert_allclose(polarizability.polarizabilities[2],
-                               result__0_06, rtol=rtol, atol=atol)
-    np.testing.assert_allclose(polarizability.polarizabilities[3],
-                               result__0_10, rtol=rtol, atol=atol)
+    np.testing.assert_allclose(
+        polarizability.polarizabilities[0], result__0_00, rtol=rtol, atol=atol
+    )
+    np.testing.assert_allclose(
+        polarizability.polarizabilities[1], result__0_02, rtol=rtol, atol=atol
+    )
+    np.testing.assert_allclose(
+        polarizability.polarizabilities[2], result__0_06, rtol=rtol, atol=atol
+    )
+    np.testing.assert_allclose(
+        polarizability.polarizabilities[3], result__0_10, rtol=rtol, atol=atol
+    )
 
     return
 
 
 def test_final_result_rhf_h2o_sto3g_rpa_triplet():
-    hamiltonian = 'rpa'
-    spin = 'triplet'
+    hamiltonian = "rpa"
+    spin = "triplet"
 
     C = utils.fix_mocoeffs_shape(utils.np_load(REFDIR / "C.npz"))
     E = utils.fix_moenergies_shape(utils.np_load(REFDIR / "F_MO.npz"))
     TEI_MO = utils.np_load(REFDIR / "TEI_MO.npz")
     # nocc_alph, nvirt_alph, nocc_beta, nvirt_beta
     occupations = [5, 2, 5, 2]
-    stub = 'h2o_sto3g_'
+    stub = "h2o_sto3g_"
     dim = occupations[0] + occupations[1]
     mat_dipole_x = utils.parse_int_file_2(REFDIR / f"{stub}mux.dat", dim)
     mat_dipole_y = utils.parse_int_file_2(REFDIR / f"{stub}muy.dat", dim)
     mat_dipole_z = utils.parse_int_file_2(REFDIR / f"{stub}muz.dat", dim)
 
     solver = iterators.ExactInv(C, E, occupations)
-    solver.tei_mo = (TEI_MO, )
-    solver.tei_mo_type = 'full'
+    solver.tei_mo = (TEI_MO,)
+    solver.tei_mo_type = "full"
     driver = cphf.CPHF(solver)
     ao_integrals_dipole = np.stack((mat_dipole_x, mat_dipole_y, mat_dipole_z), axis=0)
-    operator_dipole = operators.Operator(label='dipole',
-                                         is_imaginary=False, is_spin_dependent=False)
+    operator_dipole = operators.Operator(
+        label="dipole", is_imaginary=False, is_spin_dependent=False
+    )
     operator_dipole.ao_integrals = ao_integrals_dipole
     driver.add_operator(operator_dipole)
     frequencies = (0.0, 0.02, 0.06, 0.1)
     driver.set_frequencies(frequencies)
 
-    driver.run(solver_type='exact', hamiltonian=hamiltonian, spin=spin)
+    driver.run(solver_type="exact", hamiltonian=hamiltonian, spin=spin)
 
     assert len(driver.results) == len(frequencies)
 
     # pylint: disable=bad-whitespace
-    result__0_00 = np.array([[ 26.59744305,   0.,           0.        ],
-                             [  0.,          18.11879557,   0.        ],
-                             [  0.,           0.,           0.07798969]])
+    result__0_00 = np.array(
+        [[26.59744305, 0.0, 0.0], [0.0, 18.11879557, 0.0], [0.0, 0.0, 0.07798969]]
+    )
 
     # pylint: disable=bad-whitespace
-    result__0_02 = np.array([[ 26.68282287,   0.,           0.        ],
-                             [  0.,          18.19390051,   0.        ],
-                             [  0.,           0.,           0.07837521]])
+    result__0_02 = np.array(
+        [[26.68282287, 0.0, 0.0], [0.0, 18.19390051, 0.0], [0.0, 0.0, 0.07837521]]
+    )
 
     # pylint: disable=bad-whitespace
-    result__0_06 = np.array([[ 27.38617401,   0.,           0.        ],
-                             [  0.,          18.81922578,   0.        ],
-                             [  0.,           0.,           0.08160226]])
+    result__0_06 = np.array(
+        [[27.38617401, 0.0, 0.0], [0.0, 18.81922578, 0.0], [0.0, 0.0, 0.08160226]]
+    )
 
     # pylint: disable=bad-whitespace
-    result__0_10 = np.array([[ 28.91067234,   0.,           0.        ],
-                             [  0.,          20.21670386,   0.        ],
-                             [  0.,           0.,           0.08892512]])
+    result__0_10 = np.array(
+        [[28.91067234, 0.0, 0.0], [0.0, 20.21670386, 0.0], [0.0, 0.0, 0.08892512]]
+    )
 
     atol = 1.0e-8
     rtol = 0.0
@@ -153,68 +159,73 @@ def test_final_result_rhf_h2o_sto3g_rpa_triplet():
     polarizability.run(hamiltonian=hamiltonian, spin=spin)
     polarizability.form_results()
 
-    np.testing.assert_allclose(polarizability.polarizabilities[0],
-                               result__0_00, rtol=rtol, atol=atol)
-    np.testing.assert_allclose(polarizability.polarizabilities[1],
-                               result__0_02, rtol=rtol, atol=atol)
-    np.testing.assert_allclose(polarizability.polarizabilities[2],
-                               result__0_06, rtol=rtol, atol=atol)
-    np.testing.assert_allclose(polarizability.polarizabilities[3],
-                               result__0_10, rtol=rtol, atol=atol)
+    np.testing.assert_allclose(
+        polarizability.polarizabilities[0], result__0_00, rtol=rtol, atol=atol
+    )
+    np.testing.assert_allclose(
+        polarizability.polarizabilities[1], result__0_02, rtol=rtol, atol=atol
+    )
+    np.testing.assert_allclose(
+        polarizability.polarizabilities[2], result__0_06, rtol=rtol, atol=atol
+    )
+    np.testing.assert_allclose(
+        polarizability.polarizabilities[3], result__0_10, rtol=rtol, atol=atol
+    )
 
     return
 
 
 def test_final_result_rhf_h2o_sto3g_tda_singlet():
-    hamiltonian = 'tda'
-    spin = 'singlet'
+    hamiltonian = "tda"
+    spin = "singlet"
 
     C = utils.fix_mocoeffs_shape(utils.np_load(REFDIR / "C.npz"))
     E = utils.fix_moenergies_shape(utils.np_load(REFDIR / "F_MO.npz"))
     TEI_MO = utils.np_load(REFDIR / "TEI_MO.npz")
     # nocc_alph, nvirt_alph, nocc_beta, nvirt_beta
     occupations = [5, 2, 5, 2]
-    stub = 'h2o_sto3g_'
+    stub = "h2o_sto3g_"
     dim = occupations[0] + occupations[1]
     mat_dipole_x = utils.parse_int_file_2(REFDIR / f"{stub}mux.dat", dim)
     mat_dipole_y = utils.parse_int_file_2(REFDIR / f"{stub}muy.dat", dim)
     mat_dipole_z = utils.parse_int_file_2(REFDIR / f"{stub}muz.dat", dim)
 
     solver = iterators.ExactInv(C, E, occupations)
-    solver.tei_mo = (TEI_MO, )
-    solver.tei_mo_type = 'full'
+    solver.tei_mo = (TEI_MO,)
+    solver.tei_mo_type = "full"
     driver = cphf.CPHF(solver)
     ao_integrals_dipole = np.stack((mat_dipole_x, mat_dipole_y, mat_dipole_z), axis=0)
-    operator_dipole = operators.Operator(label='dipole',
-                                         is_imaginary=False, is_spin_dependent=False)
+    operator_dipole = operators.Operator(
+        label="dipole", is_imaginary=False, is_spin_dependent=False
+    )
     operator_dipole.ao_integrals = ao_integrals_dipole
     driver.add_operator(operator_dipole)
     frequencies = (0.0, 0.02, 0.06, 0.1)
     driver.set_frequencies(frequencies)
 
-    driver.run(solver_type='exact', hamiltonian=hamiltonian, spin=spin)
+    driver.run(solver_type="exact", hamiltonian=hamiltonian, spin=spin)
 
     assert len(driver.results) == len(frequencies)
 
     # pylint: disable=bad-whitespace
-    result__0_00 = np.array([[ 8.89855952,  0.,          0.        ],
-                             [ 0.,          4.00026556,  0.        ],
-                             [ 0.,          0.,          0.0552774 ]])
+    result__0_00 = np.array(
+        [[8.89855952, 0.0, 0.0], [0.0, 4.00026556, 0.0], [0.0, 0.0, 0.0552774]]
+    )
 
     # pylint: disable=bad-whitespace
-    result__0_02 = np.array([[ 8.90690928,  0.,          0.        ],
-                             [ 0.,          4.00298342,  0.        ],
-                             [ 0.,          0.,          0.05545196]])
+    result__0_02 = np.array(
+        [[8.90690928, 0.0, 0.0], [0.0, 4.00298342, 0.0], [0.0, 0.0, 0.05545196]]
+    )
 
     # pylint: disable=bad-whitespace
-    result__0_06 = np.array([[ 8.97427725,  0.,          0.        ],
-                             [ 0.,          4.02491517,  0.        ],
-                             [ 0.,          0.,          0.05688918]])
+    result__0_06 = np.array(
+        [[8.97427725, 0.0, 0.0], [0.0, 4.02491517, 0.0], [0.0, 0.0, 0.05688918]]
+    )
 
     # pylint: disable=bad-whitespace
-    result__0_10 = np.array([[ 9.11212633,  0.,          0.        ],
-                             [ 0.,          4.06981937,  0.        ],
-                             [ 0.,          0.,          0.05999934]])
+    result__0_10 = np.array(
+        [[9.11212633, 0.0, 0.0], [0.0, 4.06981937, 0.0], [0.0, 0.0, 0.05999934]]
+    )
 
     atol = 1.0e-8
     rtol = 0.0
@@ -230,68 +241,73 @@ def test_final_result_rhf_h2o_sto3g_tda_singlet():
     polarizability.run(hamiltonian=hamiltonian, spin=spin)
     polarizability.form_results()
 
-    np.testing.assert_allclose(polarizability.polarizabilities[0],
-                               result__0_00, rtol=rtol, atol=atol)
-    np.testing.assert_allclose(polarizability.polarizabilities[1],
-                               result__0_02, rtol=rtol, atol=atol)
-    np.testing.assert_allclose(polarizability.polarizabilities[2],
-                               result__0_06, rtol=rtol, atol=atol)
-    np.testing.assert_allclose(polarizability.polarizabilities[3],
-                               result__0_10, rtol=rtol, atol=atol)
+    np.testing.assert_allclose(
+        polarizability.polarizabilities[0], result__0_00, rtol=rtol, atol=atol
+    )
+    np.testing.assert_allclose(
+        polarizability.polarizabilities[1], result__0_02, rtol=rtol, atol=atol
+    )
+    np.testing.assert_allclose(
+        polarizability.polarizabilities[2], result__0_06, rtol=rtol, atol=atol
+    )
+    np.testing.assert_allclose(
+        polarizability.polarizabilities[3], result__0_10, rtol=rtol, atol=atol
+    )
 
     return
 
 
 def test_final_result_rhf_h2o_sto3g_tda_triplet():
-    hamiltonian = 'tda'
-    spin = 'triplet'
+    hamiltonian = "tda"
+    spin = "triplet"
 
     C = utils.fix_mocoeffs_shape(utils.np_load(REFDIR / "C.npz"))
     E = utils.fix_moenergies_shape(utils.np_load(REFDIR / "F_MO.npz"))
     TEI_MO = utils.np_load(REFDIR / "TEI_MO.npz")
     # nocc_alph, nvirt_alph, nocc_beta, nvirt_beta
     occupations = [5, 2, 5, 2]
-    stub = 'h2o_sto3g_'
+    stub = "h2o_sto3g_"
     dim = occupations[0] + occupations[1]
     mat_dipole_x = utils.parse_int_file_2(REFDIR / f"{stub}mux.dat", dim)
     mat_dipole_y = utils.parse_int_file_2(REFDIR / f"{stub}muy.dat", dim)
     mat_dipole_z = utils.parse_int_file_2(REFDIR / f"{stub}muz.dat", dim)
 
     solver = iterators.ExactInv(C, E, occupations)
-    solver.tei_mo = (TEI_MO, )
-    solver.tei_mo_type = 'full'
+    solver.tei_mo = (TEI_MO,)
+    solver.tei_mo_type = "full"
     driver = cphf.CPHF(solver)
     ao_integrals_dipole = np.stack((mat_dipole_x, mat_dipole_y, mat_dipole_z), axis=0)
-    operator_dipole = operators.Operator(label='dipole',
-                                         is_imaginary=False, is_spin_dependent=False)
+    operator_dipole = operators.Operator(
+        label="dipole", is_imaginary=False, is_spin_dependent=False
+    )
     operator_dipole.ao_integrals = ao_integrals_dipole
     driver.add_operator(operator_dipole)
     frequencies = (0.0, 0.02, 0.06, 0.1)
     driver.set_frequencies(frequencies)
 
-    driver.run(solver_type='exact', hamiltonian=hamiltonian, spin=spin)
+    driver.run(solver_type="exact", hamiltonian=hamiltonian, spin=spin)
 
     assert len(driver.results) == len(frequencies)
 
     # pylint: disable=bad-whitespace
-    result__0_00 = np.array([[ 14.64430714,   0.,           0.        ],
-                             [  0.,           8.80921432,   0.        ],
-                             [  0.,           0.,           0.06859496]])
+    result__0_00 = np.array(
+        [[14.64430714, 0.0, 0.0], [0.0, 8.80921432, 0.0], [0.0, 0.0, 0.06859496]]
+    )
 
     # pylint: disable=bad-whitespace
-    result__0_02 = np.array([[ 14.68168443,   0.,           0.        ],
-                             [  0.,           8.83562647,   0.        ],
-                             [  0.,           0.,           0.0689291 ]])
+    result__0_02 = np.array(
+        [[14.68168443, 0.0, 0.0], [0.0, 8.83562647, 0.0], [0.0, 0.0, 0.0689291]]
+    )
 
     # pylint: disable=bad-whitespace
-    result__0_06 = np.array([[ 14.98774296,   0.,           0.        ],
-                             [  0.,           9.0532224,    0.        ],
-                             [  0.,           0.,           0.07172414]])
+    result__0_06 = np.array(
+        [[14.98774296, 0.0, 0.0], [0.0, 9.0532224, 0.0], [0.0, 0.0, 0.07172414]]
+    )
 
     # pylint: disable=bad-whitespace
-    result__0_10 = np.array([[ 15.63997724,   0.,           0.        ],
-                             [  0.,           9.52504267,   0.        ],
-                             [  0.,           0.,           0.07805428]])
+    result__0_10 = np.array(
+        [[15.63997724, 0.0, 0.0], [0.0, 9.52504267, 0.0], [0.0, 0.0, 0.07805428]]
+    )
 
     atol = 1.0e-8
     rtol = 0.0
@@ -307,30 +323,35 @@ def test_final_result_rhf_h2o_sto3g_tda_triplet():
     polarizability.run(hamiltonian=hamiltonian, spin=spin)
     polarizability.form_results()
 
-    np.testing.assert_allclose(polarizability.polarizabilities[0],
-                               result__0_00, rtol=rtol, atol=atol)
-    np.testing.assert_allclose(polarizability.polarizabilities[1],
-                               result__0_02, rtol=rtol, atol=atol)
-    np.testing.assert_allclose(polarizability.polarizabilities[2],
-                               result__0_06, rtol=rtol, atol=atol)
-    np.testing.assert_allclose(polarizability.polarizabilities[3],
-                               result__0_10, rtol=rtol, atol=atol)
+    np.testing.assert_allclose(
+        polarizability.polarizabilities[0], result__0_00, rtol=rtol, atol=atol
+    )
+    np.testing.assert_allclose(
+        polarizability.polarizabilities[1], result__0_02, rtol=rtol, atol=atol
+    )
+    np.testing.assert_allclose(
+        polarizability.polarizabilities[2], result__0_06, rtol=rtol, atol=atol
+    )
+    np.testing.assert_allclose(
+        polarizability.polarizabilities[3], result__0_10, rtol=rtol, atol=atol
+    )
 
     return
 
 
 def test_as_many_as_possible_rhf_disk():
 
-    run_as_many_tests_as_possible_rhf_disk('r_lih_hf_sto-3g')
+    run_as_many_tests_as_possible_rhf_disk("r_lih_hf_sto-3g")
 
     return
 
 
 def test_as_many_as_possible_uhf_disk():
 
-    run_as_many_tests_as_possible_uhf_disk('u_lih_cation_hf_sto-3g')
+    run_as_many_tests_as_possible_uhf_disk("u_lih_cation_hf_sto-3g")
 
     return
+
 
 # TODO what is this?
 # if __name__ == '__main__':
@@ -404,7 +425,7 @@ def test_as_many_as_possible_uhf_disk():
 #             cphf.results[0][cphf.results[0] < thresh] = 0.0
 #             print(cphf.results[0])
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     test_final_result_rhf_h2o_sto3g_rpa_singlet()
     test_final_result_rhf_h2o_sto3g_rpa_triplet()
     test_final_result_rhf_h2o_sto3g_tda_singlet()

@@ -8,6 +8,7 @@ import numpy as np
 
 if sys.version_info.major == 2 or sys.version_info.minor <= 3:
     import operator
+
     def accumulate(iterable, func=operator.add):
         """Return running totals.
 
@@ -27,6 +28,8 @@ if sys.version_info.major == 2 or sys.version_info.minor <= 3:
         for element in it:
             total = func(total, element)
             yield total
+
+
 else:
     from itertools import accumulate
 
@@ -63,11 +66,11 @@ def parse_int_file_2(filename, dim):
 
 
 def repack_matrix_to_vector(mat):
-    return np.reshape(mat, -1, order='F')
+    return np.reshape(mat, -1, order="F")
 
 
 def repack_vector_to_matrix(vec, shape):
-    return vec.reshape(shape, order='F')
+    return vec.reshape(shape, order="F")
 
 
 def clean_dalton_label(original_label):
@@ -78,7 +81,7 @@ def clean_dalton_label(original_label):
     >>> clean_dalton_label("PSO 002")
     'pso_002'
     """
-    cleaned_label = original_label.lower().replace(' ', '_')
+    cleaned_label = original_label.lower().replace(" ", "_")
     return cleaned_label
 
 
@@ -88,62 +91,67 @@ def dalton_label_to_operator(label):
 
     from pyresponse.operators import Operator
 
-    coord1_to_slice = {
-        'x': 0, 'y': 1, 'z': 2,
-    }
+    coord1_to_slice = {"x": 0, "y": 1, "z": 2}
     coord2_to_slice = {
-        'xx': 0, 'xy': 1, 'xz': 2, 'yy': 3, 'yz': 4, 'zz': 5,
-        'yx': 1, 'zx': 2, 'zy': 4,
+        "xx": 0,
+        "xy": 1,
+        "xz": 2,
+        "yy": 3,
+        "yz": 4,
+        "zz": 5,
+        "yx": 1,
+        "zx": 2,
+        "zy": 4,
     }
-    slice_to_coord1 = {v:k for (k, v) in coord1_to_slice.items()}
+    slice_to_coord1 = {v: k for (k, v) in coord1_to_slice.items()}
 
     # dipole length
-    if 'diplen' in label:
-        operator_label = 'dipole'
+    if "diplen" in label:
+        operator_label = "dipole"
         _coord = label[0]
         slice_idx = coord1_to_slice[_coord]
         is_imaginary = False
         is_spin_dependent = False
     # dipole velocity
-    elif 'dipvel' in label:
-        operator_label = 'dipvel'
+    elif "dipvel" in label:
+        operator_label = "dipvel"
         _coord = label[0]
         slice_idx = coord1_to_slice[_coord]
         is_imaginary = True
         is_spin_dependent = False
     # angular momentum
-    elif 'angmom' in label:
-        operator_label = 'angmom'
+    elif "angmom" in label:
+        operator_label = "angmom"
         _coord = label[0]
         slice_idx = coord1_to_slice[_coord]
         is_imaginary = True
         is_spin_dependent = False
     # spin-orbit
-    elif 'spnorb' in label:
-        operator_label = 'spinorb'
+    elif "spnorb" in label:
+        operator_label = "spinorb"
         _coord = label[0]
         slice_idx = coord1_to_slice[_coord]
         is_imaginary = True
         is_spin_dependent = True
         _nelec = label[1]
-        if _nelec in ('1', '2'):
+        if _nelec in ("1", "2"):
             operator_label += _nelec
         # combined one- and two-electron
-        elif _nelec in (' ', '_'):
-            operator_label += 'c'
+        elif _nelec in (" ", "_"):
+            operator_label += "c"
         else:
             pass
     # Fermi contact
-    elif 'fc' in label:
-        operator_label = 'fermi'
-        _atomid = label[6:6+2]
+    elif "fc" in label:
+        operator_label = "fermi"
+        _atomid = label[6 : 6 + 2]
         slice_idx = int(_atomid) - 1
         is_imaginary = False
         is_spin_dependent = True
     # spin-dipole
-    elif 'sd' in label:
-        operator_label = 'sd'
-        _coord_atom = label[3:3+3]
+    elif "sd" in label:
+        operator_label = "sd"
+        _coord_atom = label[3 : 3 + 3]
         _coord = label[7]
         _atomid = (int(_coord_atom) - 1) // 3
         _coord_1 = (int(_coord_atom) - 1) % 3
@@ -153,8 +161,8 @@ def dalton_label_to_operator(label):
         is_spin_dependent = True
     # TODO SD+FC?
     # nucleus-orbit
-    elif 'pso' in label:
-        operator_label = 'pso'
+    elif "pso" in label:
+        operator_label = "pso"
         # TODO coord manipulation
         is_imaginary = True
         # TODO is this correct?
@@ -162,7 +170,7 @@ def dalton_label_to_operator(label):
         # FIXME
         slice_idx = None
     else:
-        operator_label = ''
+        operator_label = ""
         is_imaginary = None
         is_spin_dependent = None
         slice_idx = None
@@ -177,7 +185,9 @@ def dalton_label_to_operator(label):
     return operator
 
 
-def get_reference_value_from_file(filename, hamiltonian, spin, frequency, label_1, label_2):
+def get_reference_value_from_file(
+    filename, hamiltonian, spin, frequency, label_1, label_2
+):
     # TODO need to pass the frequency as a string identical to the one
     # found in the file, can't pass a float due to fp error; how to
     # get around this?
@@ -188,11 +198,13 @@ def get_reference_value_from_file(filename, hamiltonian, spin, frequency, label_
             # no comments allowed for now
             assert len(tokens) == 6
             l_hamiltonian, l_spin, l_frequency, l_label_1, l_label_2, l_val = tokens
-            if (l_hamiltonian == hamiltonian) and \
-               (l_spin == spin) and \
-               (l_frequency == frequency) and \
-               (l_label_1 == label_1) and \
-               (l_label_2 == label_2):
+            if (
+                (l_hamiltonian == hamiltonian)
+                and (l_spin == spin)
+                and (l_frequency == frequency)
+                and (l_label_1 == label_1)
+                and (l_label_2 == label_2)
+            ):
                 ref = float(l_val)
                 found = True
 
@@ -323,11 +335,13 @@ class Splitter:
         widths; they are added as empty strings. If `truncate`, remove
         them.
         """
-        elements = [line[start:end].strip()
-                    for (start, end) in zip(self.start_indices, self.end_indices)]
+        elements = [
+            line[start:end].strip()
+            for (start, end) in zip(self.start_indices, self.end_indices)
+        ]
         if truncate:
             for i in range(1, len(elements)):
-                if elements[-1] == '':
+                if elements[-1] == "":
                     elements.pop()
                 else:
                     break
@@ -376,7 +390,9 @@ def fix_moenergies_shape(moenergies):
                     # (2, norb)
                     moenergies_alph = np.diag(moenergies[0, :])[np.newaxis]
                     moenergies_beta = np.diag(moenergies[1, :])[np.newaxis]
-                    moenergies_new = np.concatenate((moenergies_alph, moenergies_beta), axis=0)
+                    moenergies_new = np.concatenate(
+                        (moenergies_alph, moenergies_beta), axis=0
+                    )
         else:
             assert shape[0] in (1, 2)
             assert shape[1] == shape[2]
@@ -480,7 +496,7 @@ def matsym(amat, thrzer=1.0e-14):
     for j in range(n):
         # for i in range(j+1):
         # The +1 is so the diagonal elements are checked.
-        for i in range(j+1):
+        for i in range(j + 1):
             amats = abs(amat[i, j] + amat[j, i])
             amata = abs(amat[i, j] - amat[j, i])
             if amats > thrzer:
@@ -488,10 +504,10 @@ def matsym(amat, thrzer=1.0e-14):
             if amata > thrzer:
                 isym = 0
 
-    return (isym + iasym)
+    return isym + iasym
 
 
-def flip_triangle_sign(A, triangle='lower'):
+def flip_triangle_sign(A, triangle="lower"):
     """Flip the sign of either the lower or upper triangle of a sqare
     matrix. Assume nothing about its symmetry.
 
@@ -507,9 +523,9 @@ def flip_triangle_sign(A, triangle='lower'):
     assert len(A.shape) == 2
     assert A.shape[0] == A.shape[1]
     dim = A.shape[0]
-    if triangle == 'lower':
+    if triangle == "lower":
         indices = np.tril_indices(dim)
-    elif triangle == 'upper':
+    elif triangle == "upper":
         indices = np.triu_indices(dim)
     else:
         sys.exit(1)
@@ -520,9 +536,9 @@ def flip_triangle_sign(A, triangle='lower'):
 
 def form_first_hyperpolarizability_averages(beta):
     assert beta.shape == (3, 3, 3)
-    avgs = (-1 / 3) * (np.einsum('ijj->i', beta) +
-                       np.einsum('jij->i', beta) +
-                       np.einsum('jji->i', beta))
+    avgs = (-1 / 3) * (
+        np.einsum("ijj->i", beta) + np.einsum("jij->i", beta) + np.einsum("jji->i", beta)
+    )
     avg = np.sum(avgs ** 2) ** (1 / 2)
     return avgs, avg
 

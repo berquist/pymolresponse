@@ -26,6 +26,7 @@ def _get_files_recursive(top: Path) -> Sequence[Path]:
             elif f.is_dir():
                 get_files_recursive_acc(f.resolve(strict=True), files)
         return
+
     files: List[Path] = []
     get_files_recursive_acc(top, files)
     return files
@@ -49,7 +50,7 @@ if __name__ == "__main__":
         long_description_content_type="text/markdown",
         version=versioneer.get_version(),
         cmdclass=versioneer.get_cmdclass(),
-        license='BSD-3-Clause',
+        license="BSD-3-Clause",
         packages=find_packages(exclude=["*test*"]),
         package_data={"pyresponse": tuple(str(f) for f in _get_package_data())},
         url="https://github.com/berquist/pyresponse",
@@ -57,7 +58,5 @@ if __name__ == "__main__":
         # install_requires=[
         #     "numpy", "scipy", "cclib", "periodictable",
         # ],
-        project_urls={
-            "Documentation": "https://berquist.github.io/pyresponse_docs/",
-        },
+        project_urls={"Documentation": "https://berquist.github.io/pyresponse_docs/"},
     )

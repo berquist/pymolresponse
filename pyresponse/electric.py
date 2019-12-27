@@ -7,13 +7,19 @@ from pyresponse.operators import Operator
 class Polarizability(ResponseProperty):
     """Wrapper for performing a dipole polarizability calculation."""
 
-    def __init__(self, pyscfmol, mocoeffs, moenergies, occupations, frequencies, *args, **kwargs):
-        super().__init__(pyscfmol, mocoeffs, moenergies, occupations, frequencies, *args, **kwargs)
+    def __init__(
+        self, pyscfmol, mocoeffs, moenergies, occupations, frequencies, *args, **kwargs
+    ):
+        super().__init__(
+            pyscfmol, mocoeffs, moenergies, occupations, frequencies, *args, **kwargs
+        )
 
     def form_operators(self):
 
-        operator_diplen = Operator(label='dipole', is_imaginary=False, is_spin_dependent=False, triplet=False)
-        integrals_diplen_ao = self.pyscfmol.intor('cint1e_r_sph', comp=3)
+        operator_diplen = Operator(
+            label="dipole", is_imaginary=False, is_spin_dependent=False, triplet=False
+        )
+        integrals_diplen_ao = self.pyscfmol.intor("cint1e_r_sph", comp=3)
         operator_diplen.ao_integrals = integrals_diplen_ao
         self.driver.add_operator(operator_diplen)
 

@@ -13,10 +13,10 @@ class CPHF:
 
         self.solver = solver
 
-        self.hamiltonian = 'rpa'
-        self.spin = 'singlet'
+        self.hamiltonian = "rpa"
+        self.spin = "singlet"
 
-        self.solver_type = 'exact'
+        self.solver_type = "exact"
 
         self.results = []
 
@@ -49,7 +49,7 @@ class CPHF:
             hamiltonian = self.hamiltonian
         if not spin:
             spin = self.spin
-        if not hasattr(self, 'frequencies'):
+        if not hasattr(self, "frequencies"):
             self.set_frequencies([0.0])
 
         assert isinstance(solver_type, str)
@@ -61,7 +61,7 @@ class CPHF:
         self.hamiltonian = hamiltonian.lower()
         self.spin = spin.lower()
 
-        if 'exact' in solver_type:
+        if "exact" in solver_type:
             assert isinstance(self.solver, (ExactLineqSolver,))
             for frequency in self.frequencies:
                 self.solver.form_explicit_hessian(hamiltonian, spin, frequency)
@@ -102,22 +102,34 @@ class CPHF:
 
             frequency = self.solver.frequencies[f]
             ediff_supervector_alph = ediff_supervector_alph_static.copy()
-            ediff_supervector_alph[:nov_alph] = ediff_supervector_alph_static[:nov_alph] - frequency
-            ediff_supervector_alph[nov_alph:] = ediff_supervector_alph_static[nov_alph:] + frequency
+            ediff_supervector_alph[:nov_alph] = (
+                ediff_supervector_alph_static[:nov_alph] - frequency
+            )
+            ediff_supervector_alph[nov_alph:] = (
+                ediff_supervector_alph_static[nov_alph:] + frequency
+            )
             if self.solver.is_uhf:
                 ediff_supervector_beta = ediff_supervector_beta_static.copy()
-                ediff_supervector_beta[:nov_beta] = ediff_supervector_beta_static[:nov_beta] - frequency
-                ediff_supervector_beta[nov_beta:] = ediff_supervector_beta_static[nov_beta:] + frequency
+                ediff_supervector_beta[:nov_beta] = (
+                    ediff_supervector_beta_static[:nov_beta] - frequency
+                )
+                ediff_supervector_beta[nov_beta:] = (
+                    ediff_supervector_beta_static[nov_beta:] + frequency
+                )
 
             # dim_rows -> (number of operators) * (number of components for each operator)
             # dim_cols -> total number of response vectors
-            dim_rows = sum(self.solver.operators[i].mo_integrals_ai_supervector_alph.shape[0]
-                           for i in range(len(self.solver.operators)))
+            dim_rows = sum(
+                self.solver.operators[i].mo_integrals_ai_supervector_alph.shape[0]
+                for i in range(len(self.solver.operators))
+            )
             dim_cols = dim_rows
 
             # FIXME
-            results = np.zeros(shape=(dim_rows, dim_cols),
-                               dtype=self.solver.operators[0].mo_integrals_ai_supervector_alph.dtype)
+            results = np.zeros(
+                shape=(dim_rows, dim_cols),
+                dtype=self.solver.operators[0].mo_integrals_ai_supervector_alph.dtype,
+            )
 
             # Form the result blocks between each pair of
             # operators. Ignore any potential symmetry in the final
@@ -130,12 +142,16 @@ class CPHF:
                 col_start = 0
                 for iop2, op2 in enumerate(self.solver.operators):
                     result_block = 0.0
-                    result_block_alph = form_results(op1.mo_integrals_ai_supervector_alph,
-                                                     op2.mo_integrals_ai_supervector_alph / ediff_supervector_alph)
+                    result_block_alph = form_results(
+                        op1.mo_integrals_ai_supervector_alph,
+                        op2.mo_integrals_ai_supervector_alph / ediff_supervector_alph,
+                    )
                     result_block += result_block_alph
                     if self.solver.is_uhf:
-                        result_block_beta = form_results(op1.mo_integrals_ai_supervector_beta,
-                                                         op2.mo_integrals_ai_supervector_beta / ediff_supervector_beta)
+                        result_block_beta = form_results(
+                            op1.mo_integrals_ai_supervector_beta,
+                            op2.mo_integrals_ai_supervector_beta / ediff_supervector_beta,
+                        )
                         result_block += result_block_beta
                     result_blocks.append(result_block)
                     row_starts.append(row_start)
@@ -149,7 +165,7 @@ class CPHF:
             for idx, result_block in enumerate(result_blocks):
                 nr, nc = result_block.shape
                 rs, cs = row_starts[idx], col_starts[idx]
-                results[rs:rs+nr, cs:cs+nc] = result_block
+                results[rs : rs + nr, cs : cs + nc] = result_block
 
             # The / 2 is because of the supervector part.
             if self.solver.is_uhf:
@@ -180,23 +196,35 @@ class CPHF:
 
         for f in range(len(self.solver.frequencies)):
             for i in range(len(self.solver.operators)):
-                assert self.solver.operators[i].rspvecs_alph[f].shape == self.solver.operators[i].mo_integrals_ai_supervector_alph.shape
+                assert (
+                    self.solver.operators[i].rspvecs_alph[f].shape
+                    == self.solver.operators[i].mo_integrals_ai_supervector_alph.shape
+                )
                 if self.solver.is_uhf:
-                    assert self.solver.operators[i].rspvecs_beta[f].shape == self.solver.operators[i].mo_integrals_ai_supervector_beta.shape
+                    assert (
+                        self.solver.operators[i].rspvecs_beta[f].shape
+                        == self.solver.operators[i].mo_integrals_ai_supervector_beta.shape
+                    )
 
         for f in range(len(self.solver.frequencies)):
 
             # dim_rows -> (number of operators) * (number of components for each operator)
             # dim_cols -> total number of response vectors
-            dim_rows = sum(self.solver.operators[i].mo_integrals_ai_supervector_alph.shape[0]
-                           for i in range(len(self.solver.operators)))
-            dim_cols = sum(self.solver.operators[i].rspvecs_alph[f].shape[0]
-                           for i in range(len(self.solver.operators)))
+            dim_rows = sum(
+                self.solver.operators[i].mo_integrals_ai_supervector_alph.shape[0]
+                for i in range(len(self.solver.operators))
+            )
+            dim_cols = sum(
+                self.solver.operators[i].rspvecs_alph[f].shape[0]
+                for i in range(len(self.solver.operators))
+            )
             assert dim_rows == dim_cols
 
             # FIXME
-            results = np.zeros(shape=(dim_rows, dim_cols),
-                               dtype=self.solver.operators[0].rspvecs_alph[f].dtype)
+            results = np.zeros(
+                shape=(dim_rows, dim_cols),
+                dtype=self.solver.operators[0].rspvecs_alph[f].dtype,
+            )
 
             # Form the result blocks between each pair of
             # operators. Ignore any potential symmetry in the final
@@ -209,10 +237,14 @@ class CPHF:
                 col_start = 0
                 for iop2, op2 in enumerate(self.solver.operators):
                     result_block = 0.0
-                    result_block_alph = form_results(op1.mo_integrals_ai_supervector_alph, op2.rspvecs_alph[f])
+                    result_block_alph = form_results(
+                        op1.mo_integrals_ai_supervector_alph, op2.rspvecs_alph[f]
+                    )
                     result_block += result_block_alph
                     if self.solver.is_uhf:
-                        result_block_beta = form_results(op1.mo_integrals_ai_supervector_beta, op2.rspvecs_beta[f])
+                        result_block_beta = form_results(
+                            op1.mo_integrals_ai_supervector_beta, op2.rspvecs_beta[f]
+                        )
                         result_block += result_block_beta
                     result_blocks.append(result_block)
                     row_starts.append(row_start)
@@ -226,7 +258,7 @@ class CPHF:
             for idx, result_block in enumerate(result_blocks):
                 nr, nc = result_block.shape
                 rs, cs = row_starts[idx], col_starts[idx]
-                results[rs:rs+nr, cs:cs+nc] = result_block
+                results[rs : rs + nr, cs : cs + nc] = result_block
 
             # The / 2 is because of the supervector part.
             if self.solver.is_uhf:

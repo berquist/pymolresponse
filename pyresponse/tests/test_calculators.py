@@ -13,9 +13,6 @@ except:
     pass
 
 
-
-
-
 def calculate_disk_rhf(testcasedir, hamiltonian, spin, frequency, label_1, label_2):
 
     occupations = utils.read_file_occupations(testcasedir / "occupations")
@@ -37,8 +34,12 @@ def calculate_disk_rhf(testcasedir, hamiltonian, spin, frequency, label_1, label
     operator_1 = utils.dalton_label_to_operator(label_1)
     operator_2 = utils.dalton_label_to_operator(label_2)
 
-    operator_1_integrals_mn = utils.read_file_3(testcasedir / f"operator_mn_{operator_1.label}")
-    operator_2_integrals_mn = utils.read_file_3(testcasedir / f"operator_mn_{operator_2.label}")
+    operator_1_integrals_mn = utils.read_file_3(
+        testcasedir / f"operator_mn_{operator_1.label}"
+    )
+    operator_2_integrals_mn = utils.read_file_3(
+        testcasedir / f"operator_mn_{operator_2.label}"
+    )
     # The first dimension can"t be checked since there may be multiple
     # components.
     assert operator_1_integrals_mn.shape[1:] == (nbasis, nbasis)
@@ -111,8 +112,12 @@ def calculate_disk_uhf(testcasedir, hamiltonian, spin, frequency, label_1, label
     operator_1 = utils.dalton_label_to_operator(label_1)
     operator_2 = utils.dalton_label_to_operator(label_2)
 
-    operator_1_integrals_mn = utils.read_file_3(testcasedir / f"operator_mn_{operator_1.label}")
-    operator_2_integrals_mn = utils.read_file_3(testcasedir / f"operator_mn_{operator_2.label}")
+    operator_1_integrals_mn = utils.read_file_3(
+        testcasedir / f"operator_mn_{operator_1.label}"
+    )
+    operator_2_integrals_mn = utils.read_file_3(
+        testcasedir / f"operator_mn_{operator_2.label}"
+    )
     # The first dimension can"t be checked since there may be multiple
     # components.
     assert operator_1_integrals_mn.shape[1:] == (nbasis, nbasis)
@@ -135,7 +140,14 @@ def calculate_disk_uhf(testcasedir, hamiltonian, spin, frequency, label_1, label
     assert moene.shape == (2, norb, norb)
 
     solver = iterators.ExactInv(C, moene, occupations)
-    solver.tei_mo = (moints_iajb_aaaa, moints_iajb_aabb, moints_iajb_bbaa, moints_iajb_bbbb, moints_ijab_aaaa, moints_ijab_bbbb)
+    solver.tei_mo = (
+        moints_iajb_aaaa,
+        moints_iajb_aabb,
+        moints_iajb_bbaa,
+        moints_iajb_bbbb,
+        moints_ijab_aaaa,
+        moints_ijab_bbbb,
+    )
     solver.tei_mo_type = "partial"
 
     driver = cphf.CPHF(solver)
@@ -160,13 +172,22 @@ def calculate_disk_uhf(testcasedir, hamiltonian, spin, frequency, label_1, label
     return bl
 
 
-def calculate_rhf(dalton_tmpdir, hamiltonian=None, spin=None, operator_label=None, operator=None, source_moenergies=None, source_mocoeffs=None, source_operator=None):
+def calculate_rhf(
+    dalton_tmpdir,
+    hamiltonian=None,
+    spin=None,
+    operator_label=None,
+    operator=None,
+    source_moenergies=None,
+    source_mocoeffs=None,
+    source_operator=None,
+):
 
     if operator_label:
         # TODO add dipvel
-        assert operator_label in ("dipole", "angmom", "spinorb",)
-    assert source_moenergies in ("pyscf", "dalton",)
-    assert source_mocoeffs in ("pyscf", "dalton",)
+        assert operator_label in ("dipole", "angmom", "spinorb")
+    assert source_moenergies in ("pyscf", "dalton")
+    assert source_mocoeffs in ("pyscf", "dalton")
 
     dalton_molecule = dalmol.readin(dalton_tmpdir / "DALTON.BAS")
     lines = []
@@ -208,8 +229,9 @@ def calculate_rhf(dalton_tmpdir, hamiltonian=None, spin=None, operator_label=Non
         job = ccopen(dalton_tmpdir / "DALTON.OUT")
         data = job.parse()
         # pylint: disable=no-member
-        E = np.diag([convertor(x, "eV", "hartree")
-                     for x in data.moenergies[0]])[np.newaxis, ...]
+        E = np.diag([convertor(x, "eV", "hartree") for x in data.moenergies[0]])[
+            np.newaxis, ...
+        ]
     else:
         pass
 
@@ -231,17 +253,23 @@ def calculate_rhf(dalton_tmpdir, hamiltonian=None, spin=None, operator_label=Non
         driver.add_operator(operator)
     elif operator_label:
         if operator_label == "dipole":
-            operator_dipole = operators.Operator(label="dipole", is_imaginary=False, is_spin_dependent=False, triplet=False)
+            operator_dipole = operators.Operator(
+                label="dipole", is_imaginary=False, is_spin_dependent=False, triplet=False
+            )
             integrals_dipole_ao = mol.intor("cint1e_r_sph", comp=3)
             operator_dipole.ao_integrals = integrals_dipole_ao
             driver.add_operator(operator_dipole)
         elif operator_label == "angmom":
-            operator_angmom = operators.Operator(label="angmom", is_imaginary=True, is_spin_dependent=False, triplet=False)
+            operator_angmom = operators.Operator(
+                label="angmom", is_imaginary=True, is_spin_dependent=False, triplet=False
+            )
             integrals_angmom_ao = mol.intor("cint1e_cg_irxp_sph", comp=3)
             operator_angmom.ao_integrals = integrals_angmom_ao
             driver.add_operator(operator_angmom)
         elif operator_label == "spinorb":
-            operator_spinorb = operators.Operator(label="spinorb", is_imaginary=True, is_spin_dependent=False, triplet=False)
+            operator_spinorb = operators.Operator(
+                label="spinorb", is_imaginary=True, is_spin_dependent=False, triplet=False
+            )
             integrals_spinorb_ao = 0
             for atm_id in range(mol.natm):
                 mol.set_rinv_orig(mol.atom_coord(atm_id))
@@ -261,13 +289,22 @@ def calculate_rhf(dalton_tmpdir, hamiltonian=None, spin=None, operator_label=Non
     return driver.results[0]
 
 
-def calculate_uhf(dalton_tmpdir, hamiltonian=None, spin=None, operator_label=None, operator=None, source_moenergies=None, source_mocoeffs=None, source_operator=None):
+def calculate_uhf(
+    dalton_tmpdir,
+    hamiltonian=None,
+    spin=None,
+    operator_label=None,
+    operator=None,
+    source_moenergies=None,
+    source_mocoeffs=None,
+    source_operator=None,
+):
 
     if operator_label:
         # TODO add dipvel
-        assert operator_label in ("dipole", "angmom", "spinorb",)
-    assert source_moenergies in ("pyscf", "dalton",)
-    assert source_mocoeffs in ("pyscf", "dalton",)
+        assert operator_label in ("dipole", "angmom", "spinorb")
+    assert source_moenergies in ("pyscf", "dalton")
+    assert source_mocoeffs in ("pyscf", "dalton")
 
     dalton_molecule = dalmol.readin(dalton_tmpdir / "DALTON.BAS")
     lines = []
@@ -311,8 +348,9 @@ def calculate_uhf(dalton_tmpdir, hamiltonian=None, spin=None, operator_label=Non
         job = ccopen(dalton_tmpdir / "DALTON.OUT")
         data = job.parse()
         # pylint: disable=no-member
-        E = np.diag([convertor(x, "eV", "hartree")
-                     for x in data.moenergies[0]])[np.newaxis, ...]
+        E = np.diag([convertor(x, "eV", "hartree") for x in data.moenergies[0]])[
+            np.newaxis, ...
+        ]
         E = np.concatenate((E, E), axis=0)
     else:
         pass
@@ -336,17 +374,23 @@ def calculate_uhf(dalton_tmpdir, hamiltonian=None, spin=None, operator_label=Non
         driver.add_operator(operator)
     elif operator_label:
         if operator_label == "dipole":
-            operator_dipole = operators.Operator(label="dipole", is_imaginary=False, is_spin_dependent=False, triplet=False)
+            operator_dipole = operators.Operator(
+                label="dipole", is_imaginary=False, is_spin_dependent=False, triplet=False
+            )
             integrals_dipole_ao = mol.intor("cint1e_r_sph", comp=3)
             operator_dipole.ao_integrals = integrals_dipole_ao
             driver.add_operator(operator_dipole)
         elif operator_label == "angmom":
-            operator_angmom = operators.Operator(label="angmom", is_imaginary=True, is_spin_dependent=False, triplet=False)
+            operator_angmom = operators.Operator(
+                label="angmom", is_imaginary=True, is_spin_dependent=False, triplet=False
+            )
             integrals_angmom_ao = mol.intor("cint1e_cg_irxp_sph", comp=3)
             operator_angmom.ao_integrals = integrals_angmom_ao
             driver.add_operator(operator_angmom)
         elif operator_label == "spinorb":
-            operator_spinorb = operators.Operator(label="spinorb", is_imaginary=True, is_spin_dependent=False, triplet=False)
+            operator_spinorb = operators.Operator(
+                label="spinorb", is_imaginary=True, is_spin_dependent=False, triplet=False
+            )
             integrals_spinorb_ao = 0
             for atm_id in range(mol.natm):
                 mol.set_rinv_orig(mol.atom_coord(atm_id))

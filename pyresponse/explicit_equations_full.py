@@ -18,18 +18,20 @@ def form_rpa_a_matrix_mo_singlet_full(E_MO, TEI_MO, nocc):
     nvirt = norb - nocc
     nov = nocc * nvirt
 
-    ediff = form_vec_energy_differences(np.diag(E_MO)[:nocc],
-                                        np.diag(E_MO)[nocc:])
+    ediff = form_vec_energy_differences(np.diag(E_MO)[:nocc], np.diag(E_MO)[nocc:])
 
     A = np.empty(shape=(nov, nov))
 
     for i in range(nocc):
         for a in range(nvirt):
-            ia = i*nvirt + a
+            ia = i * nvirt + a
             for j in range(nocc):
                 for b in range(nvirt):
-                    jb = j*nvirt + b
-                    A[ia, jb] = 2*TEI_MO[a + nocc, i, j, b + nocc] - TEI_MO[a + nocc, b + nocc, j, i]
+                    jb = j * nvirt + b
+                    A[ia, jb] = (
+                        2 * TEI_MO[a + nocc, i, j, b + nocc]
+                        - TEI_MO[a + nocc, b + nocc, j, i]
+                    )
 
     A += np.diag(ediff)
 
@@ -48,18 +50,17 @@ def form_rpa_a_matrix_mo_triplet_full(E_MO, TEI_MO, nocc):
     nvirt = norb - nocc
     nov = nocc * nvirt
 
-    ediff = form_vec_energy_differences(np.diag(E_MO)[:nocc],
-                                        np.diag(E_MO)[nocc:])
+    ediff = form_vec_energy_differences(np.diag(E_MO)[:nocc], np.diag(E_MO)[nocc:])
 
     A = np.empty(shape=(nov, nov))
 
     for i in range(nocc):
         for a in range(nvirt):
-            ia = i*nvirt + a
+            ia = i * nvirt + a
             for j in range(nocc):
                 for b in range(nvirt):
-                    jb = j*nvirt + b
-                    A[ia, jb] = - TEI_MO[a + nocc, b + nocc, j, i]
+                    jb = j * nvirt + b
+                    A[ia, jb] = -TEI_MO[a + nocc, b + nocc, j, i]
 
     A += np.diag(ediff)
 
@@ -82,11 +83,14 @@ def form_rpa_b_matrix_mo_singlet_full(TEI_MO, nocc):
 
     for i in range(nocc):
         for a in range(nvirt):
-            ia = i*nvirt + a
+            ia = i * nvirt + a
             for j in range(nocc):
                 for b in range(nvirt):
-                    jb = j*nvirt + b
-                    B[ia, jb] = 2*TEI_MO[a + nocc, i, b + nocc, j] - TEI_MO[a + nocc, j, b + nocc, i]
+                    jb = j * nvirt + b
+                    B[ia, jb] = (
+                        2 * TEI_MO[a + nocc, i, b + nocc, j]
+                        - TEI_MO[a + nocc, j, b + nocc, i]
+                    )
 
     return -B
 
@@ -105,11 +109,11 @@ def form_rpa_b_matrix_mo_triplet_full(TEI_MO, nocc):
 
     for i in range(nocc):
         for a in range(nvirt):
-            ia = i*nvirt + a
+            ia = i * nvirt + a
             for j in range(nocc):
                 for b in range(nvirt):
-                    jb = j*nvirt + b
-                    B[ia, jb] = - TEI_MO[a + nocc, j, b + nocc, i]
+                    jb = j * nvirt + b
+                    B[ia, jb] = -TEI_MO[a + nocc, j, b + nocc, i]
 
     return -B
 
@@ -125,18 +129,20 @@ def form_rpa_a_matrix_mo_singlet_ss_full(E_MO, TEI_MO, nocc):
     nvirt = norb - nocc
     nov = nocc * nvirt
 
-    ediff = form_vec_energy_differences(np.diag(E_MO)[:nocc],
-                                        np.diag(E_MO)[nocc:])
+    ediff = form_vec_energy_differences(np.diag(E_MO)[:nocc], np.diag(E_MO)[nocc:])
 
     A = np.empty(shape=(nov, nov))
 
     for i in range(nocc):
         for a in range(nvirt):
-            ia = i*nvirt + a
+            ia = i * nvirt + a
             for j in range(nocc):
                 for b in range(nvirt):
-                    jb = j*nvirt + b
-                    A[ia, jb] = TEI_MO[a + nocc, i, j, b + nocc] - TEI_MO[a + nocc, b + nocc, j, i]
+                    jb = j * nvirt + b
+                    A[ia, jb] = (
+                        TEI_MO[a + nocc, i, j, b + nocc]
+                        - TEI_MO[a + nocc, b + nocc, j, i]
+                    )
 
     A += np.diag(ediff)
 
@@ -159,10 +165,10 @@ def form_rpa_a_matrix_mo_singlet_os_full(TEI_MO_xxyy, nocc_x, nocc_y):
 
     for i in range(nocc_x):
         for a in range(nvirt_x):
-            ia = i*nvirt_x + a
+            ia = i * nvirt_x + a
             for j in range(nocc_y):
                 for b in range(nvirt_y):
-                    jb = j*nvirt_y + b
+                    jb = j * nvirt_y + b
                     # TODO
                     A[ia, jb] = TEI_MO_xxyy[a + nocc_x, i, j, b + nocc_y]
 
@@ -184,11 +190,14 @@ def form_rpa_b_matrix_mo_singlet_ss_full(TEI_MO, nocc):
 
     for i in range(nocc):
         for a in range(nvirt):
-            ia = i*nvirt + a
+            ia = i * nvirt + a
             for j in range(nocc):
                 for b in range(nvirt):
-                    jb = j*nvirt + b
-                    B[ia, jb] = TEI_MO[a + nocc, i, b + nocc, j] - TEI_MO[a + nocc, j, b + nocc, i]
+                    jb = j * nvirt + b
+                    B[ia, jb] = (
+                        TEI_MO[a + nocc, i, b + nocc, j]
+                        - TEI_MO[a + nocc, j, b + nocc, i]
+                    )
 
     return -B
 
@@ -209,10 +218,10 @@ def form_rpa_b_matrix_mo_singlet_os_full(TEI_MO_xxyy, nocc_x, nocc_y):
 
     for i in range(nocc_x):
         for a in range(nvirt_x):
-            ia = i*nvirt_x + a
+            ia = i * nvirt_x + a
             for j in range(nocc_y):
                 for b in range(nvirt_y):
-                    jb = j*nvirt_y + b
+                    jb = j * nvirt_y + b
                     # TODO
                     B[ia, jb] = TEI_MO_xxyy[a + nocc_x, i, b + nocc_y, j]
 

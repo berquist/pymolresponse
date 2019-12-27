@@ -6,20 +6,33 @@ from pyresponse.operators import Operator
 
 
 class Magnetizability(ResponseProperty):
-
-    def __init__(self, pyscfmol, mocoeffs, moenergies, occupations, use_giao=False, *args, **kwargs):
-        super().__init__(pyscfmol, mocoeffs, moenergies, occupations, frequencies=[0.0], *args, **kwargs)
+    def __init__(
+        self, pyscfmol, mocoeffs, moenergies, occupations, use_giao=False, *args, **kwargs
+    ):
+        super().__init__(
+            pyscfmol,
+            mocoeffs,
+            moenergies,
+            occupations,
+            frequencies=[0.0],
+            *args,
+            **kwargs
+        )
         self.use_giao = use_giao
 
     def form_operators(self):
 
         # angular momentum
         if self.use_giao:
-            operator_angmom = Operator(label='angmom', is_imaginary=True, is_spin_dependent=False, triplet=False)
-            integrals_angmom_ao = self.pyscfmol.intor('cint1e_giao_irjxp_sph', comp=3)
+            operator_angmom = Operator(
+                label="angmom", is_imaginary=True, is_spin_dependent=False, triplet=False
+            )
+            integrals_angmom_ao = self.pyscfmol.intor("cint1e_giao_irjxp_sph", comp=3)
         else:
-            operator_angmom = Operator(label='angmom', is_imaginary=True, is_spin_dependent=False, triplet=False)
-            integrals_angmom_ao = self.pyscfmol.intor('cint1e_cg_irxp_sph', comp=3)
+            operator_angmom = Operator(
+                label="angmom", is_imaginary=True, is_spin_dependent=False, triplet=False
+            )
+            integrals_angmom_ao = self.pyscfmol.intor("cint1e_cg_irxp_sph", comp=3)
         operator_angmom.ao_integrals = integrals_angmom_ao
         self.driver.add_operator(operator_angmom)
 
@@ -33,9 +46,25 @@ class Magnetizability(ResponseProperty):
 
 
 class ElectronicGTensor(ResponseProperty):
-
-    def __init__(self, pyscfmol, mocoeffs, moenergies, occupations, gauge_origin='ecc', *args, **kwargs):
-        super().__init__(pyscfmol, mocoeffs, moenergies, occupations, frequencies=[0.0], *args, **kwargs)
+    def __init__(
+        self,
+        pyscfmol,
+        mocoeffs,
+        moenergies,
+        occupations,
+        gauge_origin="ecc",
+        *args,
+        **kwargs
+    ):
+        super().__init__(
+            pyscfmol,
+            mocoeffs,
+            moenergies,
+            occupations,
+            frequencies=[0.0],
+            *args,
+            **kwargs
+        )
 
         assert isinstance(gauge_origin, (str, list, tuple, np.ndarray))
         if isinstance(gauge_origin, str):
@@ -53,7 +82,9 @@ class ElectronicGTensor(ResponseProperty):
                 C = mocoeffs[0]
                 nocc_a, _, _, _ = occupations
                 D = 2 * np.dot(C[:, :nocc_a], C[:, :nocc_a].T)
-            self.gauge_origin = helpers.calculate_origin_pyscf(gauge_origin, coords, charges, D, pyscfmol, do_print=True)
+            self.gauge_origin = helpers.calculate_origin_pyscf(
+                gauge_origin, coords, charges, D, pyscfmol, do_print=True
+            )
         else:
             assert len(gauge_origin) == 3
             if isinstance(gauge_origin, np.ndarray):
@@ -63,30 +94,40 @@ class ElectronicGTensor(ResponseProperty):
     def form_operators(self):
 
         # angular momentum
-        operator_angmom = Operator(label='angmom', is_imaginary=True, is_spin_dependent=False, triplet=False)
+        operator_angmom = Operator(
+            label="angmom", is_imaginary=True, is_spin_dependent=False, triplet=False
+        )
         self.pyscfmol.set_common_orig(self.gauge_origin)
-        integrals_angmom_ao = self.pyscfmol.intor('cint1e_cg_irxp_sph', comp=3)
+        integrals_angmom_ao = self.pyscfmol.intor("cint1e_cg_irxp_sph", comp=3)
         operator_angmom.ao_integrals = integrals_angmom_ao
         self.driver.add_operator(operator_angmom)
 
         # spin-orbit (1-electron, exact nuclear charges)
-        operator_spinorb = Operator(label='spinorb', is_imaginary=True, is_spin_dependent=False, triplet=False)
+        operator_spinorb = Operator(
+            label="spinorb", is_imaginary=True, is_spin_dependent=False, triplet=False
+        )
         integrals_spinorb_ao = 0
         for atm_id in range(self.pyscfmol.natm):
             self.pyscfmol.set_rinv_orig(self.pyscfmol.atom_coord(atm_id))
             chg = self.pyscfmol.atom_charge(atm_id)
-            integrals_spinorb_ao += chg * self.pyscfmol.intor('cint1e_prinvxp_sph', comp=3)
+            integrals_spinorb_ao += chg * self.pyscfmol.intor(
+                "cint1e_prinvxp_sph", comp=3
+            )
         operator_spinorb.ao_integrals = integrals_spinorb_ao
         self.driver.add_operator(operator_spinorb)
 
         # spin-orbit (1-electron, effective nuclear charges)
-        operator_spinorb_eff = Operator(label='spinorb_eff', is_imaginary=True, is_spin_dependent=False, triplet=False)
+        operator_spinorb_eff = Operator(
+            label="spinorb_eff", is_imaginary=True, is_spin_dependent=False, triplet=False
+        )
         integrals_spinorb_eff_ao = 0
         for atm_id in range(self.pyscfmol.natm):
             self.pyscfmol.set_rinv_orig(self.pyscfmol.atom_coord(atm_id))
             # chg = self.pyscfmol.atom_effective_charge[atm_id]
             chg = 0
-            integrals_spinorb_eff_ao += chg * self.pyscfmol.intor('cint1e_prinvxp_sph', comp=3)
+            integrals_spinorb_eff_ao += chg * self.pyscfmol.intor(
+                "cint1e_prinvxp_sph", comp=3
+            )
         operator_spinorb_eff.ao_integrals = integrals_spinorb_eff_ao
         self.driver.add_operator(operator_spinorb_eff)
 
@@ -104,22 +145,20 @@ class ElectronicGTensor(ResponseProperty):
         operator_spinorb = self.driver.solver.operators[1]
         operator_spinorb_eff = self.driver.solver.operators[2]
 
-        np_formatter = {
-            'float_kind': lambda x: '{:14.8f}'.format(x)
-        }
+        np_formatter = {"float_kind": lambda x: "{:14.8f}".format(x)}
         # np.set_printoptions(linewidth=200, formatter=np_formatter)
         assert len(self.driver.results) == 1
         results = self.driver.results[0]
         assert results.shape == (9, 9)
-        block_1 = results[0:3, 0:3] # angmom/angmom
-        block_2 = results[0:3, 3:6] # angmom/spinorb
-        block_3 = results[0:3, 6:9] # angmom/spinorb_eff
-        block_4 = results[3:6, 0:3] # spinorb/angmom
-        block_5 = results[3:6, 3:6] # spinorb/spinorb
-        block_6 = results[3:6, 6:9] # spinorb/spinorb_eff
-        block_7 = results[6:9, 0:3] # spinorb_eff/angmom
-        block_8 = results[6:9, 3:6] # spinorb_eff/spinorb
-        block_9 = results[6:9, 6:9] # spinorb_eff/spinorb_eff
+        block_1 = results[0:3, 0:3]  # angmom/angmom
+        block_2 = results[0:3, 3:6]  # angmom/spinorb
+        block_3 = results[0:3, 6:9]  # angmom/spinorb_eff
+        block_4 = results[3:6, 0:3]  # spinorb/angmom
+        block_5 = results[3:6, 3:6]  # spinorb/spinorb
+        block_6 = results[3:6, 6:9]  # spinorb/spinorb_eff
+        block_7 = results[6:9, 0:3]  # spinorb_eff/angmom
+        block_8 = results[6:9, 3:6]  # spinorb_eff/spinorb
+        block_9 = results[6:9, 6:9]  # spinorb_eff/spinorb_eff
 
         nalph, nbeta = self.pyscfmol.nelec
         exact_spin = 0.5 * (nalph - nbeta)
