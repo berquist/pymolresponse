@@ -51,7 +51,7 @@ if __name__ == "__main__":
         cmdclass=versioneer.get_cmdclass(),
         license='BSD-3-Clause',
         packages=find_packages(exclude=["*test*"]),
-        package_data={"pyresponse": _get_package_data()},
+        package_data={"pyresponse": tuple(str(f) for f in _get_package_data())},
         url="https://github.com/berquist/pyresponse",
         python_requires=">=3.6",
         # install_requires=[
