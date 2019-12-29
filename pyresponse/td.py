@@ -18,7 +18,15 @@ class TDHF(CPHF):
     def __init__(self, solver, *args, **kwargs):
         super().__init__(solver, *args, **kwargs)
 
-    def run(self, solver_type=None, hamiltonian=None, spin=None, **kwargs):
+    def run(
+        self,
+        solver_type=None,
+        hamiltonian=None,
+        spin=None,
+        program=None,
+        program_obj=None,
+        **kwargs,
+    ):
 
         assert self.solver is not None
         assert isinstance(self.solver, (EigSolver,))
@@ -41,6 +49,10 @@ class TDHF(CPHF):
 
         if "exact" in solver_type:
             assert isinstance(self.solver, (ExactDiagonalizationSolver,))
+            if not self.solver.tei_mo:
+                assert program is not None
+                assert program_obj is not None
+                self.solver.form_tei_mo(program, program_obj)
             self.solver.form_explicit_hessian(hamiltonian, spin, None)
             self.solver.diagonalize_explicit_hessian()
         else:

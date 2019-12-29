@@ -35,7 +35,11 @@ class MolecularProperty(ABC):
         assert isinstance(spin, str)
         assert self.driver.solver is not None
         self.driver.run(
-            solver_type="exact", hamiltonian=hamiltonian.lower(), spin=spin.lower()
+            solver_type="exact",
+            hamiltonian=hamiltonian.lower(),
+            spin=spin.lower(),
+            program=self.program,
+            program_obj=self.program_obj,
         )
 
     @abstractmethod
@@ -75,10 +79,6 @@ class ResponseProperty(MolecularProperty, ABC):
         else:
             solver = iterators.ExactInv(mocoeffs, moenergies, occupations)
 
-        # TODO this doesn't belong here.
-        if solver.tei_mo is None:
-            solver.form_tei_mo(program, program_obj)
-
         if "driver" in kwargs:
             driver = kwargs["driver"]
         else:
@@ -112,10 +112,6 @@ class TransitionProperty(MolecularProperty, ABC):
             solver = iterators.ExactDiagonalizationSolver(
                 mocoeffs, moenergies, occupations
             )
-
-        # TODO this doesn't belong here.
-        if solver.tei_mo is None:
-            solver.form_tei_mo(program, program_obj)
 
         if kwargs.get("driver", None):
             driver = kwargs["driver"]

@@ -38,8 +38,15 @@ class CPHF:
         assert self.solver is not None
         self.solver.add_operator(operator)
 
-    def run(self, solver_type=None, hamiltonian=None, spin=None, **kwargs):
-
+    def run(
+        self,
+        solver_type=None,
+        hamiltonian=None,
+        spin=None,
+        program=None,
+        program_obj=None,
+        **kwargs
+    ):
         assert self.solver is not None
         assert isinstance(self.solver, (LineqSolver,))
 
@@ -63,6 +70,10 @@ class CPHF:
 
         if "exact" in solver_type:
             assert isinstance(self.solver, (ExactLineqSolver,))
+            if not self.solver.tei_mo:
+                assert program is not None
+                assert program_obj is not None
+                self.solver.form_tei_mo(program, program_obj)
             for frequency in self.frequencies:
                 self.solver.form_explicit_hessian(hamiltonian, spin, frequency)
                 self.solver.invert_explicit_hessian()
