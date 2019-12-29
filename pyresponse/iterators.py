@@ -27,11 +27,25 @@ from pyresponse.interfaces import Program
 
 
 class Solver(ABC):
+    """A Solver does all of the TODO
+
+    There are two principal algorithm classes for forming response vectors:
+
+    - Exact, where the full electronic Hessian is formed explicitly,
+      diagonalized, and then contracted with property gradient vectors to
+      response vectors, or
+
+    - Iterative, where the electronic Hessian is never formed explicitly, TODO
+    """
+
     def __init__(self, mocoeffs, moenergies, occupations, *args, **kwargs):
 
+        # MO coefficients: the first axis is alpha/beta
         assert len(mocoeffs.shape) == 3
         assert (mocoeffs.shape[0] == 1) or (mocoeffs.shape[0] == 2)
         self.is_uhf = mocoeffs.shape[0] == 2
+        # MO energies: the first axis is alpha/beta, the other two represent a
+        # diagonal square matrix.
         assert len(moenergies.shape) == 3
         assert (moenergies.shape[0] == 1) or (moenergies.shape[0] == 2)
         if self.is_uhf:
@@ -153,11 +167,17 @@ class Solver(ABC):
 
 
 class LineqSolver(Solver):
+    """Abstract class for all solvers of the type $AX = B$."""
+
     def __init__(self, mocoeffs, moenergies, occupations, *args, **kwargs):
         super().__init__(mocoeffs, moenergies, occupations, *args, **kwargs)
 
 
 class ExactLineqSolver(LineqSolver, ABC):
+    """Abstract class for all solvers of the type $AX = B$, where $A$ is formed
+    explicitly.
+    """
+
     def __init__(self, mocoeffs, moenergies, occupations, *args, **kwargs):
         super().__init__(mocoeffs, moenergies, occupations, *args, **kwargs)
 
@@ -585,14 +605,71 @@ class ExactInvCholesky(ExactLineqSolver):
 
 
 class IterativeLinEqSolver(LineqSolver):
-    def __init__(self, mocoeffs, moenergies, occupations, *args, **kwargs):
+    def __init__(self, mocoeffs, moenergies, occupations, jk_generator, *args, **kwargs):
         super().__init__(mocoeffs, moenergies, occupations, *args, **kwargs)
 
         # TODO
-        self.jk_engine = None
+        self.jk_generator = jk_generator
 
-    def run(self):
-        pass
+    def run(self, hamiltonian, spin, frequency, maxiter=40):
+        if self.is_uhf:
+            raise RuntimeError
+        else:
+            epsilon = np.diag(self.moenergies[0])
+            C = self.mocoeffs[0]
+            nocc = self.occupations[0]
+            Co = C[:, :nocc]
+            Cv = C[:, nocc:]
+            for operator in self.operators:
+                ncomponents = operator.ao_integrals.shape[0]
+                x_l = []
+                x_r = []
+                x_l_old = []
+                x_r_old = []
+                # TODO we already compute and store {ai} but for now stealing
+                # the {ia} algorithm
+                mo_integrals_ia = [
+                    -2 * (Co.T).dot(operator.ao_integrals[component]).dot(Cv)
+                    for component in range(ncomponents)
+                ]
+                ia_denom_l = epsilon[nocc:] - epsilon[:nocc].reshape(-1, 1) - omega
+                ia_denom_r = epsilon[nocc:] - epsilon[:nocc].reshape(-1, 1) + omega
+                for component in range(ncomponents):
+                    x_l.append(mo_integrals_ia[component] / ia_denom_l)
+                    x_r.append(mo_integrals_ia[component] / ia_denom_r)
+                    x_l_old.append(np.zeros_like(ia_denom_l))
+                    x_r_old.append(np.zeros_like(ia_denom_r))
+                C_left = Co
+                for i in range(1, maxiter + 1):
+                    for component in range(ncomponents):
+                        C_right_l = Cv.dot(x_l[component].T)
+                        C_right_r = Cv.dot(x_r[component].T)
+                        J_l, K_l = self.jk_generator.compute_from_mocoeffs(
+                            C_left, C_right_l
+                        )
+                        J_r, K_r = self.jk_generator.compute_from_mocoeffs(
+                            C_left, C_right_r
+                        )
+                        X_l = mo_integrals_ia[component].copy()
+                        X_r = mo_integrals_ia[component].copy()
+                        X_l -= (Co.T).dot(2 * J_l - K_l).dot(Cv)
+                        X_r -= (Co.T).dot(2 * J_r - K_r).dot(Cv)
+                        X_l /= ia_denom_l
+                        X_r /= ia_denom_r
+                        x_l[component] = X_l.copy()
+                        x_r[component] = X_r.copy()
+                    rms = []
+                    for component in range(ncomponents):
+                        rms_l = np.max((x_l[component] - x_l_old[component]) ** 2)
+                        rms_r = np.max((x_r[component] - x_r_old[component]) ** 2)
+                        rms.append(max(rms_l, rms_r))
+                        x_l_old[component] = x_l[component]
+                        x_r_old[component] = x_r[component]
+                    avg_rms = np.mean(rms)
+                    max_rms = max(rms)
+                    if max_rms < conv:
+                        break
+                    print(f"CPHF Iteration {i:3d}: Average RMS = {avg_rms:3.8f}  Maximum RMS = {max_rms:3.8f}")
 
 
 class EigSolver(Solver):

@@ -1,12 +1,18 @@
 """Driver for solving the coupled perturbed Hartree-Fock (CPHF) equations."""
 
+from abc import ABC
+
 import numpy as np
 
 from pyresponse.iterators import ExactLineqSolver, LineqSolver
 from pyresponse.utils import form_results, form_vec_energy_differences
 
 
-class CPHF:
+class Driver(ABC):
+    pass
+
+
+class CPHF(Driver):
     """Driver for solving the coupled perturbed Hartree-Fock (CPHF) equations."""
 
     def __init__(self, solver, *args, **kwargs):
@@ -16,7 +22,7 @@ class CPHF:
         self.hamiltonian = "rpa"
         self.spin = "singlet"
 
-        self.solver_type = "exact"
+        # self.solver_type = "exact"
 
         self.results = []
 
@@ -79,7 +85,8 @@ class CPHF:
                 self.solver.invert_explicit_hessian()
                 self.solver.form_response_vectors()
         else:
-            raise NotImplementedError
+            for frequency in self.frequencies:
+                self.solver.run(hamiltonian, spin, frequency)
 
         self.form_uncoupled_results()
         self.form_results()

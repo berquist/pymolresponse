@@ -24,7 +24,7 @@ class MolecularProperty(ABC):
         self.solver = None
         self.driver = None
 
-    def run(self, hamiltonian=None, spin=None):
+    def run(self, hamiltonian=None, spin=None, solver_type=None):
         assert hasattr(self, "driver")
         assert self.driver is not None
         if hamiltonian is None:
@@ -35,7 +35,7 @@ class MolecularProperty(ABC):
         assert isinstance(spin, str)
         assert self.driver.solver is not None
         self.driver.run(
-            solver_type="exact",
+            solver_type=solver_type,
             hamiltonian=hamiltonian.lower(),
             spin=spin.lower(),
             program=self.program,

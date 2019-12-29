@@ -62,24 +62,24 @@ def test_iterators():
     return
 
 
-# def test_final_result_rhf_h2o_sto3g_rpa_singlet_iter():
-#     hamiltonian = "rpa"
-#     spin = "singlet"
+def test_final_result_rhf_h2o_sto3g_rpa_singlet_iter():
+    hamiltonian = "rpa"
+    spin = "singlet"
 
-#     mol = molecules_psi4.molecule_glycine_sto3g()
-#     # import pdb; pdb.set_trace()
-#     _, wfn = psi4.energy("hf", return_wfn=True)
-#     C = utils.mocoeffs_from_psi4wfn(wfn)
-#     E = utils.moenergies_from_psi4wfn(wfn)
-#     occupations = utils.occupations_from_psi4wfn(wfn)
-#     frequencies = [0.0]
+    mol = molecules_psi4.molecule_glycine_sto3g()
+    psi4.core.set_active_molecule(mol)
+    _, wfn = psi4.energy("hf", return_wfn=True)
+    C = utils.mocoeffs_from_psi4wfn(wfn)
+    E = utils.moenergies_from_psi4wfn(wfn)
+    occupations = utils.occupations_from_psi4wfn(wfn)
+    frequencies = [0.0]
 
-#     polarizability = Polarizability(mol, C, E, occupations, frequencies)
-#     polarizability.form_operators()
-#     polarizability.run(hamiltonian=hamiltonian, spin=spin)
-#     polarizability.form_results()
+    polarizability = Polarizability(Program.Psi4, mol, C, E, occupations, frequencies)
+    polarizability.form_operators()
+    polarizability.run(hamiltonian=hamiltonian, spin=spin, solver_type="iter")
+    polarizability.form_results()
 
 
 if __name__ == "__main__":
-    test_iterators()
-    # test_final_result_rhf_h2o_sto3g_rpa_singlet_iter()
+    # test_iterators()
+    test_final_result_rhf_h2o_sto3g_rpa_singlet_iter()
