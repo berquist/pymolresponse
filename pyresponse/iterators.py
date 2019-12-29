@@ -69,8 +69,22 @@ class Solver(ABC):
             ao2mo = AO2MOpyscf(self.mocoeffs, program_obj.verbose, program_obj)
         elif program == Program.Psi4:
             from pyresponse.ao2mo import AO2MO
+            import psi4
 
-            ao2mo = AO2MO(self.mocoeffs, self.occupations)
+            assert isinstance(program_obj, psi4.core.Molecule)
+            ao2mo = AO2MO(
+                self.mocoeffs,
+                self.occupations,
+                I=psi4.core.MintsHelper(
+                    psi4.core.Wavefunction.build(
+                        program_obj, psi4.core.get_global_option("BASIS")
+                    ).basisset()
+                )
+                .ao_eri()
+                .np,
+            )
+        else:
+            raise RuntimeError
         if tei_mo_type == "partial" and nden == 2:
             ao2mo.perform_uhf_partial()
         elif tei_mo_type == "partial" and nden == 1:

@@ -4,28 +4,33 @@ import numpy as np
 
 import psi4
 
-from pyresponse.integrals import JK, Integrals
+from pyresponse.integrals import JK, IntegralLabel, Integrals
 
-
-@unique
-class LabelPsi4(Enum):
-    DIPOLE = auto()
-    DIPVEL = auto()
-    ANGMOM_COMMON_GAUGE = auto()
+DIPOLE = object()
+DIPVEL = object()
+ANGMOM_COMMON_GAUGE = object()
 
 
 class IntegralsPsi4(Integrals):
-    def __init__(self, wfn, *args, **kwargs):
+    def __init__(self, wfn_or_mol, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+        if isinstance(wfn_or_mol, psi4.core.Molecule):
+            wfn = psi4.core.Wavefunction.build(
+                wfn_or_mol, psi4.core.get_global_option("BASIS")
+            )
+        elif isinstance(wfn_or_mol, psi4.core.Wavefunction):
+            wfn = wfn_or_mol
+        else:
+            raise RuntimeError
         self._mints = psi4.core.MintsHelper(wfn)
 
-    def _compute(self, label: LabelPsi4):
-        if label == LabelPsi4.DIPOLE:
+    def _compute(self, label):
+        if label == DIPOLE:
             return np.stack([np.asarray(Mc) for Mc in self._mints.ao_dipole()])
-        elif label == LabelPsi4.DIPVEL:
+        elif label == DIPVEL:
             return np.stack([np.asarray(Mc) for Mc in self._mints.ao_nabla()])
-        elif label == LabelPsi4.ANGMOM_COMMON_GAUGE:
+        elif label == ANGMOM_COMMON_GAUGE:
             return np.stack([np.asarray(Lc) for Lc in self._mints.ao_angular_momentum()])
         else:
             raise RuntimeError

@@ -1,8 +1,27 @@
 from abc import ABC, abstractmethod
+from enum import Enum, auto, unique
+from typing import Optional
 
 import numpy as np
+from attr import attrib, attrs
+from attr.validators import instance_of, optional
 
 STARS = "********"
+
+
+@unique
+class IntegralSymmetry(Enum):
+    SYMMETRIC = auto()
+    ANTISYMMETRIC = auto()
+
+
+@attrs(frozen=True, slots=True)
+class IntegralLabel:
+    label: str = attrib(validator=instance_of(str))
+    comp: Optional[int] = attrib(validator=optional(instance_of(int)), default=None)
+    symmetry: IntegralSymmetry = attrib(
+        validator=instance_of(IntegralSymmetry), default=IntegralSymmetry.SYMMETRIC
+    )
 
 
 class Integrals(ABC):

@@ -37,7 +37,7 @@ class Polarizability(ResponseProperty):
 
             integral_generator = integrals.IntegralsPyscf(self.program_obj)
         elif self.program == Program.Psi4:
-            from pyresponse.pyscf import integrals
+            from pyresponse.psi4 import integrals
 
             integral_generator = integrals.IntegralsPsi4(self.program_obj)
         else:
