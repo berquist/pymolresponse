@@ -5,6 +5,7 @@ import numpy as np
 import pyscf
 
 from pyresponse import electric, utils
+from pyresponse.interfaces import Program
 from pyresponse.pyscf.molecules import (
     molecule_physicists_water_augccpvdz,
     molecule_physicists_water_sto3g,
@@ -28,7 +29,9 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_small
     f1 = 0.0773178
     f2 = 2 * f1
     frequencies = [f1, f2]
-    calculator = electric.Polarizability(mol, C, E, occupations, frequencies=frequencies)
+    calculator = electric.Polarizability(
+        Program.PySCF, mol, C, E, occupations, frequencies=frequencies
+    )
     calculator.form_operators()
     calculator.run()
     calculator.form_results()
@@ -329,7 +332,9 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_large
     f1 = 0.0773178
     f2 = 2 * f1
     frequencies = [f1, f2]
-    calculator = electric.Polarizability(mol, C, E, occupations, frequencies=frequencies)
+    calculator = electric.Polarizability(
+        Program.PySCF, mol, C, E, occupations, frequencies=frequencies
+    )
     calculator.form_operators()
     calculator.run()
     calculator.form_results()
@@ -623,7 +628,7 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_large
 #     f1 = 0.0773178
 #     f2 = 2 * f1
 #     frequencies = [f1, f2]
-#     calculator = electric.Polarizability(mol, C, E, occupations, frequencies=frequencies)
+#     calculator = electric.Polarizability(Program.PySCF, mol, C, E, occupations, frequencies=frequencies)
 #     calculator.form_operators()
 #     calculator.run()
 #     calculator.form_results()

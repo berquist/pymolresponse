@@ -1,17 +1,22 @@
+from abc import ABC, abstractmethod
+
 import numpy as np
 
 from pyresponse import iterators
 from pyresponse.cphf import CPHF
+from pyresponse.interfaces import Program
 from pyresponse.td import TDA, TDHF
 
 
-class MolecularProperty:
-    def __init__(self, pyscfmol, mocoeffs, moenergies, occupations, *args, **kwargs):
-        # TODO add more type assertions (pyscfmol)
+class MolecularProperty(ABC):
+    def __init__(
+        self, program, program_obj, mocoeffs, moenergies, occupations, *args, **kwargs
+    ):
         assert isinstance(mocoeffs, np.ndarray)
         assert isinstance(moenergies, np.ndarray)
         assert isinstance(occupations, (np.ndarray, tuple, list))
-        self.pyscfmol = pyscfmol
+        self.program = program
+        self.program_obj = program_obj
         self.mocoeffs = mocoeffs
         self.moenergies = moenergies
         self.occupations = np.asarray(occupations)
@@ -33,17 +38,20 @@ class MolecularProperty:
             solver_type="exact", hamiltonian=hamiltonian.lower(), spin=spin.lower()
         )
 
+    @abstractmethod
     def form_operators(self):
-        raise NotImplementedError("This must be implemented in a grandchild class.")
+        pass
 
+    @abstractmethod
     def form_results(self):
-        raise NotImplementedError("This must be implemented in a grandchild class.")
+        pass
 
 
-class ResponseProperty(MolecularProperty):
+class ResponseProperty(MolecularProperty, ABC):
     def __init__(
         self,
-        pyscfmol,
+        program,
+        program_obj,
         mocoeffs,
         moenergies,
         occupations,
@@ -51,7 +59,9 @@ class ResponseProperty(MolecularProperty):
         *args,
         **kwargs
     ):
-        super().__init__(pyscfmol, mocoeffs, moenergies, occupations, *args, **kwargs)
+        super().__init__(
+            program, program_obj, mocoeffs, moenergies, occupations, *args, **kwargs
+        )
 
         # Don't allow a single number; force one of the basic
         # iterables.
@@ -67,7 +77,7 @@ class ResponseProperty(MolecularProperty):
 
         # TODO this doesn't belong here.
         if solver.tei_mo is None:
-            solver.form_tei_mo(pyscfmol)
+            solver.form_tei_mo(program, program_obj)
 
         if "driver" in kwargs:
             driver = kwargs["driver"]
@@ -77,16 +87,22 @@ class ResponseProperty(MolecularProperty):
 
         self.driver.set_frequencies(frequencies)
 
+    @abstractmethod
     def form_operators(self):
-        raise NotImplementedError("This must be implemented in a child class.")
+        pass
 
+    @abstractmethod
     def form_results(self):
-        raise NotImplementedError("This must be implemented in a child class.")
+        pass
 
 
-class TransitionProperty(MolecularProperty):
-    def __init__(self, pyscfmol, mocoeffs, moenergies, occupations, *args, **kwargs):
-        super().__init__(pyscfmol, mocoeffs, moenergies, occupations, *args, **kwargs)
+class TransitionProperty(MolecularProperty, ABC):
+    def __init__(
+        self, program, program_obj, mocoeffs, moenergies, occupations, *args, **kwargs
+    ):
+        super().__init__(
+            program, program_obj, mocoeffs, moenergies, occupations, *args, **kwargs
+        )
 
         if "solver" in kwargs:
             solver = kwargs["solver"]
@@ -99,7 +115,7 @@ class TransitionProperty(MolecularProperty):
 
         # TODO this doesn't belong here.
         if solver.tei_mo is None:
-            solver.form_tei_mo(pyscfmol)
+            solver.form_tei_mo(program, program_obj)
 
         if kwargs.get("driver", None):
             driver = kwargs["driver"]
@@ -110,8 +126,10 @@ class TransitionProperty(MolecularProperty):
         self.driver = driver(solver)
         assert isinstance(self.driver, (TDHF,))
 
+    @abstractmethod
     def form_operators(self):
-        raise NotImplementedError("This must be implemented in a child class.")
+        pass
 
+    @abstractmethod
     def form_results(self):
-        raise NotImplementedError("This must be implemented in a child class.")
+        pass

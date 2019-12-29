@@ -4,6 +4,7 @@ import scipy.constants as spc
 import pyscf
 
 from pyresponse import magnetic, utils
+from pyresponse.interfaces import Program
 from pyresponse.pyscf import molecules
 
 # These were generated using DALTON.
@@ -35,7 +36,7 @@ def test_magnetizability_rhf():
     E = utils.fix_moenergies_shape(mf.mo_energy)
     occupations = utils.occupations_from_pyscf_mol(mol, C)
 
-    calculator_common = magnetic.Magnetizability(mol, C, E, occupations)
+    calculator_common = magnetic.Magnetizability(Program.PySCF, mol, C, E, occupations)
     calculator_common.form_operators()
     calculator_common.run(hamiltonian="rpa", spin="singlet")
     calculator_common.form_results()
@@ -68,7 +69,7 @@ def test_magnetizability_uhf():
     E = utils.fix_moenergies_shape(mf.mo_energy)
     occupations = utils.occupations_from_pyscf_mol(mol, C)
 
-    calculator_common = magnetic.Magnetizability(mol, C, E, occupations)
+    calculator_common = magnetic.Magnetizability(Program.PySCF, mol, C, E, occupations)
     calculator_common.form_operators()
     calculator_common.run(hamiltonian="rpa", spin="singlet")
     calculator_common.form_results()
@@ -113,7 +114,7 @@ def test_electronicgtensor_tiny():
     E = utils.fix_moenergies_shape(mf.mo_energy)
     occupations = utils.occupations_from_pyscf_mol(mol, C)
 
-    gtensor_calculator = magnetic.ElectronicGTensor(mol, C, E, occupations)
+    gtensor_calculator = magnetic.ElectronicGTensor(Program.PySCF, mol, C, E, occupations)
     gtensor_calculator.form_operators()
     gtensor_calculator.run(hamiltonian="rpa", spin="singlet")
     gtensor_calculator.form_results()
@@ -143,7 +144,7 @@ def test_electronicgtensor_small():
     E = utils.fix_moenergies_shape(mf.mo_energy)
     occupations = utils.occupations_from_pyscf_mol(mol, C)
 
-    gtensor_calculator = magnetic.ElectronicGTensor(mol, C, E, occupations)
+    gtensor_calculator = magnetic.ElectronicGTensor(Program.PySCF, mol, C, E, occupations)
     gtensor_calculator.form_operators()
     gtensor_calculator.run(hamiltonian="rpa", spin="singlet")
     gtensor_calculator.form_results()

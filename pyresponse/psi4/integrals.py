@@ -1,8 +1,17 @@
+from enum import Enum, auto, unique
+
 import numpy as np
 
 import psi4
 
 from pyresponse.integrals import JK, Integrals
+
+
+@unique
+class LabelPsi4(Enum):
+    DIPOLE = auto()
+    DIPVEL = auto()
+    ANGMOM_COMMON_GAUGE = auto()
 
 
 class IntegralsPsi4(Integrals):
@@ -11,9 +20,13 @@ class IntegralsPsi4(Integrals):
 
         self._mints = psi4.core.MintsHelper(wfn)
 
-    def _compute(self, label):
-        if label == "dipole":
+    def _compute(self, label: LabelPsi4):
+        if label == LabelPsi4.DIPOLE:
             return np.stack([np.asarray(Mc) for Mc in self._mints.ao_dipole()])
+        elif label == LabelPsi4.DIPVEL:
+            return np.stack([np.asarray(Mc) for Mc in self._mints.ao_nabla()])
+        elif label == LabelPsi4.ANGMOM_COMMON_GAUGE:
+            return np.stack([np.asarray(Lc) for Lc in self._mints.ao_angular_momentum()])
         else:
             raise RuntimeError
 

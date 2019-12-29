@@ -3,6 +3,7 @@ import numpy as np
 import pyscf
 
 from pyresponse import optrot, utils
+from pyresponse.interfaces import Program
 from pyresponse.pyscf import molecules
 
 BC2H4_cation_HF_STO3G_RPA_singlet_nwchem = {
@@ -204,7 +205,13 @@ def test_ORD_RPA_singlet_BC2H4_cation_HF_STO3G():
 
     frequencies = [0.0, 0.001, 0.0773178, 0.128347]
     ord_solver = optrot.ORD(
-        pyscfmol, C, E, occupations, frequencies=frequencies, do_dipvel=False
+        Program.PySCF,
+        pyscfmol,
+        C,
+        E,
+        occupations,
+        frequencies=frequencies,
+        do_dipvel=False,
     )
     ord_solver.form_operators()
     ord_solver.run(hamiltonian="rpa", spin="singlet")
@@ -267,7 +274,13 @@ def test_ORD_RPA_singlet_BC2H4_HF_STO3G():
 
     frequencies = [0.0, 0.001, 0.0773178, 0.128347]
     ord_solver = optrot.ORD(
-        pyscfmol, C, E, occupations, frequencies=frequencies, do_dipvel=False
+        Program.PySCF,
+        pyscfmol,
+        C,
+        E,
+        occupations,
+        frequencies=frequencies,
+        do_dipvel=False,
     )
     ord_solver.form_operators()
     ord_solver.run(hamiltonian="rpa", spin="singlet")
@@ -321,7 +334,13 @@ def test_ORD_RPA_singlet_trithiolane_HF_STO3G():
 
     frequencies = [0.0, 0.0773178, 0.128347]
     ord_solver = optrot.ORD(
-        pyscfmol, C, E, occupations, frequencies=frequencies, do_dipvel=False
+        Program.PySCF,
+        pyscfmol,
+        C,
+        E,
+        occupations,
+        frequencies=frequencies,
+        do_dipvel=False,
     )
     ord_solver.form_operators()
     ord_solver.run(hamiltonian="rpa", spin="singlet")

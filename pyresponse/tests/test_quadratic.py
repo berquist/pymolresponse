@@ -5,6 +5,7 @@ import numpy as np
 import pyscf
 
 from pyresponse import electric, utils
+from pyresponse.interfaces import Program
 from pyresponse.pyscf.molecules import molecule_water_sto3g_angstrom
 
 
@@ -22,7 +23,9 @@ def test_first_hyperpolarizability_static_rhf_wigner_explicit():
     norb = nocc_alph + nvirt_alph
 
     # calculate linear response vectors for electric dipole operator
-    calculator = electric.Polarizability(mol, C, E, occupations, frequencies=[0.0])
+    calculator = electric.Polarizability(
+        Program.PySCF, mol, C, E, occupations, frequencies=[0.0]
+    )
     calculator.form_operators()
     calculator.run()
     calculator.form_results()
@@ -270,7 +273,9 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit():
     f1 = 0.0773178
     f2 = 2 * f1
     frequencies = [f1, f2]
-    calculator = electric.Polarizability(mol, C, E, occupations, frequencies=frequencies)
+    calculator = electric.Polarizability(
+        Program.PySCF, mol, C, E, occupations, frequencies=frequencies
+    )
     calculator.form_operators()
     calculator.run()
     calculator.form_results()
@@ -634,7 +639,9 @@ def test_first_hyperpolarizability_eope_rhf_wigner_explicit():
     f1 = 0.0
     f2 = 0.0773178
     frequencies = [f1, f2]
-    calculator = electric.Polarizability(mol, C, E, occupations, frequencies=frequencies)
+    calculator = electric.Polarizability(
+        Program.PySCF, mol, C, E, occupations, frequencies=frequencies
+    )
     calculator.form_operators()
     calculator.run()
     calculator.form_results()
@@ -877,7 +884,9 @@ def test_first_hyperpolarizability_or_rhf_wigner_explicit():
     f1 = 0.0
     f2 = 0.0773178
     frequencies = [f1, f2]
-    calculator = electric.Polarizability(mol, C, E, occupations, frequencies=frequencies)
+    calculator = electric.Polarizability(
+        Program.PySCF, mol, C, E, occupations, frequencies=frequencies
+    )
     calculator.form_operators()
     calculator.run()
     calculator.form_results()
@@ -1118,7 +1127,7 @@ def test_first_hyperpolarizability_or_rhf_wigner_explicit():
 #     f1 = 0.0773178
 #     f2 = 0.1283470
 #     frequencies = [f1, f2]
-#     calculator = electric.Polarizability(mol, C, E, occupations, frequencies=frequencies)
+#     calculator = electric.Polarizability(Program.PySCF, mol, C, E, occupations, frequencies=frequencies)
 #     calculator.form_operators()
 #     calculator.run()
 #     calculator.form_results()

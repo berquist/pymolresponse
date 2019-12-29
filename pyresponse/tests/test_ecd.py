@@ -3,6 +3,7 @@ import numpy as np
 import pyscf
 
 from pyresponse import ecd, utils
+from pyresponse.interfaces import Program
 from pyresponse.pyscf import molecules
 
 BC2H4_cation_HF_STO3G_RPA_singlet_nwchem = {
@@ -163,7 +164,7 @@ def test_ECD_TDA_singlet_BC2H4_cation_HF_STO3G():
     E = utils.fix_moenergies_shape(mf.mo_energy)
     occupations = utils.occupations_from_pyscf_mol(mol, C)
 
-    ecd_dipvel_tda = ecd.ECD(mol, C, E, occupations, do_dipvel=True)
+    ecd_dipvel_tda = ecd.ECD(Program.PySCF, mol, C, E, occupations, do_dipvel=True)
     ecd_dipvel_tda.form_operators()
     ecd_dipvel_tda.run(hamiltonian="tda", spin="singlet")
     ecd_dipvel_tda.form_results()
@@ -246,7 +247,7 @@ def test_ECD_RPA_singlet_BC2H4_cation_HF_STO3G():
     E = utils.fix_moenergies_shape(mf.mo_energy)
     occupations = utils.occupations_from_pyscf_mol(mol, C)
 
-    ecd_dipvel_rpa = ecd.ECD(mol, C, E, occupations, do_dipvel=True)
+    ecd_dipvel_rpa = ecd.ECD(Program.PySCF, mol, C, E, occupations, do_dipvel=True)
     ecd_dipvel_rpa.form_operators()
     ecd_dipvel_rpa.run(hamiltonian="rpa", spin="singlet")
     ecd_dipvel_rpa.form_results()

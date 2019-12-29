@@ -6,6 +6,7 @@ import pyscf
 
 from pyresponse import iterators, magnetic, utils
 from pyresponse.electric import Polarizability
+from pyresponse.interfaces import Program
 from pyresponse.psi4 import molecules as molecules_psi4
 from pyresponse.pyscf import molecules as molecules_pyscf
 
@@ -28,11 +29,12 @@ def test_iterators():
     occupations = utils.occupations_from_pyscf_mol(mol, C)
 
     solver_ref = iterators.ExactInv(C, E, occupations)
-    calculator_ref = magnetic.Magnetizability(mol, C, E, occupations, solver=solver_ref)
+    calculator_ref = magnetic.Magnetizability(
+        Program.PySCF, mol, C, E, occupations, solver=solver_ref
+    )
     calculator_ref.form_operators()
     calculator_ref.run(hamiltonian="rpa", spin="singlet")
     calculator_ref.form_results()
-    print(calculator_ref.magnetizability)
 
     ref = calculator_ref.magnetizability
     inv_funcs = (sp.linalg.inv, sp.linalg.pinv, sp.linalg.pinv2)
@@ -42,18 +44,15 @@ def test_iterators():
     for inv_func in inv_funcs:
         solver_res = iterators.ExactInv(C, E, occupations, inv_func=inv_func)
         calculator_res = magnetic.Magnetizability(
-            mol, C, E, occupations, solver=solver_res
+            Program.PySCF, mol, C, E, occupations, solver=solver_res
         )
         calculator_res.form_operators()
         calculator_res.run(hamiltonian="rpa", spin="singlet")
         calculator_res.form_results()
-        print(calculator_res.magnetizability)
 
-        assert np.all(
-            np.equal(
-                np.sign(calculator_ref.magnetizability),
-                np.sign(calculator_res.magnetizability),
-            )
+        np.testing.assert_equal(
+            np.sign(calculator_ref.magnetizability),
+            np.sign(calculator_res.magnetizability),
         )
         diff = calculator_ref.magnetizability - calculator_res.magnetizability
         abs_diff = np.abs(diff)

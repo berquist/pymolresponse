@@ -23,7 +23,7 @@ from pyresponse.explicit_equations_partial import (
     form_rpa_b_matrix_mo_singlet_ss_partial,
     form_rpa_b_matrix_mo_triplet_partial,
 )
-from pyresponse.pyscf.ao2mo import AO2MOpyscf
+from pyresponse.interfaces import Program
 
 
 class Solver(ABC):
@@ -39,6 +39,7 @@ class Solver(ABC):
         else:
             assert moenergies.shape[0] == 1
         assert moenergies.shape[1] == moenergies.shape[2]
+
         assert len(occupations) == 4
 
         self.mocoeffs = mocoeffs
@@ -58,11 +59,18 @@ class Solver(ABC):
         self.explicit_hessian = None
         self.explicit_hessian_inv = None
 
-    def form_tei_mo(self, pyscfmol, tei_mo_type="partial"):
+    def form_tei_mo(self, program, program_obj, tei_mo_type="partial"):
         assert tei_mo_type in ("partial", "full")
         nden = self.mocoeffs.shape[0]
         assert nden in (1, 2)
-        ao2mo = AO2MOpyscf(self.mocoeffs, pyscfmol.verbose, pyscfmol)
+        if program == Program.PySCF:
+            from pyresponse.pyscf.ao2mo import AO2MOpyscf
+
+            ao2mo = AO2MOpyscf(self.mocoeffs, program_obj.verbose, program_obj)
+        elif program == Program.Psi4:
+            from pyresponse.ao2mo import AO2MO
+
+            ao2mo = AO2MO(self.mocoeffs, self.occupations)
         if tei_mo_type == "partial" and nden == 2:
             ao2mo.perform_uhf_partial()
         elif tei_mo_type == "partial" and nden == 1:

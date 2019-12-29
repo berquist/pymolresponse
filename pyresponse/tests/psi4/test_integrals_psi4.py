@@ -29,7 +29,7 @@ def test_integrals_psi4():
 
     np.testing.assert_equal(
         np.stack([np.asarray(Mc) for Mc in mints.ao_dipole()]),
-        integral_generator.integrals("dipole"),
+        integral_generator.integrals(integrals.LabelPsi4.DIPOLE),
     )
 
 

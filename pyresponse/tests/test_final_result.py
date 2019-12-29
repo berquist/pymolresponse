@@ -2,6 +2,7 @@ import numpy as np
 
 from pyresponse import cphf, electric, iterators, operators, utils
 from pyresponse.data import REFDIR
+from pyresponse.interfaces import Program
 from pyresponse.pyscf import molecules
 from pyresponse.tests.test_runners import (
     run_as_many_tests_as_possible_rhf_disk,
@@ -41,22 +42,15 @@ def test_final_result_rhf_h2o_sto3g_rpa_singlet():
 
     assert len(driver.results) == len(frequencies)
 
-    # pylint: disable=bad-whitespace
     result__0_00 = np.array(
         [[7.93556221, 0.0, 0.0], [0.0, 3.06821077, 0.0], [0.0, 0.0, 0.05038621]]
     )
-
-    # pylint: disable=bad-whitespace
     result__0_02 = np.array(
         [[7.94312371, 0.0, 0.0], [0.0, 3.07051688, 0.0], [0.0, 0.0, 0.05054685]]
     )
-
-    # pylint: disable=bad-whitespace
     result__0_06 = np.array(
         [[8.00414009, 0.0, 0.0], [0.0, 3.08913608, 0.0], [0.0, 0.0, 0.05186977]]
     )
-
-    # pylint: disable=bad-whitespace
     result__0_10 = np.array(
         [[8.1290378, 0.0, 0.0], [0.0, 3.12731363, 0.0], [0.0, 0.0, 0.05473482]]
     )
@@ -72,7 +66,9 @@ def test_final_result_rhf_h2o_sto3g_rpa_singlet():
     # the MO coefficients.
     mol = molecules.molecule_water_sto3g()
     mol.build()
-    polarizability = electric.Polarizability(mol, C, E, occupations, frequencies)
+    polarizability = electric.Polarizability(
+        Program.PySCF, mol, C, E, occupations, frequencies
+    )
     polarizability.form_operators()
     polarizability.run(hamiltonian=hamiltonian, spin=spin)
     polarizability.form_results()
@@ -125,22 +121,15 @@ def test_final_result_rhf_h2o_sto3g_rpa_triplet():
 
     assert len(driver.results) == len(frequencies)
 
-    # pylint: disable=bad-whitespace
     result__0_00 = np.array(
         [[26.59744305, 0.0, 0.0], [0.0, 18.11879557, 0.0], [0.0, 0.0, 0.07798969]]
     )
-
-    # pylint: disable=bad-whitespace
     result__0_02 = np.array(
         [[26.68282287, 0.0, 0.0], [0.0, 18.19390051, 0.0], [0.0, 0.0, 0.07837521]]
     )
-
-    # pylint: disable=bad-whitespace
     result__0_06 = np.array(
         [[27.38617401, 0.0, 0.0], [0.0, 18.81922578, 0.0], [0.0, 0.0, 0.08160226]]
     )
-
-    # pylint: disable=bad-whitespace
     result__0_10 = np.array(
         [[28.91067234, 0.0, 0.0], [0.0, 20.21670386, 0.0], [0.0, 0.0, 0.08892512]]
     )
@@ -154,7 +143,9 @@ def test_final_result_rhf_h2o_sto3g_rpa_triplet():
 
     mol = molecules.molecule_water_sto3g()
     mol.build()
-    polarizability = electric.Polarizability(mol, C, E, occupations, frequencies)
+    polarizability = electric.Polarizability(
+        Program.PySCF, mol, C, E, occupations, frequencies
+    )
     polarizability.form_operators()
     polarizability.run(hamiltonian=hamiltonian, spin=spin)
     polarizability.form_results()
@@ -207,22 +198,15 @@ def test_final_result_rhf_h2o_sto3g_tda_singlet():
 
     assert len(driver.results) == len(frequencies)
 
-    # pylint: disable=bad-whitespace
     result__0_00 = np.array(
         [[8.89855952, 0.0, 0.0], [0.0, 4.00026556, 0.0], [0.0, 0.0, 0.0552774]]
     )
-
-    # pylint: disable=bad-whitespace
     result__0_02 = np.array(
         [[8.90690928, 0.0, 0.0], [0.0, 4.00298342, 0.0], [0.0, 0.0, 0.05545196]]
     )
-
-    # pylint: disable=bad-whitespace
     result__0_06 = np.array(
         [[8.97427725, 0.0, 0.0], [0.0, 4.02491517, 0.0], [0.0, 0.0, 0.05688918]]
     )
-
-    # pylint: disable=bad-whitespace
     result__0_10 = np.array(
         [[9.11212633, 0.0, 0.0], [0.0, 4.06981937, 0.0], [0.0, 0.0, 0.05999934]]
     )
@@ -236,7 +220,9 @@ def test_final_result_rhf_h2o_sto3g_tda_singlet():
 
     mol = molecules.molecule_water_sto3g()
     mol.build()
-    polarizability = electric.Polarizability(mol, C, E, occupations, frequencies)
+    polarizability = electric.Polarizability(
+        Program.PySCF, mol, C, E, occupations, frequencies
+    )
     polarizability.form_operators()
     polarizability.run(hamiltonian=hamiltonian, spin=spin)
     polarizability.form_results()
@@ -289,22 +275,15 @@ def test_final_result_rhf_h2o_sto3g_tda_triplet():
 
     assert len(driver.results) == len(frequencies)
 
-    # pylint: disable=bad-whitespace
     result__0_00 = np.array(
         [[14.64430714, 0.0, 0.0], [0.0, 8.80921432, 0.0], [0.0, 0.0, 0.06859496]]
     )
-
-    # pylint: disable=bad-whitespace
     result__0_02 = np.array(
         [[14.68168443, 0.0, 0.0], [0.0, 8.83562647, 0.0], [0.0, 0.0, 0.0689291]]
     )
-
-    # pylint: disable=bad-whitespace
     result__0_06 = np.array(
         [[14.98774296, 0.0, 0.0], [0.0, 9.0532224, 0.0], [0.0, 0.0, 0.07172414]]
     )
-
-    # pylint: disable=bad-whitespace
     result__0_10 = np.array(
         [[15.63997724, 0.0, 0.0], [0.0, 9.52504267, 0.0], [0.0, 0.0, 0.07805428]]
     )
@@ -318,7 +297,9 @@ def test_final_result_rhf_h2o_sto3g_tda_triplet():
 
     mol = molecules.molecule_water_sto3g()
     mol.build()
-    polarizability = electric.Polarizability(mol, C, E, occupations, frequencies)
+    polarizability = electric.Polarizability(
+        Program.PySCF, mol, C, E, occupations, frequencies
+    )
     polarizability.form_operators()
     polarizability.run(hamiltonian=hamiltonian, spin=spin)
     polarizability.form_results()
