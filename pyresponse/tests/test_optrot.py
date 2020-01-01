@@ -5,6 +5,7 @@ import pyscf
 from pyresponse import optrot, utils
 from pyresponse.core import Hamiltonian, Program, Spin
 from pyresponse.pyscf import molecules
+from pyresponse.pyscf.utils import occupations_from_pyscf_mol
 
 BC2H4_cation_HF_STO3G_RPA_singlet_nwchem = {
     # from minimal
@@ -201,7 +202,7 @@ def test_ORD_RPA_singlet_BC2H4_cation_HF_STO3G():
 
     C = utils.fix_mocoeffs_shape(mf.mo_coeff)
     E = utils.fix_moenergies_shape(mf.mo_energy)
-    occupations = utils.occupations_from_pyscf_mol(pyscfmol, C)
+    occupations = occupations_from_pyscf_mol(pyscfmol, C)
 
     frequencies = [0.0, 0.001, 0.0773178, 0.128347]
     ord_solver = optrot.ORD(
@@ -270,7 +271,7 @@ def test_ORD_RPA_singlet_BC2H4_HF_STO3G():
 
     C = utils.fix_mocoeffs_shape(mf.mo_coeff)
     E = utils.fix_moenergies_shape(mf.mo_energy)
-    occupations = utils.occupations_from_pyscf_mol(pyscfmol, C)
+    occupations = occupations_from_pyscf_mol(pyscfmol, C)
 
     frequencies = [0.0, 0.001, 0.0773178, 0.128347]
     ord_solver = optrot.ORD(
@@ -330,7 +331,7 @@ def test_ORD_RPA_singlet_trithiolane_HF_STO3G():
 
     C = utils.fix_mocoeffs_shape(mf.mo_coeff)
     E = utils.fix_moenergies_shape(mf.mo_energy)
-    occupations = utils.occupations_from_pyscf_mol(pyscfmol, C)
+    occupations = occupations_from_pyscf_mol(pyscfmol, C)
 
     frequencies = [0.0, 0.0773178, 0.128347]
     ord_solver = optrot.ORD(

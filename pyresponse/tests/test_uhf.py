@@ -6,9 +6,9 @@ import pyscf
 
 from pyresponse import cphf
 from pyresponse import explicit_equations_full as eqns
-from pyresponse import iterators, operators, utils
+from pyresponse import iterators, operators
 from pyresponse.core import AO2MOTransformationType, Hamiltonian, Spin
-from pyresponse.pyscf import molecules
+from pyresponse.pyscf import molecules, utils
 from pyresponse.pyscf.ao2mo import AO2MOpyscf
 
 

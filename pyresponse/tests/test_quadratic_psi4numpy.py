@@ -10,6 +10,7 @@ from pyresponse.pyscf.molecules import (
     molecule_physicists_water_augccpvdz,
     molecule_physicists_water_sto3g,
 )
+from pyresponse.pyscf.utils import occupations_from_pyscf_mol
 
 
 def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_small():
@@ -20,7 +21,7 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_small
     mf.kernel()
     C = utils.fix_mocoeffs_shape(mf.mo_coeff)
     E = utils.fix_moenergies_shape(mf.mo_energy)
-    occupations = utils.occupations_from_pyscf_mol(mol, C)
+    occupations = occupations_from_pyscf_mol(mol, C)
     nocc_alph, nvirt_alph, _, _ = occupations
     nov_alph = nocc_alph * nvirt_alph
     norb = nocc_alph + nvirt_alph
@@ -323,7 +324,7 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_large
     mf.kernel()
     C = utils.fix_mocoeffs_shape(mf.mo_coeff)
     E = utils.fix_moenergies_shape(mf.mo_energy)
-    occupations = utils.occupations_from_pyscf_mol(mol, C)
+    occupations = occupations_from_pyscf_mol(mol, C)
     nocc_alph, nvirt_alph, _, _ = occupations
     nov_alph = nocc_alph * nvirt_alph
     norb = nocc_alph + nvirt_alph

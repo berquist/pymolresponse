@@ -5,6 +5,7 @@ import pyscf
 from pyresponse import magnetic, utils
 from pyresponse.core import Hamiltonian, Program, Spin
 from pyresponse.pyscf import molecules
+from pyresponse.pyscf.utils import occupations_from_pyscf_mol
 
 # These were generated using DALTON.
 ref_magnetizability_rhf = np.array(
@@ -33,7 +34,7 @@ def test_magnetizability_rhf() -> None:
 
     C = utils.fix_mocoeffs_shape(mf.mo_coeff)
     E = utils.fix_moenergies_shape(mf.mo_energy)
-    occupations = utils.occupations_from_pyscf_mol(mol, C)
+    occupations = occupations_from_pyscf_mol(mol, C)
 
     calculator_common = magnetic.Magnetizability(Program.PySCF, mol, C, E, occupations)
     calculator_common.form_operators()
@@ -64,7 +65,7 @@ def test_magnetizability_uhf() -> None:
 
     C = utils.fix_mocoeffs_shape(mf.mo_coeff)
     E = utils.fix_moenergies_shape(mf.mo_energy)
-    occupations = utils.occupations_from_pyscf_mol(mol, C)
+    occupations = occupations_from_pyscf_mol(mol, C)
 
     calculator_common = magnetic.Magnetizability(Program.PySCF, mol, C, E, occupations)
     calculator_common.form_operators()
@@ -107,7 +108,7 @@ def test_electronicgtensor_tiny() -> None:
 
     C = utils.fix_mocoeffs_shape(mf.mo_coeff)
     E = utils.fix_moenergies_shape(mf.mo_energy)
-    occupations = utils.occupations_from_pyscf_mol(mol, C)
+    occupations = occupations_from_pyscf_mol(mol, C)
 
     gtensor_calculator = magnetic.ElectronicGTensor(Program.PySCF, mol, C, E, occupations)
     gtensor_calculator.form_operators()
@@ -135,7 +136,7 @@ def test_electronicgtensor_small() -> None:
 
     C = utils.fix_mocoeffs_shape(mf.mo_coeff)
     E = utils.fix_moenergies_shape(mf.mo_energy)
-    occupations = utils.occupations_from_pyscf_mol(mol, C)
+    occupations = occupations_from_pyscf_mol(mol, C)
 
     gtensor_calculator = magnetic.ElectronicGTensor(Program.PySCF, mol, C, E, occupations)
     gtensor_calculator.form_operators()
@@ -162,7 +163,7 @@ def test_electronicgtensor_small() -> None:
 
 #     C = utils.fix_mocoeffs_shape(mf.mo_coeff)
 #     E = utils.fix_moenergies_shape(mf.mo_energy)
-#     occupations = utils.occupations_from_pyscf_mol(mol, C)
+#     occupations = occupations_from_pyscf_mol(mol, C)
 
 #     gtensor_calculator = magnetic.ElectronicGTensor(mol, C, E, occupations, hamiltonian='rpa', spin='singlet')
 #     gtensor_calculator.form_operators()

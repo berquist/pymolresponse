@@ -11,7 +11,7 @@ from pyresponse.data import REFDIR
 from pyresponse.iterators import ExactInv
 from pyresponse.operators import Operator
 from pyresponse.psi4 import molecules
-from pyresponse.utils import (
+from pyresponse.psi4.utils import (
     mocoeffs_from_psi4wfn,
     moenergies_from_psi4wfn,
     occupations_from_psi4wfn,

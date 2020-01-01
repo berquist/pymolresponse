@@ -2,8 +2,8 @@ import numpy as np
 
 import psi4
 
-from pyresponse import utils
 from pyresponse.psi4 import integrals, molecules
+from pyresponse.psi4.utils import mocoeffs_from_psi4wfn, occupations_from_psi4wfn
 
 
 def test_integrals_psi4():
@@ -49,12 +49,12 @@ def test_jk_psi4():
     psi4.set_options(options)
 
     _, wfn = psi4.energy("hf", return_wfn=True)
-    C = utils.mocoeffs_from_psi4wfn(wfn)
+    C = mocoeffs_from_psi4wfn(wfn)
     jk_generator = integrals.JKPsi4(wfn)
     res_J, res_K = jk_generator.compute_from_mocoeffs(C[0])
 
     # TODO comparison against reference
-    occupations = utils.occupations_from_psi4wfn(wfn)
+    occupations = occupations_from_psi4wfn(wfn)
     # TODO this assumes that the total number of orbitals is equal to the
     # total number of basis functions
     nbasis = occupations[0] + occupations[1]

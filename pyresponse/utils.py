@@ -1,16 +1,11 @@
 """Utility functions that are not core to calculating physical values."""
 
-# Define for any Python version <= 3.3,
-# See https://github.com/kachayev/fn.py/commit/391824c43fb388e0eca94e568ff62cc35b543ecb
-import sys
 from itertools import accumulate
 from pathlib import Path
+from sys import exit
 from typing import List, Tuple, Union
 
 import numpy as np
-
-import psi4
-import pyscf
 
 
 def form_results(vecs_property: np.ndarray, vecs_response: np.ndarray) -> np.ndarray:
@@ -136,55 +131,11 @@ def read_file_4(filename: Union[Path, str]) -> np.ndarray:
     return np.reshape(np.array(elements, dtype=float), (n_d1, n_d2, n_d3, n_d4))
 
 
-def occupations_from_pyscf_mol(mol: pyscf.gto.Mole, C: np.ndarray) -> np.ndarray:
-    norb = fix_mocoeffs_shape(C).shape[-1]
-    nocc_a, nocc_b = mol.nelec
-    nvirt_a, nvirt_b = norb - nocc_a, norb - nocc_b
-    return np.asarray([nocc_a, nvirt_a, nocc_b, nvirt_b], dtype=int)
-
-
 def occupations_from_sirifc(ifc) -> np.ndarray:
     nocc_a, nocc_b = ifc.nisht + ifc.nasht, ifc.nisht
     norb = ifc.norbt
     nvirt_a, nvirt_b = norb - nocc_a, norb - nocc_b
     return np.asarray([nocc_a, nvirt_a, nocc_b, nvirt_b], dtype=int)
-
-
-def occupations_from_psi4wfn(wfn: psi4.core.Wavefunction) -> np.ndarray:
-    # Not needed.
-    # occupations_a = wfn.occupation_a().to_array()
-    # occupations_b = wfn.occupation_b().to_brray()
-    # assert occupations_a.shape == occupations_b.shape
-    norb = wfn.nmo()
-    nocc_a = wfn.nalpha()
-    nocc_b = wfn.nbeta()
-    nvirt_a = norb - nocc_a
-    nvirt_b = norb - nocc_b
-    return np.asarray([nocc_a, nvirt_a, nocc_b, nvirt_b], dtype=int)
-
-
-def mocoeffs_from_psi4wfn(wfn: psi4.core.Wavefunction) -> np.ndarray:
-    is_uhf = not wfn.same_a_b_orbs()
-    Ca = wfn.Ca().to_array()
-    if is_uhf:
-        Cb = wfn.Cb().to_array()
-        C = np.stack((Ca, Cb), axis=0)
-    else:
-        C = Ca
-    # Clean up.
-    return fix_mocoeffs_shape(C)
-
-
-def moenergies_from_psi4wfn(wfn: psi4.core.Wavefunction) -> np.ndarray:
-    is_uhf = not wfn.same_a_b_orbs()
-    Ea = wfn.epsilon_a().to_array()
-    if is_uhf:
-        Eb = wfn.epsilon_b().to_array()
-        E = np.stack((Ea, Eb), axis=0).T
-    else:
-        E = Ea
-    # Clean up.
-    return fix_moenergies_shape(E)
 
 
 class Splitter:
@@ -401,7 +352,7 @@ def flip_triangle_sign(A: np.ndarray, triangle: str = "lower") -> np.ndarray:
     elif triangle == "upper":
         indices = np.triu_indices(dim)
     else:
-        sys.exit(1)
+        exit(1)
     B = A.copy()
     B[indices] *= -1.0
     return B

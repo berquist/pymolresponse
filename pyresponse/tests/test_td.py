@@ -3,6 +3,7 @@ import pyscf
 from pyresponse import iterators, td, utils
 from pyresponse.core import AO2MOTransformationType, Hamiltonian, Program, Spin
 from pyresponse.pyscf.ao2mo import AO2MOpyscf
+from pyresponse.pyscf.utils import occupations_from_pyscf_mol
 
 
 def test_HF_both_singlet_HF_STO3G():
@@ -20,7 +21,7 @@ def test_HF_both_singlet_HF_STO3G():
 
     C = utils.fix_mocoeffs_shape(mf.mo_coeff)
     E = utils.fix_moenergies_shape(mf.mo_energy)
-    occupations = utils.occupations_from_pyscf_mol(mol, C)
+    occupations = occupations_from_pyscf_mol(mol, C)
     solver_tda = iterators.ExactDiagonalizationSolverTDA(C, E, occupations)
     solver_tdhf = iterators.ExactDiagonalizationSolver(C, E, occupations)
     ao2mo = AO2MOpyscf(C, mol.verbose, mol)

@@ -9,7 +9,13 @@ from pyresponse.core import Hamiltonian, Program, Spin
 from pyresponse.cphf import CPHF
 from pyresponse.electric import Polarizability
 from pyresponse.psi4 import molecules as molecules_psi4
+from pyresponse.psi4.utils import (
+    mocoeffs_from_psi4wfn,
+    moenergies_from_psi4wfn,
+    occupations_from_psi4wfn,
+)
 from pyresponse.pyscf import molecules as molecules_pyscf
+from pyresponse.pyscf.utils import occupations_from_pyscf_mol
 
 
 def test_iterators() -> None:
@@ -27,7 +33,7 @@ def test_iterators() -> None:
     assert len(mf.mo_coeff) == 2
     C = utils.fix_mocoeffs_shape(mf.mo_coeff)
     E = utils.fix_moenergies_shape(mf.mo_energy)
-    occupations = utils.occupations_from_pyscf_mol(mol, C)
+    occupations = occupations_from_pyscf_mol(mol, C)
 
     calculator_ref = magnetic.Magnetizability(
         Program.PySCF,
@@ -76,9 +82,9 @@ def test_final_result_rhf_h2o_sto3g_rpa_singlet_iter() -> None:
     mol = molecules_psi4.molecule_glycine_sto3g()
     psi4.core.set_active_molecule(mol)
     _, wfn = psi4.energy("hf", return_wfn=True)
-    C = utils.mocoeffs_from_psi4wfn(wfn)
-    E = utils.moenergies_from_psi4wfn(wfn)
-    occupations = utils.occupations_from_psi4wfn(wfn)
+    C = mocoeffs_from_psi4wfn(wfn)
+    E = moenergies_from_psi4wfn(wfn)
+    occupations = occupations_from_psi4wfn(wfn)
 
     polarizability = Polarizability(Program.Psi4, mol, C, E, occupations)
     polarizability.form_operators()

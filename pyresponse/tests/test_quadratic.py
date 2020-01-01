@@ -7,6 +7,7 @@ import pyscf
 from pyresponse import electric, utils
 from pyresponse.core import Hamiltonian, Program, Spin
 from pyresponse.pyscf.molecules import molecule_water_sto3g_angstrom
+from pyresponse.pyscf.utils import occupations_from_pyscf_mol
 
 
 def test_first_hyperpolarizability_static_rhf_wigner_explicit():
@@ -17,7 +18,7 @@ def test_first_hyperpolarizability_static_rhf_wigner_explicit():
     mf.kernel()
     C = utils.fix_mocoeffs_shape(mf.mo_coeff)
     E = utils.fix_moenergies_shape(mf.mo_energy)
-    occupations = utils.occupations_from_pyscf_mol(mol, C)
+    occupations = occupations_from_pyscf_mol(mol, C)
     nocc_alph, nvirt_alph, _, _ = occupations
     nov_alph = nocc_alph * nvirt_alph
     norb = nocc_alph + nvirt_alph
@@ -264,7 +265,7 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit():
     mf.kernel()
     C = utils.fix_mocoeffs_shape(mf.mo_coeff)
     E = utils.fix_moenergies_shape(mf.mo_energy)
-    occupations = utils.occupations_from_pyscf_mol(mol, C)
+    occupations = occupations_from_pyscf_mol(mol, C)
     nocc_alph, nvirt_alph, _, _ = occupations
     nov_alph = nocc_alph * nvirt_alph
     norb = nocc_alph + nvirt_alph
@@ -630,7 +631,7 @@ def test_first_hyperpolarizability_eope_rhf_wigner_explicit():
     mf.kernel()
     C = utils.fix_mocoeffs_shape(mf.mo_coeff)
     E = utils.fix_moenergies_shape(mf.mo_energy)
-    occupations = utils.occupations_from_pyscf_mol(mol, C)
+    occupations = occupations_from_pyscf_mol(mol, C)
     nocc_alph, nvirt_alph, _, _ = occupations
     nov_alph = nocc_alph * nvirt_alph
     norb = nocc_alph + nvirt_alph
@@ -875,7 +876,7 @@ def test_first_hyperpolarizability_or_rhf_wigner_explicit():
     mf.kernel()
     C = utils.fix_mocoeffs_shape(mf.mo_coeff)
     E = utils.fix_moenergies_shape(mf.mo_energy)
-    occupations = utils.occupations_from_pyscf_mol(mol, C)
+    occupations = occupations_from_pyscf_mol(mol, C)
     nocc_alph, nvirt_alph, _, _ = occupations
     nov_alph = nocc_alph * nvirt_alph
     norb = nocc_alph + nvirt_alph
@@ -1118,7 +1119,7 @@ def test_first_hyperpolarizability_or_rhf_wigner_explicit():
 #     mf.kernel()
 #     C = utils.fix_mocoeffs_shape(mf.mo_coeff)
 #     E = utils.fix_moenergies_shape(mf.mo_energy)
-#     occupations = utils.occupations_from_pyscf_mol(mol, C)
+#     occupations = occupations_from_pyscf_mol(mol, C)
 #     nocc_alph, nvirt_alph, _, _ = occupations
 #     nov_alph = nocc_alph * nvirt_alph
 #     norb = nocc_alph + nvirt_alph

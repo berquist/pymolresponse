@@ -6,6 +6,7 @@ from pyresponse import cphf, iterators, operators, utils
 from pyresponse.core import AO2MOTransformationType, Hamiltonian, Program, Spin
 from pyresponse.pyscf import molecules
 from pyresponse.pyscf.ao2mo import AO2MOpyscf
+from pyresponse.pyscf.utils import occupations_from_pyscf_mol
 
 
 def mol_atom(
@@ -196,7 +197,7 @@ def test_uncoupled_rhf() -> None:
 
     C = utils.fix_mocoeffs_shape(mf.mo_coeff)
     E = utils.fix_moenergies_shape(mf.mo_energy)
-    occupations = utils.occupations_from_pyscf_mol(mol, C)
+    occupations = occupations_from_pyscf_mol(mol, C)
 
     solver = iterators.ExactInv(C, E, occupations)
 
@@ -255,7 +256,7 @@ def test_uncoupled_uhf() -> None:
 
     C = utils.fix_mocoeffs_shape(mf.mo_coeff)
     E = utils.fix_moenergies_shape(mf.mo_energy)
-    occupations = utils.occupations_from_pyscf_mol(mol, C)
+    occupations = occupations_from_pyscf_mol(mol, C)
 
     solver = iterators.ExactInv(C, E, occupations)
 
