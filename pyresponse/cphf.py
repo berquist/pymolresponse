@@ -6,8 +6,8 @@ from typing import Optional, Sequence
 import numpy as np
 
 from pyresponse.core import AO2MOTransformationType, Hamiltonian, Program, Spin
-from pyresponse.iterators import ExactLineqSolver, LineqSolver, Solver
 from pyresponse.operators import Operator
+from pyresponse.solvers import ExactLineqSolver, LineqSolver, Solver
 from pyresponse.utils import form_results, form_vec_energy_differences
 
 

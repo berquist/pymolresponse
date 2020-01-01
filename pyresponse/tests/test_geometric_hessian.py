@@ -8,7 +8,6 @@ from pyresponse.ao2mo import AO2MO
 from pyresponse.core import AO2MOTransformationType, Hamiltonian, Program, Spin
 from pyresponse.cphf import CPHF
 from pyresponse.data import REFDIR
-from pyresponse.iterators import ExactInv
 from pyresponse.operators import Operator
 from pyresponse.psi4 import molecules
 from pyresponse.psi4.utils import (
@@ -16,6 +15,7 @@ from pyresponse.psi4.utils import (
     moenergies_from_psi4wfn,
     occupations_from_psi4wfn,
 )
+from pyresponse.solvers import ExactInv
 
 np.set_printoptions(precision=8, linewidth=200, suppress=True)
 

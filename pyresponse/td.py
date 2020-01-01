@@ -6,7 +6,7 @@ import numpy as np
 from pyresponse.constants import HARTREE_TO_EV, HARTREE_TO_INVCM
 from pyresponse.core import AO2MOTransformationType, Hamiltonian, Program, Spin
 from pyresponse.cphf import CPHF
-from pyresponse.iterators import EigSolver, ExactDiagonalizationSolver, Solver
+from pyresponse.solvers import EigSolver, ExactDiagonalizationSolver, Solver
 from pyresponse.utils import form_indices_orbwin, form_vec_energy_differences
 
 

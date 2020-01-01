@@ -4,7 +4,7 @@ import pyscf
 
 from pyresponse import cphf
 from pyresponse import explicit_equations_partial as eqns
-from pyresponse import iterators, operators
+from pyresponse import operators, solvers
 from pyresponse.core import AO2MOTransformationType, Hamiltonian, Program, Spin
 from pyresponse.pyscf import molecules
 
@@ -206,7 +206,7 @@ def test_explicit_uhf() -> None:
 
     integrals_dipole_ao = mol.intor("cint1e_r_sph", comp=3)
 
-    solver = iterators.ExactInv(C, E, occupations)
+    solver = solvers.ExactInv(C, E, occupations)
 
     solver.tei_mo = (
         tei_mo_ovov_aaaa,

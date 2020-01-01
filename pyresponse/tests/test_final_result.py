@@ -1,6 +1,6 @@
 import numpy as np
 
-from pyresponse import cphf, electric, iterators, operators, utils
+from pyresponse import cphf, electric, operators, solvers, utils
 from pyresponse.core import AO2MOTransformationType, Hamiltonian, Program, Spin
 from pyresponse.data import REFDIR
 from pyresponse.pyscf import molecules
@@ -25,7 +25,7 @@ def test_final_result_rhf_h2o_sto3g_rpa_singlet() -> None:
     mat_dipole_y = utils.parse_int_file_2(REFDIR / f"{stub}muy.dat", dim)
     mat_dipole_z = utils.parse_int_file_2(REFDIR / f"{stub}muz.dat", dim)
 
-    solver = iterators.ExactInv(C, E, occupations)
+    solver = solvers.ExactInv(C, E, occupations)
     solver.tei_mo = (TEI_MO,)
     solver.tei_mo_type = AO2MOTransformationType.full
     driver = cphf.CPHF(solver)
@@ -104,7 +104,7 @@ def test_final_result_rhf_h2o_sto3g_rpa_triplet() -> None:
     mat_dipole_y = utils.parse_int_file_2(REFDIR / f"{stub}muy.dat", dim)
     mat_dipole_z = utils.parse_int_file_2(REFDIR / f"{stub}muz.dat", dim)
 
-    solver = iterators.ExactInv(C, E, occupations)
+    solver = solvers.ExactInv(C, E, occupations)
     solver.tei_mo = (TEI_MO,)
     solver.tei_mo_type = AO2MOTransformationType.full
     driver = cphf.CPHF(solver)
@@ -181,7 +181,7 @@ def test_final_result_rhf_h2o_sto3g_tda_singlet() -> None:
     mat_dipole_y = utils.parse_int_file_2(REFDIR / f"{stub}muy.dat", dim)
     mat_dipole_z = utils.parse_int_file_2(REFDIR / f"{stub}muz.dat", dim)
 
-    solver = iterators.ExactInv(C, E, occupations)
+    solver = solvers.ExactInv(C, E, occupations)
     solver.tei_mo = (TEI_MO,)
     solver.tei_mo_type = AO2MOTransformationType.full
     driver = cphf.CPHF(solver)
@@ -258,7 +258,7 @@ def test_final_result_rhf_h2o_sto3g_tda_triplet() -> None:
     mat_dipole_y = utils.parse_int_file_2(REFDIR / f"{stub}muy.dat", dim)
     mat_dipole_z = utils.parse_int_file_2(REFDIR / f"{stub}muz.dat", dim)
 
-    solver = iterators.ExactInv(C, E, occupations)
+    solver = solvers.ExactInv(C, E, occupations)
     solver.tei_mo = (TEI_MO,)
     solver.tei_mo_type = AO2MOTransformationType.full
     driver = cphf.CPHF(solver)

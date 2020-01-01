@@ -4,7 +4,7 @@ import scipy as sp
 import psi4
 import pyscf
 
-from pyresponse import iterators, magnetic, utils
+from pyresponse import magnetic, solvers, utils
 from pyresponse.core import Hamiltonian, Program, Spin
 from pyresponse.cphf import CPHF
 from pyresponse.electric import Polarizability
@@ -18,7 +18,7 @@ from pyresponse.pyscf import molecules as molecules_pyscf
 from pyresponse.pyscf.utils import occupations_from_pyscf_mol
 
 
-def test_iterators() -> None:
+def test_solvers() -> None:
     """Test that each kind of iterator gives identical results."""
 
     mol = molecules_pyscf.molecule_glycine_sto3g()
@@ -41,7 +41,7 @@ def test_iterators() -> None:
         C,
         E,
         occupations,
-        driver=CPHF(iterators.ExactInv(C, E, occupations)),
+        driver=CPHF(solvers.ExactInv(C, E, occupations)),
     )
     calculator_ref.form_operators()
     calculator_ref.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)
@@ -59,7 +59,7 @@ def test_iterators() -> None:
             C,
             E,
             occupations,
-            driver=CPHF(iterators.ExactInv(C, E, occupations, inv_func=inv_func)),
+            driver=CPHF(solvers.ExactInv(C, E, occupations, inv_func=inv_func)),
         )
         calculator_res.form_operators()
         calculator_res.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)
@@ -93,5 +93,5 @@ def test_final_result_rhf_h2o_sto3g_rpa_singlet_iter() -> None:
 
 
 if __name__ == "__main__":
-    # test_iterators()
+    # test_solvers()
     test_final_result_rhf_h2o_sto3g_rpa_singlet_iter()

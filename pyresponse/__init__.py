@@ -14,7 +14,7 @@ from . import (
     explicit_equations_partial,
     helpers,
     integrals,
-    iterators,
+    solvers,
     magnetic,
     molecular_property,
     operators,

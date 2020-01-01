@@ -7,7 +7,7 @@ from cclib.parser.utils import convertor
 
 import pyscf
 
-from pyresponse import cphf, iterators, operators, utils
+from pyresponse import cphf, operators, solvers, utils
 from pyresponse.core import AO2MOTransformationType, Hamiltonian, Spin
 from pyresponse.dalton.utils import dalton_label_to_operator
 from pyresponse.pyscf.ao2mo import AO2MOpyscf
@@ -72,7 +72,7 @@ def calculate_disk_rhf(
     moene = np.diag(moene[:, 0])[np.newaxis, ...]
     assert moene.shape == (1, norb, norb)
 
-    solver = iterators.ExactInv(C, moene, occupations)
+    solver = solvers.ExactInv(C, moene, occupations)
     solver.tei_mo = (moints_iajb_aaaa, moints_ijab_aaaa)
     solver.tei_mo_type = AO2MOTransformationType.partial
 
@@ -164,7 +164,7 @@ def calculate_disk_uhf(
     moene = np.stack((moene_alph, moene_beta), axis=0)
     assert moene.shape == (2, norb, norb)
 
-    solver = iterators.ExactInv(C, moene, occupations)
+    solver = solvers.ExactInv(C, moene, occupations)
     solver.tei_mo = (
         moints_iajb_aaaa,
         moints_iajb_aabb,
@@ -272,7 +272,7 @@ def calculate_rhf(
     else:
         pass
 
-    solver = iterators.ExactInv(C, E, occupations)
+    solver = solvers.ExactInv(C, E, occupations)
 
     solver.tei_mo = AO2MOpyscf(mol, C).perform_rhf_partial()
     solver.tei_mo_type = AO2MOTransformationType.partial
@@ -393,7 +393,7 @@ def calculate_uhf(
     else:
         pass
 
-    solver = iterators.ExactInv(C, E, occupations)
+    solver = solvers.ExactInv(C, E, occupations)
 
     solver.tei_mo = AO2MOpyscf(mol, C).perform_uhf_partial()
     solver.tei_mo_type = AO2MOTransformationType.partial

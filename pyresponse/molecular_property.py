@@ -3,10 +3,10 @@ from typing import Optional, Sequence
 
 import numpy as np
 
-from pyresponse import iterators
+from pyresponse import solvers
 from pyresponse.core import Hamiltonian, Program, Spin
 from pyresponse.cphf import CPHF, Driver
-from pyresponse.iterators import Solver
+from pyresponse.solvers import Solver
 from pyresponse.td import TDA, TDHF
 
 
@@ -77,7 +77,7 @@ class ResponseProperty(MolecularProperty, ABC):
         frequencies: Sequence[float] = [0.0],
     ):
         if driver is None:
-            driver = CPHF(iterators.ExactInv(mocoeffs, moenergies, occupations))
+            driver = CPHF(solvers.ExactInv(mocoeffs, moenergies, occupations))
         driver.set_frequencies(frequencies)
         super().__init__(
             program, program_obj, mocoeffs, moenergies, occupations, driver=driver
@@ -109,7 +109,7 @@ class TransitionProperty(MolecularProperty, ABC):
         if driver is None:
             driver_cls = TDA if do_tda else TDHF
             driver = driver_cls(
-                iterators.ExactDiagonalizationSolver(mocoeffs, moenergies, occupations)
+                solvers.ExactDiagonalizationSolver(mocoeffs, moenergies, occupations)
             )
         self.do_tda = do_tda
 

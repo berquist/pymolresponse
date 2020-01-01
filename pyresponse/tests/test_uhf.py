@@ -6,7 +6,7 @@ import pyscf
 
 from pyresponse import cphf
 from pyresponse import explicit_equations_full as eqns
-from pyresponse import iterators, operators
+from pyresponse import operators, solvers
 from pyresponse.core import AO2MOTransformationType, Hamiltonian, Spin
 from pyresponse.pyscf import molecules, utils
 from pyresponse.pyscf.ao2mo import AO2MOpyscf
@@ -282,7 +282,7 @@ def test_explicit_uhf():
 
     occupations = utils.occupations_from_pyscf_mol(mol, C)
 
-    solver = iterators.ExactInv(C, E, occupations)
+    solver = solvers.ExactInv(C, E, occupations)
 
     ao2mo = AO2MOpyscf(C, mol.verbose, mol)
     ao2mo.perform_uhf_full()
