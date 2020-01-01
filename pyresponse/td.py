@@ -4,9 +4,9 @@ equations."""
 import numpy as np
 
 from pyresponse.constants import HARTREE_TO_EV, HARTREE_TO_INVCM
-from pyresponse.core import AO2MOTransformationType, Hamiltonian, Program, Spin
+from pyresponse.core import Hamiltonian, Program, Spin
 from pyresponse.cphf import CPHF
-from pyresponse.solvers import EigSolver, ExactDiagonalizationSolver, Solver
+from pyresponse.solvers import EigSolver, EigSolverTDA, Solver
 from pyresponse.utils import form_indices_orbwin, form_vec_energy_differences
 
 
@@ -17,29 +17,18 @@ class TDHF(CPHF):
     """
 
     def __init__(self, solver: Solver) -> None:
+        assert isinstance(solver, EigSolver)
         super().__init__(solver)
 
     def run(
         self, hamiltonian: Hamiltonian, spin: Spin, program: Program, program_obj
     ) -> None:
-        assert self.solver is not None
-        assert isinstance(self.solver, (EigSolver,))
-
         assert isinstance(hamiltonian, Hamiltonian)
         assert isinstance(spin, Spin)
+        assert isinstance(program, (Program, type(None)))
+        # TODO program_obj
 
-        # FIXME be able to switch between solver types
-        assert isinstance(self.solver, (ExactDiagonalizationSolver,))
-        if not self.solver.tei_mo:
-            assert program is not None
-            assert program_obj is not None
-            self.solver.form_tei_mo(program, program_obj, AO2MOTransformationType.partial)
-        self.solver.form_explicit_hessian(hamiltonian, spin, None)
-        self.solver.diagonalize_explicit_hessian()
-        # TODO implement Davidson
-        # else:
-        #     raise NotImplementedError
-
+        self.solver.run(hamiltonian, spin, program, program_obj)
         # TODO Is there an equivalent to the uncoupled result? Just
         # orbital energy differences?
         self.form_results()
@@ -190,6 +179,7 @@ class TDA(TDHF):
     """
 
     def __init__(self, solver: Solver) -> None:
+        assert isinstance(solver, EigSolverTDA)
         super().__init__(solver)
 
     def form_results(self) -> None:

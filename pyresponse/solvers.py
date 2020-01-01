@@ -85,6 +85,7 @@ class Solver(ABC):
         self, program: Program, program_obj, tei_mo_type: AO2MOTransformationType
     ) -> None:
         assert isinstance(program, Program)
+        # TODO program_obj
         assert isinstance(tei_mo_type, AO2MOTransformationType)
         nden = self.mocoeffs.shape[0]
         assert nden in (1, 2)
@@ -172,12 +173,14 @@ class Solver(ABC):
         operator.form_rhs(self.mocoeffs, self.occupations)
         self.operators.append(operator)
 
-    # @abstractmethod
-    # def run(self):
-    #     """Run the solver."""
+    @abstractmethod
+    def run(
+        self, hamiltonian: Hamiltonian, spin: Spin, program: Program, program_obj
+    ) -> None:
+        """Run the solver."""
 
 
-class LineqSolver(Solver):
+class LineqSolver(Solver, ABC):
     """Base class for all solvers of the type $AX = B$."""
 
     def __init__(
@@ -200,13 +203,13 @@ class ExactLineqSolver(LineqSolver, ABC):
         self, hamiltonian: Hamiltonian, spin: Spin, frequency: float
     ) -> None:
 
-        assert hasattr(self, "tei_mo")
         assert self.tei_mo is not None
         assert len(self.tei_mo) in (1, 2, 4, 6)
         assert isinstance(self.tei_mo_type, AO2MOTransformationType)
 
         assert isinstance(hamiltonian, Hamiltonian)
         assert isinstance(spin, Spin)
+        assert isinstance(frequency, (float, type(None)))
 
         nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
         nov_alph = nocc_alph * nvirt_alph
@@ -545,6 +548,20 @@ class ExactLineqSolver(LineqSolver, ABC):
                 operator.rspvecs_alph.append(rspvecs_operator_alph)
                 operator.rspvecs_beta.append(rspvecs_operator_beta)
 
+    def run(
+        self, hamiltonian: Hamiltonian, spin: Spin, program: Program, program_obj
+    ) -> None:
+        assert isinstance(hamiltonian, Hamiltonian)
+        assert isinstance(spin, Spin)
+        assert isinstance(program, (Program, type(None)))
+        # TODO program_obj
+        if not self.tei_mo:
+            self.form_tei_mo(program, program_obj, AO2MOTransformationType.partial)
+        for frequency in self.frequencies:
+            self.form_explicit_hessian(hamiltonian, spin, frequency)
+            self.invert_explicit_hessian()
+            self.form_response_vectors()
+
 
 class ExactInv(ExactLineqSolver):
     def __init__(
@@ -628,15 +645,16 @@ class IterativeLinEqSolver(LineqSolver):
         moenergies: np.ndarray,
         occupations: np.ndarray,
         jk_generator: JK,
+        *,
+        maxiter: int = 40,
     ) -> None:
         super().__init__(mocoeffs, moenergies, occupations)
 
         # TODO
         self.jk_generator = jk_generator
+        self.maxiter = maxiter
 
-    def run(
-        self, hamiltonian: Hamiltonian, spin: Spin, frequency: float, maxiter: int = 40
-    ) -> None:
+    def run(self, hamiltonian: Hamiltonian, spin: Spin, frequency: float) -> None:
         if self.is_uhf:
             raise RuntimeError
         else:
@@ -665,7 +683,7 @@ class IterativeLinEqSolver(LineqSolver):
                     x_l_old.append(np.zeros_like(ia_denom_l))
                     x_r_old.append(np.zeros_like(ia_denom_r))
                 C_left = Co
-                for i in range(1, maxiter + 1):
+                for i in range(1, self.maxiter + 1):
                     for component in range(ncomponents):
                         C_right_l = Cv.dot(x_l[component].T)
                         C_right_r = Cv.dot(x_r[component].T)
@@ -699,7 +717,7 @@ class IterativeLinEqSolver(LineqSolver):
                     )
 
 
-class EigSolver(Solver):
+class EigSolver(Solver, ABC):
     """Base class for all solvers of the type $AX = 0$ (eigensolvers)."""
 
     def __init__(
@@ -715,7 +733,7 @@ class EigSolver(Solver):
         return (x * norm).flatten(), (y * norm).flatten()
 
 
-class EigSolverTDA(EigSolver):
+class EigSolverTDA(EigSolver, ABC):
     """Base class for eigensolvers that use the Tamm-Dancoff approximation
     (TDA) rather than the random phase approximation (RPA).
     """
@@ -747,6 +765,7 @@ class ExactDiagonalizationSolver(EigSolver):
 
         assert isinstance(hamiltonian, Hamiltonian)
         assert isinstance(spin, Spin)
+        assert isinstance(frequency, (float, type(None)))
 
         nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
         nov_alph = nocc_alph * nvirt_alph
@@ -833,6 +852,18 @@ class ExactDiagonalizationSolver(EigSolver):
             # TODO UHF
             pass
 
+    def run(
+        self, hamiltonian: Hamiltonian, spin: Spin, program: Program, program_obj
+    ) -> None:
+        assert isinstance(hamiltonian, Hamiltonian)
+        assert isinstance(spin, Spin)
+        assert isinstance(program, Program)
+        # TODO program_obj
+        if not self.tei_mo:
+            self.form_tei_mo(program, program_obj, AO2MOTransformationType.partial)
+        self.form_explicit_hessian(hamiltonian, spin, None)
+        self.diagonalize_explicit_hessian()
+
 
 class ExactDiagonalizationSolverTDA(ExactDiagonalizationSolver, EigSolverTDA):
     """Get the eigenvectors and eigenvalues of the TDA Hamiltonian by forming the
@@ -855,6 +886,7 @@ class ExactDiagonalizationSolverTDA(ExactDiagonalizationSolver, EigSolverTDA):
 
         assert hamiltonian == Hamiltonian.TDA
         assert isinstance(spin, Spin)
+        assert isinstance(frequency, (float, type(None)))
 
         nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
         nov_alph = nocc_alph * nvirt_alph

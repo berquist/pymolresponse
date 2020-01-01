@@ -5,7 +5,7 @@ from typing import Optional, Sequence
 
 import numpy as np
 
-from pyresponse.core import AO2MOTransformationType, Hamiltonian, Program, Spin
+from pyresponse.core import Hamiltonian, Program, Spin
 from pyresponse.operators import Operator
 from pyresponse.solvers import ExactLineqSolver, LineqSolver, Solver
 from pyresponse.utils import form_results, form_vec_energy_differences
@@ -13,6 +13,7 @@ from pyresponse.utils import form_results, form_vec_energy_differences
 
 class Driver(ABC):
     def __init__(self, solver: Solver) -> None:
+        assert isinstance(solver, Solver)
         self.solver = solver
 
         self.results = []
@@ -28,6 +29,7 @@ class CPHF(Driver):
     """Driver for solving the coupled perturbed Hartree-Fock (CPHF) equations."""
 
     def __init__(self, solver: Solver) -> None:
+        assert isinstance(solver, Solver)
         super().__init__(solver)
 
     def set_frequencies(self, frequencies: Optional[Sequence[float]] = None) -> None:
@@ -51,29 +53,15 @@ class CPHF(Driver):
     def run(
         self, hamiltonian: Hamiltonian, spin: Spin, program: Program, program_obj
     ) -> None:
-        assert self.solver is not None
-        assert isinstance(self.solver, (LineqSolver,))
+        assert isinstance(hamiltonian, Hamiltonian)
+        assert isinstance(spin, Spin)
+        assert isinstance(program, (Program, type(None)))
+        # TODO program_obj
 
         if not hasattr(self, "frequencies"):
             self.set_frequencies([0.0])
 
-        assert isinstance(hamiltonian, Hamiltonian)
-        assert isinstance(spin, Spin)
-
-        # FIXME be able to switch between solver types
-        assert isinstance(self.solver, (ExactLineqSolver,))
-        if not self.solver.tei_mo:
-            assert program is not None
-            assert program_obj is not None
-            self.solver.form_tei_mo(program, program_obj, AO2MOTransformationType.partial)
-        for frequency in self.frequencies:
-            self.solver.form_explicit_hessian(hamiltonian, spin, frequency)
-            self.solver.invert_explicit_hessian()
-            self.solver.form_response_vectors()
-        # else:
-        #     for frequency in self.frequencies:
-        #         self.solver.run(hamiltonian, spin, frequency)
-
+        self.solver.run(hamiltonian, spin, program, program_obj)
         self.form_uncoupled_results()
         self.form_results()
 
