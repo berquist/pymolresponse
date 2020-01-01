@@ -2,8 +2,9 @@ import numpy as np
 
 import pyscf
 
-from pyresponse import optrot, utils
+from pyresponse import cphf, solvers, utils
 from pyresponse.core import Hamiltonian, Program, Spin
+from pyresponse.properties import optrot
 from pyresponse.pyscf import molecules
 from pyresponse.pyscf.utils import occupations_from_pyscf_mol
 
@@ -208,6 +209,7 @@ def test_ORD_RPA_singlet_BC2H4_cation_HF_STO3G():
     ord_solver = optrot.ORD(
         Program.PySCF,
         pyscfmol,
+        cphf.CPHF(solvers.ExactInv(C, E, occupations)),
         C,
         E,
         occupations,
@@ -277,6 +279,7 @@ def test_ORD_RPA_singlet_BC2H4_HF_STO3G():
     ord_solver = optrot.ORD(
         Program.PySCF,
         pyscfmol,
+        cphf.CPHF(solvers.ExactInv(C, E, occupations)),
         C,
         E,
         occupations,
@@ -337,6 +340,7 @@ def test_ORD_RPA_singlet_trithiolane_HF_STO3G():
     ord_solver = optrot.ORD(
         Program.PySCF,
         pyscfmol,
+        cphf.CPHF(solvers.ExactInv(C, E, occupations)),
         C,
         E,
         occupations,

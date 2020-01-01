@@ -1,6 +1,6 @@
 """Wrapper for performing a dipole polarizability calculation."""
 
-from typing import Optional, Sequence
+from typing import Sequence
 
 import numpy as np
 
@@ -17,20 +17,20 @@ class Polarizability(ResponseProperty):
         self,
         program: Program,
         program_obj,
+        driver: CPHF,
         mocoeffs: np.ndarray,
         moenergies: np.ndarray,
         occupations: np.ndarray,
         *,
-        driver: Optional[CPHF] = None,
         frequencies: Sequence[float] = [0.0],
     ) -> None:
         super().__init__(
             program,
             program_obj,
+            driver,
             mocoeffs,
             moenergies,
             occupations,
-            driver=driver,
             frequencies=frequencies,
         )
 

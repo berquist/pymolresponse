@@ -153,17 +153,14 @@ class TDHF(CPHF):
         # print(eigvecs_normed[mask_normed])
         # print(square_eigvecs[mask].shape)
         # print(square_eigvecs_normed[mask_normed])
-        lines = []
-        lines.append("-----------------------------")
-        lines.append(
-            f"{self._HAMILTONIAN_MAP_ORCA[self.hamiltonian]}EXCITED STATES ({self._SPIN_MAP_ORCA[self.spin]})"
-        )
-        lines.append("-----------------------------")
-        lines.append("")
-        lines.append(
-            f"the weight of the individual excitations are printed if larger than {cutoff:>4.2f}"
-        )
-        lines.append("")
+        lines = [
+            "-----------------------------",
+            f"{self._HAMILTONIAN_MAP_ORCA[self.hamiltonian]}EXCITED STATES ({self._SPIN_MAP_ORCA[self.spin]})",
+            "-----------------------------",
+            "",
+            f"the weight of the individual excitations are printed if larger than {cutoff:>4.2f}",
+            "",
+        ]
         nstates = len(energies)
         for state in range(nstates):
             lines.append(
@@ -187,9 +184,10 @@ class TDHF(CPHF):
 
 
 class TDA(TDHF):
-    """Driver for solving the time-dependent Hartree-Fock equations with
-    the Tamm-Dancoff approximation (TDA), also called the configuration
-    interaction with single excitation (CIS) equations."""
+    """Driver for solving the time-dependent Hartree-Fock equations with the
+    Tamm-Dancoff approximation (TDA), also called the configuration
+    interaction with single excitation (CIS) equations.
+    """
 
     def __init__(self, solver: Solver) -> None:
         super().__init__(solver)
@@ -197,9 +195,10 @@ class TDA(TDHF):
     def form_results(self) -> None:
         nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.solver.occupations
         nov_alph = nocc_alph * nvirt_alph
-        nov_beta = nocc_beta * nvirt_beta
+        # nov_beta = nocc_beta * nvirt_beta
         self.solver.eigvecs_normed = self.solver.eigvecs.copy()
         # This is because we've calculated all possible roots.
+
         for idx in range(nov_alph):
             norm = 1 / np.sqrt(2)
             eigvec = self.solver.eigvecs[:, idx]

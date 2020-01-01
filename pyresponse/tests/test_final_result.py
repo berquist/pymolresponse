@@ -1,8 +1,9 @@
 import numpy as np
 
-from pyresponse import cphf, electric, operators, solvers, utils
+from pyresponse import cphf, operators, solvers, utils
 from pyresponse.core import AO2MOTransformationType, Hamiltonian, Program, Spin
 from pyresponse.data import REFDIR
+from pyresponse.properties import electric
 from pyresponse.pyscf import molecules
 from pyresponse.tests.test_runners import (
     run_as_many_tests_as_possible_rhf_disk,
@@ -67,7 +68,13 @@ def test_final_result_rhf_h2o_sto3g_rpa_singlet() -> None:
     mol = molecules.molecule_water_sto3g()
     mol.build()
     polarizability = electric.Polarizability(
-        Program.PySCF, mol, C, E, occupations, frequencies=frequencies
+        Program.PySCF,
+        mol,
+        cphf.CPHF(solvers.ExactInv(C, E, occupations)),
+        C,
+        E,
+        occupations,
+        frequencies=frequencies,
     )
     polarizability.form_operators()
     polarizability.run(hamiltonian=hamiltonian, spin=spin)
@@ -144,7 +151,13 @@ def test_final_result_rhf_h2o_sto3g_rpa_triplet() -> None:
     mol = molecules.molecule_water_sto3g()
     mol.build()
     polarizability = electric.Polarizability(
-        Program.PySCF, mol, C, E, occupations, frequencies=frequencies
+        Program.PySCF,
+        mol,
+        cphf.CPHF(solvers.ExactInv(C, E, occupations)),
+        C,
+        E,
+        occupations,
+        frequencies=frequencies,
     )
     polarizability.form_operators()
     polarizability.run(hamiltonian=hamiltonian, spin=spin)
@@ -221,7 +234,13 @@ def test_final_result_rhf_h2o_sto3g_tda_singlet() -> None:
     mol = molecules.molecule_water_sto3g()
     mol.build()
     polarizability = electric.Polarizability(
-        Program.PySCF, mol, C, E, occupations, frequencies=frequencies
+        Program.PySCF,
+        mol,
+        cphf.CPHF(solvers.ExactInv(C, E, occupations)),
+        C,
+        E,
+        occupations,
+        frequencies=frequencies,
     )
     polarizability.form_operators()
     polarizability.run(hamiltonian=hamiltonian, spin=spin)
@@ -298,7 +317,13 @@ def test_final_result_rhf_h2o_sto3g_tda_triplet() -> None:
     mol = molecules.molecule_water_sto3g()
     mol.build()
     polarizability = electric.Polarizability(
-        Program.PySCF, mol, C, E, occupations, frequencies=frequencies
+        Program.PySCF,
+        mol,
+        cphf.CPHF(solvers.ExactInv(C, E, occupations)),
+        C,
+        E,
+        occupations,
+        frequencies=frequencies,
     )
     polarizability.form_operators()
     polarizability.run(hamiltonian=hamiltonian, spin=spin)
@@ -321,17 +346,11 @@ def test_final_result_rhf_h2o_sto3g_tda_triplet() -> None:
 
 
 def test_as_many_as_possible_rhf_disk() -> None:
-
     run_as_many_tests_as_possible_rhf_disk("r_lih_hf_sto-3g")
-
-    return
 
 
 def test_as_many_as_possible_uhf_disk() -> None:
-
     run_as_many_tests_as_possible_uhf_disk("u_lih_cation_hf_sto-3g")
-
-    return
 
 
 # TODO what is this?

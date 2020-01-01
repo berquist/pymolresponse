@@ -12,7 +12,7 @@ from pyresponse.constants import convfac_au_to_debye
 
 
 def get_most_abundant_isotope(
-    element: periodictable.core.Element
+    element: periodictable.core.Element,
 ) -> periodictable.core.Isotope:
     most_abundant_isotope = element.isotopes[0]
     abundance = 0

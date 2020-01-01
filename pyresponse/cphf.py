@@ -1,6 +1,6 @@
 """Driver for solving the coupled perturbed Hartree-Fock (CPHF) equations."""
 
-from abc import ABC
+from abc import ABC, abstractmethod
 from typing import Optional, Sequence
 
 import numpy as np
@@ -16,6 +16,12 @@ class Driver(ABC):
         self.solver = solver
 
         self.results = []
+
+    @abstractmethod
+    def run(
+        self, hamiltonian: Hamiltonian, spin: Spin, program: Program, program_obj
+    ) -> None:
+        pass
 
 
 class CPHF(Driver):

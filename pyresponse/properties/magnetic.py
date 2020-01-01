@@ -1,4 +1,4 @@
-from typing import Optional, Union
+from typing import Union
 
 import numpy as np
 
@@ -14,20 +14,19 @@ class Magnetizability(ResponseProperty):
         self,
         program: Program,
         program_obj,
+        driver: CPHF,
         mocoeffs: np.ndarray,
         moenergies: np.ndarray,
         occupations: np.ndarray,
-        *,
-        driver: Optional[CPHF] = None,
         use_giao: bool = False,
     ) -> None:
         super().__init__(
             program,
             program_obj,
+            driver,
             mocoeffs,
             moenergies,
             occupations,
-            driver=driver,
             frequencies=np.asarray([0.0]),
         )
         self.use_giao = use_giao
@@ -71,20 +70,20 @@ class ElectronicGTensor(ResponseProperty):
         self,
         program: Program,
         program_obj,
+        driver: CPHF,
         mocoeffs: np.ndarray,
         moenergies: np.ndarray,
         occupations: np.ndarray,
         *,
-        driver: Optional[CPHF] = None,
         gauge_origin: Union[str, np.ndarray] = "ecc",
     ) -> None:
         super().__init__(
             program,
             program_obj,
+            driver,
             mocoeffs,
             moenergies,
             occupations,
-            driver=driver,
             frequencies=[0.0],
         )
 

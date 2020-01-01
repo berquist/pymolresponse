@@ -1,4 +1,4 @@
-from typing import Optional, Sequence
+from typing import Sequence
 
 import numpy as np
 
@@ -13,21 +13,21 @@ class ORD(ResponseProperty):
         self,
         program: Program,
         program_obj,
+        driver: CPHF,
         mocoeffs: np.ndarray,
         moenergies: np.ndarray,
         occupations: np.ndarray,
         *,
-        driver: Optional[CPHF] = None,
         frequencies: Sequence[float] = [0.0],
         do_dipvel: bool = False,
     ):
         super().__init__(
             program,
             program_obj,
+            driver,
             mocoeffs,
             moenergies,
             occupations,
-            driver=driver,
             frequencies=frequencies,
         )
         self.do_dipvel = do_dipvel

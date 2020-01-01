@@ -4,8 +4,9 @@ import numpy as np
 
 import pyscf
 
-from pyresponse import electric, utils
+from pyresponse import cphf, solvers, utils
 from pyresponse.core import Hamiltonian, Program, Spin
+from pyresponse.properties import electric
 from pyresponse.pyscf.molecules import (
     molecule_physicists_water_augccpvdz,
     molecule_physicists_water_sto3g,
@@ -31,7 +32,13 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_small
     f2 = 2 * f1
     frequencies = [f1, f2]
     calculator = electric.Polarizability(
-        Program.PySCF, mol, C, E, occupations, frequencies=frequencies
+        Program.PySCF,
+        mol,
+        cphf.CPHF(solvers.ExactInv(C, E, occupations)),
+        C,
+        E,
+        occupations,
+        frequencies=frequencies,
     )
     calculator.form_operators()
     calculator.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)
@@ -334,7 +341,13 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_large
     f2 = 2 * f1
     frequencies = [f1, f2]
     calculator = electric.Polarizability(
-        Program.PySCF, mol, C, E, occupations, frequencies=frequencies
+        Program.PySCF,
+        mol,
+        cphf.CPHF(solvers.ExactInv(C, E, occupations)),
+        C,
+        E,
+        occupations,
+        frequencies=frequencies,
     )
     calculator.form_operators()
     calculator.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)

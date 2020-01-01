@@ -4,10 +4,9 @@ import scipy as sp
 import psi4
 import pyscf
 
-from pyresponse import magnetic, solvers, utils
+from pyresponse import cphf, solvers, utils
 from pyresponse.core import Hamiltonian, Program, Spin
-from pyresponse.cphf import CPHF
-from pyresponse.electric import Polarizability
+from pyresponse.properties import electric, magnetic
 from pyresponse.psi4 import molecules as molecules_psi4
 from pyresponse.psi4.utils import (
     mocoeffs_from_psi4wfn,
@@ -18,8 +17,8 @@ from pyresponse.pyscf import molecules as molecules_pyscf
 from pyresponse.pyscf.utils import occupations_from_pyscf_mol
 
 
-def test_solvers() -> None:
-    """Test that each kind of iterator gives identical results."""
+def test_inversion() -> None:
+    """Test that each kind of inversion function gives identical results."""
 
     mol = molecules_pyscf.molecule_glycine_sto3g()
     mol.charge = 1
@@ -38,16 +37,15 @@ def test_solvers() -> None:
     calculator_ref = magnetic.Magnetizability(
         Program.PySCF,
         mol,
+        cphf.CPHF(solvers.ExactInv(C, E, occupations)),
         C,
         E,
         occupations,
-        driver=CPHF(solvers.ExactInv(C, E, occupations)),
     )
     calculator_ref.form_operators()
     calculator_ref.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)
     calculator_ref.form_results()
 
-    ref = calculator_ref.magnetizability
     inv_funcs = (sp.linalg.inv, sp.linalg.pinv, sp.linalg.pinv2)
 
     thresh = 6.0e-14
@@ -56,10 +54,10 @@ def test_solvers() -> None:
         calculator_res = magnetic.Magnetizability(
             Program.PySCF,
             mol,
+            cphf.CPHF(solvers.ExactInv(C, E, occupations)),
             C,
             E,
             occupations,
-            driver=CPHF(solvers.ExactInv(C, E, occupations, inv_func=inv_func)),
         )
         calculator_res.form_operators()
         calculator_res.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)
@@ -76,9 +74,6 @@ def test_solvers() -> None:
 
 
 def test_final_result_rhf_h2o_sto3g_rpa_singlet_iter() -> None:
-    hamiltonian = Hamiltonian.RPA
-    spin = Spin.singlet
-
     mol = molecules_psi4.molecule_glycine_sto3g()
     psi4.core.set_active_molecule(mol)
     _, wfn = psi4.energy("hf", return_wfn=True)
@@ -86,12 +81,19 @@ def test_final_result_rhf_h2o_sto3g_rpa_singlet_iter() -> None:
     E = moenergies_from_psi4wfn(wfn)
     occupations = occupations_from_psi4wfn(wfn)
 
-    polarizability = Polarizability(Program.Psi4, mol, C, E, occupations)
+    polarizability = electric.Polarizability(
+        Program.Psi4,
+        mol,
+        cphf.CPHF(solvers.ExactInv(C, E, occupations)),
+        C,
+        E,
+        occupations,
+    )
     polarizability.form_operators()
-    polarizability.run(hamiltonian=hamiltonian, spin=spin)
+    polarizability.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)
     polarizability.form_results()
 
 
 if __name__ == "__main__":
-    # test_solvers()
+    # test_inversion()
     test_final_result_rhf_h2o_sto3g_rpa_singlet_iter()

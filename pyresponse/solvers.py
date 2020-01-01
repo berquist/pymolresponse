@@ -43,7 +43,7 @@ class Solver(ABC):
 
     def __init__(
         self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: np.ndarray
-    ):
+    ) -> None:
 
         # MO coefficients: the first axis is alpha/beta
         assert len(mocoeffs.shape) == 3
@@ -68,6 +68,12 @@ class Solver(ABC):
 
         self.operators = []
         self.frequencies = []
+
+        self.indices_closed_act = None
+        self.indices_closed_secondary = None
+        self.indices_act_secondary = None
+        self.indices_rohf = None
+        self.indices_display_rohf = None
 
         # These are needed for MO-based solvers.
         self.tei_mo = None
@@ -142,7 +148,7 @@ class Solver(ABC):
         )
         self.indices_display_rohf = [(p + 1, q + 1) for (p, q) in self.indices_rohf]
 
-    def set_frequencies(self, frequencies: Optional[Sequence[float]] = None):
+    def set_frequencies(self, frequencies: Optional[Sequence[float]] = None) -> None:
         if frequencies is None:
             self.frequencies = [0.0]
         else:
@@ -206,13 +212,15 @@ class ExactLineqSolver(LineqSolver, ABC):
         nov_alph = nocc_alph * nvirt_alph
         nov_beta = nocc_beta * nvirt_beta
 
-        superoverlap_alph = np.block(
-            [
-                [np.eye(nov_alph), np.zeros(shape=(nov_alph, nov_alph))],
-                [np.zeros(shape=(nov_alph, nov_alph)), -np.eye(nov_alph)],
-            ]
+        superoverlap_alph = (
+            np.block(
+                [
+                    [np.eye(nov_alph), np.zeros(shape=(nov_alph, nov_alph))],
+                    [np.zeros(shape=(nov_alph, nov_alph)), -np.eye(nov_alph)],
+                ]
+            )
+            * frequency
         )
-        superoverlap_alph = superoverlap_alph * frequency
 
         if not self.is_uhf:
 

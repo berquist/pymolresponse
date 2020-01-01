@@ -2,27 +2,6 @@
 isort:skip_file
 """
 
-# pylint: disable=unused-import
-
-from . import (
-    ao2mo,
-    constants,
-    cphf,
-    ecd,
-    electric,
-    explicit_equations_full,
-    explicit_equations_partial,
-    helpers,
-    integrals,
-    solvers,
-    magnetic,
-    molecular_property,
-    operators,
-    optrot,
-    td,
-    utils,
-)
-
 # Handle versioneer
 from ._version import get_versions
 

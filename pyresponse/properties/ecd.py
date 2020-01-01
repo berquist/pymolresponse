@@ -1,8 +1,6 @@
 """Wrapper for performing an electronic circular dichroism (ECD)
 calculation."""
 
-from typing import Optional
-
 import numpy as np
 
 from pyresponse.constants import HARTREE_TO_EV, HARTREE_TO_INVCM, alpha, esuecd
@@ -22,22 +20,16 @@ class ECD(TransitionProperty):
         self,
         program: Program,
         program_obj,
+        driver: TDHF,
         mocoeffs: np.ndarray,
         moenergies: np.ndarray,
         occupations: np.ndarray,
         *,
-        driver: Optional[TDHF] = None,
         do_tda: bool = False,
         do_dipvel: bool = False,
     ) -> None:
         super().__init__(
-            program,
-            program_obj,
-            mocoeffs,
-            moenergies,
-            occupations,
-            driver=driver,
-            do_tda=do_tda,
+            program, program_obj, driver, mocoeffs, moenergies, occupations, do_tda=do_tda
         )
         self.do_dipvel = do_dipvel
 
