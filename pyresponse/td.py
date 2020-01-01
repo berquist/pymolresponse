@@ -4,8 +4,9 @@ equations."""
 import numpy as np
 
 from pyresponse.constants import HARTREE_TO_EV, HARTREE_TO_INVCM
+from pyresponse.core import AO2MOTransformationType, Hamiltonian, Program, Spin
 from pyresponse.cphf import CPHF
-from pyresponse.iterators import EigSolver, ExactDiagonalizationSolver
+from pyresponse.iterators import EigSolver, ExactDiagonalizationSolver, Solver
 from pyresponse.utils import form_indices_orbwin, form_vec_energy_differences
 
 
@@ -15,54 +16,35 @@ class TDHF(CPHF):
     equations.
     """
 
-    def __init__(self, solver, *args, **kwargs):
-        super().__init__(solver, *args, **kwargs)
+    def __init__(self, solver: Solver) -> None:
+        super().__init__(solver)
 
     def run(
-        self,
-        solver_type=None,
-        hamiltonian=None,
-        spin=None,
-        program=None,
-        program_obj=None,
-        **kwargs,
-    ):
-
+        self, hamiltonian: Hamiltonian, spin: Spin, program: Program, program_obj
+    ) -> None:
         assert self.solver is not None
         assert isinstance(self.solver, (EigSolver,))
 
-        if not solver_type:
-            solver_type = self.solver_type
-        if not hamiltonian:
-            hamiltonian = self.hamiltonian
-        if not spin:
-            spin = self.spin
+        assert isinstance(hamiltonian, Hamiltonian)
+        assert isinstance(spin, Spin)
 
-        assert isinstance(solver_type, str)
-        assert isinstance(hamiltonian, str)
-        assert isinstance(spin, str)
-
-        # Set the current state.
-        self.solver_type = solver_type.lower()
-        self.hamiltonian = hamiltonian.lower()
-        self.spin = spin.lower()
-
-        if "exact" in solver_type:
-            assert isinstance(self.solver, (ExactDiagonalizationSolver,))
-            if not self.solver.tei_mo:
-                assert program is not None
-                assert program_obj is not None
-                self.solver.form_tei_mo(program, program_obj)
-            self.solver.form_explicit_hessian(hamiltonian, spin, None)
-            self.solver.diagonalize_explicit_hessian()
-        else:
-            raise NotImplementedError
+        # FIXME be able to switch between solver types
+        assert isinstance(self.solver, (ExactDiagonalizationSolver,))
+        if not self.solver.tei_mo:
+            assert program is not None
+            assert program_obj is not None
+            self.solver.form_tei_mo(program, program_obj, AO2MOTransformationType.partial)
+        self.solver.form_explicit_hessian(hamiltonian, spin, None)
+        self.solver.diagonalize_explicit_hessian()
+        # TODO implement Davidson
+        # else:
+        #     raise NotImplementedError
 
         # TODO Is there an equivalent to the uncoupled result? Just
         # orbital energy differences?
         self.form_results()
 
-    def form_results(self):
+    def form_results(self) -> None:
         nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.solver.occupations
         nov_alph = nocc_alph * nvirt_alph
         nov_beta = nocc_beta * nvirt_beta
@@ -106,7 +88,7 @@ class TDHF(CPHF):
             )
         return
 
-    def print_results(self):
+    def print_results(self) -> None:
         energies = self.solver.eigvals.real
         for idx in len(energies):
             print("=" * 78)
@@ -124,7 +106,7 @@ class TDHF(CPHF):
                 print(f" Oscillator strength (total): {total_oscillator_strength}")
         return
 
-    def print_results_nwchem(self):
+    def print_results_nwchem(self) -> str:
         # TODO UHF
         nocc_tot, nvirt_tot, _, _ = self.solver.occupations
         moene = np.diag(self.solver.moenergies[0])
@@ -149,9 +131,9 @@ class TDHF(CPHF):
         lines.append("--------------------------------------------------------")
         return "\n".join(lines)
 
-    _HAMILTONIAN_MAP_ORCA = {"tda": "CIS-", "rpa": "RPA "}
+    _HAMILTONIAN_MAP_ORCA = {Hamiltonian.TDA: "CIS-", Hamiltonian.RPA: "RPA "}
 
-    _SPIN_MAP_ORCA = {"singlet": "SINGLETS", "triplet": "TRIPLETS"}
+    _SPIN_MAP_ORCA = {Spin.singlet: "SINGLETS", Spin.triplet: "TRIPLETS"}
 
     def print_results_orca(self, cutoff=0.01):
         energies = self.solver.eigvals.real
@@ -201,7 +183,7 @@ class TDHF(CPHF):
             lines.append("")
         return "\n".join(lines)
 
-    _SPIN_MAP_QCHEM = {"singlet": "Singlet", "triplet": "Triplet"}
+    _SPIN_MAP_QCHEM = {Spin.singlet: "Singlet", Spin.triplet: "Triplet"}
 
 
 class TDA(TDHF):
@@ -209,10 +191,10 @@ class TDA(TDHF):
     the Tamm-Dancoff approximation (TDA), also called the configuration
     interaction with single excitation (CIS) equations."""
 
-    def __init__(self, solver, *args, **kwargs):
-        super().__init__(solver, *args, **kwargs)
+    def __init__(self, solver: Solver) -> None:
+        super().__init__(solver)
 
-    def form_results(self):
+    def form_results(self) -> None:
         nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.solver.occupations
         nov_alph = nocc_alph * nvirt_alph
         nov_beta = nocc_beta * nvirt_beta

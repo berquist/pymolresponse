@@ -5,7 +5,7 @@ import numpy as np
 import pyscf
 
 from pyresponse import electric, utils
-from pyresponse.interfaces import Program
+from pyresponse.core import Hamiltonian, Program, Spin
 from pyresponse.pyscf.molecules import molecule_water_sto3g_angstrom
 
 
@@ -27,7 +27,7 @@ def test_first_hyperpolarizability_static_rhf_wigner_explicit():
         Program.PySCF, mol, C, E, occupations, frequencies=[0.0]
     )
     calculator.form_operators()
-    calculator.run()
+    calculator.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)
     calculator.form_results()
 
     polarizability = calculator.polarizabilities[0]
@@ -277,7 +277,7 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit():
         Program.PySCF, mol, C, E, occupations, frequencies=frequencies
     )
     calculator.form_operators()
-    calculator.run()
+    calculator.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)
     calculator.form_results()
 
     polarizability_1 = calculator.polarizabilities[0]
@@ -643,7 +643,7 @@ def test_first_hyperpolarizability_eope_rhf_wigner_explicit():
         Program.PySCF, mol, C, E, occupations, frequencies=frequencies
     )
     calculator.form_operators()
-    calculator.run()
+    calculator.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)
     calculator.form_results()
 
     polarizability_1 = calculator.polarizabilities[0]
@@ -888,7 +888,7 @@ def test_first_hyperpolarizability_or_rhf_wigner_explicit():
         Program.PySCF, mol, C, E, occupations, frequencies=frequencies
     )
     calculator.form_operators()
-    calculator.run()
+    calculator.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)
     calculator.form_results()
 
     polarizability_1 = calculator.polarizabilities[0]

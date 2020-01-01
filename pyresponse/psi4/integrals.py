@@ -1,4 +1,5 @@
 from enum import Enum, auto, unique
+from typing import Optional, Tuple
 
 import numpy as np
 
@@ -12,8 +13,8 @@ ANGMOM_COMMON_GAUGE = object()
 
 
 class IntegralsPsi4(Integrals):
-    def __init__(self, wfn_or_mol, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, wfn_or_mol) -> None:
+        super().__init__()
 
         if isinstance(wfn_or_mol, psi4.core.Molecule):
             wfn = psi4.core.Wavefunction.build(
@@ -25,7 +26,7 @@ class IntegralsPsi4(Integrals):
             raise RuntimeError
         self._mints = psi4.core.MintsHelper(wfn)
 
-    def _compute(self, label):
+    def _compute(self, label: IntegralLabel) -> np.ndarray:
         if label == DIPOLE:
             return np.stack([np.asarray(Mc) for Mc in self._mints.ao_dipole()])
         elif label == DIPVEL:
@@ -37,16 +38,18 @@ class IntegralsPsi4(Integrals):
 
 
 class JKPsi4(JK):
-    def __init__(self, wfn, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, wfn) -> None:
+        super().__init__()
 
         self._jk = psi4.core.JK.build(wfn.basisset())
         self._jk.initialize()
 
-    def compute_from_density(self, D):
+    def compute_from_density(self, D: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
         raise NotImplementedError
 
-    def compute_from_mocoeffs(self, C_left, C_right=None):
+    def compute_from_mocoeffs(
+        self, C_left: np.ndarray, C_right: Optional[np.ndarray] = None
+    ) -> Tuple[np.ndarray, np.ndarray]:
         self._jk.C_clear()
         self._jk.C_left_add(psi4.core.Matrix.from_array(C_left))
         if C_right is not None:

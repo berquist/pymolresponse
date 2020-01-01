@@ -3,7 +3,7 @@ import numpy as np
 import pyscf
 
 from pyresponse import ecd, utils
-from pyresponse.interfaces import Program
+from pyresponse.core import Hamiltonian, Program, Spin
 from pyresponse.pyscf import molecules
 
 BC2H4_cation_HF_STO3G_RPA_singlet_nwchem = {
@@ -149,7 +149,7 @@ BC2H4_cation_HF_STO3G_TDA_singlet_orca = {
 }
 
 
-def test_ECD_TDA_singlet_BC2H4_cation_HF_STO3G():
+def test_ECD_TDA_singlet_BC2H4_cation_HF_STO3G() -> None:
 
     ref = BC2H4_cation_HF_STO3G_TDA_singlet_orca
     nroots = ref["nroots"]
@@ -166,7 +166,7 @@ def test_ECD_TDA_singlet_BC2H4_cation_HF_STO3G():
 
     ecd_dipvel_tda = ecd.ECD(Program.PySCF, mol, C, E, occupations, do_dipvel=True)
     ecd_dipvel_tda.form_operators()
-    ecd_dipvel_tda.run(hamiltonian="tda", spin="singlet")
+    ecd_dipvel_tda.run(hamiltonian=Hamiltonian.TDA, spin=Spin.singlet)
     ecd_dipvel_tda.form_results()
 
     print("excitation energies")
@@ -229,10 +229,8 @@ def test_ECD_TDA_singlet_BC2H4_cation_HF_STO3G():
     # print(ecd_dipvel_tda.print_results_orca())
     # print(ecd_dipvel_tda.print_results_qchem())
 
-    return
 
-
-def test_ECD_RPA_singlet_BC2H4_cation_HF_STO3G():
+def test_ECD_RPA_singlet_BC2H4_cation_HF_STO3G() -> None:
 
     ref = BC2H4_cation_HF_STO3G_RPA_singlet_nwchem
     nroots = ref["nroots"]
@@ -249,7 +247,7 @@ def test_ECD_RPA_singlet_BC2H4_cation_HF_STO3G():
 
     ecd_dipvel_rpa = ecd.ECD(Program.PySCF, mol, C, E, occupations, do_dipvel=True)
     ecd_dipvel_rpa.form_operators()
-    ecd_dipvel_rpa.run(hamiltonian="rpa", spin="singlet")
+    ecd_dipvel_rpa.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)
     ecd_dipvel_rpa.form_results()
 
     print("excitation energies")
@@ -341,8 +339,6 @@ def test_ECD_RPA_singlet_BC2H4_cation_HF_STO3G():
     # print('ref_etoscsvel:', sum(ref_etoscsvel))
     # print('res_etoscsvel:', sum(res_etoscsvel))
 
-    return
-
 
 # TODO once UHF is done
 # def test_ECD_RPA_singlet_BC2H4_neutral_radical_HF_STO3G():
@@ -353,7 +349,6 @@ def test_ECD_RPA_singlet_BC2H4_cation_HF_STO3G():
 #     mf.scf()
 
 #     C = utils.fix_mocoeffs_shape(mf.mo_coeff)
-#     return
 
 
 if __name__ == "__main__":

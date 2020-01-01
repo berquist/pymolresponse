@@ -1,10 +1,9 @@
 import numpy as np
-import scipy.constants as spc
 
 import pyscf
 
 from pyresponse import magnetic, utils
-from pyresponse.interfaces import Program
+from pyresponse.core import Hamiltonian, Program, Spin
 from pyresponse.pyscf import molecules
 
 # These were generated using DALTON.
@@ -25,7 +24,7 @@ ref_magnetizability_rohf = np.array(
 )
 
 
-def test_magnetizability_rhf():
+def test_magnetizability_rhf() -> None:
     mol = molecules.molecule_glycine_sto3g()
     mol.build()
 
@@ -38,7 +37,7 @@ def test_magnetizability_rhf():
 
     calculator_common = magnetic.Magnetizability(Program.PySCF, mol, C, E, occupations)
     calculator_common.form_operators()
-    calculator_common.run(hamiltonian="rpa", spin="singlet")
+    calculator_common.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)
     calculator_common.form_results()
     ref_eigvals, ref_iso, _ = utils.tensor_printer(ref_magnetizability_rhf)
     res_eigvals, res_iso, _ = utils.tensor_printer(calculator_common.magnetizability)
@@ -53,10 +52,8 @@ def test_magnetizability_rhf():
     # calculator_giao.run()
     # calculator_giao.form_results()
 
-    return
 
-
-def test_magnetizability_uhf():
+def test_magnetizability_uhf() -> None:
     mol = molecules.molecule_glycine_sto3g()
     mol.charge = 1
     mol.spin = 1
@@ -71,15 +68,13 @@ def test_magnetizability_uhf():
 
     calculator_common = magnetic.Magnetizability(Program.PySCF, mol, C, E, occupations)
     calculator_common.form_operators()
-    calculator_common.run(hamiltonian="rpa", spin="singlet")
+    calculator_common.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)
     calculator_common.form_results()
     ref_eigvals, ref_iso, _ = utils.tensor_printer(ref_magnetizability_rohf)
     res_eigvals, res_iso, _ = utils.tensor_printer(calculator_common.magnetizability)
     thresh_eigval = 1.0e-1
     for i in range(3):
         assert abs(ref_eigvals[i] - res_eigvals[i]) < thresh_eigval
-
-    return
 
 
 # These were generated with this program.
@@ -102,7 +97,7 @@ ref_electronicgtensor_large = np.array(
 )
 
 
-def test_electronicgtensor_tiny():
+def test_electronicgtensor_tiny() -> None:
 
     mol = molecules.molecule_lih_cation_sto3g()
     mol.build()
@@ -116,7 +111,7 @@ def test_electronicgtensor_tiny():
 
     gtensor_calculator = magnetic.ElectronicGTensor(Program.PySCF, mol, C, E, occupations)
     gtensor_calculator.form_operators()
-    gtensor_calculator.run(hamiltonian="rpa", spin="singlet")
+    gtensor_calculator.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)
     gtensor_calculator.form_results()
 
     print(ref_electronicgtensor_tiny)
@@ -129,10 +124,8 @@ def test_electronicgtensor_tiny():
         )
     )
 
-    return
 
-
-def test_electronicgtensor_small():
+def test_electronicgtensor_small() -> None:
 
     mol = molecules.molecule_bc2h4_neutral_radical_sto3g()
     mol.build()
@@ -146,7 +139,7 @@ def test_electronicgtensor_small():
 
     gtensor_calculator = magnetic.ElectronicGTensor(Program.PySCF, mol, C, E, occupations)
     gtensor_calculator.form_operators()
-    gtensor_calculator.run(hamiltonian="rpa", spin="singlet")
+    gtensor_calculator.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)
     gtensor_calculator.form_results()
 
     print(ref_electronicgtensor_small)
@@ -157,8 +150,6 @@ def test_electronicgtensor_small():
             np.sign(ref_electronicgtensor_small), np.sign(gtensor_calculator.g_oz_soc_1)
         )
     )
-
-    return
 
 
 # def test_electronicgtensor_large():

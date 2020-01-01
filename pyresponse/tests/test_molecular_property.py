@@ -2,16 +2,17 @@ import numpy as np
 import pytest
 
 from pyresponse import molecular_property
+from pyresponse.core import Program
 
 
 @pytest.mark.skip("TODO these have been turned into ABCs")
-def test_molecular_property():
+def test_molecular_property() -> None:
     pyscfmol = None
     mocoeffs = np.array([])
     moenergies = np.array([])
     occupations = np.array([])
     cls = molecular_property.MolecularProperty(
-        pyscfmol, mocoeffs, moenergies, occupations
+        Program.PySCF, pyscfmol, mocoeffs, moenergies, occupations
     )
     try:
         cls.form_operators()
@@ -23,11 +24,10 @@ def test_molecular_property():
     except NotImplementedError as e:
         message = e.args[0]
         assert message == "This must be implemented in a grandchild class."
-    return
 
 
 @pytest.mark.skip()
-def test_response_property():
+def test_response_property() -> None:
     pyscfmol = None
     mocoeffs = np.zeros((1, 2, 2))
     moenergies = np.zeros((1, 2, 2))
@@ -44,11 +44,10 @@ def test_response_property():
     # except NotImplementedError as e:
     #     message = e.args[0]
     #     assert message == "This must be implemented in a child class."
-    return
 
 
 @pytest.mark.skip()
-def test_transition_property():
+def test_transition_property() -> None:
     pyscfmol = None
     mocoeffs = np.zeros((1, 2, 2))
     moenergies = np.zeros((1, 2, 2))
@@ -65,7 +64,6 @@ def test_transition_property():
     # except NotImplementedError as e:
     #     message = e.args[0]
     #     assert message == "This must be implemented in a child class."
-    return
 
 
 if __name__ == "__main__":

@@ -1,12 +1,15 @@
 """Wrapper for performing an electronic circular dichroism (ECD)
 calculation."""
 
+from typing import Optional
+
 import numpy as np
 
 from pyresponse.constants import HARTREE_TO_EV, HARTREE_TO_INVCM, alpha, esuecd
-from pyresponse.interfaces import Program
+from pyresponse.core import Program
 from pyresponse.molecular_property import TransitionProperty
 from pyresponse.operators import Operator
+from pyresponse.td import TDHF
 from pyresponse.utils import form_indices_zero
 
 
@@ -17,28 +20,28 @@ class ECD(TransitionProperty):
 
     def __init__(
         self,
-        program,
+        program: Program,
         program_obj,
-        mocoeffs,
-        moenergies,
-        occupations,
-        do_dipvel=False,
-        *args,
-        **kwargs,
-    ):
+        mocoeffs: np.ndarray,
+        moenergies: np.ndarray,
+        occupations: np.ndarray,
+        *,
+        driver: Optional[TDHF] = None,
+        do_tda: bool = False,
+        do_dipvel: bool = False,
+    ) -> None:
         super().__init__(
             program,
             program_obj,
             mocoeffs,
             moenergies,
             occupations,
-            do_dipvel,
-            *args,
-            **kwargs,
+            driver=driver,
+            do_tda=do_tda,
         )
         self.do_dipvel = do_dipvel
 
-    def form_operators(self):
+    def form_operators(self) -> None:
 
         if self.program == Program.PySCF:
             from pyresponse.pyscf import integrals
@@ -72,7 +75,7 @@ class ECD(TransitionProperty):
             operator_dipvel.ao_integrals = integral_generator.integrals(integrals.DIPVEL)
             self.driver.add_operator(operator_dipvel)
 
-    def form_results(self):
+    def form_results(self) -> None:
 
         operator_angmom = self.driver.solver.operators[0]
         operator_diplen = self.driver.solver.operators[1]
@@ -114,7 +117,7 @@ class ECD(TransitionProperty):
         if self.do_dipvel:
             self.rotational_strengths_dipvel = np.array(rotational_strengths_dipvel)
 
-    def print_results_nwchem(self):
+    def print_results_nwchem(self) -> str:
         excitation_block = self.driver.print_results_nwchem()
         lines = [excitation_block]
         energies = self.driver.solver.eigvals.real
@@ -185,7 +188,7 @@ class ECD(TransitionProperty):
 
         return "\n".join(lines)
 
-    def print_results_orca(self):
+    def print_results_orca(self) -> str:
         excitation_block = self.driver.print_results_orca()
         lines = [excitation_block]
         energies = self.driver.solver.eigvals.real
@@ -278,7 +281,7 @@ class ECD(TransitionProperty):
 
     # TODO cutoff taken from ORCA, check the source code to see the
     # real criterion
-    def print_results_qchem(self, cutoff=0.01):
+    def print_results_qchem(self, cutoff: float = 0.01) -> str:
         energies = self.driver.solver.eigvals.real
         energies_ev = energies * HARTREE_TO_EV
         op_diplen = self.driver.solver.operators[1]

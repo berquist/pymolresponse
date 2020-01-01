@@ -5,13 +5,14 @@ import psi4
 import pyscf
 
 from pyresponse import iterators, magnetic, utils
+from pyresponse.core import Hamiltonian, Program, Spin
+from pyresponse.cphf import CPHF
 from pyresponse.electric import Polarizability
-from pyresponse.interfaces import Program
 from pyresponse.psi4 import molecules as molecules_psi4
 from pyresponse.pyscf import molecules as molecules_pyscf
 
 
-def test_iterators():
+def test_iterators() -> None:
     """Test that each kind of iterator gives identical results."""
 
     mol = molecules_pyscf.molecule_glycine_sto3g()
@@ -28,12 +29,16 @@ def test_iterators():
     E = utils.fix_moenergies_shape(mf.mo_energy)
     occupations = utils.occupations_from_pyscf_mol(mol, C)
 
-    solver_ref = iterators.ExactInv(C, E, occupations)
     calculator_ref = magnetic.Magnetizability(
-        Program.PySCF, mol, C, E, occupations, solver=solver_ref
+        Program.PySCF,
+        mol,
+        C,
+        E,
+        occupations,
+        driver=CPHF(iterators.ExactInv(C, E, occupations)),
     )
     calculator_ref.form_operators()
-    calculator_ref.run(hamiltonian="rpa", spin="singlet")
+    calculator_ref.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)
     calculator_ref.form_results()
 
     ref = calculator_ref.magnetizability
@@ -42,12 +47,16 @@ def test_iterators():
     thresh = 6.0e-14
 
     for inv_func in inv_funcs:
-        solver_res = iterators.ExactInv(C, E, occupations, inv_func=inv_func)
         calculator_res = magnetic.Magnetizability(
-            Program.PySCF, mol, C, E, occupations, solver=solver_res
+            Program.PySCF,
+            mol,
+            C,
+            E,
+            occupations,
+            driver=CPHF(iterators.ExactInv(C, E, occupations, inv_func=inv_func)),
         )
         calculator_res.form_operators()
-        calculator_res.run(hamiltonian="rpa", spin="singlet")
+        calculator_res.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)
         calculator_res.form_results()
 
         np.testing.assert_equal(
@@ -59,12 +68,10 @@ def test_iterators():
         print(abs_diff)
         assert np.all(abs_diff < thresh)
 
-    return
 
-
-def test_final_result_rhf_h2o_sto3g_rpa_singlet_iter():
-    hamiltonian = "rpa"
-    spin = "singlet"
+def test_final_result_rhf_h2o_sto3g_rpa_singlet_iter() -> None:
+    hamiltonian = Hamiltonian.RPA
+    spin = Spin.singlet
 
     mol = molecules_psi4.molecule_glycine_sto3g()
     psi4.core.set_active_molecule(mol)
@@ -72,11 +79,10 @@ def test_final_result_rhf_h2o_sto3g_rpa_singlet_iter():
     C = utils.mocoeffs_from_psi4wfn(wfn)
     E = utils.moenergies_from_psi4wfn(wfn)
     occupations = utils.occupations_from_psi4wfn(wfn)
-    frequencies = [0.0]
 
-    polarizability = Polarizability(Program.Psi4, mol, C, E, occupations, frequencies)
+    polarizability = Polarizability(Program.Psi4, mol, C, E, occupations)
     polarizability.form_operators()
-    polarizability.run(hamiltonian=hamiltonian, spin=spin, solver_type="iter")
+    polarizability.run(hamiltonian=hamiltonian, spin=spin)
     polarizability.form_results()
 
 

@@ -5,7 +5,7 @@ import numpy as np
 import pyscf
 
 from pyresponse import electric, utils
-from pyresponse.interfaces import Program
+from pyresponse.core import Hamiltonian, Program, Spin
 from pyresponse.pyscf.molecules import (
     molecule_physicists_water_augccpvdz,
     molecule_physicists_water_sto3g,
@@ -33,7 +33,7 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_small
         Program.PySCF, mol, C, E, occupations, frequencies=frequencies
     )
     calculator.form_operators()
-    calculator.run()
+    calculator.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)
     calculator.form_results()
 
     polarizability_1 = calculator.polarizabilities[0]
@@ -336,7 +336,7 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_large
         Program.PySCF, mol, C, E, occupations, frequencies=frequencies
     )
     calculator.form_operators()
-    calculator.run()
+    calculator.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)
     calculator.form_results()
 
     polarizability_1 = calculator.polarizabilities[0]

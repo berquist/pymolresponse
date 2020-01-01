@@ -1,13 +1,19 @@
 """Utility functions that are core to calculating physical values."""
 
+from typing import List, Sequence, Tuple
+
 import numpy as np
 import numpy.linalg as npl
 import periodictable
 
+import pyscf
+
 from pyresponse.constants import convfac_au_to_debye
 
 
-def get_most_abundant_isotope(element):
+def get_most_abundant_isotope(
+    element: periodictable.core.Element
+) -> periodictable.core.Isotope:
     most_abundant_isotope = element.isotopes[0]
     abundance = 0
     for iso in element:
@@ -17,7 +23,7 @@ def get_most_abundant_isotope(element):
     return most_abundant_isotope
 
 
-def get_isotopic_masses(charges):
+def get_isotopic_masses(charges: Sequence[int]) -> np.ndarray:
     masses = []
     for charge in charges:
         el = periodictable.elements[charge]
@@ -27,28 +33,30 @@ def get_isotopic_masses(charges):
     return np.array(masses)
 
 
-def calc_center_of_mass_pyscf(pyscfmol):
+def calc_center_of_mass_pyscf(pyscfmol: pyscf.gto.Mole) -> np.ndarray:
     charges = pyscfmol.atom_charges()
     masses = get_isotopic_masses(charges)
     coords = pyscfmol.atom_coords()
     return calc_center_of_mass(coords, masses)
 
 
-def calc_center_of_mass(coords, masses):
+def calc_center_of_mass(coords: np.ndarray, masses: np.ndarray) -> np.ndarray:
     assert len(masses.shape) == 1
     denominator = np.sum(masses)
     numerator = np.sum(coords * masses[..., np.newaxis], axis=0)
     return numerator / denominator
 
 
-def calc_center_of_nuclear_charge(coords, charges):
+def calc_center_of_nuclear_charge(coords: np.ndarray, charges: np.ndarray) -> np.ndarray:
     dummy = np.zeros(3)
     center = nuclear_dipole_contribution(coords, charges, dummy)
     total_charge = np.sum(charges)
     return center / total_charge
 
 
-def calc_center_of_electronic_charge_pyscf(D, pyscfmol):
+def calc_center_of_electronic_charge_pyscf(
+    D: np.ndarray, pyscfmol: pyscf.gto.Mole
+) -> np.ndarray:
     assert len(D.shape) == 2
     # no linear dependencies!
     assert D.shape[0] == D.shape[1]
@@ -58,7 +66,9 @@ def calc_center_of_electronic_charge_pyscf(D, pyscfmol):
     return -dipole_at_zerovec / nelec
 
 
-def nuclear_dipole_contribution(nuccoords, nuccharges, origin_in_bohrs):
+def nuclear_dipole_contribution(
+    nuccoords: np.ndarray, nuccharges: np.ndarray, origin_in_bohrs: np.ndarray
+) -> np.ndarray:
     assert isinstance(nuccoords, np.ndarray)
     assert isinstance(nuccharges, np.ndarray)
     assert isinstance(origin_in_bohrs, np.ndarray)
@@ -76,7 +86,9 @@ def nuclear_dipole_contribution(nuccoords, nuccharges, origin_in_bohrs):
     return np.sum((nuccoords - origin_in_bohrs) * charges, axis=0)
 
 
-def electronic_dipole_contribution_pyscf(D, pyscfmol, origin_in_bohrs):
+def electronic_dipole_contribution_pyscf(
+    D: np.ndarray, pyscfmol: pyscf.gto.Mole, origin_in_bohrs: np.ndarray
+) -> np.ndarray:
     assert isinstance(D, np.ndarray)
     assert len(D.shape) == 2
     assert D.shape[0] == D.shape[1]
@@ -97,13 +109,21 @@ def electronic_dipole_contribution_pyscf(D, pyscfmol, origin_in_bohrs):
     M010_MO = D * M010_AO
     M001_MO = D * M001_AO
 
+    # pylint: disable=invalid-unary-operand-type
     dipole_electronic_atomic_units = -np.asarray(
         [np.sum(M100_MO), np.sum(M010_MO), np.sum(M001_MO)]
     )
     return dipole_electronic_atomic_units
 
 
-def calculate_dipole_pyscf(nuccoords, nuccharges, origin, D, pyscfmol, do_print=False):
+def calculate_dipole_pyscf(
+    nuccoords: np.ndarray,
+    nuccharges: np.ndarray,
+    origin: np.ndarray,
+    D: np.ndarray,
+    pyscfmol: pyscf.gto.Mole,
+    do_print: bool = False,
+) -> np.ndarray:
     assert origin.shape == (3,)
     nuclear_components_au = nuclear_dipole_contribution(nuccoords, nuccharges, origin)
     electronic_components_au = electronic_dipole_contribution_pyscf(D, pyscfmol, origin)
@@ -157,8 +177,13 @@ def calculate_dipole_pyscf(nuccoords, nuccharges, origin, D, pyscfmol, do_print=
 
 
 def calculate_origin_pyscf(
-    origin_string, nuccoords, nuccharges, D, pyscfmol, do_print=False
-):
+    origin_string: str,
+    nuccoords: np.ndarray,
+    nuccharges: np.ndarray,
+    D: np.ndarray,
+    pyscfmol: pyscf.gto.Mole,
+    do_print: bool = False,
+) -> np.ndarray:
     assert isinstance(origin_string, str)
     origin_string = origin_string.lower()
     assert origin_string in (
@@ -204,7 +229,15 @@ def calculate_origin_pyscf(
     return origin
 
 
-def get_uhf_values(mat_uhf_a, mat_uhf_b, pair_rohf, nocc_a, nvirt_a, nocc_b, nvirt_b):
+def get_uhf_values(
+    mat_uhf_a: np.ndarray,
+    mat_uhf_b: np.ndarray,
+    pair_rohf: Tuple[int, int],
+    nocc_a: int,
+    nvirt_a: int,
+    nocc_b: int,
+    nvirt_b: int,
+) -> List[float]:
     """For a pair ROHF 1-based indices, find the corresponing alpha- and
     beta-spin UHF values.
     """
@@ -240,7 +273,11 @@ def get_uhf_values(mat_uhf_a, mat_uhf_b, pair_rohf, nocc_a, nvirt_a, nocc_b, nvi
     return values
 
 
-def mat_uhf_to_packed_rohf(mat_alpha, mat_beta, indices_display_rohf):
+def mat_uhf_to_packed_rohf(
+    mat_alpha: np.ndarray,
+    mat_beta: np.ndarray,
+    indices_display_rohf: List[Tuple[int, int]],
+) -> np.ndarray:
     dim = len(indices_display_rohf)
     mat_rohf = np.zeros(dim)
     for idx, pair_rohf in enumerate(indices_display_rohf):

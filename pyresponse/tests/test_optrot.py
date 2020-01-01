@@ -3,7 +3,7 @@ import numpy as np
 import pyscf
 
 from pyresponse import optrot, utils
-from pyresponse.interfaces import Program
+from pyresponse.core import Hamiltonian, Program, Spin
 from pyresponse.pyscf import molecules
 
 BC2H4_cation_HF_STO3G_RPA_singlet_nwchem = {
@@ -214,7 +214,7 @@ def test_ORD_RPA_singlet_BC2H4_cation_HF_STO3G():
         do_dipvel=False,
     )
     ord_solver.form_operators()
-    ord_solver.run(hamiltonian="rpa", spin="singlet")
+    ord_solver.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)
     ord_solver.form_results()
 
     print("Polarizabilities")
@@ -283,7 +283,7 @@ def test_ORD_RPA_singlet_BC2H4_HF_STO3G():
         do_dipvel=False,
     )
     ord_solver.form_operators()
-    ord_solver.run(hamiltonian="rpa", spin="singlet")
+    ord_solver.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)
     ord_solver.form_results()
 
     print("Polarizabilities")
@@ -343,7 +343,7 @@ def test_ORD_RPA_singlet_trithiolane_HF_STO3G():
         do_dipvel=False,
     )
     ord_solver.form_operators()
-    ord_solver.run(hamiltonian="rpa", spin="singlet")
+    ord_solver.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)
     ord_solver.form_results()
 
     print("Polarizabilities")

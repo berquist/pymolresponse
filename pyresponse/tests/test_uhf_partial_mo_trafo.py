@@ -5,12 +5,13 @@ import pyscf
 from pyresponse import cphf
 from pyresponse import explicit_equations_partial as eqns
 from pyresponse import iterators, operators
+from pyresponse.core import AO2MOTransformationType, Hamiltonian, Program, Spin
 from pyresponse.pyscf import molecules
 
 from .test_uhf import ref_water_cation_UHF_HF_STO3G
 
 
-def test_explicit_uhf_outside_solver():
+def test_explicit_uhf_outside_solver() -> None:
 
     mol = molecules.molecule_water_sto3g()
     mol.charge = 1
@@ -151,10 +152,8 @@ def test_explicit_uhf_outside_solver():
 
     np.testing.assert_allclose(res_u, ref_water_cation_UHF_HF_STO3G, rtol=rtol, atol=atol)
 
-    return
 
-
-def test_explicit_uhf():
+def test_explicit_uhf() -> None:
 
     mol = molecules.molecule_water_sto3g()
     mol.charge = 1
@@ -217,7 +216,7 @@ def test_explicit_uhf():
         tei_mo_oovv_aaaa,
         tei_mo_oovv_bbbb,
     )
-    solver.tei_mo_type = "partial"
+    solver.tei_mo_type = AO2MOTransformationType.partial
 
     driver = cphf.CPHF(solver)
 
@@ -229,7 +228,12 @@ def test_explicit_uhf():
 
     driver.set_frequencies()
 
-    driver.run(solver_type="exact", hamiltonian="rpa", spin="singlet")
+    driver.run(
+        hamiltonian=Hamiltonian.RPA,
+        spin=Spin.singlet,
+        program=Program.PySCF,
+        program_obj=mol,
+    )
     assert len(driver.frequencies) == len(driver.results) == 1
     res = driver.results[0]
     print(res)
@@ -238,8 +242,6 @@ def test_explicit_uhf():
     rtol = 0.0
 
     np.testing.assert_allclose(res, ref_water_cation_UHF_HF_STO3G, rtol=rtol, atol=atol)
-
-    return
 
 
 if __name__ == "__main__":

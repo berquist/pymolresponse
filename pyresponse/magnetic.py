@@ -1,7 +1,10 @@
+from typing import Optional, Union
+
 import numpy as np
 
 from pyresponse import helpers
-from pyresponse.interfaces import Program
+from pyresponse.core import Program
+from pyresponse.cphf import CPHF
 from pyresponse.molecular_property import ResponseProperty
 from pyresponse.operators import Operator
 
@@ -9,28 +12,27 @@ from pyresponse.operators import Operator
 class Magnetizability(ResponseProperty):
     def __init__(
         self,
-        program,
+        program: Program,
         program_obj,
-        mocoeffs,
-        moenergies,
-        occupations,
-        use_giao=False,
-        *args,
-        **kwargs
-    ):
+        mocoeffs: np.ndarray,
+        moenergies: np.ndarray,
+        occupations: np.ndarray,
+        *,
+        driver: Optional[CPHF] = None,
+        use_giao: bool = False,
+    ) -> None:
         super().__init__(
             program,
             program_obj,
             mocoeffs,
             moenergies,
             occupations,
-            frequencies=[0.0],
-            *args,
-            **kwargs
+            driver=driver,
+            frequencies=np.asarray([0.0]),
         )
         self.use_giao = use_giao
 
-    def form_operators(self):
+    def form_operators(self) -> None:
 
         if self.program == Program.PySCF:
             from pyresponse.pyscf import integrals
@@ -55,7 +57,7 @@ class Magnetizability(ResponseProperty):
         operator_angmom.ao_integrals = integrals_angmom_ao
         self.driver.add_operator(operator_angmom)
 
-    def form_results(self):
+    def form_results(self) -> None:
 
         assert len(self.driver.results) == 1
         operator_angmom = self.driver.solver.operators[0]
@@ -67,24 +69,23 @@ class Magnetizability(ResponseProperty):
 class ElectronicGTensor(ResponseProperty):
     def __init__(
         self,
-        program,
+        program: Program,
         program_obj,
-        mocoeffs,
-        moenergies,
-        occupations,
-        gauge_origin="ecc",
-        *args,
-        **kwargs
-    ):
+        mocoeffs: np.ndarray,
+        moenergies: np.ndarray,
+        occupations: np.ndarray,
+        *,
+        driver: Optional[CPHF] = None,
+        gauge_origin: Union[str, np.ndarray] = "ecc",
+    ) -> None:
         super().__init__(
             program,
             program_obj,
             mocoeffs,
             moenergies,
             occupations,
+            driver=driver,
             frequencies=[0.0],
-            *args,
-            **kwargs
         )
 
         if program == Program.PySCF:
@@ -115,7 +116,7 @@ class ElectronicGTensor(ResponseProperty):
         else:
             raise RuntimeError
 
-    def form_operators(self):
+    def form_operators(self) -> None:
 
         if self.program == Program.PySCF:
             from pyresponse.pyscf import integrals
@@ -167,7 +168,7 @@ class ElectronicGTensor(ResponseProperty):
         operator_spinorb_eff.ao_integrals = integrals_spinorb_eff_ao
         self.driver.add_operator(operator_spinorb_eff)
 
-    def form_results(self):
+    def form_results(self) -> None:
 
         operator_angmom = self.driver.solver.operators[0]
         # angmom_grad_alph = operator_angmom.mo_integrals_ai_supervector_alph

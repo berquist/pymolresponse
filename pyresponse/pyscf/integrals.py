@@ -1,3 +1,7 @@
+from typing import Optional, Tuple
+
+import numpy as np
+
 from pyresponse.integrals import JK, IntegralLabel, Integrals, IntegralSymmetry
 
 ANGMOM_COMMON_GAUGE = IntegralLabel("cint1e_cg_irxp_sph", 3)
@@ -15,25 +19,27 @@ SO_SPHER_1e = IntegralLabel("cint1e_prinvxp_sph", 3)
 
 
 class IntegralsPyscf(Integrals):
-    def __init__(self, pyscfmol, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, pyscfmol) -> None:
+        super().__init__()
 
         self.mol = pyscfmol
 
-    def _compute(self, label):
+    def _compute(self, label: IntegralLabel) -> np.ndarray:
         if label.symmetry == IntegralSymmetry.ANTISYMMETRIC:
             return self.mol.intor_asymmetric(label.label, comp=label.comp)
         return self.mol.intor(label.label, comp=label.comp)
 
 
 class JKPyscf(JK):
-    def __init__(self, pyscfmol, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, pyscfmol) -> None:
+        super().__init__()
 
         self.mol = pyscfmol
 
-    def compute_from_density(self, D):
+    def compute_from_density(self, D: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
         raise NotImplementedError
 
-    def compute_from_mocoeffs(self, C_left, C_right=None):
+    def compute_from_mocoeffs(
+        self, C_left: np.ndarray, C_right: Optional[np.ndarray] = None
+    ) -> Tuple[np.ndarray, np.ndarray]:
         raise NotImplementedError

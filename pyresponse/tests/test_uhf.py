@@ -7,6 +7,7 @@ import pyscf
 from pyresponse import cphf
 from pyresponse import explicit_equations_full as eqns
 from pyresponse import iterators, operators, utils
+from pyresponse.core import AO2MOTransformationType, Hamiltonian, Spin
 from pyresponse.pyscf import molecules
 from pyresponse.pyscf.ao2mo import AO2MOpyscf
 
@@ -286,7 +287,7 @@ def test_explicit_uhf():
     ao2mo = AO2MOpyscf(C, mol.verbose, mol)
     ao2mo.perform_uhf_full()
     solver.tei_mo = ao2mo.tei_mo
-    solver.tei_mo_type = "full"
+    solver.tei_mo_type = AO2MOTransformationType.full
 
     driver = cphf.CPHF(solver)
 
@@ -298,7 +299,9 @@ def test_explicit_uhf():
 
     driver.set_frequencies()
 
-    driver.run(solver_type="exact", hamiltonian="rpa", spin="singlet")
+    driver.run(
+        hamiltonian=Hamiltonian.RPA, spin=Spin.singlet, program=None, program_obj=None
+    )
     assert len(driver.frequencies) == len(driver.results) == 1
     res = driver.results[0]
     print(res)

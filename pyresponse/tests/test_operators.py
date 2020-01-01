@@ -1,7 +1,7 @@
 from pyresponse.tests.test_runners import run_dalton_label_to_operator
 
 
-def test_dalton_label_to_operator():
+def test_dalton_label_to_operator() -> None:
     """Test that
     1. Operator attributes are properly set based on a DALTON label, and that
     2. __str__ is correct
@@ -50,5 +50,3 @@ def test_dalton_label_to_operator():
 
     # TODO 2-el, combined spin-orbit
     # TODO nucleus-orbit/pso
-
-    return

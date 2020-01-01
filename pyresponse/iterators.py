@@ -1,8 +1,10 @@
 from abc import ABC, abstractmethod
+from typing import Callable, Optional, Sequence, Tuple
 
 import numpy as np
 import scipy as sp
 
+from pyresponse.core import AO2MOTransformationType, Hamiltonian, Program, Spin
 from pyresponse.explicit_equations_full import (
     form_rpa_a_matrix_mo_singlet_full,
     form_rpa_a_matrix_mo_singlet_os_full,
@@ -23,7 +25,8 @@ from pyresponse.explicit_equations_partial import (
     form_rpa_b_matrix_mo_singlet_ss_partial,
     form_rpa_b_matrix_mo_triplet_partial,
 )
-from pyresponse.interfaces import Program
+from pyresponse.integrals import JK
+from pyresponse.operators import Operator
 
 
 class Solver(ABC):
@@ -38,7 +41,9 @@ class Solver(ABC):
     - Iterative, where the electronic Hessian is never formed explicitly, TODO
     """
 
-    def __init__(self, mocoeffs, moenergies, occupations, *args, **kwargs):
+    def __init__(
+        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: np.ndarray
+    ):
 
         # MO coefficients: the first axis is alpha/beta
         assert len(mocoeffs.shape) == 3
@@ -64,17 +69,17 @@ class Solver(ABC):
         self.operators = []
         self.frequencies = []
 
-        self.hamiltonian = "rpa"
-        self.spin = "singlet"
-
         # These are needed for MO-based solvers.
         self.tei_mo = None
-        self.tei_mo_type = "partial"
+        self.tei_mo_type = AO2MOTransformationType.partial
         self.explicit_hessian = None
         self.explicit_hessian_inv = None
 
-    def form_tei_mo(self, program, program_obj, tei_mo_type="partial"):
-        assert tei_mo_type in ("partial", "full")
+    def form_tei_mo(
+        self, program: Program, program_obj, tei_mo_type: AO2MOTransformationType
+    ) -> None:
+        assert isinstance(program, Program)
+        assert isinstance(tei_mo_type, AO2MOTransformationType)
         nden = self.mocoeffs.shape[0]
         assert nden in (1, 2)
         if program == Program.PySCF:
@@ -99,13 +104,13 @@ class Solver(ABC):
             )
         else:
             raise RuntimeError
-        if tei_mo_type == "partial" and nden == 2:
+        if tei_mo_type == AO2MOTransformationType.partial and nden == 2:
             ao2mo.perform_uhf_partial()
-        elif tei_mo_type == "partial" and nden == 1:
+        elif tei_mo_type == AO2MOTransformationType.partial and nden == 1:
             ao2mo.perform_rhf_partial()
-        elif tei_mo_type == "full" and nden == 2:
+        elif tei_mo_type == AO2MOTransformationType.full and nden == 2:
             ao2mo.perform_uhf_full()
-        elif tei_mo_type == "full" and nden == 1:
+        elif tei_mo_type == AO2MOTransformationType.full and nden == 1:
             ao2mo.perform_rhf_full()
         else:
             # TODO more specific exception
@@ -113,7 +118,7 @@ class Solver(ABC):
         self.tei_mo = ao2mo.tei_mo
         self.tei_mo_type = tei_mo_type
 
-    def form_ranges_from_occupations(self):
+    def form_ranges_from_occupations(self) -> None:
         assert len(self.occupations) == 4
         nocc_a, nvirt_a, nocc_b, nvirt_b = self.occupations
         assert (nocc_a + nvirt_a) == (nocc_b + nvirt_b)
@@ -137,7 +142,7 @@ class Solver(ABC):
         )
         self.indices_display_rohf = [(p + 1, q + 1) for (p, q) in self.indices_rohf]
 
-    def set_frequencies(self, frequencies=None):
+    def set_frequencies(self, frequencies: Optional[Sequence[float]] = None):
         if frequencies is None:
             self.frequencies = [0.0]
         else:
@@ -146,7 +151,7 @@ class Solver(ABC):
             for operator in self.operators:
                 operator.frequencies = self.frequencies
 
-    def add_operator(self, operator):
+    def add_operator(self, operator: Operator) -> None:
         # First dimension is the number of Cartesian components, next
         # two are the number of AOs.
         assert hasattr(operator, "ao_integrals")
@@ -167,39 +172,35 @@ class Solver(ABC):
 
 
 class LineqSolver(Solver):
-    """Abstract class for all solvers of the type $AX = B$."""
+    """Base class for all solvers of the type $AX = B$."""
 
-    def __init__(self, mocoeffs, moenergies, occupations, *args, **kwargs):
-        super().__init__(mocoeffs, moenergies, occupations, *args, **kwargs)
+    def __init__(
+        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: np.ndarray
+    ) -> None:
+        super().__init__(mocoeffs, moenergies, occupations)
 
 
 class ExactLineqSolver(LineqSolver, ABC):
-    """Abstract class for all solvers of the type $AX = B$, where $A$ is formed
+    """Base class for all solvers of the type $AX = B$, where $A$ is formed
     explicitly.
     """
 
-    def __init__(self, mocoeffs, moenergies, occupations, *args, **kwargs):
-        super().__init__(mocoeffs, moenergies, occupations, *args, **kwargs)
+    def __init__(
+        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: np.ndarray
+    ) -> np.ndarray:
+        super().__init__(mocoeffs, moenergies, occupations)
 
-    def form_explicit_hessian(self, hamiltonian=None, spin=None, frequency=None):
+    def form_explicit_hessian(
+        self, hamiltonian: Hamiltonian, spin: Spin, frequency: float
+    ) -> None:
 
         assert hasattr(self, "tei_mo")
         assert self.tei_mo is not None
         assert len(self.tei_mo) in (1, 2, 4, 6)
-        assert self.tei_mo_type in ("full", "partial")
+        assert isinstance(self.tei_mo_type, AO2MOTransformationType)
 
-        if not hamiltonian:
-            hamiltonian = self.hamiltonian
-        if not spin:
-            spin = self.spin
-        if not frequency:
-            frequency = 0.0
-
-        assert hamiltonian in ("rpa", "tda")
-        assert spin in ("singlet", "triplet")
-
-        self.hamiltonian = hamiltonian
-        self.spin = spin
+        assert isinstance(hamiltonian, Hamiltonian)
+        assert isinstance(spin, Spin)
 
         nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
         nov_alph = nocc_alph * nvirt_alph
@@ -216,52 +217,52 @@ class ExactLineqSolver(LineqSolver, ABC):
         if not self.is_uhf:
 
             # Set up "function pointers".
-            if self.tei_mo_type == "full":
+            if self.tei_mo_type == AO2MOTransformationType.full:
                 assert len(self.tei_mo) == 1
                 tei_mo = self.tei_mo[0]
-            elif self.tei_mo_type == "partial":
+            elif self.tei_mo_type == AO2MOTransformationType.partial:
                 assert len(self.tei_mo) == 2
                 tei_mo_ovov = self.tei_mo[0]
                 tei_mo_oovv = self.tei_mo[1]
 
-            if self.tei_mo_type == "full":
-                if hamiltonian == "rpa" and spin == "singlet":
+            if self.tei_mo_type == AO2MOTransformationType.full:
+                if hamiltonian == Hamiltonian.RPA and spin == Spin.singlet:
                     A = form_rpa_a_matrix_mo_singlet_full(
                         self.moenergies[0], tei_mo, nocc_alph
                     )
                     B = form_rpa_b_matrix_mo_singlet_full(tei_mo, nocc_alph)
-                elif hamiltonian == "rpa" and spin == "triplet":
+                elif hamiltonian == Hamiltonian.RPA and spin == Spin.triplet:
                     A = form_rpa_a_matrix_mo_triplet_full(
                         self.moenergies[0], tei_mo, nocc_alph
                     )
                     B = form_rpa_b_matrix_mo_triplet_full(tei_mo, nocc_alph)
-                elif hamiltonian == "tda" and spin == "singlet":
+                elif hamiltonian == Hamiltonian.TDA and spin == Spin.singlet:
                     A = form_rpa_a_matrix_mo_singlet_full(
                         self.moenergies[0], tei_mo, nocc_alph
                     )
                     B = np.zeros(shape=(nov_alph, nov_alph))
-                elif hamiltonian == "tda" and spin == "triplet":
+                elif hamiltonian == Hamiltonian.TDA and spin == Spin.triplet:
                     A = form_rpa_a_matrix_mo_triplet_full(
                         self.moenergies[0], tei_mo, nocc_alph
                     )
                     B = np.zeros(shape=(nov_alph, nov_alph))
-            elif self.tei_mo_type == "partial":
-                if hamiltonian == "rpa" and spin == "singlet":
+            elif self.tei_mo_type == AO2MOTransformationType.partial:
+                if hamiltonian == Hamiltonian.RPA and spin == Spin.singlet:
                     A = form_rpa_a_matrix_mo_singlet_partial(
                         self.moenergies[0], tei_mo_ovov, tei_mo_oovv
                     )
                     B = form_rpa_b_matrix_mo_singlet_partial(tei_mo_ovov)
-                elif hamiltonian == "rpa" and spin == "triplet":
+                elif hamiltonian == Hamiltonian.RPA and spin == Spin.triplet:
                     A = form_rpa_a_matrix_mo_triplet_partial(
                         self.moenergies[0], tei_mo_oovv
                     )
                     B = form_rpa_b_matrix_mo_triplet_partial(tei_mo_ovov)
-                elif hamiltonian == "tda" and spin == "singlet":
+                elif hamiltonian == Hamiltonian.TDA and spin == Spin.singlet:
                     A = form_rpa_a_matrix_mo_singlet_partial(
                         self.moenergies[0], tei_mo_ovov, tei_mo_oovv
                     )
                     B = np.zeros(shape=(nov_alph, nov_alph))
-                elif hamiltonian == "tda" and spin == "triplet":
+                elif hamiltonian == Hamiltonian.TDA and spin == Spin.triplet:
                     A = form_rpa_a_matrix_mo_triplet_partial(
                         self.moenergies[0], tei_mo_oovv
                     )
@@ -280,13 +281,13 @@ class ExactLineqSolver(LineqSolver, ABC):
             # vectors.
 
             # Set up "function pointers".
-            if self.tei_mo_type == "full":
+            if self.tei_mo_type == AO2MOTransformationType.full:
                 assert len(self.tei_mo) == 4
                 tei_mo_aaaa = self.tei_mo[0]
                 tei_mo_aabb = self.tei_mo[1]
                 tei_mo_bbaa = self.tei_mo[2]
                 tei_mo_bbbb = self.tei_mo[3]
-            elif self.tei_mo_type == "partial":
+            elif self.tei_mo_type == AO2MOTransformationType.partial:
                 assert len(self.tei_mo) == 6
                 tei_mo_ovov_aaaa = self.tei_mo[0]
                 tei_mo_ovov_aabb = self.tei_mo[1]
@@ -301,8 +302,8 @@ class ExactLineqSolver(LineqSolver, ABC):
             E_b = self.moenergies[1]
 
             # TODO clean this up...
-            if self.tei_mo_type == "full":
-                if hamiltonian == "rpa" and spin == "singlet":
+            if self.tei_mo_type == AO2MOTransformationType.full:
+                if hamiltonian == Hamiltonian.RPA and spin == Spin.singlet:
                     A_ss_a = form_rpa_a_matrix_mo_singlet_ss_full(
                         E_a, tei_mo_aaaa, nocc_alph
                     )
@@ -323,7 +324,7 @@ class ExactLineqSolver(LineqSolver, ABC):
                     B_os_b = form_rpa_b_matrix_mo_singlet_os_full(
                         tei_mo_bbaa, nocc_beta, nocc_alph
                     )
-                elif hamiltonian == "rpa" and spin == "triplet":
+                elif hamiltonian == Hamiltonian.RPA and spin == Spin.triplet:
                     # Since the "triplet" part contains no Coulomb contribution, and
                     # (xx|yy) is only in the Coulomb part, there is no ss/os
                     # separation for the triplet part.
@@ -341,7 +342,7 @@ class ExactLineqSolver(LineqSolver, ABC):
                     A_os_b = zeros_ba
                     B_ss_b = form_rpa_b_matrix_mo_triplet_full(tei_mo_bbbb, nocc_beta)
                     B_os_b = zeros_ba
-                elif hamiltonian == "tda" and spin == "singlet":
+                elif hamiltonian == Hamiltonian.TDA and spin == Spin.singlet:
                     zeros_aa = np.zeros(shape=(nov_alph, nov_alph))
                     zeros_ab = np.zeros(shape=(nov_alph, nov_beta))
                     zeros_ba = zeros_ab.T
@@ -362,7 +363,7 @@ class ExactLineqSolver(LineqSolver, ABC):
                     )
                     B_ss_b = zeros_bb
                     B_os_b = zeros_ba
-                elif hamiltonian == "tda" and spin == "triplet":
+                elif hamiltonian == Hamiltonian.TDA and spin == Spin.triplet:
                     zeros_aa = np.zeros(shape=(nov_alph, nov_alph))
                     zeros_ab = np.zeros(shape=(nov_alph, nov_beta))
                     zeros_ba = zeros_ab.T
@@ -380,8 +381,8 @@ class ExactLineqSolver(LineqSolver, ABC):
                     B_ss_b = zeros_bb
                     B_os_b = zeros_ba
 
-            elif self.tei_mo_type == "partial":
-                if hamiltonian == "rpa" and spin == "singlet":
+            elif self.tei_mo_type == AO2MOTransformationType.partial:
+                if hamiltonian == Hamiltonian.RPA and spin == Spin.singlet:
                     A_ss_a = form_rpa_a_matrix_mo_singlet_ss_partial(
                         E_a, tei_mo_ovov_aaaa, tei_mo_oovv_aaaa
                     )
@@ -394,7 +395,7 @@ class ExactLineqSolver(LineqSolver, ABC):
                     A_os_b = form_rpa_a_matrix_mo_singlet_os_partial(tei_mo_ovov_bbaa)
                     B_ss_b = form_rpa_b_matrix_mo_singlet_ss_partial(tei_mo_ovov_bbbb)
                     B_os_b = form_rpa_b_matrix_mo_singlet_os_partial(tei_mo_ovov_bbaa)
-                elif hamiltonian == "rpa" and spin == "triplet":
+                elif hamiltonian == Hamiltonian.RPA and spin == Spin.triplet:
                     # Since the "triplet" part contains no Coulomb contribution, and
                     # (xx|yy) is only in the Coulomb part, there is no ss/os
                     # separation for the triplet part.
@@ -408,7 +409,7 @@ class ExactLineqSolver(LineqSolver, ABC):
                     A_os_b = zeros_ba
                     B_ss_b = form_rpa_b_matrix_mo_triplet_partial(tei_mo_ovov_bbbb)
                     B_os_b = zeros_ba
-                elif hamiltonian == "tda" and spin == "singlet":
+                elif hamiltonian == Hamiltonian.TDA and spin == Spin.singlet:
                     zeros_aa = np.zeros(shape=(nov_alph, nov_alph))
                     zeros_ab = np.zeros(shape=(nov_alph, nov_beta))
                     zeros_ba = zeros_ab.T
@@ -425,7 +426,7 @@ class ExactLineqSolver(LineqSolver, ABC):
                     A_os_b = form_rpa_a_matrix_mo_singlet_os_partial(tei_mo_ovov_bbaa)
                     B_ss_b = zeros_bb
                     B_os_b = zeros_ba
-                elif hamiltonian == "tda" and spin == "triplet":
+                elif hamiltonian == Hamiltonian.TDA and spin == Spin.triplet:
                     zeros_aa = np.zeros(shape=(nov_alph, nov_alph))
                     zeros_ab = np.zeros(shape=(nov_alph, nov_beta))
                     zeros_ba = zeros_ab.T
@@ -460,10 +461,10 @@ class ExactLineqSolver(LineqSolver, ABC):
             )
 
     @abstractmethod
-    def invert_explicit_hessian(self):
+    def invert_explicit_hessian(self) -> None:
         """Invert the full explicitly-constructed electronic Hessian."""
 
-    def form_response_vectors(self):
+    def form_response_vectors(self) -> None:
         if self.is_uhf:
             G_aa, G_ab, G_ba, G_bb = self.explicit_hessian
             G_aa_inv, G_bb_inv = self.explicit_hessian_inv
@@ -538,16 +539,22 @@ class ExactLineqSolver(LineqSolver, ABC):
 
 
 class ExactInv(ExactLineqSolver):
-    def __init__(self, mocoeffs, moenergies, occupations, *args, **kwargs):
-        super().__init__(mocoeffs, moenergies, occupations, *args, **kwargs)
+    def __init__(
+        self,
+        mocoeffs: np.ndarray,
+        moenergies: np.ndarray,
+        occupations: np.ndarray,
+        *,
+        inv_func: Optional[Callable[[np.ndarray], np.ndarray]] = None,
+    ) -> None:
+        super().__init__(mocoeffs, moenergies, occupations)
 
-        inv_func = kwargs.get("inv_func")
-        if inv_func:
+        if inv_func is not None:
             self.inv_func = inv_func
         else:
             self.inv_func = np.linalg.inv
 
-    def invert_explicit_hessian(self):
+    def invert_explicit_hessian(self) -> None:
         assert hasattr(self, "explicit_hessian")
         if not self.is_uhf:
             self.explicit_hessian_inv = self.inv_func(self.explicit_hessian)
@@ -568,10 +575,12 @@ class ExactInv(ExactLineqSolver):
 
 
 class ExactInvCholesky(ExactLineqSolver):
-    def __init__(self, mocoeffs, moenergies, occupations, *args, **kwargs):
-        super().__init__(mocoeffs, moenergies, occupations, *args, **kwargs)
+    def __init__(
+        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: np.ndarray
+    ) -> None:
+        super().__init__(mocoeffs, moenergies, occupations)
 
-    def invert_explicit_hessian(self):
+    def invert_explicit_hessian(self) -> None:
         assert hasattr(self, "explicit_hessian")
         if not self.is_uhf:
             fac = sp.linalg.cholesky(self.explicit_hessian)
@@ -605,13 +614,21 @@ class ExactInvCholesky(ExactLineqSolver):
 
 
 class IterativeLinEqSolver(LineqSolver):
-    def __init__(self, mocoeffs, moenergies, occupations, jk_generator, *args, **kwargs):
-        super().__init__(mocoeffs, moenergies, occupations, *args, **kwargs)
+    def __init__(
+        self,
+        mocoeffs: np.ndarray,
+        moenergies: np.ndarray,
+        occupations: np.ndarray,
+        jk_generator: JK,
+    ) -> None:
+        super().__init__(mocoeffs, moenergies, occupations)
 
         # TODO
         self.jk_generator = jk_generator
 
-    def run(self, hamiltonian, spin, frequency, maxiter=40):
+    def run(
+        self, hamiltonian: Hamiltonian, spin: Spin, frequency: float, maxiter: int = 40
+    ) -> None:
         if self.is_uhf:
             raise RuntimeError
         else:
@@ -669,15 +686,21 @@ class IterativeLinEqSolver(LineqSolver):
                     max_rms = max(rms)
                     if max_rms < conv:
                         break
-                    print(f"CPHF Iteration {i:3d}: Average RMS = {avg_rms:3.8f}  Maximum RMS = {max_rms:3.8f}")
+                    print(
+                        f"CPHF Iteration {i:3d}: Average RMS = {avg_rms:3.8f}  Maximum RMS = {max_rms:3.8f}"
+                    )
 
 
 class EigSolver(Solver):
-    def __init__(self, mocoeffs, moenergies, occupations, *args, **kwargs):
-        super().__init__(mocoeffs, moenergies, occupations, *args, **kwargs)
+    """Base class for all solvers of the type $AX = 0$ (eigensolvers)."""
+
+    def __init__(
+        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: np.ndarray
+    ) -> None:
+        super().__init__(mocoeffs, moenergies, occupations)
 
     @staticmethod
-    def norm_xy(z, nocc, nvirt):
+    def norm_xy(z: np.ndarray, nocc: int, nvirt: int) -> Tuple[np.ndarray, np.ndarray]:
         x, y = z.reshape(2, nvirt, nocc)
         norm = 2 * (np.linalg.norm(x) ** 2 - np.linalg.norm(y) ** 2)
         norm = 1 / np.sqrt(norm)
@@ -685,36 +708,37 @@ class EigSolver(Solver):
 
 
 class EigSolverTDA(EigSolver):
-    def __init__(self, mocoeffs, moenergies, occupations, *args, **kwargs):
-        super().__init__(mocoeffs, moenergies, occupations, *args, **kwargs)
+    """Base class for eigensolvers that use the Tamm-Dancoff approximation
+    (TDA) rather than the random phase approximation (RPA).
+    """
+
+    def __init__(
+        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: np.ndarray
+    ) -> None:
+        super().__init__(mocoeffs, moenergies, occupations)
 
 
 class ExactDiagonalizationSolver(EigSolver):
-    def __init__(self, mocoeffs, moenergies, occupations, *args, **kwargs):
-        super().__init__(mocoeffs, moenergies, occupations, *args, **kwargs)
+    """Get the eigenvectors and eigenvalues of the RPA Hamiltonian by forming the
+    electronic Hessian explicitly and diagonalizing it exactly.
+    """
 
-    def form_explicit_hessian(self, hamiltonian=None, spin=None, frequency=None):
+    def __init__(
+        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: np.ndarray
+    ) -> None:
+        super().__init__(mocoeffs, moenergies, occupations)
+
+    def form_explicit_hessian(
+        self, hamiltonian: Hamiltonian, spin: Spin, frequency: float
+    ) -> None:
 
         assert hasattr(self, "tei_mo")
         assert self.tei_mo is not None
         assert len(self.tei_mo) in (1, 2, 4, 6)
-        assert self.tei_mo_type in ("full", "partial")
+        assert isinstance(self.tei_mo_type, AO2MOTransformationType)
 
-        if not hamiltonian:
-            hamiltonian = self.hamiltonian
-        if not spin:
-            spin = self.spin
-
-        assert isinstance(hamiltonian, str)
-        assert isinstance(spin, str)
-        hamiltonian = hamiltonian.lower()
-        spin = spin.lower()
-
-        assert hamiltonian in ("rpa", "tda")
-        assert spin in ("singlet", "triplet")
-
-        self.hamiltonian = hamiltonian
-        self.spin = spin
+        assert isinstance(hamiltonian, Hamiltonian)
+        assert isinstance(spin, Spin)
 
         nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
         nov_alph = nocc_alph * nvirt_alph
@@ -723,58 +747,57 @@ class ExactDiagonalizationSolver(EigSolver):
         if not self.is_uhf:
 
             # Set up "function pointers".
-            if self.tei_mo_type == "full":
+            if self.tei_mo_type == AO2MOTransformationType.full:
                 assert len(self.tei_mo) == 1
                 tei_mo = self.tei_mo[0]
-            elif self.tei_mo_type == "partial":
+            elif self.tei_mo_type == AO2MOTransformationType.partial:
                 assert len(self.tei_mo) == 2
                 tei_mo_ovov = self.tei_mo[0]
                 tei_mo_oovv = self.tei_mo[1]
 
-            if self.tei_mo_type == "full":
-                if hamiltonian == "rpa" and spin == "singlet":
+            if self.tei_mo_type == AO2MOTransformationType.full:
+                if hamiltonian == Hamiltonian.RPA and spin == Spin.singlet:
                     A = form_rpa_a_matrix_mo_singlet_full(
                         self.moenergies[0], tei_mo, nocc_alph
                     )
                     B = form_rpa_b_matrix_mo_singlet_full(tei_mo, nocc_alph)
-                elif hamiltonian == "rpa" and spin == "triplet":
+                elif hamiltonian == Hamiltonian.RPA and spin == Spin.triplet:
                     A = form_rpa_a_matrix_mo_triplet_full(
                         self.moenergies[0], tei_mo, nocc_alph
                     )
                     B = form_rpa_b_matrix_mo_triplet_full(tei_mo, nocc_alph)
-                elif hamiltonian == "tda" and spin == "singlet":
+                elif hamiltonian == Hamiltonian.TDA and spin == Spin.singlet:
                     A = form_rpa_a_matrix_mo_singlet_full(
                         self.moenergies[0], tei_mo, nocc_alph
                     )
                     B = np.zeros(shape=(nov_alph, nov_alph))
-                elif hamiltonian == "tda" and spin == "triplet":
+                elif hamiltonian == Hamiltonian.TDA and spin == Spin.triplet:
                     A = form_rpa_a_matrix_mo_triplet_full(
                         self.moenergies[0], tei_mo, nocc_alph
                     )
                     B = np.zeros(shape=(nov_alph, nov_alph))
-            elif self.tei_mo_type == "partial":
-                if hamiltonian == "rpa" and spin == "singlet":
+            elif self.tei_mo_type == AO2MOTransformationType.partial:
+                if hamiltonian == Hamiltonian.RPA and spin == Spin.singlet:
                     A = form_rpa_a_matrix_mo_singlet_partial(
                         self.moenergies[0], tei_mo_ovov, tei_mo_oovv
                     )
                     B = form_rpa_b_matrix_mo_singlet_partial(tei_mo_ovov)
-                elif hamiltonian == "rpa" and spin == "triplet":
+                elif hamiltonian == Hamiltonian.RPA and spin == Spin.triplet:
                     A = form_rpa_a_matrix_mo_triplet_partial(
                         self.moenergies[0], tei_mo_oovv
                     )
                     B = form_rpa_b_matrix_mo_triplet_partial(tei_mo_ovov)
-                elif hamiltonian == "tda" and spin == "singlet":
+                elif hamiltonian == Hamiltonian.TDA and spin == Spin.singlet:
                     A = form_rpa_a_matrix_mo_singlet_partial(
                         self.moenergies[0], tei_mo_ovov, tei_mo_oovv
                     )
                     B = np.zeros(shape=(nov_alph, nov_alph))
-                elif hamiltonian == "tda" and spin == "triplet":
+                elif hamiltonian == Hamiltonian.TDA and spin == Spin.triplet:
                     A = form_rpa_a_matrix_mo_triplet_partial(
                         self.moenergies[0], tei_mo_oovv
                     )
                     B = np.zeros(shape=(nov_alph, nov_alph))
 
-            # pylint: disable=bad-whitespace
             G = np.block([[A, B], [-B, -A]])
             self.explicit_hessian = G
 
@@ -782,7 +805,7 @@ class ExactDiagonalizationSolver(EigSolver):
             # TODO UHF
             pass
 
-    def diagonalize_explicit_hessian(self):
+    def diagonalize_explicit_hessian(self) -> None:
         nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
         nov_alph = nocc_alph * nvirt_alph
         nov_beta = nocc_beta * nvirt_beta
@@ -804,31 +827,26 @@ class ExactDiagonalizationSolver(EigSolver):
 
 
 class ExactDiagonalizationSolverTDA(ExactDiagonalizationSolver, EigSolverTDA):
-    def __init__(self, mocoeffs, moenergies, occupations, *args, **kwargs):
-        super().__init__(mocoeffs, moenergies, occupations, *args, **kwargs)
+    """Get the eigenvectors and eigenvalues of the TDA Hamiltonian by forming the
+    electronic Hessian explicitly and diagonalizing it exactly.
+    """
 
-    def form_explicit_hessian(self, hamiltonian=None, spin=None, frequency=None):
+    def __init__(
+        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: np.ndarray
+    ) -> None:
+        super().__init__(mocoeffs, moenergies, occupations)
+
+    def form_explicit_hessian(
+        self, hamiltonian: Hamiltonian, spin: Spin, frequency: float
+    ) -> None:
 
         assert hasattr(self, "tei_mo")
         assert self.tei_mo is not None
         assert len(self.tei_mo) in (1, 2, 4, 6)
-        assert self.tei_mo_type in ("full", "partial")
+        assert isinstance(self.tei_mo_type, AO2MOTransformationType)
 
-        if not hamiltonian:
-            hamiltonian = self.hamiltonian
-        if not spin:
-            spin = self.spin
-
-        assert isinstance(hamiltonian, str)
-        assert isinstance(spin, str)
-        hamiltonian = hamiltonian.lower()
-        spin = spin.lower()
-
-        assert hamiltonian == "tda"
-        assert spin in ("singlet", "triplet")
-
-        self.hamiltonian = hamiltonian
-        self.spin = spin
+        assert hamiltonian == Hamiltonian.TDA
+        assert isinstance(spin, Spin)
 
         nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
         nov_alph = nocc_alph * nvirt_alph
@@ -837,29 +855,29 @@ class ExactDiagonalizationSolverTDA(ExactDiagonalizationSolver, EigSolverTDA):
         if not self.is_uhf:
 
             # Set up "function pointers".
-            if self.tei_mo_type == "full":
+            if self.tei_mo_type == AO2MOTransformationType.full:
                 assert len(self.tei_mo) == 1
                 tei_mo = self.tei_mo[0]
-            elif self.tei_mo_type == "partial":
+            elif self.tei_mo_type == AO2MOTransformationType.partial:
                 assert len(self.tei_mo) == 2
                 tei_mo_ovov = self.tei_mo[0]
                 tei_mo_oovv = self.tei_mo[1]
 
-            if self.tei_mo_type == "full":
-                if spin == "singlet":
+            if self.tei_mo_type == AO2MOTransformationType.full:
+                if spin == Spin.singlet:
                     A = form_rpa_a_matrix_mo_singlet_full(
                         self.moenergies[0], tei_mo, nocc_alph
                     )
-                elif spin == "triplet":
+                elif spin == Spin.triplet:
                     A = form_rpa_a_matrix_mo_triplet_full(
                         self.moenergies[0], tei_mo, nocc_alph
                     )
-            elif self.tei_mo_type == "partial":
-                if spin == "singlet":
+            elif self.tei_mo_type == AO2MOTransformationType.partial:
+                if spin == Spin.singlet:
                     A = form_rpa_a_matrix_mo_singlet_partial(
                         self.moenergies[0], tei_mo_ovov, tei_mo_oovv
                     )
-                elif spin == "triplet":
+                elif spin == Spin.triplet:
                     A = form_rpa_a_matrix_mo_triplet_partial(
                         self.moenergies[0], tei_mo_oovv
                     )
@@ -870,7 +888,7 @@ class ExactDiagonalizationSolverTDA(ExactDiagonalizationSolver, EigSolverTDA):
             # TODO UHF
             pass
 
-    def diagonalize_explicit_hessian(self):
+    def diagonalize_explicit_hessian(self) -> None:
         nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
         nov_alph = nocc_alph * nvirt_alph
         nov_beta = nocc_beta * nvirt_beta

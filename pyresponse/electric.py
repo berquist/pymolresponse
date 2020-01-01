@@ -1,6 +1,11 @@
 """Wrapper for performing a dipole polarizability calculation."""
 
-from pyresponse.interfaces import Program
+from typing import Optional, Sequence
+
+import numpy as np
+
+from pyresponse.core import Program
+from pyresponse.cphf import CPHF
 from pyresponse.molecular_property import ResponseProperty
 from pyresponse.operators import Operator
 
@@ -10,27 +15,26 @@ class Polarizability(ResponseProperty):
 
     def __init__(
         self,
-        program,
+        program: Program,
         program_obj,
-        mocoeffs,
-        moenergies,
-        occupations,
-        frequencies,
-        *args,
-        **kwargs
-    ):
+        mocoeffs: np.ndarray,
+        moenergies: np.ndarray,
+        occupations: np.ndarray,
+        *,
+        driver: Optional[CPHF] = None,
+        frequencies: Sequence[float] = [0.0],
+    ) -> None:
         super().__init__(
             program,
             program_obj,
             mocoeffs,
             moenergies,
             occupations,
-            frequencies,
-            *args,
-            **kwargs
+            driver=driver,
+            frequencies=frequencies,
         )
 
-    def form_operators(self):
+    def form_operators(self) -> None:
 
         if self.program == Program.PySCF:
             from pyresponse.pyscf import integrals
@@ -49,7 +53,7 @@ class Polarizability(ResponseProperty):
         operator_diplen.ao_integrals = integral_generator.integrals(integrals.DIPOLE)
         self.driver.add_operator(operator_diplen)
 
-    def form_results(self):
+    def form_results(self) -> None:
 
         assert len(self.driver.results) == len(self.frequencies)
         self.polarizabilities = []

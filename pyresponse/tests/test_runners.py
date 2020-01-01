@@ -1,11 +1,21 @@
+from pathlib import Path
+from typing import Union
+
 from pyresponse import utils
+from pyresponse.dalton.utils import dalton_label_to_operator
 from pyresponse.data import REFDIR
+from pyresponse.operators import Operator
+from pyresponse.tests.test_calculators import calculate_disk_rhf
 
 
 def run_dalton_label_to_operator(
-    dalton_label, operator_label, slice_idx, is_imaginary, is_spin_dependent
-):
-    operator = utils.dalton_label_to_operator(dalton_label)
+    dalton_label: str,
+    operator_label: str,
+    slice_idx: int,
+    is_imaginary: bool,
+    is_spin_dependent: bool,
+) -> Operator:
+    operator = dalton_label_to_operator(dalton_label)
     assert operator.label == operator_label
     assert operator.slice_idx == slice_idx
     assert operator.is_imaginary == is_imaginary
@@ -16,9 +26,7 @@ def run_dalton_label_to_operator(
 # def run_reference_disk_rhf(testcase):
 
 
-def run_as_many_tests_as_possible_rhf_disk(testcase):
-
-    from .test_calculators import calculate_disk_rhf
+def run_as_many_tests_as_possible_rhf_disk(testcase: Union[Path, str]) -> None:
 
     testcasedir = REFDIR / testcase
 
@@ -57,10 +65,8 @@ def run_as_many_tests_as_possible_rhf_disk(testcase):
             print("{} {} {} {:10} {:10} {:+10e} {:+10e} {:+10e}".format(*format_list))
             assert diff < thresh
 
-    return
 
-
-def run_as_many_tests_as_possible_uhf_disk(testcase):
+def run_as_many_tests_as_possible_uhf_disk(testcase: Union[Path, str]) -> None:
 
     from .test_calculators import calculate_disk_uhf
 
@@ -100,5 +106,3 @@ def run_as_many_tests_as_possible_uhf_disk(testcase):
             format_list = (testcase, hamiltonian, spin, label_1, label_2, ref, res, diff)
             print("{} {} {} {:10} {:10} {:+10e} {:+10e} {:+10e}".format(*format_list))
             assert diff < thresh
-
-    return

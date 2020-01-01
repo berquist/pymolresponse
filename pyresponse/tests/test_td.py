@@ -1,6 +1,7 @@
 import pyscf
 
 from pyresponse import iterators, td, utils
+from pyresponse.core import AO2MOTransformationType, Hamiltonian, Program, Spin
 from pyresponse.pyscf.ao2mo import AO2MOpyscf
 
 
@@ -26,22 +27,37 @@ def test_HF_both_singlet_HF_STO3G():
     ao2mo.perform_rhf_partial()
     tei_mo = ao2mo.tei_mo
     solver_tda.tei_mo = tei_mo
-    solver_tda.tei_mo_type = "partial"
+    solver_tda.tei_mo_type = AO2MOTransformationType.partial
     solver_tdhf.tei_mo = tei_mo
-    solver_tdhf.tei_mo_type = "partial"
+    solver_tdhf.tei_mo_type = AO2MOTransformationType.partial
     driver_tda = td.TDA(solver_tda)
     driver_tdhf = td.TDHF(solver_tdhf)
 
     nroots = 5
 
     print("TDA using TDA()")
-    driver_tda.run(solver_type="exact", hamiltonian="tda", spin="singlet")
+    driver_tda.run(
+        hamiltonian=Hamiltonian.TDA,
+        spin=Spin.singlet,
+        program=Program.PySCF,
+        program_obj=mol,
+    )
     excitation_energies_tda_using_tda = driver_tda.solver.eigvals[:nroots].real
     print("TDA using TDHF()")
-    driver_tdhf.run(solver_type="exact", hamiltonian="tda", spin="singlet")
+    driver_tdhf.run(
+        hamiltonian=Hamiltonian.TDA,
+        spin=Spin.singlet,
+        program=Program.PySCF,
+        program_obj=mol,
+    )
     excitation_energies_tda_using_tdhf = driver_tdhf.solver.eigvals[:nroots].real
     print("RPA using TDHF()")
-    driver_tdhf.run(solver_type="exact", hamiltonian="rpa", spin="singlet")
+    driver_tdhf.run(
+        hamiltonian=Hamiltonian.RPA,
+        spin=Spin.singlet,
+        program=Program.PySCF,
+        program_obj=mol,
+    )
     excitation_energies_rpa = driver_tdhf.solver.eigvals[:nroots].real
 
     assert (

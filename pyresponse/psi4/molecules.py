@@ -5,7 +5,7 @@ from pyresponse.data import COORDDIR
 # TODO molecule_water_sto3g_angstrom
 
 
-def molecule_water_sto3g():
+def molecule_water_sto3g() -> psi4.core.Molecule:
 
     # TODO this isn"t a proper xyz file. Why?
     with open(COORDDIR / "water.xyz") as fh:
@@ -25,7 +25,7 @@ def molecule_water_sto3g():
     return mol
 
 
-def molecule_physicists_water_sto3g(verbose=0):
+def molecule_physicists_water_sto3g() -> psi4.core.Molecule:
 
     with open(COORDDIR / "water_psi4numpy.xyz") as fh:
         mol = psi4.geometry("\n".join(fh.readlines()[2:]))
@@ -42,7 +42,7 @@ def molecule_physicists_water_sto3g(verbose=0):
     return mol
 
 
-def molecule_physicists_water_augccpvdz(verbose=0):
+def molecule_physicists_water_augccpvdz() -> psi4.core.Molecule:
 
     with open(COORDDIR / "water_psi4numpy.xyz") as fh:
         mol = psi4.geometry("\n".join(fh.readlines()[2:]))
@@ -59,7 +59,7 @@ def molecule_physicists_water_augccpvdz(verbose=0):
     return mol
 
 
-def molecule_glycine_sto3g():
+def molecule_glycine_sto3g() -> psi4.core.Molecule:
 
     with open(COORDDIR / "glycine.xyz") as fh:
         mol = psi4.geometry("\n".join(fh.readlines()[2:]))
@@ -76,7 +76,7 @@ def molecule_glycine_sto3g():
     return mol
 
 
-def molecule_trithiolane_sto3g():
+def molecule_trithiolane_sto3g() -> psi4.core.Molecule:
 
     with open(COORDDIR / "trithiolane.xyz") as fh:
         mol = psi4.geometry("\n".join(fh.readlines()[2:]))
@@ -93,7 +93,7 @@ def molecule_trithiolane_sto3g():
     return mol
 
 
-def hydrogen_atom_sto3g():
+def hydrogen_atom_sto3g() -> psi4.core.Molecule:
 
     mol = psi4.geometry(
         """
@@ -112,7 +112,7 @@ H
     return mol
 
 
-def molecule_bc2h4_cation_sto3g():
+def molecule_bc2h4_cation_sto3g() -> psi4.core.Molecule:
 
     with open(COORDDIR / "BC2H4.xyz") as fh:
         mol = psi4.geometry("\n".join(fh.readlines()[2:]))
@@ -141,7 +141,7 @@ def molecule_bc2h4_cation_sto3g():
 #     return mol
 
 
-def molecule_lih_cation_sto3g():
+def molecule_lih_cation_sto3g() -> psi4.core.Molecule:
 
     with open(COORDDIR / "LiH.xyz") as fh:
         mol = psi4.geometry("\n".join(fh.readlines()[2:]))
@@ -158,7 +158,7 @@ def molecule_lih_cation_sto3g():
     return mol
 
 
-def molecule_0w4a_dication_321g():
+def molecule_0w4a_dication_321g() -> psi4.core.Molecule:
 
     with open(COORDDIR / "0w4a.xyz") as fh:
         mol = psi4.geometry("\n".join(fh.readlines()[2:]))
@@ -175,7 +175,7 @@ def molecule_0w4a_dication_321g():
     return mol
 
 
-def molecule_bh_cation_def2_svp():
+def molecule_bh_cation_def2_svp() -> psi4.core.Molecule:
 
     mol = psi4.geometry(
         """

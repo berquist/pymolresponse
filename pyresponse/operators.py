@@ -11,14 +11,12 @@ class Operator:
 
     def __init__(
         self,
-        label="",
-        is_imaginary=False,
-        is_spin_dependent=False,
-        triplet=False,
-        slice_idx=-1,
-        *args,
-        **kwargs,
-    ):
+        label: str = "",
+        is_imaginary: bool = False,
+        is_spin_dependent: bool = False,
+        triplet: bool = False,
+        slice_idx: int = -1,
+    ) -> None:
         self.label = label
         self.is_imaginary = is_imaginary
         self.is_spin_dependent = is_spin_dependent
@@ -31,23 +29,22 @@ class Operator:
             self.hsofac = (spc.alpha ** 2) / 4
 
         self.frequencies = None
+        self.ao_integrals = None
         self.rspvecs_alph = []
         self.rspvecs_beta = []
 
-    def __str__(self):
+    def __str__(self) -> str:
         return (
             f'Operator(label="{self.label}", is_imaginary={self.is_imaginary}, '
             f"is_spin_dependent={self.is_spin_dependent}, triplet={self.triplet}, "
             f"slice_idx={self.slice_idx})"
         )
 
-    def calculate_ao_integrals(self):
+    def calculate_ao_integrals(self) -> None:
         pass
 
-    def form_rhs(self, C, occupations):
+    def form_rhs(self, C: np.ndarray, occupations: np.ndarray) -> None:
         """Form the right-hand side for CPHF."""
-        assert hasattr(self, "ao_integrals")
-        # pylint: disable=no-member
         assert isinstance(self.ao_integrals, np.ndarray)
         if len(C.shape) == 2:
             C = C[np.newaxis]
@@ -126,8 +123,14 @@ class Operator:
             )
 
     def form_rhs_geometric(
-        self, C, occupations, natoms, MO_full, mints, return_dict=False
-    ):
+        self,
+        C: np.ndarray,
+        occupations: np.ndarray,
+        natoms,
+        MO_full,
+        mints,
+        return_dict: bool = False,
+    ) -> None:
         from pyresponse.integrals import _form_rhs_geometric
 
         C_ = fix_mocoeffs_shape(C)
@@ -139,6 +142,7 @@ class Operator:
         B_vectors = [repack_matrix_to_vector(B)[:, np.newaxis] for B in B_matrices]
         mo_integrals_ai_alph = np.stack(B_vectors)
         self.mo_integrals_ai_alph = mo_integrals_ai_alph
+        # pylint: disable=invalid-unary-operand-type
         self.mo_integrals_ai_supervector_alph = np.concatenate(
             (mo_integrals_ai_alph, -mo_integrals_ai_alph), axis=1
         )

@@ -5,7 +5,9 @@ import numpy as np
 from pyresponse.utils import form_vec_energy_differences
 
 
-def form_rpa_a_matrix_mo_singlet_full(E_MO, TEI_MO, nocc):
+def form_rpa_a_matrix_mo_singlet_full(
+    E_MO: np.ndarray, TEI_MO: np.ndarray, nocc: int
+) -> np.ndarray:
     r"""Form the A (CIS) matrix in the MO basis. [singlet]
 
     The equation for element :math:`\{ia,jb\}` is
@@ -38,7 +40,9 @@ def form_rpa_a_matrix_mo_singlet_full(E_MO, TEI_MO, nocc):
     return A
 
 
-def form_rpa_a_matrix_mo_triplet_full(E_MO, TEI_MO, nocc):
+def form_rpa_a_matrix_mo_triplet_full(
+    E_MO: np.ndarray, TEI_MO: np.ndarray, nocc: int
+) -> np.ndarray:
     r"""Form the A (CIS) matrix in the MO basis. [triplet]
 
     The equation for element :math:`\{ia,jb\}` is :math:`-
@@ -67,7 +71,7 @@ def form_rpa_a_matrix_mo_triplet_full(E_MO, TEI_MO, nocc):
     return A
 
 
-def form_rpa_b_matrix_mo_singlet_full(TEI_MO, nocc):
+def form_rpa_b_matrix_mo_singlet_full(TEI_MO: np.ndarray, nocc: int) -> np.ndarray:
     r"""Form the B matrix for RPA in the MO basis. [singlet]
 
     The equation for element :math:`\{ia,jb\}` is
@@ -95,7 +99,7 @@ def form_rpa_b_matrix_mo_singlet_full(TEI_MO, nocc):
     return -B
 
 
-def form_rpa_b_matrix_mo_triplet_full(TEI_MO, nocc):
+def form_rpa_b_matrix_mo_triplet_full(TEI_MO: np.ndarray, nocc: int) -> np.ndarray:
     r"""Form the B matrix for RPA in the MO basis. [triplet]
 
     The equation for element :math:`\{ia,jb\}` is :math:`????`.
@@ -118,7 +122,9 @@ def form_rpa_b_matrix_mo_triplet_full(TEI_MO, nocc):
     return -B
 
 
-def form_rpa_a_matrix_mo_singlet_ss_full(E_MO, TEI_MO, nocc):
+def form_rpa_a_matrix_mo_singlet_ss_full(
+    E_MO: np.ndarray, TEI_MO: np.ndarray, nocc: int
+) -> np.ndarray:
     r"""Form the same-spin part of the A (CIS) matrix in the MO
     basis. [singlet]
 
@@ -149,7 +155,9 @@ def form_rpa_a_matrix_mo_singlet_ss_full(E_MO, TEI_MO, nocc):
     return A
 
 
-def form_rpa_a_matrix_mo_singlet_os_full(TEI_MO_xxyy, nocc_x, nocc_y):
+def form_rpa_a_matrix_mo_singlet_os_full(
+    TEI_MO_xxyy: np.ndarray, nocc_x: int, nocc_y: int
+) -> np.ndarray:
     r"""Form the opposite-spin part of the A (CIS) matrix in the MO
     basis. [singlet]
 
@@ -175,7 +183,7 @@ def form_rpa_a_matrix_mo_singlet_os_full(TEI_MO_xxyy, nocc_x, nocc_y):
     return A
 
 
-def form_rpa_b_matrix_mo_singlet_ss_full(TEI_MO, nocc):
+def form_rpa_b_matrix_mo_singlet_ss_full(TEI_MO: np.ndarray, nocc: int) -> np.ndarray:
     r"""Form the same-spin part of the RPA B matrix in the MO
     basis. [singlet]
 
@@ -202,7 +210,9 @@ def form_rpa_b_matrix_mo_singlet_ss_full(TEI_MO, nocc):
     return -B
 
 
-def form_rpa_b_matrix_mo_singlet_os_full(TEI_MO_xxyy, nocc_x, nocc_y):
+def form_rpa_b_matrix_mo_singlet_os_full(
+    TEI_MO_xxyy: np.ndarray, nocc_x: int, nocc_y: int
+) -> np.ndarray:
     r"""Form the opposite-spin part of the RPA B matrix in the MO
     basis. [singlet]
 

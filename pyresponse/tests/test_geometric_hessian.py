@@ -5,6 +5,7 @@ import numpy as np
 import psi4
 
 from pyresponse.ao2mo import AO2MO
+from pyresponse.core import AO2MOTransformationType, Hamiltonian, Program, Spin
 from pyresponse.cphf import CPHF
 from pyresponse.data import REFDIR
 from pyresponse.iterators import ExactInv
@@ -473,7 +474,6 @@ def test_geometric_hessian_rhf_outside_solver_psi4numpy():
     )
     H_python_mat = psi4.core.Matrix.from_array(Hessian)
     psi4.compare_matrices(H_psi4, H_python_mat, 10, "RHF-HESSIAN-TEST")  # TEST
-    return
 
 
 def test_geometric_hessian_rhf_outside_solver_chemists():
@@ -901,7 +901,6 @@ def test_geometric_hessian_rhf_outside_solver_chemists():
 
     H_python_mat = psi4.core.Matrix.from_array(Hessian)
     psi4.compare_matrices(H_psi4, H_python_mat, 10, "RHF-HESSIAN-TEST")  # TEST
-    return
 
 
 def test_geometric_hessian_rhf_right_hand_side():
@@ -1048,7 +1047,7 @@ def test_atomic_polar_tensor_rhf():
     ao2mo.perform_rhf_full()
     solver = ExactInv(C, E, occupations)
     solver.tei_mo = ao2mo.tei_mo
-    solver.tei_mo_type = "full"
+    solver.tei_mo_type = AO2MOTransformationType.full
     driver = CPHF(solver)
     operator_diplen = Operator(
         label="dipole", is_imaginary=False, is_spin_dependent=False, triplet=False
@@ -1074,7 +1073,12 @@ def test_atomic_polar_tensor_rhf():
     # bypass driver's call to form_rhs
     driver.solver.operators.append(operator_geometric)
 
-    driver.run()
+    driver.run(
+        hamiltonian=Hamiltonian.RPA,
+        spin=Spin.singlet,
+        program=Program.Psi4,
+        program_obj=wfn,
+    )
     print(driver.results[0])
     print(driver.results[0].T)
     print(driver.results[0] - driver.results[0].T)

@@ -68,7 +68,7 @@ confidence=
 # no Warning level messages displayed, use"--disable=all --enable=classes
 # --disable=W"
 #disable=unicode-builtin,raising-string,dict-view-method,long-builtin,range-builtin-not-iterating,old-division,execfile-builtin,xrange-builtin,print-statement,file-builtin,parameter-unpacking,old-octal-literal,indexing-exception,old-ne-operator,raw_input-builtin,standarderror-builtin,reload-builtin,basestring-builtin,setslice-method,round-builtin,delslice-method,next-method-called,nonzero-method,coerce-method,cmp-method,coerce-builtin,input-builtin,unpacking-in-except,oct-method,suppressed-message,intern-builtin,map-builtin-not-iterating,using-cmp-argument,unichr-builtin,apply-builtin,dict-iter-method,getslice-method,old-raise-syntax,hex-method,import-star-module-level,cmp-builtin,useless-suppression,buffer-builtin,backtick,metaclass-assignment,reduce-builtin,long-suffix,no-absolute-import,filter-builtin-not-iterating,zip-builtin-not-iterating
-disable=invalid-name
+disable=invalid-name,bad-continuation,line-too-long,missing-class-docstring,missing-function-docstring,missing-module-docstring,too-few-public-methods,too-many-branches,too-many-lines,too-many-locals
 
 
 [REPORTS]

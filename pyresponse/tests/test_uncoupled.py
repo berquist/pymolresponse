@@ -3,11 +3,18 @@ import numpy as np
 import pyscf
 
 from pyresponse import cphf, iterators, operators, utils
+from pyresponse.core import AO2MOTransformationType, Hamiltonian, Program, Spin
 from pyresponse.pyscf import molecules
 from pyresponse.pyscf.ao2mo import AO2MOpyscf
 
 
-def mol_atom(symbol="He", charge=0, spin=0, basis="sto-3g", verbose=0):
+def mol_atom(
+    symbol: str = "He",
+    charge: int = 0,
+    spin: int = 0,
+    basis: str = "sto-3g",
+    verbose: int = 0,
+) -> pyscf.gto.Mole:
     mol = pyscf.gto.Mole()
     mol.verbose = verbose
     mol.output = None
@@ -180,7 +187,7 @@ uhf_uncoupled = {
 }
 
 
-def test_uncoupled_rhf():
+def test_uncoupled_rhf() -> None:
     mol = molecules.molecule_trithiolane_sto3g()
     mol.build()
 
@@ -196,7 +203,7 @@ def test_uncoupled_rhf():
     ao2mo = AO2MOpyscf(C, mol.verbose, mol)
     ao2mo.perform_rhf_partial()
     solver.tei_mo = ao2mo.tei_mo
-    solver.tei_mo_type = "partial"
+    solver.tei_mo_type = AO2MOTransformationType.partial
 
     driver = cphf.CPHF(solver)
 
@@ -210,7 +217,12 @@ def test_uncoupled_rhf():
     frequencies = [0.0, 0.0773178, 0.128347]
     driver.set_frequencies(frequencies)
 
-    driver.run(solver_type="exact", hamiltonian="rpa", spin="singlet")
+    driver.run(
+        hamiltonian=Hamiltonian.RPA,
+        spin=Spin.singlet,
+        program=Program.PySCF,
+        program_obj=mol,
+    )
 
     for idxf, frequency in enumerate(frequencies):
         print(idxf, frequency)
@@ -231,10 +243,8 @@ def test_uncoupled_rhf():
         print(diff)
         assert np.max(np.abs(diff)) < rhf_coupled[frequency]["error_max_diag"]
 
-    return
 
-
-def test_uncoupled_uhf():
+def test_uncoupled_uhf() -> None:
     mol = molecules.molecule_trithiolane_sto3g()
     mol.charge = 1
     mol.spin = 1
@@ -252,7 +262,7 @@ def test_uncoupled_uhf():
     ao2mo = AO2MOpyscf(C, mol.verbose, mol)
     ao2mo.perform_uhf_partial()
     solver.tei_mo = ao2mo.tei_mo
-    solver.tei_mo_type = "partial"
+    solver.tei_mo_type = AO2MOTransformationType.partial
 
     driver = cphf.CPHF(solver)
 
@@ -266,7 +276,12 @@ def test_uncoupled_uhf():
     frequencies = [0.0, 0.0773178, 0.128347, 0.4556355]
     driver.set_frequencies(frequencies)
 
-    driver.run(solver_type="exact", hamiltonian="rpa", spin="singlet")
+    driver.run(
+        hamiltonian=Hamiltonian.RPA,
+        spin=Spin.singlet,
+        program=Program.PySCF,
+        program_obj=mol,
+    )
 
     for idxf, frequency in enumerate(frequencies):
         print(idxf, frequency)
@@ -286,8 +301,6 @@ def test_uncoupled_uhf():
         print(diag_ref)
         print(diff)
         assert np.max(np.abs(diff)) < uhf_coupled[frequency]["error_max_diag"]
-
-    return
 
 
 if __name__ == "__main__":

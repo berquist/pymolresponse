@@ -1,43 +1,52 @@
 from abc import ABC, abstractmethod
+from typing import Optional, Sequence
 
 import numpy as np
 
 from pyresponse import iterators
-from pyresponse.cphf import CPHF
-from pyresponse.interfaces import Program
+from pyresponse.core import Hamiltonian, Program, Spin
+from pyresponse.cphf import CPHF, Driver
+from pyresponse.iterators import Solver
 from pyresponse.td import TDA, TDHF
 
 
 class MolecularProperty(ABC):
+    """A molecular property that is calculated from one or more operators.
+
+    The
+    """
+
     def __init__(
-        self, program, program_obj, mocoeffs, moenergies, occupations, *args, **kwargs
-    ):
+        self,
+        program: Program,
+        program_obj,
+        mocoeffs: np.ndarray,
+        moenergies: np.ndarray,
+        occupations: np.ndarray,
+        *,
+        driver: Optional[Driver] = None,
+    ) -> None:
+        assert isinstance(program, Program)
+        # TODO isinstance(program_obj, ...)
         assert isinstance(mocoeffs, np.ndarray)
         assert isinstance(moenergies, np.ndarray)
-        assert isinstance(occupations, (np.ndarray, tuple, list))
+        assert isinstance(occupations, np.ndarray)
+        assert isinstance(driver, (type(None), Driver))
         self.program = program
         self.program_obj = program_obj
         self.mocoeffs = mocoeffs
         self.moenergies = moenergies
-        self.occupations = np.asarray(occupations)
+        self.occupations = occupations
+        self.driver = driver
 
-        self.solver = None
-        self.driver = None
-
-    def run(self, hamiltonian=None, spin=None, solver_type=None):
-        assert hasattr(self, "driver")
+    def run(self, hamiltonian: Hamiltonian, spin: Spin) -> None:
         assert self.driver is not None
-        if hamiltonian is None:
-            hamiltonian = "rpa"
-        if spin is None:
-            spin = "singlet"
-        assert isinstance(hamiltonian, str)
-        assert isinstance(spin, str)
         assert self.driver.solver is not None
+        assert isinstance(hamiltonian, Hamiltonian)
+        assert isinstance(spin, Spin)
         self.driver.run(
-            solver_type=solver_type,
-            hamiltonian=hamiltonian.lower(),
-            spin=spin.lower(),
+            hamiltonian=hamiltonian,
+            spin=spin,
             program=self.program,
             program_obj=self.program_obj,
         )
@@ -52,40 +61,28 @@ class MolecularProperty(ABC):
 
 
 class ResponseProperty(MolecularProperty, ABC):
+    """A molecular property that is calculated as the response to one or more
+    perturbations, each represented by an operator.
+    """
+
     def __init__(
         self,
-        program,
+        program: Program,
         program_obj,
-        mocoeffs,
-        moenergies,
-        occupations,
-        frequencies=[0.0],
-        *args,
-        **kwargs
+        mocoeffs: np.ndarray,
+        moenergies: np.ndarray,
+        occupations: np.ndarray,
+        *,
+        driver: Optional[Driver] = None,
+        frequencies: Sequence[float] = [0.0],
     ):
+        if driver is None:
+            driver = CPHF(iterators.ExactInv(mocoeffs, moenergies, occupations))
+        driver.set_frequencies(frequencies)
         super().__init__(
-            program, program_obj, mocoeffs, moenergies, occupations, *args, **kwargs
+            program, program_obj, mocoeffs, moenergies, occupations, driver=driver
         )
-
-        # Don't allow a single number; force one of the basic
-        # iterables.
-        assert isinstance(frequencies, (list, tuple, np.ndarray))
-        self.frequencies = frequencies
-
-        if "solver" in kwargs:
-            solver = kwargs["solver"]
-        elif self.solver is not None:
-            solver = self.solver
-        else:
-            solver = iterators.ExactInv(mocoeffs, moenergies, occupations)
-
-        if "driver" in kwargs:
-            driver = kwargs["driver"]
-        else:
-            driver = CPHF(solver)
-        self.driver = driver
-
-        self.driver.set_frequencies(frequencies)
+        self.frequencies = self.driver.frequencies
 
     @abstractmethod
     def form_operators(self):
@@ -98,34 +95,32 @@ class ResponseProperty(MolecularProperty, ABC):
 
 class TransitionProperty(MolecularProperty, ABC):
     def __init__(
-        self, program, program_obj, mocoeffs, moenergies, occupations, *args, **kwargs
+        self,
+        program: Program,
+        program_obj,
+        mocoeffs: np.ndarray,
+        moenergies: np.ndarray,
+        occupations: np.ndarray,
+        *,
+        driver: Optional[Driver] = None,
+        do_tda: bool = False,
     ):
+
+        if driver is None:
+            driver_cls = TDA if do_tda else TDHF
+            driver = driver_cls(
+                iterators.ExactDiagonalizationSolver(mocoeffs, moenergies, occupations)
+            )
+        self.do_tda = do_tda
+
         super().__init__(
-            program, program_obj, mocoeffs, moenergies, occupations, *args, **kwargs
+            program, program_obj, mocoeffs, moenergies, occupations, driver=driver
         )
 
-        if "solver" in kwargs:
-            solver = kwargs["solver"]
-        elif self.solver is not None:
-            solver = self.solver
-        else:
-            solver = iterators.ExactDiagonalizationSolver(
-                mocoeffs, moenergies, occupations
-            )
-
-        if kwargs.get("driver", None):
-            driver = kwargs["driver"]
-        elif kwargs.get("do_tda", None):
-            driver = TDA
-        else:
-            driver = TDHF
-        self.driver = driver(solver)
-        assert isinstance(self.driver, (TDHF,))
-
     @abstractmethod
-    def form_operators(self):
+    def form_operators(self) -> None:
         pass
 
     @abstractmethod
-    def form_results(self):
+    def form_results(self) -> None:
         pass

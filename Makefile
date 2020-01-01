@@ -1,7 +1,7 @@
 .PHONY: test
 test:
 	bash check_pytest.bash
-	pytest -v --doctest-modules --black --cov=pyresponse pyresponse
+	python -m pytest -v --doctest-modules --black --cov=pyresponse pyresponse
 
 .PHONY: precommit
 precommit:
@@ -14,9 +14,9 @@ pylint:
 
 .PHONY: mypy
 mypy:
-	mypy pyresponse | perl -ne 'print if !/(No library stub file for module|Cannot find module named)/'
+	mypy pyresponse
 
 .PHONY: docs
 docs:
-	# sphinx-apidoc -o docs/source pyresponse
+	sphinx-apidoc -o docs/source pyresponse
 	cd doc && make html

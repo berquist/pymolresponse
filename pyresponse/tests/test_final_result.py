@@ -1,8 +1,8 @@
 import numpy as np
 
 from pyresponse import cphf, electric, iterators, operators, utils
+from pyresponse.core import AO2MOTransformationType, Hamiltonian, Program, Spin
 from pyresponse.data import REFDIR
-from pyresponse.interfaces import Program
 from pyresponse.pyscf import molecules
 from pyresponse.tests.test_runners import (
     run_as_many_tests_as_possible_rhf_disk,
@@ -10,15 +10,15 @@ from pyresponse.tests.test_runners import (
 )
 
 
-def test_final_result_rhf_h2o_sto3g_rpa_singlet():
-    hamiltonian = "rpa"
-    spin = "singlet"
+def test_final_result_rhf_h2o_sto3g_rpa_singlet() -> None:
+    hamiltonian = Hamiltonian.RPA
+    spin = Spin.singlet
 
     C = utils.fix_mocoeffs_shape(utils.np_load(REFDIR / "C.npz"))
     E = utils.fix_moenergies_shape(utils.np_load(REFDIR / "F_MO.npz"))
     TEI_MO = utils.np_load(REFDIR / "TEI_MO.npz")
     # nocc_alph, nvirt_alph, nocc_beta, nvirt_beta
-    occupations = [5, 2, 5, 2]
+    occupations = np.asarray([5, 2, 5, 2], dtype=int)
     stub = "h2o_sto3g_"
     dim = occupations[0] + occupations[1]
     mat_dipole_x = utils.parse_int_file_2(REFDIR / f"{stub}mux.dat", dim)
@@ -27,7 +27,7 @@ def test_final_result_rhf_h2o_sto3g_rpa_singlet():
 
     solver = iterators.ExactInv(C, E, occupations)
     solver.tei_mo = (TEI_MO,)
-    solver.tei_mo_type = "full"
+    solver.tei_mo_type = AO2MOTransformationType.full
     driver = cphf.CPHF(solver)
     ao_integrals_dipole = np.stack((mat_dipole_x, mat_dipole_y, mat_dipole_z), axis=0)
     operator_dipole = operators.Operator(
@@ -38,7 +38,7 @@ def test_final_result_rhf_h2o_sto3g_rpa_singlet():
     frequencies = (0.0, 0.02, 0.06, 0.1)
     driver.set_frequencies(frequencies)
 
-    driver.run(solver_type="exact", hamiltonian=hamiltonian, spin=spin)
+    driver.run(hamiltonian=hamiltonian, spin=spin, program=None, program_obj=None)
 
     assert len(driver.results) == len(frequencies)
 
@@ -67,7 +67,7 @@ def test_final_result_rhf_h2o_sto3g_rpa_singlet():
     mol = molecules.molecule_water_sto3g()
     mol.build()
     polarizability = electric.Polarizability(
-        Program.PySCF, mol, C, E, occupations, frequencies
+        Program.PySCF, mol, C, E, occupations, frequencies=frequencies
     )
     polarizability.form_operators()
     polarizability.run(hamiltonian=hamiltonian, spin=spin)
@@ -89,15 +89,15 @@ def test_final_result_rhf_h2o_sto3g_rpa_singlet():
     return
 
 
-def test_final_result_rhf_h2o_sto3g_rpa_triplet():
-    hamiltonian = "rpa"
-    spin = "triplet"
+def test_final_result_rhf_h2o_sto3g_rpa_triplet() -> None:
+    hamiltonian = Hamiltonian.RPA
+    spin = Spin.triplet
 
     C = utils.fix_mocoeffs_shape(utils.np_load(REFDIR / "C.npz"))
     E = utils.fix_moenergies_shape(utils.np_load(REFDIR / "F_MO.npz"))
     TEI_MO = utils.np_load(REFDIR / "TEI_MO.npz")
     # nocc_alph, nvirt_alph, nocc_beta, nvirt_beta
-    occupations = [5, 2, 5, 2]
+    occupations = np.asarray([5, 2, 5, 2], dtype=int)
     stub = "h2o_sto3g_"
     dim = occupations[0] + occupations[1]
     mat_dipole_x = utils.parse_int_file_2(REFDIR / f"{stub}mux.dat", dim)
@@ -106,7 +106,7 @@ def test_final_result_rhf_h2o_sto3g_rpa_triplet():
 
     solver = iterators.ExactInv(C, E, occupations)
     solver.tei_mo = (TEI_MO,)
-    solver.tei_mo_type = "full"
+    solver.tei_mo_type = AO2MOTransformationType.full
     driver = cphf.CPHF(solver)
     ao_integrals_dipole = np.stack((mat_dipole_x, mat_dipole_y, mat_dipole_z), axis=0)
     operator_dipole = operators.Operator(
@@ -117,7 +117,7 @@ def test_final_result_rhf_h2o_sto3g_rpa_triplet():
     frequencies = (0.0, 0.02, 0.06, 0.1)
     driver.set_frequencies(frequencies)
 
-    driver.run(solver_type="exact", hamiltonian=hamiltonian, spin=spin)
+    driver.run(hamiltonian=hamiltonian, spin=spin, program=None, program_obj=None)
 
     assert len(driver.results) == len(frequencies)
 
@@ -144,7 +144,7 @@ def test_final_result_rhf_h2o_sto3g_rpa_triplet():
     mol = molecules.molecule_water_sto3g()
     mol.build()
     polarizability = electric.Polarizability(
-        Program.PySCF, mol, C, E, occupations, frequencies
+        Program.PySCF, mol, C, E, occupations, frequencies=frequencies
     )
     polarizability.form_operators()
     polarizability.run(hamiltonian=hamiltonian, spin=spin)
@@ -166,15 +166,15 @@ def test_final_result_rhf_h2o_sto3g_rpa_triplet():
     return
 
 
-def test_final_result_rhf_h2o_sto3g_tda_singlet():
-    hamiltonian = "tda"
-    spin = "singlet"
+def test_final_result_rhf_h2o_sto3g_tda_singlet() -> None:
+    hamiltonian = Hamiltonian.TDA
+    spin = Spin.singlet
 
     C = utils.fix_mocoeffs_shape(utils.np_load(REFDIR / "C.npz"))
     E = utils.fix_moenergies_shape(utils.np_load(REFDIR / "F_MO.npz"))
     TEI_MO = utils.np_load(REFDIR / "TEI_MO.npz")
     # nocc_alph, nvirt_alph, nocc_beta, nvirt_beta
-    occupations = [5, 2, 5, 2]
+    occupations = np.asarray([5, 2, 5, 2], dtype=int)
     stub = "h2o_sto3g_"
     dim = occupations[0] + occupations[1]
     mat_dipole_x = utils.parse_int_file_2(REFDIR / f"{stub}mux.dat", dim)
@@ -183,7 +183,7 @@ def test_final_result_rhf_h2o_sto3g_tda_singlet():
 
     solver = iterators.ExactInv(C, E, occupations)
     solver.tei_mo = (TEI_MO,)
-    solver.tei_mo_type = "full"
+    solver.tei_mo_type = AO2MOTransformationType.full
     driver = cphf.CPHF(solver)
     ao_integrals_dipole = np.stack((mat_dipole_x, mat_dipole_y, mat_dipole_z), axis=0)
     operator_dipole = operators.Operator(
@@ -194,7 +194,7 @@ def test_final_result_rhf_h2o_sto3g_tda_singlet():
     frequencies = (0.0, 0.02, 0.06, 0.1)
     driver.set_frequencies(frequencies)
 
-    driver.run(solver_type="exact", hamiltonian=hamiltonian, spin=spin)
+    driver.run(hamiltonian=hamiltonian, spin=spin, program=None, program_obj=None)
 
     assert len(driver.results) == len(frequencies)
 
@@ -221,7 +221,7 @@ def test_final_result_rhf_h2o_sto3g_tda_singlet():
     mol = molecules.molecule_water_sto3g()
     mol.build()
     polarizability = electric.Polarizability(
-        Program.PySCF, mol, C, E, occupations, frequencies
+        Program.PySCF, mol, C, E, occupations, frequencies=frequencies
     )
     polarizability.form_operators()
     polarizability.run(hamiltonian=hamiltonian, spin=spin)
@@ -243,15 +243,15 @@ def test_final_result_rhf_h2o_sto3g_tda_singlet():
     return
 
 
-def test_final_result_rhf_h2o_sto3g_tda_triplet():
-    hamiltonian = "tda"
-    spin = "triplet"
+def test_final_result_rhf_h2o_sto3g_tda_triplet() -> None:
+    hamiltonian = Hamiltonian.TDA
+    spin = Spin.triplet
 
     C = utils.fix_mocoeffs_shape(utils.np_load(REFDIR / "C.npz"))
     E = utils.fix_moenergies_shape(utils.np_load(REFDIR / "F_MO.npz"))
     TEI_MO = utils.np_load(REFDIR / "TEI_MO.npz")
     # nocc_alph, nvirt_alph, nocc_beta, nvirt_beta
-    occupations = [5, 2, 5, 2]
+    occupations = np.asarray([5, 2, 5, 2], dtype=int)
     stub = "h2o_sto3g_"
     dim = occupations[0] + occupations[1]
     mat_dipole_x = utils.parse_int_file_2(REFDIR / f"{stub}mux.dat", dim)
@@ -260,7 +260,7 @@ def test_final_result_rhf_h2o_sto3g_tda_triplet():
 
     solver = iterators.ExactInv(C, E, occupations)
     solver.tei_mo = (TEI_MO,)
-    solver.tei_mo_type = "full"
+    solver.tei_mo_type = AO2MOTransformationType.full
     driver = cphf.CPHF(solver)
     ao_integrals_dipole = np.stack((mat_dipole_x, mat_dipole_y, mat_dipole_z), axis=0)
     operator_dipole = operators.Operator(
@@ -271,7 +271,7 @@ def test_final_result_rhf_h2o_sto3g_tda_triplet():
     frequencies = (0.0, 0.02, 0.06, 0.1)
     driver.set_frequencies(frequencies)
 
-    driver.run(solver_type="exact", hamiltonian=hamiltonian, spin=spin)
+    driver.run(hamiltonian=hamiltonian, spin=spin, program=None, program_obj=None)
 
     assert len(driver.results) == len(frequencies)
 
@@ -298,7 +298,7 @@ def test_final_result_rhf_h2o_sto3g_tda_triplet():
     mol = molecules.molecule_water_sto3g()
     mol.build()
     polarizability = electric.Polarizability(
-        Program.PySCF, mol, C, E, occupations, frequencies
+        Program.PySCF, mol, C, E, occupations, frequencies=frequencies
     )
     polarizability.form_operators()
     polarizability.run(hamiltonian=hamiltonian, spin=spin)
@@ -320,14 +320,14 @@ def test_final_result_rhf_h2o_sto3g_tda_triplet():
     return
 
 
-def test_as_many_as_possible_rhf_disk():
+def test_as_many_as_possible_rhf_disk() -> None:
 
     run_as_many_tests_as_possible_rhf_disk("r_lih_hf_sto-3g")
 
     return
 
 
-def test_as_many_as_possible_uhf_disk():
+def test_as_many_as_possible_uhf_disk() -> None:
 
     run_as_many_tests_as_possible_uhf_disk("u_lih_cation_hf_sto-3g")
 
@@ -401,7 +401,7 @@ def test_as_many_as_possible_uhf_disk():
 #     for hamiltonian in ('rpa', 'tda'):
 #         for spin in ('singlet', 'triplet'):
 #             print('hamiltonian: {}, spin: {}'.format(hamiltonian, spin))
-#             cphf.run(solver_type='exact', hamiltonian=hamiltonian, spin=spin)
+#             cphf.run(hamiltonian=hamiltonian, spin=spin)
 #             thresh = 1.0e-10
 #             cphf.results[0][cphf.results[0] < thresh] = 0.0
 #             print(cphf.results[0])

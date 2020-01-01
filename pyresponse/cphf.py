@@ -1,32 +1,30 @@
 """Driver for solving the coupled perturbed Hartree-Fock (CPHF) equations."""
 
 from abc import ABC
+from typing import Optional, Sequence
 
 import numpy as np
 
-from pyresponse.iterators import ExactLineqSolver, LineqSolver
+from pyresponse.core import AO2MOTransformationType, Hamiltonian, Program, Spin
+from pyresponse.iterators import ExactLineqSolver, LineqSolver, Solver
+from pyresponse.operators import Operator
 from pyresponse.utils import form_results, form_vec_energy_differences
 
 
 class Driver(ABC):
-    pass
+    def __init__(self, solver: Solver) -> None:
+        self.solver = solver
+
+        self.results = []
 
 
 class CPHF(Driver):
     """Driver for solving the coupled perturbed Hartree-Fock (CPHF) equations."""
 
-    def __init__(self, solver, *args, **kwargs):
+    def __init__(self, solver: Solver) -> None:
+        super().__init__(solver)
 
-        self.solver = solver
-
-        self.hamiltonian = "rpa"
-        self.spin = "singlet"
-
-        # self.solver_type = "exact"
-
-        self.results = []
-
-    def set_frequencies(self, frequencies=None):
+    def set_frequencies(self, frequencies: Optional[Sequence[float]] = None) -> None:
         r"""Set the frequencies :math:`\omega_f` for which frequency-dependent
         CPHF is performed."""
 
@@ -37,7 +35,7 @@ class CPHF(Driver):
         self.solver.set_frequencies(frequencies)
         self.frequencies = self.solver.frequencies
 
-    def add_operator(self, operator):
+    def add_operator(self, operator: Operator) -> None:
         """Add an operator to the list of operators that will be used as the
         right-hand side perturbation."""
 
@@ -45,53 +43,35 @@ class CPHF(Driver):
         self.solver.add_operator(operator)
 
     def run(
-        self,
-        solver_type=None,
-        hamiltonian=None,
-        spin=None,
-        program=None,
-        program_obj=None,
-        **kwargs
-    ):
+        self, hamiltonian: Hamiltonian, spin: Spin, program: Program, program_obj
+    ) -> None:
         assert self.solver is not None
         assert isinstance(self.solver, (LineqSolver,))
 
-        if not solver_type:
-            solver_type = self.solver_type
-        if not hamiltonian:
-            hamiltonian = self.hamiltonian
-        if not spin:
-            spin = self.spin
         if not hasattr(self, "frequencies"):
             self.set_frequencies([0.0])
 
-        assert isinstance(solver_type, str)
-        assert isinstance(hamiltonian, str)
-        assert isinstance(spin, str)
+        assert isinstance(hamiltonian, Hamiltonian)
+        assert isinstance(spin, Spin)
 
-        # Set the current state.
-        self.solver_type = solver_type.lower()
-        self.hamiltonian = hamiltonian.lower()
-        self.spin = spin.lower()
-
-        if "exact" in solver_type:
-            assert isinstance(self.solver, (ExactLineqSolver,))
-            if not self.solver.tei_mo:
-                assert program is not None
-                assert program_obj is not None
-                self.solver.form_tei_mo(program, program_obj)
-            for frequency in self.frequencies:
-                self.solver.form_explicit_hessian(hamiltonian, spin, frequency)
-                self.solver.invert_explicit_hessian()
-                self.solver.form_response_vectors()
-        else:
-            for frequency in self.frequencies:
-                self.solver.run(hamiltonian, spin, frequency)
+        # FIXME be able to switch between solver types
+        assert isinstance(self.solver, (ExactLineqSolver,))
+        if not self.solver.tei_mo:
+            assert program is not None
+            assert program_obj is not None
+            self.solver.form_tei_mo(program, program_obj, AO2MOTransformationType.partial)
+        for frequency in self.frequencies:
+            self.solver.form_explicit_hessian(hamiltonian, spin, frequency)
+            self.solver.invert_explicit_hessian()
+            self.solver.form_response_vectors()
+        # else:
+        #     for frequency in self.frequencies:
+        #         self.solver.run(hamiltonian, spin, frequency)
 
         self.form_uncoupled_results()
         self.form_results()
 
-    def form_uncoupled_results(self):
+    def form_uncoupled_results(self) -> None:
 
         # We avoid the formation of the full Hessian, but the energy
         # differences on the diagonal are still needed. Form them
@@ -143,7 +123,9 @@ class CPHF(Driver):
             )
             dim_cols = dim_rows
 
-            # FIXME
+            # FIXME, though the reason is weak: the dtype is being inferred
+            # from a single operator on the solver, when in reality the dtype
+            # of all results should be considered.
             results = np.zeros(
                 shape=(dim_rows, dim_cols),
                 dtype=self.solver.operators[0].mo_integrals_ai_supervector_alph.dtype,
@@ -192,7 +174,7 @@ class CPHF(Driver):
                 results = 4 * results / 2
             self.uncoupled_results.append(results)
 
-    def form_results(self):
+    def form_results(self) -> None:
 
         self.results = []
 
@@ -238,7 +220,7 @@ class CPHF(Driver):
             )
             assert dim_rows == dim_cols
 
-            # FIXME
+            # FIXME same comment about the dtype as above
             results = np.zeros(
                 shape=(dim_rows, dim_cols),
                 dtype=self.solver.operators[0].rspvecs_alph[f].dtype,

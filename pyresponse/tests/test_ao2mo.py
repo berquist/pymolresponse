@@ -8,7 +8,7 @@ from pyresponse.pyscf.ao2mo import AO2MOpyscf
 from pyresponse.utils import fix_mocoeffs_shape, occupations_from_pyscf_mol
 
 
-def test_ao2mo_hand_against_pyscf_rhf_full():
+def test_ao2mo_hand_against_pyscf_rhf_full() -> None:
 
     mol = molecules_pyscf.molecule_physicists_water_sto3g()
     mol.build()
@@ -45,10 +45,8 @@ def test_ao2mo_hand_against_pyscf_rhf_full():
     assert tei_mo_pyscf.shape == tei_mo_method.shape == (nmo, nmo, nmo, nmo)
     np.testing.assert_allclose(tei_mo_method, tei_mo_pyscf, rtol=0, atol=1.0e-15)
 
-    return
 
-
-def test_ao2mo_hand_against_pyscf_rhf_partial():
+def test_ao2mo_hand_against_pyscf_rhf_partial() -> None:
 
     mol = molecules_pyscf.molecule_physicists_water_sto3g()
     mol.build()
@@ -106,8 +104,6 @@ def test_ao2mo_hand_against_pyscf_rhf_partial():
     np.testing.assert_allclose(
         tei_mo_oovv_method, tei_mo_oovv_pyscf, rtol=0, atol=1.0e-15
     )
-
-    return
 
 
 if __name__ == "__main__":

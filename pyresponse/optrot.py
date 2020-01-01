@@ -1,4 +1,9 @@
-from pyresponse.interfaces import Program
+from typing import Optional, Sequence
+
+import numpy as np
+
+from pyresponse.core import Program
+from pyresponse.cphf import CPHF
 from pyresponse.molecular_property import ResponseProperty
 from pyresponse.operators import Operator
 
@@ -6,15 +11,15 @@ from pyresponse.operators import Operator
 class ORD(ResponseProperty):
     def __init__(
         self,
-        program,
+        program: Program,
         program_obj,
-        mocoeffs,
-        moenergies,
-        occupations,
-        frequencies,
-        do_dipvel=False,
-        *args,
-        **kwargs
+        mocoeffs: np.ndarray,
+        moenergies: np.ndarray,
+        occupations: np.ndarray,
+        *,
+        driver: Optional[CPHF] = None,
+        frequencies: Sequence[float] = [0.0],
+        do_dipvel: bool = False,
     ):
         super().__init__(
             program,
@@ -22,13 +27,12 @@ class ORD(ResponseProperty):
             mocoeffs,
             moenergies,
             occupations,
-            frequencies,
-            *args,
-            **kwargs
+            driver=driver,
+            frequencies=frequencies,
         )
         self.do_dipvel = do_dipvel
 
-    def form_operators(self):
+    def form_operators(self) -> None:
 
         if self.program == Program.PySCF:
             from pyresponse.pyscf import integrals
@@ -62,7 +66,7 @@ class ORD(ResponseProperty):
             operator_dipvel.ao_integrals = integral_generator.integrals(integrals.DIPVEL)
             self.driver.add_operator(operator_dipvel)
 
-    def form_results(self):
+    def form_results(self) -> None:
 
         assert len(self.driver.results) == len(self.frequencies)
         self.polarizabilities = []

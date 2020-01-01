@@ -1,10 +1,16 @@
+from pathlib import Path
+from typing import Optional
+
 import numpy as np
 from cclib.io import ccopen
 from cclib.parser.utils import convertor
 
 import pyscf
 
-from pyresponse import ao2mo, cphf, iterators, operators, utils
+from pyresponse import cphf, iterators, operators, utils
+from pyresponse.core import AO2MOTransformationType, Hamiltonian, Spin
+from pyresponse.dalton.utils import dalton_label_to_operator
+from pyresponse.pyscf.ao2mo import AO2MOpyscf
 
 try:
     from daltools import sirifc
@@ -13,7 +19,14 @@ except:
     pass
 
 
-def calculate_disk_rhf(testcasedir, hamiltonian, spin, frequency, label_1, label_2):
+def calculate_disk_rhf(
+    testcasedir: Path,
+    hamiltonian: str,
+    spin: str,
+    frequency: str,
+    label_1: str,
+    label_2: str,
+) -> float:
 
     occupations = utils.read_file_occupations(testcasedir / "occupations")
     nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = occupations
@@ -31,8 +44,8 @@ def calculate_disk_rhf(testcasedir, hamiltonian, spin, frequency, label_1, label
     assert moints_iajb_aaaa.shape == (nocc_alph, nvirt_alph, nocc_alph, nvirt_alph)
     assert moints_ijab_aaaa.shape == (nocc_alph, nocc_alph, nvirt_alph, nvirt_alph)
 
-    operator_1 = utils.dalton_label_to_operator(label_1)
-    operator_2 = utils.dalton_label_to_operator(label_2)
+    operator_1 = dalton_label_to_operator(label_1)
+    operator_2 = dalton_label_to_operator(label_2)
 
     operator_1_integrals_mn = utils.read_file_3(
         testcasedir / f"operator_mn_{operator_1.label}"
@@ -61,7 +74,7 @@ def calculate_disk_rhf(testcasedir, hamiltonian, spin, frequency, label_1, label
 
     solver = iterators.ExactInv(C, moene, occupations)
     solver.tei_mo = (moints_iajb_aaaa, moints_ijab_aaaa)
-    solver.tei_mo_type = "partial"
+    solver.tei_mo_type = AO2MOTransformationType.partial
 
     driver = cphf.CPHF(solver)
     driver.add_operator(operator_1)
@@ -69,7 +82,12 @@ def calculate_disk_rhf(testcasedir, hamiltonian, spin, frequency, label_1, label
 
     driver.set_frequencies([float(frequency)])
 
-    driver.run(solver_type="exact", hamiltonian=hamiltonian, spin=spin)
+    driver.run(
+        hamiltonian=Hamiltonian[hamiltonian.upper()],
+        spin=Spin[spin],
+        program=None,
+        program_obj=None,
+    )
 
     assert len(driver.frequencies) == len(driver.results) == 1
     res = driver.results[0]
@@ -85,7 +103,14 @@ def calculate_disk_rhf(testcasedir, hamiltonian, spin, frequency, label_1, label
     return bl
 
 
-def calculate_disk_uhf(testcasedir, hamiltonian, spin, frequency, label_1, label_2):
+def calculate_disk_uhf(
+    testcasedir: Path,
+    hamiltonian: str,
+    spin: str,
+    frequency: str,
+    label_1: str,
+    label_2: str,
+) -> float:
 
     occupations = utils.read_file_occupations(testcasedir / "occupations")
     nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = occupations
@@ -109,8 +134,8 @@ def calculate_disk_uhf(testcasedir, hamiltonian, spin, frequency, label_1, label
     assert moints_ijab_aaaa.shape == (nocc_alph, nocc_alph, nvirt_alph, nvirt_alph)
     assert moints_ijab_bbbb.shape == (nocc_beta, nocc_beta, nvirt_beta, nvirt_beta)
 
-    operator_1 = utils.dalton_label_to_operator(label_1)
-    operator_2 = utils.dalton_label_to_operator(label_2)
+    operator_1 = dalton_label_to_operator(label_1)
+    operator_2 = dalton_label_to_operator(label_2)
 
     operator_1_integrals_mn = utils.read_file_3(
         testcasedir / f"operator_mn_{operator_1.label}"
@@ -148,7 +173,7 @@ def calculate_disk_uhf(testcasedir, hamiltonian, spin, frequency, label_1, label
         moints_ijab_aaaa,
         moints_ijab_bbbb,
     )
-    solver.tei_mo_type = "partial"
+    solver.tei_mo_type = AO2MOTransformationType.partial
 
     driver = cphf.CPHF(solver)
     driver.add_operator(operator_1)
@@ -156,7 +181,12 @@ def calculate_disk_uhf(testcasedir, hamiltonian, spin, frequency, label_1, label
 
     driver.set_frequencies([float(frequency)])
 
-    driver.run(solver_type="exact", hamiltonian=hamiltonian, spin=spin)
+    driver.run(
+        hamiltonian=Hamiltonian[hamiltonian.upper()],
+        spin=Spin[spin],
+        program=None,
+        program_obj=None,
+    )
 
     assert len(driver.frequencies) == len(driver.results) == 1
     res = driver.results[0]
@@ -173,14 +203,14 @@ def calculate_disk_uhf(testcasedir, hamiltonian, spin, frequency, label_1, label
 
 
 def calculate_rhf(
-    dalton_tmpdir,
-    hamiltonian=None,
-    spin=None,
-    operator_label=None,
-    operator=None,
-    source_moenergies=None,
-    source_mocoeffs=None,
-    source_operator=None,
+    dalton_tmpdir: Path,
+    hamiltonian: str,
+    spin: str,
+    operator_label: str,
+    operator: str,
+    source_moenergies: str,
+    source_mocoeffs: str,
+    source_operator: str,
 ):
 
     if operator_label:
@@ -244,8 +274,8 @@ def calculate_rhf(
 
     solver = iterators.ExactInv(C, E, occupations)
 
-    solver.tei_mo = ao2mo.perform_tei_ao2mo_rhf_partial(mol, C)
-    solver.tei_mo_type = "partial"
+    solver.tei_mo = AO2MOpyscf(mol, C).perform_rhf_partial()
+    solver.tei_mo_type = AO2MOTransformationType.partial
 
     driver = cphf.CPHF(solver)
 
@@ -284,20 +314,20 @@ def calculate_rhf(
 
     driver.set_frequencies()
 
-    driver.run(solver_type="exact", hamiltonian=hamiltonian, spin=spin)
+    driver.run(hamiltonian=Hamiltonian[hamiltonian.upper()], spin=Spin[spin])
 
     return driver.results[0]
 
 
 def calculate_uhf(
-    dalton_tmpdir,
-    hamiltonian=None,
-    spin=None,
-    operator_label=None,
-    operator=None,
-    source_moenergies=None,
-    source_mocoeffs=None,
-    source_operator=None,
+    dalton_tmpdir: Path,
+    hamiltonian: str,
+    spin: str,
+    operator_label: str,
+    operator: str,
+    source_moenergies: str,
+    source_mocoeffs: str,
+    source_operator: str,
 ):
 
     if operator_label:
@@ -365,8 +395,8 @@ def calculate_uhf(
 
     solver = iterators.ExactInv(C, E, occupations)
 
-    solver.tei_mo = ao2mo.perform_tei_ao2mo_uhf_partial(mol, C)
-    solver.tei_mo_type = "partial"
+    solver.tei_mo = AO2MOpyscf(mol, C).perform_uhf_partial()
+    solver.tei_mo_type = AO2MOTransformationType.partial
 
     driver = cphf.CPHF(solver)
 
@@ -405,6 +435,6 @@ def calculate_uhf(
 
     driver.set_frequencies()
 
-    driver.run(solver_type="exact", hamiltonian=hamiltonian, spin=spin)
+    driver.run(hamiltonian=Hamiltonian[hamiltonian.upper()], spin=Spin[spin])
 
     return driver.results[0]
