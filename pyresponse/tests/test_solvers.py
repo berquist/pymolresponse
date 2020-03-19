@@ -122,9 +122,9 @@ def test_final_result_rhf_h2o_sto3g_rpa_singlet_iter() -> None:
     res_polarizability.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)
     res_polarizability.form_results()
     res_operator = res_polarizability.driver.solver.operators[0]
-    import pdb
+    # import pdb
 
-    pdb.set_trace()
+    # pdb.set_trace()
     np.testing.assert_allclose(
         ref_polarizability.polarizabilities,
         res_polarizability.polarizabilities,

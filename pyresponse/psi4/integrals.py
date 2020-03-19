@@ -50,6 +50,8 @@ class JKPsi4(JK):
     def compute_from_mocoeffs(
         self, C_left: np.ndarray, C_right: Optional[np.ndarray] = None
     ) -> Tuple[np.ndarray, np.ndarray]:
+        self._jk.finalize()
+        self._jk.initialize()
         self._jk.C_clear()
         self._jk.C_left_add(psi4.core.Matrix.from_array(C_left))
         if C_right is not None:
@@ -59,4 +61,5 @@ class JKPsi4(JK):
                 )
             self._jk.C_right_add(psi4.core.Matrix.from_array(C_right))
         self._jk.compute()
+        self._jk.C_clear()
         return self._jk.J()[0].np, self._jk.K()[0].np

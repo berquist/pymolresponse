@@ -31,6 +31,8 @@ from pyresponse.utils import repack_matrix_to_vector
 
 np.set_printoptions(precision=5, linewidth=200, suppress=True)
 
+from pprint import pprint
+
 
 class Solver(ABC):
     """A Solver does all of the TODO
@@ -711,10 +713,15 @@ class IterativeLinEqSolver(LineqSolver):
                     x.append(U)
                     x_old.append(np.zeros_like(U))
                 for i in range(1, maxiter + 1):
+                    if i > 2 and omega > 0.0:
+                        import sys
+                        sys.exit()
+                    # pprint(x)
                     for component in range(ncomponents):
                         C_left_1 = Co
                         C_right_1 = C.dot(x[component].T)[:, :nocc_alph]
                         C_left_2 = (-C).dot(x[component])[:, :nocc_alph]
+                        pprint([C_right_1, C_left_2])
                         C_right_2 = Co
                         J_1, K_1 = self.jk_generator.compute_from_mocoeffs(
                             C_left_1, C_right_1
@@ -724,6 +731,7 @@ class IterativeLinEqSolver(LineqSolver):
                         )
                         # TODO I don't understand this
                         K_1 = K_1.T
+                        pprint([J_1, K_1, J_2, K_2])
                         U = x[component].copy()
                         upd = (
                             rhsmats[component]
@@ -732,9 +740,11 @@ class IterativeLinEqSolver(LineqSolver):
                                 - (C.T).dot(2 * J_1 - K_1 + 2 * J_2 - K_2).dot(C)
                             )
                         ) / all_denom
+                        # print(upd)
                         U[:nocc_alph, nocc_alph:] += upd[:nocc_alph, nocc_alph:]
                         U[nocc_alph:, :nocc_alph] += upd[nocc_alph:, :nocc_alph]
                         x[component] = U.copy()
+                    # pprint(x)
                     rms = []
                     for component in range(ncomponents):
                         rms.append(np.max(x[component] - x_old[component]) ** 2)
