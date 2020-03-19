@@ -27,6 +27,9 @@ from pyresponse.explicit_equations_partial import (
 )
 from pyresponse.integrals import JK
 from pyresponse.operators import Operator
+from pyresponse.utils import repack_matrix_to_vector
+
+np.set_printoptions(precision=5, linewidth=200, suppress=True)
 
 
 class Solver(ABC):
@@ -496,6 +499,7 @@ class ExactLineqSolver(LineqSolver, ABC):
                     rspvecs_operator.append(rspvec_operator_component)
                 # TODO this isn't working and I don't know why
                 # rspvecs_operator = np.stack(rspvecs_operator, axis=0)
+
                 # All the lines with 'tmp' could be replaced by a working
                 # stack call.
                 tmp = np.empty(
@@ -647,70 +651,116 @@ class IterativeLinEqSolver(LineqSolver):
         jk_generator: JK,
         *,
         maxiter: int = 40,
+        conv: float = 1.0e-9,
     ) -> None:
+        assert isinstance(jk_generator, JK)
+        assert isinstance(maxiter, int)
+        assert isinstance(conv, float)
         super().__init__(mocoeffs, moenergies, occupations)
 
         # TODO
         self.jk_generator = jk_generator
         self.maxiter = maxiter
+        self.conv = conv
 
-    def run(self, hamiltonian: Hamiltonian, spin: Spin, frequency: float) -> None:
+    def run(
+        self, hamiltonian: Hamiltonian, spin: Spin, program: Program, program_obj
+    ) -> None:
+        assert isinstance(hamiltonian, Hamiltonian)
+        assert isinstance(spin, Spin)
+        assert isinstance(program, (Program, type(None)))
+        # TODO program_obj
+        assert self.frequencies
+        for frequency in self.frequencies:
+            self._run(hamiltonian, spin, frequency, self.maxiter, self.conv)
+
+    def _run(
+        self,
+        hamiltonian: Hamiltonian,
+        spin: Spin,
+        omega: float,
+        maxiter: int,
+        conv: float,
+    ) -> None:
+        nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
+        assert (nocc_alph + nvirt_alph) == (nocc_beta + nvirt_beta)
+        norb = nocc_alph + nvirt_alph
         if self.is_uhf:
             raise RuntimeError
         else:
             epsilon = np.diag(self.moenergies[0])
+            ia_denom = epsilon[nocc_alph:] - epsilon[:nocc_alph].reshape(-1, 1) - omega
+            all_denom = epsilon.reshape(-1, 1) - epsilon - omega
             C = self.mocoeffs[0]
-            nocc = self.occupations[0]
-            Co = C[:, :nocc]
-            Cv = C[:, nocc:]
+            Co = C[:, :nocc_alph]
             for operator in self.operators:
                 ncomponents = operator.ao_integrals.shape[0]
-                x_l = []
-                x_r = []
-                x_l_old = []
-                x_r_old = []
-                # TODO we already compute and store {ai} but for now stealing
-                # the {ia} algorithm
-                mo_integrals_ia = [
-                    -2 * (Co.T).dot(operator.ao_integrals[component]).dot(Cv)
+                x = []
+                x_old = []
+                # TODO implement DIIS
+                rhsmats = [
+                    C.T @ operator.ao_integrals[component] @ C
                     for component in range(ncomponents)
                 ]
-                ia_denom_l = epsilon[nocc:] - epsilon[:nocc].reshape(-1, 1) - omega
-                ia_denom_r = epsilon[nocc:] - epsilon[:nocc].reshape(-1, 1) + omega
-                for component in range(ncomponents):
-                    x_l.append(mo_integrals_ia[component] / ia_denom_l)
-                    x_r.append(mo_integrals_ia[component] / ia_denom_r)
-                    x_l_old.append(np.zeros_like(ia_denom_l))
-                    x_r_old.append(np.zeros_like(ia_denom_r))
-                C_left = Co
-                for i in range(1, self.maxiter + 1):
+                for rhsmat in rhsmats:
+                    U = np.zeros((norb, norb))
+                    U[:nocc_alph, nocc_alph:] = rhsmat[:nocc_alph, nocc_alph:] / ia_denom
+                    U[nocc_alph:, :nocc_alph] = (
+                        rhsmat[nocc_alph:, :nocc_alph] / -ia_denom.T
+                    )
+                    x.append(U)
+                    x_old.append(np.zeros_like(U))
+                for i in range(1, maxiter + 1):
                     for component in range(ncomponents):
-                        C_right_l = Cv.dot(x_l[component].T)
-                        C_right_r = Cv.dot(x_r[component].T)
-                        J_l, K_l = self.jk_generator.compute_from_mocoeffs(
-                            C_left, C_right_l
+                        C_left_1 = Co
+                        C_right_1 = C.dot(x[component].T)[:, :nocc_alph]
+                        C_left_2 = (-C).dot(x[component])[:, :nocc_alph]
+                        C_right_2 = Co
+                        J_1, K_1 = self.jk_generator.compute_from_mocoeffs(
+                            C_left_1, C_right_1
                         )
-                        J_r, K_r = self.jk_generator.compute_from_mocoeffs(
-                            C_left, C_right_r
+                        J_2, K_2 = self.jk_generator.compute_from_mocoeffs(
+                            C_left_2, C_right_2
                         )
-                        X_l = mo_integrals_ia[component].copy()
-                        X_r = mo_integrals_ia[component].copy()
-                        X_l -= (Co.T).dot(2 * J_l - K_l).dot(Cv)
-                        X_r -= (Co.T).dot(2 * J_r - K_r).dot(Cv)
-                        X_l /= ia_denom_l
-                        X_r /= ia_denom_r
-                        x_l[component] = X_l.copy()
-                        x_r[component] = X_r.copy()
+                        # TODO I don't understand this
+                        K_1 = K_1.T
+                        U = x[component].copy()
+                        upd = (
+                            rhsmats[component]
+                            - (
+                                x[component] * all_denom
+                                - (C.T).dot(2 * J_1 - K_1 + 2 * J_2 - K_2).dot(C)
+                            )
+                        ) / all_denom
+                        U[:nocc_alph, nocc_alph:] += upd[:nocc_alph, nocc_alph:]
+                        U[nocc_alph:, :nocc_alph] += upd[nocc_alph:, :nocc_alph]
+                        x[component] = U.copy()
                     rms = []
                     for component in range(ncomponents):
-                        rms_l = np.max((x_l[component] - x_l_old[component]) ** 2)
-                        rms_r = np.max((x_r[component] - x_r_old[component]) ** 2)
-                        rms.append(max(rms_l, rms_r))
-                        x_l_old[component] = x_l[component]
-                        x_r_old[component] = x_r[component]
-                    avg_rms = np.mean(rms)
+                        rms.append(np.max(x[component] - x_old[component]) ** 2)
+                        x_old[component] = x[component]
+                    avg_rms = sum(rms) / len(rms)
                     max_rms = max(rms)
                     if max_rms < conv:
+                        print(f"CPHF converged in {i:d} iterations.")
+                        operator.rspvecs_alph.append(
+                            -np.stack(
+                                [
+                                    np.concatenate(
+                                        (
+                                            repack_matrix_to_vector(
+                                                x[component][:nocc_alph, nocc_alph:].T
+                                            ),
+                                            repack_matrix_to_vector(
+                                                x[component][nocc_alph:, :nocc_alph]
+                                            ),
+                                        )
+                                    )
+                                    for component in range(ncomponents)
+                                ],
+                                axis=0,
+                            )[..., np.newaxis]
+                        )
                         break
                     print(
                         f"CPHF Iteration {i:3d}: Average RMS = {avg_rms:3.8f}  Maximum RMS = {max_rms:3.8f}"

@@ -7,7 +7,7 @@ import numpy as np
 
 from pyresponse.core import Hamiltonian, Program, Spin
 from pyresponse.operators import Operator
-from pyresponse.solvers import ExactLineqSolver, LineqSolver, Solver
+from pyresponse.solvers import Solver
 from pyresponse.utils import form_results, form_vec_energy_differences
 
 

@@ -33,6 +33,7 @@ class Polarizability(ResponseProperty):
             occupations,
             frequencies=frequencies,
         )
+        self.polarizabilities = []
 
     def form_operators(self) -> None:
 
@@ -56,7 +57,7 @@ class Polarizability(ResponseProperty):
     def form_results(self) -> None:
 
         assert len(self.driver.results) == len(self.frequencies)
-        self.polarizabilities = []
+
         for idxf, frequency in enumerate(self.frequencies):
             results = self.driver.results[idxf]
             assert results.shape == (3, 3)

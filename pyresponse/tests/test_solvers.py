@@ -7,6 +7,7 @@ import pyscf
 from pyresponse import cphf, solvers, utils
 from pyresponse.core import Hamiltonian, Program, Spin
 from pyresponse.properties import electric, magnetic
+from pyresponse.psi4 import integrals
 from pyresponse.psi4 import molecules as molecules_psi4
 from pyresponse.psi4.utils import (
     mocoeffs_from_psi4wfn,
@@ -74,24 +75,62 @@ def test_inversion() -> None:
 
 
 def test_final_result_rhf_h2o_sto3g_rpa_singlet_iter() -> None:
-    mol = molecules_psi4.molecule_glycine_sto3g()
+    mol = molecules_psi4.molecule_physicists_water_sto3g()
     psi4.core.set_active_molecule(mol)
+    psi4.set_options(
+        {
+            "scf_type": "direct",
+            "df_scf_guess": False,
+            "e_convergence": 1e-11,
+            "d_convergence": 1e-11,
+        }
+    )
     _, wfn = psi4.energy("hf", return_wfn=True)
     C = mocoeffs_from_psi4wfn(wfn)
     E = moenergies_from_psi4wfn(wfn)
     occupations = occupations_from_psi4wfn(wfn)
 
-    polarizability = electric.Polarizability(
+    frequencies = [0.0, 0.0773178]
+
+    ref_polarizability = electric.Polarizability(
         Program.Psi4,
         mol,
         cphf.CPHF(solvers.ExactInv(C, E, occupations)),
         C,
         E,
         occupations,
+        frequencies=frequencies,
     )
-    polarizability.form_operators()
-    polarizability.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)
-    polarizability.form_results()
+    ref_polarizability.form_operators()
+    ref_polarizability.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)
+    ref_polarizability.form_results()
+    ref_operator = ref_polarizability.driver.solver.operators[0]
+    res_polarizability = electric.Polarizability(
+        Program.Psi4,
+        mol,
+        cphf.CPHF(
+            solvers.IterativeLinEqSolver(
+                C, E, occupations, integrals.JKPsi4(wfn), conv=1.0e-12
+            )
+        ),
+        C,
+        E,
+        occupations,
+        frequencies=frequencies,
+    )
+    res_polarizability.form_operators()
+    res_polarizability.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)
+    res_polarizability.form_results()
+    res_operator = res_polarizability.driver.solver.operators[0]
+    import pdb
+
+    pdb.set_trace()
+    np.testing.assert_allclose(
+        ref_polarizability.polarizabilities,
+        res_polarizability.polarizabilities,
+        rtol=0.0,
+        atol=1.0e-6,
+    )
 
 
 if __name__ == "__main__":
