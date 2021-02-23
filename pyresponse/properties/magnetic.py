@@ -2,11 +2,11 @@ from typing import Union
 
 import numpy as np
 
-from pyresponse import helpers
 from pyresponse.core import Program
 from pyresponse.cphf import CPHF
 from pyresponse.molecular_property import ResponseProperty
 from pyresponse.operators import Operator
+from pyresponse.pyscf.helpers import calculate_origin_pyscf
 
 
 class Magnetizability(ResponseProperty):
@@ -104,7 +104,7 @@ class ElectronicGTensor(ResponseProperty):
                     C = mocoeffs[0]
                     nocc_a, _, _, _ = occupations
                     D = 2 * np.dot(C[:, :nocc_a], C[:, :nocc_a].T)
-                self.gauge_origin = helpers.calculate_origin_pyscf(
+                self.gauge_origin = calculate_origin_pyscf(
                     gauge_origin, coords, charges, D, program_obj, do_print=True
                 )
             else:
