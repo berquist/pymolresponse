@@ -90,13 +90,15 @@ def test_HF_both_singlet_HF_STO3G():
     return
 
 
+HF_neutral_singlet_HF_STO3G_qchem = -98.5707799863
+
 HF_neutral_singlet_HF_STO3G_CIS_qchem = {
     "etenergies": [
-        -98.067181246814 - -98.5707799863,
-        -98.067181246768 - -98.5707799863,
-        -97.686596454655 - -98.5707799863,
-        -96.958042326818 - -98.5707799863,
-        -72.879307887356 - -98.5707799863,
+        -98.067181246814 - HF_neutral_singlet_HF_STO3G_qchem,
+        -98.067181246768 - HF_neutral_singlet_HF_STO3G_qchem,
+        -97.686596454655 - HF_neutral_singlet_HF_STO3G_qchem,
+        -96.958042326818 - HF_neutral_singlet_HF_STO3G_qchem,
+        -72.879307887356 - HF_neutral_singlet_HF_STO3G_qchem,
     ],
     "etoscslen": [0.0002003489, 0.0002003489, 0.9621809426, 0.0531137481, 0.0691994928],
 }
@@ -104,14 +106,39 @@ HF_neutral_singlet_HF_STO3G_CIS_qchem = {
 
 HF_neutral_singlet_HF_STO3G_RPA_qchem = {
     "etenergies": [
-        -98.068185050585 - -98.5707799863,
-        -98.068185050538 - -98.5707799863,
-        -97.703584999956 - -98.5707799863,
-        -96.962988495302 - -98.5707799863,
-        -72.879331844690 - -98.5707799863,
+        -98.068185050585 - HF_neutral_singlet_HF_STO3G_qchem,
+        -98.068185050538 - HF_neutral_singlet_HF_STO3G_qchem,
+        -97.703584999956 - HF_neutral_singlet_HF_STO3G_qchem,
+        -96.962988495302 - HF_neutral_singlet_HF_STO3G_qchem,
+        -72.879331844690 - HF_neutral_singlet_HF_STO3G_qchem,
     ],
     "etoscslen": [0.0001877054, 0.0001877054, 0.7777380206, 0.0322221420, 0.0686085799],
 }
+
+# TODO
+#
+# def test_LiH_cation_TDA_singlet_HF_STO3G() -> None:
+#     from pyresponse.pyscf.molecules import molecule_lih_cation_sto3g
+
+#     mol = molecule_lih_cation_sto3g()
+#     mf = pyscf.scf.UHF(mol)
+#     mf.scf()
+#     C = utils.fix_mocoeffs_shape(mf.mo_coeff)
+#     E = utils.fix_moenergies_shape(mf.mo_energy)
+#     occupations = occupations_from_pyscf_mol(mol, C)
+#     solver_tda = solvers.ExactDiagonalizationSolverTDA(C, E, occupations)
+#     # TODO i thought this was part of the solver interface
+#     ao2mo = AO2MOpyscf(C, mol.verbose, mol)
+#     ao2mo.perform_uhf_partial()
+#     tei_mo = ao2mo.tei_mo
+#     solver_tda.tei_mo = tei_mo
+#     driver_tda = td.TDA(solver_tda)
+#     print("TDA using TDA()")
+#     driver_tda.run(
+#         hamiltonian=Hamiltonian.TDA, spin=Spin.singlet, program=Program.PySCF, program_obj=mol
+#     )
+#     print(driver_tda.solver.eigvals.real)
+
 
 if __name__ == "__main__":
     test_HF_both_singlet_HF_STO3G()

@@ -178,7 +178,7 @@ class TDA(TDHF):
     interaction with single excitation (CIS) equations.
     """
 
-    def __init__(self, solver: Solver) -> None:
+    def __init__(self, solver: EigSolverTDA) -> None:
         assert isinstance(solver, EigSolverTDA)
         super().__init__(solver)
 

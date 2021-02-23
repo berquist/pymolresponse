@@ -24,13 +24,13 @@ before_install:
   - conda info -a
   - conda create -q -n p4env python=$TRAVIS_PYTHON_VERSION numpy scipy h5py psi4 psi4-rt -c psi4/label/dev -c psi4
   - source activate p4env
-  - pip install -r requirements.txt -r requirements-dev.txt
+  - python -m pip install -r requirements.txt -r requirements-dev.txt
   - conda install -q -c pyscf pyscf
   - conda install -q -c conda-forge graphviz python-graphviz # is this `graphviz`, `pygraphviz`, or `graphviz-python`?
   - conda list
 
 install:
-  - pip install .
+  - python -m pip install .
 
 before_script:
   - mkdir "${HOME}/tmp"

@@ -1,7 +1,7 @@
 .PHONY: test
 test:
 	bash check_pytest.bash
-	python -m pytest -v --doctest-modules --black --cov=pyresponse pyresponse
+	python -m pytest -v --doctest-modules --cov=pyresponse pyresponse
 
 .PHONY: precommit
 precommit:
@@ -10,11 +10,11 @@ precommit:
 
 .PHONY: pylint
 pylint:
-	pylint pyresponse
+	python -m pylint pyresponse
 
 .PHONY: mypy
 mypy:
-	mypy pyresponse
+	python -m mypy pyresponse
 
 .PHONY: docs
 docs:

@@ -44,10 +44,11 @@ make pytest
 
 ## Caveats
 
-* RHF and UHF references only.
+* RHF and UHF references only; no ROHF yet.
 * Hartree-Fock and DFT only; no post-HF methods yet.
+* Real orbitals only; no complex or generalized orbitals yet.
 * Because the dimensioning of all arrays is based around the ov/vo space, methods that have non-zero contributions from the oo space (specifically derivatives of GIAOs/London orbitals w.r.t. the B-field) are not currently possible.
-* No iterative schemes are implemented, only "exact" methods involving explicit construction of the full orbital Hessian and then inverting it (for response) or diagonalizing it (for excitation energies/transition moments/residues). Better have lots of memory!
+* ~~No iterative schemes are implemented, only "exact" methods involving explicit construction of the full orbital Hessian and then inverting it (for response) or diagonalizing it (for excitation energies/transition moments/residues). Better have lots of memory!~~An iterative solver exists for response properties, not transition properties.
 * Linear response and single residues only.
 * _unrestricted diagonalization-based properties are not implemented/working_
 
@@ -64,9 +65,7 @@ make pytest
 
 * Open-ended response: see [Ringholm, Jonsson, and Ruud](https://doi.org/10.1002/jcc.23533).
 * Finite-difference for testing and higher-order response.
-* Independence from pyscf, requires AO property integral and JK wrapper.
 * Interface to [PyQuante](https://github.com/berquist/pyquante) and/or [pyquante2](https://github.com/rpmuller/pyquante2).
-* Plugin-based interface to [Psi4](https://github.com/psi4/psi4).
 * Jupyter Notebook-based tutorials.
 * Argument type-checking using [mypy](http://mypy-lang.org/).
 

@@ -274,7 +274,7 @@ def test_ECD_RPA_singlet_BC2H4_cation_HF_STO3G() -> None:
     print("ref, res")
     for refval, resval in zip(ref_etenergies, res_etenergies):
         print(refval, resval)
-    thresh = 1.0e-7
+    thresh = 2.5e-7
     for i in range(nroots):
         abs_diff = abs(ref_etenergies[i] - res_etenergies[i])
         assert abs_diff < thresh
