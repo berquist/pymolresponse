@@ -13,8 +13,8 @@ from pyresponse.dalton.utils import dalton_label_to_operator
 from pyresponse.pyscf.ao2mo import AO2MOpyscf
 
 try:
-    from daltools import sirifc
     from daltools import mol as dalmol
+    from daltools import sirifc
 except:
     pass
 

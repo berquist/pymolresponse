@@ -97,8 +97,9 @@ class Solver(ABC):
 
             ao2mo = AO2MOpyscf(self.mocoeffs, program_obj.verbose, program_obj)
         elif program == Program.Psi4:
-            from pyresponse.ao2mo import AO2MO
             import psi4
+
+            from pyresponse.ao2mo import AO2MO
 
             assert isinstance(program_obj, psi4.core.Molecule)
             ao2mo = AO2MO(

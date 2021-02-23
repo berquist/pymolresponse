@@ -8,6 +8,10 @@ force_grid_wrap = 0
 use_parentheses = true
 line_length = 90
 
+sections = ["FUTURE", "STDLIB", "ATTRS", "THIRDPARTY", "CHEMISTRY", "FIRSTPARTY", "LOCALFOLDER"]
+known_attrs = ["attr"]
+known_chemistry = ["psi4", "pyscf"]
+
 [tool.poetry]
 name = "pyresponse"
 version = "0.1.0"

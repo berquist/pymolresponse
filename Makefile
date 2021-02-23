@@ -5,7 +5,7 @@ test:
 
 .PHONY: precommit
 precommit:
-	isort -rc .
+	isort .
 	black .
 
 .PHONY: pylint

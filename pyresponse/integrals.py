@@ -2,9 +2,10 @@ from abc import ABC, abstractmethod
 from enum import Enum, auto, unique
 from typing import Any, Mapping, Optional, Tuple
 
-import numpy as np
 from attr import attrib, attrs
 from attr.validators import instance_of, optional
+
+import numpy as np
 
 STARS = "********"
 
@@ -58,8 +59,7 @@ class JK(ABC):
 
 
 def read_binary(binaryfilename: str) -> bytes:
-    """Return the bytes present in the given binary file name.
-    """
+    """Return the bytes present in the given binary file name."""
 
     with open(binaryfilename, "rb") as binaryfile:
         readbytes = binaryfile.read()

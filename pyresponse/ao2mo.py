@@ -8,8 +8,7 @@ from pyresponse.utils import fix_mocoeffs_shape
 
 
 class AO2MO:
-    """Interface for performing AO-to-MO tranformations of two-electron integrals.
-    """
+    """Interface for performing AO-to-MO tranformations of two-electron integrals."""
 
     # TODO see
     # https://github.com/psi4/psi4numpy/blob/master/Tutorials/01_Psi4NumPy-Basics/1f_tensor-manipulation.ipynb
