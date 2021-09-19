@@ -5,6 +5,8 @@ channels:
   - conda-forge
 dependencies:
   - cclib
+  # thanks, pyscf
+  - h5py=2.10
   - pip
   - psi4
   - pytest-cov
