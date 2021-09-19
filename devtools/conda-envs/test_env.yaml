@@ -7,6 +7,6 @@ dependencies:
   - cclib
   - pip
   - psi4
-  - pytest
+  - pytest-cov
   - pip:
       - pyscf
