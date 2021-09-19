@@ -1,0 +1,52 @@
+---
+fail_fast: true
+default_language_version:
+  python: python3.8
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: "v4.0.1"
+    hooks:
+      - id: trailing-whitespace
+        exclude: pyresponse/data
+      - id: end-of-file-fixer
+        exclude: pyresponse/data
+      - id: fix-byte-order-marker
+        exclude: pyresponse/data
+      - id: check-merge-conflict
+      - id: check-json
+      - id: check-toml
+      - id: check-yaml
+      - id: check-added-large-files
+  # - repo: https://github.com/PyCQA/isort
+  #   rev: "5.9.3"
+  #   hooks:
+  #     - id: isort
+  # - repo: https://github.com/psf/black
+  #   rev: "21.9b0"
+  #   hooks:
+  #     - id: black
+  # - repo: https://github.com/PyCQA/flake8
+  #   rev: "3.9.2"
+  #   hooks:
+  #     - id: flake8
+  # - repo: https://github.com/PyCQA/pylint
+  #   rev: "v2.11.1"
+  #   hooks:
+  #     - id: pylint
+  # - repo: https://github.com/pre-commit/mirrors-mypy
+  #   rev: "v0.910"
+  #   hooks:
+  #     - id: mypy
+  #       args: []
+  #       additional_dependencies:
+  #         - attrs
+  #         - numpy
+  #         - types-pyyaml
+  - repo: https://github.com/adrienverge/yamllint
+    rev: "v1.26.3"
+    hooks:
+      - id: yamllint
+  - repo: https://github.com/sirosen/check-jsonschema
+    rev: "0.4.1"
+    hooks:
+      - id: check-github-workflows

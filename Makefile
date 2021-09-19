@@ -4,16 +4,7 @@ test:
 
 .PHONY: precommit
 precommit:
-	python -m isort .
-	python -m black .
-
-.PHONY: pylint
-pylint:
-	python -m pylint pyresponse
-
-.PHONY: mypy
-mypy:
-	python -m mypy pyresponse
+	pre-commit run -a
 
 .PHONY: docs
 docs:
