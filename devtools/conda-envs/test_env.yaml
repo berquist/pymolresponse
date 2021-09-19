@@ -1,0 +1,9 @@
+---
+name: test
+channels:
+  - psi4
+  - conda-forge
+dependencies:
+  - cclib
+  - psi4
+  - pyscf
