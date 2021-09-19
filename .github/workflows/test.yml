@@ -1,6 +1,7 @@
 ---
 name: test
 
+# yamllint disable-line rule:truthy
 on:
   push:
     branches:
@@ -20,7 +21,7 @@ jobs:
         python-version: [3.6, 3.7, 3.8, 3.9]
     defaults:
       run:
-        shell: ${{ matrix.env-type.shell }}
+        shell: "bash -l {0}"
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }} with conda
