@@ -2,8 +2,10 @@
 name: test
 channels:
   - psi4
+  - pyscf
   - conda-forge
 dependencies:
   - cclib
   - psi4
   - pyscf
+  - pytest
