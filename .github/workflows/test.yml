@@ -43,4 +43,4 @@ jobs:
       - name: Print conda config
         run: conda config --show
       - name: Run tests
-        run: python -m pytest -v --doctest-modules --cov=pyresponse
+        run: make test
