@@ -1,0 +1,46 @@
+---
+name: test
+
+# yamllint disable-line rule:truthy
+on:
+  push:
+    branches:
+      - "master"
+      - "main"
+  pull_request:
+    branches:
+      - "master"
+      - "main"
+
+jobs:
+  test:
+    name: Test on Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.6, 3.7, 3.8, 3.9]
+    defaults:
+      run:
+        shell: "bash -l {0}"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }} with conda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          activate-environment: test
+          auto-activate-base: false
+          auto-update-conda: true
+          environment-file: devtools/conda-envs/test_env.yaml
+          miniforge-version: latest
+          python-version: ${{ matrix.python-version }}
+          show-channel-urls: true
+      - name: Print Python environment
+        run: python -m pip list
+      - name: Print conda environment
+        run: conda list
+      - name: Print conda info
+        run: conda info
+      - name: Print conda config
+        run: conda config --show
+      - name: Run tests
+        run: make test

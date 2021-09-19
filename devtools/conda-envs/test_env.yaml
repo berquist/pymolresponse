@@ -1,0 +1,14 @@
+---
+name: test
+channels:
+  - psi4
+  - conda-forge
+dependencies:
+  - cclib
+  # thanks, pyscf
+  - h5py=2.10
+  - pip
+  - psi4
+  - pytest-cov
+  - pip:
+      - pyscf
