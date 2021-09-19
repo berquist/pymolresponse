@@ -60,15 +60,11 @@ def test_explicit_uhf_outside_solver() -> None:
         mol, C_oovv_bbbb, aosym="s4", compact=False, verbose=5
     ).reshape(nocc_b, nocc_b, nvirt_b, nvirt_b)
 
-    A_s_ss_a = eqns.form_rpa_a_matrix_mo_singlet_ss_partial(
-        E_a, tei_mo_ovov_aaaa, tei_mo_oovv_aaaa
-    )
+    A_s_ss_a = eqns.form_rpa_a_matrix_mo_singlet_ss_partial(E_a, tei_mo_ovov_aaaa, tei_mo_oovv_aaaa)
     A_s_os_a = eqns.form_rpa_a_matrix_mo_singlet_os_partial(tei_mo_ovov_aabb)
     B_s_ss_a = eqns.form_rpa_b_matrix_mo_singlet_ss_partial(tei_mo_ovov_aaaa)
     B_s_os_a = eqns.form_rpa_b_matrix_mo_singlet_os_partial(tei_mo_ovov_aabb)
-    A_s_ss_b = eqns.form_rpa_a_matrix_mo_singlet_ss_partial(
-        E_b, tei_mo_ovov_bbbb, tei_mo_oovv_bbbb
-    )
+    A_s_ss_b = eqns.form_rpa_a_matrix_mo_singlet_ss_partial(E_b, tei_mo_ovov_bbbb, tei_mo_oovv_bbbb)
     A_s_os_b = eqns.form_rpa_a_matrix_mo_singlet_os_partial(tei_mo_ovov_bbaa)
     B_s_ss_b = eqns.form_rpa_b_matrix_mo_singlet_ss_partial(tei_mo_ovov_bbbb)
     B_s_os_b = eqns.form_rpa_b_matrix_mo_singlet_os_partial(tei_mo_ovov_bbaa)
@@ -108,12 +104,8 @@ def test_explicit_uhf_outside_solver() -> None:
             C_b[:, nocc_b:].T, np.dot(integrals_dipole_ao[comp, ...], C_b[:, :nocc_b])
         )
 
-        integrals_dipole_mo_ai_comp_a = np.reshape(
-            integrals_dipole_mo_ai_comp_a, -1, order="F"
-        )
-        integrals_dipole_mo_ai_comp_b = np.reshape(
-            integrals_dipole_mo_ai_comp_b, -1, order="F"
-        )
+        integrals_dipole_mo_ai_comp_a = np.reshape(integrals_dipole_mo_ai_comp_a, -1, order="F")
+        integrals_dipole_mo_ai_comp_b = np.reshape(integrals_dipole_mo_ai_comp_b, -1, order="F")
 
         integrals_dipole_mo_ai_a.append(integrals_dipole_mo_ai_comp_a)
         integrals_dipole_mo_ai_b.append(integrals_dipole_mo_ai_comp_b)

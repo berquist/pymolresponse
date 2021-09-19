@@ -71,21 +71,15 @@ def test_first_hyperpolarizability_static_rhf_wigner_explicit():
         rhsvec = rhsvecs[i, :, 0]
         rhsvec_top = rhsvec[:nov_alph]
         rhsvec_bot = rhsvec[nov_alph:]
-        rhsvec_top_mat = utils.repack_vector_to_matrix(
-            rhsvec_top, (nvirt_alph, nocc_alph)
-        )
-        rhsvec_bot_mat = utils.repack_vector_to_matrix(
-            rhsvec_bot, (nvirt_alph, nocc_alph)
-        )
+        rhsvec_top_mat = utils.repack_vector_to_matrix(rhsvec_top, (nvirt_alph, nocc_alph))
+        rhsvec_bot_mat = utils.repack_vector_to_matrix(rhsvec_bot, (nvirt_alph, nocc_alph))
         rhsmats[i, :nocc_alph, nocc_alph:] = rhsvec_top_mat.T
         rhsmats[i, nocc_alph:, :nocc_alph] = rhsvec_bot_mat
 
     polarizability_full = np.empty_like(polarizability)
     for a in (0, 1, 2):
         for b in (0, 1, 2):
-            polarizability_full[a, b] = 2 * np.trace(
-                rhsmats[a, ...].T.dot(rspmats[b, ...])
-            )
+            polarizability_full[a, b] = 2 * np.trace(rhsmats[a, ...].T.dot(rspmats[b, ...]))
 
     np.testing.assert_almost_equal(polarizability, polarizability_full)
 
@@ -103,11 +97,7 @@ def test_first_hyperpolarizability_static_rhf_wigner_explicit():
         V = integrals_mo[i, ...]
         Dl = (
             C[:, nocc_alph:]
-            .dot(
-                utils.repack_vector_to_matrix(
-                    rspvecs[i, :nov_alph, 0], (nvirt_alph, nocc_alph)
-                )
-            )
+            .dot(utils.repack_vector_to_matrix(rspvecs[i, :nov_alph, 0], (nvirt_alph, nocc_alph)))
             .dot(C[:, :nocc_alph].T)
         )
         J, K = mf.get_jk(mol, Dl, hermi=0)
@@ -133,49 +123,31 @@ def test_first_hyperpolarizability_static_rhf_wigner_explicit():
         c = off2[r]
         for a in range(3):
             tl1 = 2 * np.trace(
-                rspmats[a, ...]
-                .dot(G[b, ...])
-                .dot(rspmats[c, ...])[:nocc_alph, :nocc_alph]
+                rspmats[a, ...].dot(G[b, ...]).dot(rspmats[c, ...])[:nocc_alph, :nocc_alph]
             )
             tl2 = 2 * np.trace(
-                rspmats[a, ...]
-                .dot(G[c, ...])
-                .dot(rspmats[b, ...])[:nocc_alph, :nocc_alph]
+                rspmats[a, ...].dot(G[c, ...]).dot(rspmats[b, ...])[:nocc_alph, :nocc_alph]
             )
             tl3 = 2 * np.trace(
-                rspmats[c, ...]
-                .dot(G[a, ...])
-                .dot(rspmats[b, ...])[:nocc_alph, :nocc_alph]
+                rspmats[c, ...].dot(G[a, ...]).dot(rspmats[b, ...])[:nocc_alph, :nocc_alph]
             )
             tr1 = np.trace(
-                rspmats[c, ...]
-                .dot(rspmats[b, ...])
-                .dot(epsilon[a, ...])[:nocc_alph, :nocc_alph]
+                rspmats[c, ...].dot(rspmats[b, ...]).dot(epsilon[a, ...])[:nocc_alph, :nocc_alph]
             )
             tr2 = np.trace(
-                rspmats[b, ...]
-                .dot(rspmats[c, ...])
-                .dot(epsilon[a, ...])[:nocc_alph, :nocc_alph]
+                rspmats[b, ...].dot(rspmats[c, ...]).dot(epsilon[a, ...])[:nocc_alph, :nocc_alph]
             )
             tr3 = np.trace(
-                rspmats[c, ...]
-                .dot(rspmats[a, ...])
-                .dot(epsilon[b, ...])[:nocc_alph, :nocc_alph]
+                rspmats[c, ...].dot(rspmats[a, ...]).dot(epsilon[b, ...])[:nocc_alph, :nocc_alph]
             )
             tr4 = np.trace(
-                rspmats[a, ...]
-                .dot(rspmats[c, ...])
-                .dot(epsilon[b, ...])[:nocc_alph, :nocc_alph]
+                rspmats[a, ...].dot(rspmats[c, ...]).dot(epsilon[b, ...])[:nocc_alph, :nocc_alph]
             )
             tr5 = np.trace(
-                rspmats[b, ...]
-                .dot(rspmats[a, ...])
-                .dot(epsilon[c, ...])[:nocc_alph, :nocc_alph]
+                rspmats[b, ...].dot(rspmats[a, ...]).dot(epsilon[c, ...])[:nocc_alph, :nocc_alph]
             )
             tr6 = np.trace(
-                rspmats[a, ...]
-                .dot(rspmats[b, ...])
-                .dot(epsilon[c, ...])[:nocc_alph, :nocc_alph]
+                rspmats[a, ...].dot(rspmats[b, ...]).dot(epsilon[c, ...])[:nocc_alph, :nocc_alph]
             )
             tl = tl1 + tl2 + tl3
             tr = tr1 + tr2 + tr3 + tr4 + tr5 + tr6
@@ -210,14 +182,10 @@ def test_first_hyperpolarizability_static_rhf_wigner_explicit():
         for q in permutations(p, 3):
             d, e, f = q
             tl += np.trace(
-                rspmats[d, ...]
-                .dot(G[e, ...])
-                .dot(rspmats[f, ...])[:nocc_alph, :nocc_alph]
+                rspmats[d, ...].dot(G[e, ...]).dot(rspmats[f, ...])[:nocc_alph, :nocc_alph]
             )
             tr += np.trace(
-                rspmats[d, ...]
-                .dot(rspmats[e, ...])
-                .dot(epsilon[f, ...])[:nocc_alph, :nocc_alph]
+                rspmats[d, ...].dot(rspmats[e, ...]).dot(epsilon[f, ...])[:nocc_alph, :nocc_alph]
             )
         hyperpolarizability_full[a, b, c] = 2 * (tl - tr)
     print("hyperpolarizability (static), full tensor")
@@ -247,9 +215,7 @@ def test_first_hyperpolarizability_static_rhf_wigner_explicit():
     # This is the simplest non-einsum way.
     # avgs = (-1 / 3) * np.asarray([np.trace(x[i, :, :] + x[:, i, :] + x[:, :, i]) for i in range(3)])
     # This is the best way.
-    avgs = (-1 / 3) * (
-        np.einsum("ijj->i", x) + np.einsum("jij->i", x) + np.einsum("jji->i", x)
-    )
+    avgs = (-1 / 3) * (np.einsum("ijj->i", x) + np.einsum("jij->i", x) + np.einsum("jji->i", x))
     # print(list(set([''.join(p) for p in list(permutations('ijj', 3))])))
     assert np.allclose(ref_avgs, avgs, rtol=0, atol=1.0e-3)
     avg = np.sum(avgs ** 2) ** (1 / 2)
@@ -345,12 +311,8 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit():
         rhsvec = rhsvecs[i, :, 0]
         rhsvec_top = rhsvec[:nov_alph]
         rhsvec_bot = rhsvec[nov_alph:]
-        rhsvec_top_mat = utils.repack_vector_to_matrix(
-            rhsvec_top, (nvirt_alph, nocc_alph)
-        )
-        rhsvec_bot_mat = utils.repack_vector_to_matrix(
-            rhsvec_bot, (nvirt_alph, nocc_alph)
-        )
+        rhsvec_top_mat = utils.repack_vector_to_matrix(rhsvec_top, (nvirt_alph, nocc_alph))
+        rhsvec_bot_mat = utils.repack_vector_to_matrix(rhsvec_bot, (nvirt_alph, nocc_alph))
         rhsmats[i, :nocc_alph, nocc_alph:] = rhsvec_top_mat.T
         rhsmats[i, nocc_alph:, :nocc_alph] = rhsvec_bot_mat
 
@@ -358,12 +320,8 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit():
     polarizability_full_2 = np.empty_like(polarizability_2)
     for a in (0, 1, 2):
         for b in (0, 1, 2):
-            polarizability_full_1[a, b] = 2 * np.trace(
-                np.dot(rhsmats[a, ...].T, rspmats_1[b, ...])
-            )
-            polarizability_full_2[a, b] = 2 * np.trace(
-                np.dot(rhsmats[a, ...].T, rspmats_2[b, ...])
-            )
+            polarizability_full_1[a, b] = 2 * np.trace(np.dot(rhsmats[a, ...].T, rspmats_1[b, ...]))
+            polarizability_full_2[a, b] = 2 * np.trace(np.dot(rhsmats[a, ...].T, rspmats_2[b, ...]))
 
     np.testing.assert_almost_equal(polarizability_1, -polarizability_full_1)
     np.testing.assert_almost_equal(polarizability_2, -polarizability_full_2)
@@ -417,34 +375,22 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit():
         c = off2[r]
         for a in range(3):
             tl1 = np.trace(
-                rspmats_2[a, ...]
-                .T.dot(G_1[b, ...])
-                .dot(rspmats_1[c, ...])[:nocc_alph, :nocc_alph]
+                rspmats_2[a, ...].T.dot(G_1[b, ...]).dot(rspmats_1[c, ...])[:nocc_alph, :nocc_alph]
             )
             tl2 = np.trace(
-                rspmats_1[c, ...]
-                .dot(G_1[b, ...])
-                .dot(rspmats_2[a, ...].T)[:nocc_alph, :nocc_alph]
+                rspmats_1[c, ...].dot(G_1[b, ...]).dot(rspmats_2[a, ...].T)[:nocc_alph, :nocc_alph]
             )
             tl3 = np.trace(
-                rspmats_2[a, ...]
-                .T.dot(G_1[c, ...])
-                .dot(rspmats_1[b, ...])[:nocc_alph, :nocc_alph]
+                rspmats_2[a, ...].T.dot(G_1[c, ...]).dot(rspmats_1[b, ...])[:nocc_alph, :nocc_alph]
             )
             tl4 = np.trace(
-                rspmats_1[b, ...]
-                .dot(G_1[c, ...])
-                .dot(rspmats_2[a, ...].T)[:nocc_alph, :nocc_alph]
+                rspmats_1[b, ...].dot(G_1[c, ...]).dot(rspmats_2[a, ...].T)[:nocc_alph, :nocc_alph]
             )
             tl5 = np.trace(
-                rspmats_1[c, ...]
-                .dot(-G_2[a, ...].T)
-                .dot(rspmats_1[b, ...])[:nocc_alph, :nocc_alph]
+                rspmats_1[c, ...].dot(-G_2[a, ...].T).dot(rspmats_1[b, ...])[:nocc_alph, :nocc_alph]
             )
             tl6 = np.trace(
-                rspmats_1[b, ...]
-                .dot(-G_2[a, ...].T)
-                .dot(rspmats_1[c, ...])[:nocc_alph, :nocc_alph]
+                rspmats_1[b, ...].dot(-G_2[a, ...].T).dot(rspmats_1[c, ...])[:nocc_alph, :nocc_alph]
             )
             tr1 = np.trace(
                 rspmats_1[c, ...]
@@ -497,11 +443,7 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit():
     thresh = 2.5e-5
     assert np.all(np.abs(ref - hyperpolarizability) < thresh)
 
-    print(
-        "hyperpolarizability: SHG, (-{}; {}, {}), symmetry-unique components".format(
-            f2, f1, f1
-        )
-    )
+    print("hyperpolarizability: SHG, (-{}; {}, {}), symmetry-unique components".format(f2, f1, f1))
     print(hyperpolarizability)
 
     # Transpose all frequency-doubled quantities (+2w) to get -2w.
@@ -527,64 +469,40 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit():
         c = off2[r]
         for a in range(3):
             tl1 = np.trace(
-                mU[0][a, ...]
-                .dot(mG[1][b, ...])
-                .dot(mU[1][c, ...])[:nocc_alph, :nocc_alph]
+                mU[0][a, ...].dot(mG[1][b, ...]).dot(mU[1][c, ...])[:nocc_alph, :nocc_alph]
             )
             tl2 = np.trace(
-                mU[1][c, ...]
-                .dot(mG[1][b, ...])
-                .dot(mU[0][a, ...])[:nocc_alph, :nocc_alph]
+                mU[1][c, ...].dot(mG[1][b, ...]).dot(mU[0][a, ...])[:nocc_alph, :nocc_alph]
             )
             tl3 = np.trace(
-                mU[0][a, ...]
-                .dot(mG[1][c, ...])
-                .dot(mU[1][b, ...])[:nocc_alph, :nocc_alph]
+                mU[0][a, ...].dot(mG[1][c, ...]).dot(mU[1][b, ...])[:nocc_alph, :nocc_alph]
             )
             tl4 = np.trace(
-                mU[1][b, ...]
-                .dot(mG[1][c, ...])
-                .dot(mU[0][a, ...])[:nocc_alph, :nocc_alph]
+                mU[1][b, ...].dot(mG[1][c, ...]).dot(mU[0][a, ...])[:nocc_alph, :nocc_alph]
             )
             tl5 = np.trace(
-                mU[1][c, ...]
-                .dot(mG[0][a, ...])
-                .dot(mU[1][b, ...])[:nocc_alph, :nocc_alph]
+                mU[1][c, ...].dot(mG[0][a, ...]).dot(mU[1][b, ...])[:nocc_alph, :nocc_alph]
             )
             tl6 = np.trace(
-                mU[1][b, ...]
-                .dot(mG[0][a, ...])
-                .dot(mU[1][c, ...])[:nocc_alph, :nocc_alph]
+                mU[1][b, ...].dot(mG[0][a, ...]).dot(mU[1][c, ...])[:nocc_alph, :nocc_alph]
             )
             tr1 = np.trace(
-                mU[1][c, ...]
-                .dot(mU[1][b, ...])
-                .dot(me[0][a, ...])[:nocc_alph, :nocc_alph]
+                mU[1][c, ...].dot(mU[1][b, ...]).dot(me[0][a, ...])[:nocc_alph, :nocc_alph]
             )
             tr2 = np.trace(
-                mU[1][b, ...]
-                .dot(mU[1][c, ...])
-                .dot(me[0][a, ...])[:nocc_alph, :nocc_alph]
+                mU[1][b, ...].dot(mU[1][c, ...]).dot(me[0][a, ...])[:nocc_alph, :nocc_alph]
             )
             tr3 = np.trace(
-                mU[1][c, ...]
-                .dot(mU[0][a, ...])
-                .dot(me[1][b, ...])[:nocc_alph, :nocc_alph]
+                mU[1][c, ...].dot(mU[0][a, ...]).dot(me[1][b, ...])[:nocc_alph, :nocc_alph]
             )
             tr4 = np.trace(
-                mU[0][a, ...]
-                .dot(mU[1][c, ...])
-                .dot(me[1][b, ...])[:nocc_alph, :nocc_alph]
+                mU[0][a, ...].dot(mU[1][c, ...]).dot(me[1][b, ...])[:nocc_alph, :nocc_alph]
             )
             tr5 = np.trace(
-                mU[1][b, ...]
-                .dot(mU[0][a, ...])
-                .dot(me[1][c, ...])[:nocc_alph, :nocc_alph]
+                mU[1][b, ...].dot(mU[0][a, ...]).dot(me[1][c, ...])[:nocc_alph, :nocc_alph]
             )
             tr6 = np.trace(
-                mU[0][a, ...]
-                .dot(mU[1][b, ...])
-                .dot(me[1][c, ...])[:nocc_alph, :nocc_alph]
+                mU[0][a, ...].dot(mU[1][b, ...]).dot(me[1][c, ...])[:nocc_alph, :nocc_alph]
             )
             tl = [tl1, tl2, tl3, tl4, tl5, tl6]
             tr = [tr1, tr2, tr3, tr4, tr5, tr6]
@@ -717,12 +635,8 @@ def test_first_hyperpolarizability_eope_rhf_wigner_explicit():
         rhsvec = rhsvecs[i, :, 0]
         rhsvec_top = rhsvec[:nov_alph]
         rhsvec_bot = rhsvec[nov_alph:]
-        rhsvec_top_mat = utils.repack_vector_to_matrix(
-            rhsvec_top, (nvirt_alph, nocc_alph)
-        )
-        rhsvec_bot_mat = utils.repack_vector_to_matrix(
-            rhsvec_bot, (nvirt_alph, nocc_alph)
-        )
+        rhsvec_top_mat = utils.repack_vector_to_matrix(rhsvec_top, (nvirt_alph, nocc_alph))
+        rhsvec_bot_mat = utils.repack_vector_to_matrix(rhsvec_bot, (nvirt_alph, nocc_alph))
         rhsmats[i, :nocc_alph, nocc_alph:] = rhsvec_top_mat.T
         rhsmats[i, nocc_alph:, :nocc_alph] = rhsvec_bot_mat
 
@@ -730,12 +644,8 @@ def test_first_hyperpolarizability_eope_rhf_wigner_explicit():
     polarizability_full_2 = np.empty_like(polarizability_2)
     for a in (0, 1, 2):
         for b in (0, 1, 2):
-            polarizability_full_1[a, b] = 2 * np.trace(
-                rhsmats[a, ...].T.dot(rspmats_1[b, ...])
-            )
-            polarizability_full_2[a, b] = 2 * np.trace(
-                rhsmats[a, ...].T.dot(rspmats_2[b, ...])
-            )
+            polarizability_full_1[a, b] = 2 * np.trace(rhsmats[a, ...].T.dot(rspmats_1[b, ...]))
+            polarizability_full_2[a, b] = 2 * np.trace(rhsmats[a, ...].T.dot(rspmats_2[b, ...]))
 
     np.testing.assert_almost_equal(polarizability_1, -polarizability_full_1)
     np.testing.assert_almost_equal(polarizability_2, -polarizability_full_2)
@@ -797,34 +707,22 @@ def test_first_hyperpolarizability_eope_rhf_wigner_explicit():
             # _2 -> perturbation (dynamic)
             # b is _1, c is _2, a is _2 transposed/negated
             tl1 = np.trace(
-                rspmats_2[a, ...]
-                .T.dot(G_1[b, ...])
-                .dot(rspmats_2[c, ...])[:nocc_alph, :nocc_alph]
+                rspmats_2[a, ...].T.dot(G_1[b, ...]).dot(rspmats_2[c, ...])[:nocc_alph, :nocc_alph]
             )
             tl2 = np.trace(
-                rspmats_2[c, ...]
-                .dot(G_1[b, ...])
-                .dot(rspmats_2[a, ...].T)[:nocc_alph, :nocc_alph]
+                rspmats_2[c, ...].dot(G_1[b, ...]).dot(rspmats_2[a, ...].T)[:nocc_alph, :nocc_alph]
             )
             tl3 = np.trace(
-                rspmats_2[a, ...]
-                .T.dot(G_2[c, ...])
-                .dot(rspmats_1[b, ...])[:nocc_alph, :nocc_alph]
+                rspmats_2[a, ...].T.dot(G_2[c, ...]).dot(rspmats_1[b, ...])[:nocc_alph, :nocc_alph]
             )
             tl4 = np.trace(
-                rspmats_1[b, ...]
-                .dot(G_2[c, ...])
-                .dot(rspmats_2[a, ...].T)[:nocc_alph, :nocc_alph]
+                rspmats_1[b, ...].dot(G_2[c, ...]).dot(rspmats_2[a, ...].T)[:nocc_alph, :nocc_alph]
             )
             tl5 = np.trace(
-                rspmats_2[c, ...]
-                .dot(-G_2[a, ...].T)
-                .dot(rspmats_1[b, ...])[:nocc_alph, :nocc_alph]
+                rspmats_2[c, ...].dot(-G_2[a, ...].T).dot(rspmats_1[b, ...])[:nocc_alph, :nocc_alph]
             )
             tl6 = np.trace(
-                rspmats_1[b, ...]
-                .dot(-G_2[a, ...].T)
-                .dot(rspmats_2[c, ...])[:nocc_alph, :nocc_alph]
+                rspmats_1[b, ...].dot(-G_2[a, ...].T).dot(rspmats_2[c, ...])[:nocc_alph, :nocc_alph]
             )
             tr1 = np.trace(
                 rspmats_2[c, ...]
@@ -877,11 +775,7 @@ def test_first_hyperpolarizability_eope_rhf_wigner_explicit():
     thresh = 4.0e-5
     assert np.all(np.abs(ref - hyperpolarizability) < thresh)
 
-    print(
-        "hyperpolarizability: EOPE, (-{}; {}, {}), symmetry-unique components".format(
-            f2, f1, f2
-        )
-    )
+    print("hyperpolarizability: EOPE, (-{}; {}, {}), symmetry-unique components".format(f2, f1, f2))
     print(hyperpolarizability)
 
     return
@@ -968,12 +862,8 @@ def test_first_hyperpolarizability_or_rhf_wigner_explicit():
         rhsvec = rhsvecs[i, :, 0]
         rhsvec_top = rhsvec[:nov_alph]
         rhsvec_bot = rhsvec[nov_alph:]
-        rhsvec_top_mat = utils.repack_vector_to_matrix(
-            rhsvec_top, (nvirt_alph, nocc_alph)
-        )
-        rhsvec_bot_mat = utils.repack_vector_to_matrix(
-            rhsvec_bot, (nvirt_alph, nocc_alph)
-        )
+        rhsvec_top_mat = utils.repack_vector_to_matrix(rhsvec_top, (nvirt_alph, nocc_alph))
+        rhsvec_bot_mat = utils.repack_vector_to_matrix(rhsvec_bot, (nvirt_alph, nocc_alph))
         rhsmats[i, :nocc_alph, nocc_alph:] = rhsvec_top_mat.T
         rhsmats[i, nocc_alph:, :nocc_alph] = rhsvec_bot_mat
 
@@ -981,12 +871,8 @@ def test_first_hyperpolarizability_or_rhf_wigner_explicit():
     polarizability_full_2 = np.empty_like(polarizability_2)
     for a in (0, 1, 2):
         for b in (0, 1, 2):
-            polarizability_full_1[a, b] = 2 * np.trace(
-                rhsmats[a, ...].T.dot(rspmats_1[b, ...])
-            )
-            polarizability_full_2[a, b] = 2 * np.trace(
-                rhsmats[a, ...].T.dot(rspmats_2[b, ...])
-            )
+            polarizability_full_1[a, b] = 2 * np.trace(rhsmats[a, ...].T.dot(rspmats_1[b, ...]))
+            polarizability_full_2[a, b] = 2 * np.trace(rhsmats[a, ...].T.dot(rspmats_2[b, ...]))
 
     np.testing.assert_almost_equal(polarizability_1, -polarizability_full_1)
     np.testing.assert_almost_equal(polarizability_2, -polarizability_full_2)
@@ -1048,34 +934,22 @@ def test_first_hyperpolarizability_or_rhf_wigner_explicit():
             # _2 -> +w
             # a is _1, b is _2, c is _2 transposed/negated
             tl1 = np.trace(
-                rspmats_1[a, ...]
-                .dot(G_2[b, ...])
-                .dot(rspmats_2[c, ...].T)[:nocc_alph, :nocc_alph]
+                rspmats_1[a, ...].dot(G_2[b, ...]).dot(rspmats_2[c, ...].T)[:nocc_alph, :nocc_alph]
             )
             tl2 = np.trace(
-                rspmats_2[c, ...]
-                .T.dot(G_2[b, ...])
-                .dot(rspmats_1[a, ...])[:nocc_alph, :nocc_alph]
+                rspmats_2[c, ...].T.dot(G_2[b, ...]).dot(rspmats_1[a, ...])[:nocc_alph, :nocc_alph]
             )
             tl3 = np.trace(
-                rspmats_1[a, ...]
-                .dot(-G_2[c, ...].T)
-                .dot(rspmats_2[b, ...])[:nocc_alph, :nocc_alph]
+                rspmats_1[a, ...].dot(-G_2[c, ...].T).dot(rspmats_2[b, ...])[:nocc_alph, :nocc_alph]
             )
             tl4 = np.trace(
-                rspmats_2[b, ...]
-                .dot(-G_2[c, ...].T)
-                .dot(rspmats_1[a, ...])[:nocc_alph, :nocc_alph]
+                rspmats_2[b, ...].dot(-G_2[c, ...].T).dot(rspmats_1[a, ...])[:nocc_alph, :nocc_alph]
             )
             tl5 = np.trace(
-                rspmats_2[c, ...]
-                .T.dot(G_1[a, ...])
-                .dot(rspmats_2[b, ...])[:nocc_alph, :nocc_alph]
+                rspmats_2[c, ...].T.dot(G_1[a, ...]).dot(rspmats_2[b, ...])[:nocc_alph, :nocc_alph]
             )
             tl6 = np.trace(
-                rspmats_2[b, ...]
-                .dot(G_1[a, ...])
-                .dot(rspmats_2[c, ...].T)[:nocc_alph, :nocc_alph]
+                rspmats_2[b, ...].dot(G_1[a, ...]).dot(rspmats_2[c, ...].T)[:nocc_alph, :nocc_alph]
             )
             tr1 = np.trace(
                 rspmats_2[c, ...]
@@ -1128,9 +1002,7 @@ def test_first_hyperpolarizability_or_rhf_wigner_explicit():
     thresh = 4.0e-5
     assert np.all(np.abs(ref - hyperpolarizability) < thresh)
 
-    print(
-        "hyperpolarizability: OR, (0; {}, -{}), symmetry-unique components".format(f2, f2)
-    )
+    print("hyperpolarizability: OR, (0; {}, -{}), symmetry-unique components".format(f2, f2))
     print(hyperpolarizability)
 
     return

@@ -47,12 +47,8 @@ def calculate_disk_rhf(
     operator_1 = dalton_label_to_operator(label_1)
     operator_2 = dalton_label_to_operator(label_2)
 
-    operator_1_integrals_mn = utils.read_file_3(
-        testcasedir / f"operator_mn_{operator_1.label}"
-    )
-    operator_2_integrals_mn = utils.read_file_3(
-        testcasedir / f"operator_mn_{operator_2.label}"
-    )
+    operator_1_integrals_mn = utils.read_file_3(testcasedir / f"operator_mn_{operator_1.label}")
+    operator_2_integrals_mn = utils.read_file_3(testcasedir / f"operator_mn_{operator_2.label}")
     # The first dimension can"t be checked since there may be multiple
     # components.
     assert operator_1_integrals_mn.shape[1:] == (nbasis, nbasis)
@@ -137,12 +133,8 @@ def calculate_disk_uhf(
     operator_1 = dalton_label_to_operator(label_1)
     operator_2 = dalton_label_to_operator(label_2)
 
-    operator_1_integrals_mn = utils.read_file_3(
-        testcasedir / f"operator_mn_{operator_1.label}"
-    )
-    operator_2_integrals_mn = utils.read_file_3(
-        testcasedir / f"operator_mn_{operator_2.label}"
-    )
+    operator_1_integrals_mn = utils.read_file_3(testcasedir / f"operator_mn_{operator_1.label}")
+    operator_2_integrals_mn = utils.read_file_3(testcasedir / f"operator_mn_{operator_2.label}")
     # The first dimension can"t be checked since there may be multiple
     # components.
     assert operator_1_integrals_mn.shape[1:] == (nbasis, nbasis)
@@ -259,9 +251,7 @@ def calculate_rhf(
         job = ccopen(dalton_tmpdir / "DALTON.OUT")
         data = job.parse()
         # pylint: disable=no-member
-        E = np.diag([convertor(x, "eV", "hartree") for x in data.moenergies[0]])[
-            np.newaxis, ...
-        ]
+        E = np.diag([convertor(x, "eV", "hartree") for x in data.moenergies[0]])[np.newaxis, ...]
     else:
         pass
 
@@ -378,9 +368,7 @@ def calculate_uhf(
         job = ccopen(dalton_tmpdir / "DALTON.OUT")
         data = job.parse()
         # pylint: disable=no-member
-        E = np.diag([convertor(x, "eV", "hartree") for x in data.moenergies[0]])[
-            np.newaxis, ...
-        ]
+        E = np.diag([convertor(x, "eV", "hartree") for x in data.moenergies[0]])[np.newaxis, ...]
         E = np.concatenate((E, E), axis=0)
     else:
         pass

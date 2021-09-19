@@ -40,9 +40,7 @@ def form_rpa_a_matrix_mo_singlet_partial(
     return A
 
 
-def form_rpa_a_matrix_mo_triplet_partial(
-    E_MO: np.ndarray, TEI_MO_ijab: np.ndarray
-) -> np.ndarray:
+def form_rpa_a_matrix_mo_triplet_partial(E_MO: np.ndarray, TEI_MO_ijab: np.ndarray) -> np.ndarray:
     r"""Form the A (CIS) matrix in the MO basis. [triplet]
 
     The equation for element :math:`\{ia,jb\}` is :math:`-

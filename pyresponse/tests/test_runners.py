@@ -57,9 +57,7 @@ def run_as_many_tests_as_possible_rhf_disk(testcase: Union[Path, str]) -> None:
         ignore_label_1 = any(exclude_part in label_1 for exclude_part in exclude_parts)
         ignore_label_2 = any(exclude_part in label_2 for exclude_part in exclude_parts)
         if not ignore_label_1 and not ignore_label_2:
-            res = calculate_disk_rhf(
-                testcasedir, hamiltonian, spin, frequency, label_1, label_2
-            )
+            res = calculate_disk_rhf(testcasedir, hamiltonian, spin, frequency, label_1, label_2)
             diff = abs(ref) - abs(res)
             format_list = (testcase, hamiltonian, spin, label_1, label_2, ref, res, diff)
             print("{} {} {} {:10} {:10} {:+10e} {:+10e} {:+10e}".format(*format_list))
@@ -99,9 +97,7 @@ def run_as_many_tests_as_possible_uhf_disk(testcase: Union[Path, str]) -> None:
         ignore_label_1 = any(exclude_part in label_1 for exclude_part in exclude_parts)
         ignore_label_2 = any(exclude_part in label_2 for exclude_part in exclude_parts)
         if not ignore_label_1 and not ignore_label_2:
-            res = calculate_disk_uhf(
-                testcasedir, hamiltonian, spin, frequency, label_1, label_2
-            )
+            res = calculate_disk_uhf(testcasedir, hamiltonian, spin, frequency, label_1, label_2)
             diff = abs(ref) - abs(res)
             format_list = (testcase, hamiltonian, spin, label_1, label_2, ref, res, diff)
             print("{} {} {} {:10} {:10} {:+10e} {:+10e} {:+10e}".format(*format_list))

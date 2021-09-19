@@ -176,9 +176,7 @@ def test_electronicgtensor_small() -> None:
     print(gtensor_calculator.g_oz_soc_1)
 
     assert np.all(
-        np.equal(
-            np.sign(ref_electronicgtensor_small), np.sign(gtensor_calculator.g_oz_soc_1)
-        )
+        np.equal(np.sign(ref_electronicgtensor_small), np.sign(gtensor_calculator.g_oz_soc_1))
     )
 
 

@@ -31,8 +31,7 @@ def form_rpa_a_matrix_mo_singlet_full(
                 for b in range(nvirt):
                     jb = j * nvirt + b
                     A[ia, jb] = (
-                        2 * TEI_MO[a + nocc, i, j, b + nocc]
-                        - TEI_MO[a + nocc, b + nocc, j, i]
+                        2 * TEI_MO[a + nocc, i, j, b + nocc] - TEI_MO[a + nocc, b + nocc, j, i]
                     )
 
     A += np.diag(ediff)
@@ -92,8 +91,7 @@ def form_rpa_b_matrix_mo_singlet_full(TEI_MO: np.ndarray, nocc: int) -> np.ndarr
                 for b in range(nvirt):
                     jb = j * nvirt + b
                     B[ia, jb] = (
-                        2 * TEI_MO[a + nocc, i, b + nocc, j]
-                        - TEI_MO[a + nocc, j, b + nocc, i]
+                        2 * TEI_MO[a + nocc, i, b + nocc, j] - TEI_MO[a + nocc, j, b + nocc, i]
                     )
 
     return -B
@@ -145,10 +143,7 @@ def form_rpa_a_matrix_mo_singlet_ss_full(
             for j in range(nocc):
                 for b in range(nvirt):
                     jb = j * nvirt + b
-                    A[ia, jb] = (
-                        TEI_MO[a + nocc, i, j, b + nocc]
-                        - TEI_MO[a + nocc, b + nocc, j, i]
-                    )
+                    A[ia, jb] = TEI_MO[a + nocc, i, j, b + nocc] - TEI_MO[a + nocc, b + nocc, j, i]
 
     A += np.diag(ediff)
 
@@ -202,10 +197,7 @@ def form_rpa_b_matrix_mo_singlet_ss_full(TEI_MO: np.ndarray, nocc: int) -> np.nd
             for j in range(nocc):
                 for b in range(nvirt):
                     jb = j * nvirt + b
-                    B[ia, jb] = (
-                        TEI_MO[a + nocc, i, b + nocc, j]
-                        - TEI_MO[a + nocc, j, b + nocc, i]
-                    )
+                    B[ia, jb] = TEI_MO[a + nocc, i, b + nocc, j] - TEI_MO[a + nocc, j, b + nocc, i]
 
     return -B
 

@@ -17,9 +17,7 @@ class IntegralsPsi4(Integrals):
         super().__init__()
 
         if isinstance(wfn_or_mol, psi4.core.Molecule):
-            wfn = psi4.core.Wavefunction.build(
-                wfn_or_mol, psi4.core.get_global_option("BASIS")
-            )
+            wfn = psi4.core.Wavefunction.build(wfn_or_mol, psi4.core.get_global_option("BASIS"))
         elif isinstance(wfn_or_mol, psi4.core.Wavefunction):
             wfn = wfn_or_mol
         else:

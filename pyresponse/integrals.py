@@ -217,9 +217,7 @@ def _form_rhs_geometric(C: np.ndarray, occupations, natoms, MO, mints):
 
 
 if __name__ == "__main__":
-    dalton_integrals = parse_aoproper(
-        "r_lih_hf_sto-3g/dalton_response_rpa_singlet/AOPROPER"
-    )
+    dalton_integrals = parse_aoproper("r_lih_hf_sto-3g/dalton_response_rpa_singlet/AOPROPER")
     from pyresponse.utils import dalton_label_to_operator
 
     labels = dalton_integrals.keys()

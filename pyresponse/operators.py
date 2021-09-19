@@ -77,9 +77,9 @@ class Operator:
             if self.triplet:
                 for (i, a) in self.indices_closed_secondary:
                     operator_component_ai_alph[a - nocc_alph, i] = 0.0
-            operator_component_ai_alph = repack_matrix_to_vector(
-                operator_component_ai_alph
-            )[:, np.newaxis]
+            operator_component_ai_alph = repack_matrix_to_vector(operator_component_ai_alph)[
+                :, np.newaxis
+            ]
             if hasattr(self, "hsofac"):
                 operator_component_ai_alph *= self.hsofac
             operator_component_ai_supervector_alph = np.concatenate(
@@ -96,9 +96,9 @@ class Operator:
                 if self.triplet:
                     for (i, a) in self.indices_closed_secondary:
                         operator_component_ai_beta[a - nocc_beta, i] = 0.0
-                operator_component_ai_beta = repack_matrix_to_vector(
-                    operator_component_ai_beta
-                )[:, np.newaxis]
+                operator_component_ai_beta = repack_matrix_to_vector(operator_component_ai_beta)[
+                    :, np.newaxis
+                ]
                 if hasattr(self, "hsofac"):
                     operator_component_ai_beta *= self.hsofac
                 operator_component_ai_supervector_beta = np.concatenate(
@@ -109,18 +109,12 @@ class Operator:
                     axis=0,
                 )
                 operator_ai_beta.append(operator_component_ai_beta)
-                operator_ai_supervector_beta.append(
-                    operator_component_ai_supervector_beta
-                )
+                operator_ai_supervector_beta.append(operator_component_ai_supervector_beta)
         self.mo_integrals_ai_alph = np.stack(operator_ai_alph, axis=0)
-        self.mo_integrals_ai_supervector_alph = np.stack(
-            operator_ai_supervector_alph, axis=0
-        )
+        self.mo_integrals_ai_supervector_alph = np.stack(operator_ai_supervector_alph, axis=0)
         if is_uhf:
             self.mo_integrals_ai_beta = np.stack(operator_ai_beta, axis=0)
-            self.mo_integrals_ai_supervector_beta = np.stack(
-                operator_ai_supervector_beta, axis=0
-            )
+            self.mo_integrals_ai_supervector_beta = np.stack(operator_ai_supervector_beta, axis=0)
 
     def form_rhs_geometric(
         self,

@@ -73,12 +73,8 @@ def test_ao2mo_hand_against_pyscf_rhf_partial() -> None:
 
     print("1. Use the class method explicitly.")
 
-    tei_mo_ovov_hand = AO2MO.transform(
-        tei_ao, C[0, :, o], C[0, :, v], C[0, :, o], C[0, :, v]
-    )
-    tei_mo_oovv_hand = AO2MO.transform(
-        tei_ao, C[0, :, o], C[0, :, o], C[0, :, v], C[0, :, v]
-    )
+    tei_mo_ovov_hand = AO2MO.transform(tei_ao, C[0, :, o], C[0, :, v], C[0, :, o], C[0, :, v])
+    tei_mo_oovv_hand = AO2MO.transform(tei_ao, C[0, :, o], C[0, :, o], C[0, :, v], C[0, :, v])
 
     assert tei_mo_ovov_pyscf.shape == tei_mo_ovov_hand.shape == (nocc, nvirt, nocc, nvirt)
     assert tei_mo_oovv_pyscf.shape == tei_mo_oovv_hand.shape == (nocc, nocc, nvirt, nvirt)
@@ -93,18 +89,10 @@ def test_ao2mo_hand_against_pyscf_rhf_partial() -> None:
     tei_mo_ovov_method = ao2mo_method.tei_mo[0]
     tei_mo_oovv_method = ao2mo_method.tei_mo[1]
 
-    assert (
-        tei_mo_ovov_pyscf.shape == tei_mo_ovov_method.shape == (nocc, nvirt, nocc, nvirt)
-    )
-    assert (
-        tei_mo_oovv_pyscf.shape == tei_mo_oovv_method.shape == (nocc, nocc, nvirt, nvirt)
-    )
-    np.testing.assert_allclose(
-        tei_mo_ovov_method, tei_mo_ovov_pyscf, rtol=0, atol=1.0e-15
-    )
-    np.testing.assert_allclose(
-        tei_mo_oovv_method, tei_mo_oovv_pyscf, rtol=0, atol=1.0e-15
-    )
+    assert tei_mo_ovov_pyscf.shape == tei_mo_ovov_method.shape == (nocc, nvirt, nocc, nvirt)
+    assert tei_mo_oovv_pyscf.shape == tei_mo_oovv_method.shape == (nocc, nocc, nvirt, nvirt)
+    np.testing.assert_allclose(tei_mo_ovov_method, tei_mo_ovov_pyscf, rtol=0, atol=1.0e-15)
+    np.testing.assert_allclose(tei_mo_oovv_method, tei_mo_oovv_pyscf, rtol=0, atol=1.0e-15)
 
 
 if __name__ == "__main__":

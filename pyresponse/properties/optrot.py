@@ -48,9 +48,7 @@ class ORD(ResponseProperty):
         operator_angmom = Operator(
             label="angmom", is_imaginary=True, is_spin_dependent=False, triplet=False
         )
-        operator_angmom.ao_integrals = integral_generator.integrals(
-            integrals.ANGMOM_COMMON_GAUGE
-        )
+        operator_angmom.ao_integrals = integral_generator.integrals(integrals.ANGMOM_COMMON_GAUGE)
         self.driver.add_operator(operator_angmom)
 
         operator_diplen = Operator(

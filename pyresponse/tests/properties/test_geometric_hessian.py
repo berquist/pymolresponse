@@ -90,9 +90,7 @@ def test_geometric_hessian_rhf_outside_solver_psi4numpy():
                 deriv1[map_key] = np.asarray(deriv1_mat[key + str(atom)][p])
                 # np.save(os.path.join(datadir, f'{map_key}.npy'), deriv1[map_key])
                 deriv1_ref = np.load(os.path.join(datadir, f"{map_key}.npy"))
-                np.testing.assert_allclose(
-                    deriv1[map_key], deriv1_ref, rtol=0, atol=1.0e-10
-                )
+                np.testing.assert_allclose(deriv1[map_key], deriv1_ref, rtol=0, atol=1.0e-10)
 
     # 1st Derivative of TEIs
 
@@ -132,9 +130,7 @@ def test_geometric_hessian_rhf_outside_solver_psi4numpy():
         for atom2 in range(atom1 + 1):
             for key in oei_dict:
                 string = key + str(atom1) + str(atom2)
-                deriv2_mat[string] = mints.mo_oei_deriv2(
-                    oei_dict[key], atom1, atom2, C, C
-                )
+                deriv2_mat[string] = mints.mo_oei_deriv2(oei_dict[key], atom1, atom2, C, C)
                 pq = 0
                 for p in range(3):
                     for q in range(3):
@@ -160,9 +156,7 @@ def test_geometric_hessian_rhf_outside_solver_psi4numpy():
                         Hes[key][col][row] = Hes[key][row][col]
                         # np.save(os.path.join(datadir, f'Hes_{map_key}.npy'), Hes[key])
                         Hes_ref = np.load(os.path.join(datadir, f"Hes_{map_key}.npy"))
-                        np.testing.assert_allclose(
-                            Hes[key], Hes_ref, rtol=0, atol=1.0e-10
-                        )
+                        np.testing.assert_allclose(Hes[key], Hes_ref, rtol=0, atol=1.0e-10)
 
     for key in Hes:
         Mat = psi4.core.Matrix.from_array(Hes[key])
@@ -184,9 +178,7 @@ def test_geometric_hessian_rhf_outside_solver_psi4numpy():
                     deriv2[map_key] = np.asarray(deriv2_mat[string][pq])
                     # np.save(os.path.join(datadir, f'{map_key}.npy'), deriv2[map_key])
                     deriv2_ref = np.load(os.path.join(datadir, f"{map_key}.npy"))
-                    np.testing.assert_allclose(
-                        deriv2[map_key], deriv2_ref, rtol=0, atol=1.0e-10
-                    )
+                    np.testing.assert_allclose(deriv2[map_key], deriv2_ref, rtol=0, atol=1.0e-10)
                     pq = pq + 1
                     row = 3 * atom1 + p
                     col = 3 * atom2 + q
@@ -250,12 +242,8 @@ def test_geometric_hessian_rhf_outside_solver_psi4numpy():
             key = str(atom) + cart[p]
             F_grad[key] = deriv1["T" + key]
             F_grad[key] += deriv1["V" + key]
-            F_grad[key] += 2.0 * np.einsum(
-                "pqmm->pq", deriv1["TEI" + key][:, :, :occ, :occ]
-            )
-            F_grad[key] -= 1.0 * np.einsum(
-                "pmmq->pq", deriv1["TEI" + key][:, :occ, :occ, :]
-            )
+            F_grad[key] += 2.0 * np.einsum("pqmm->pq", deriv1["TEI" + key][:, :, :occ, :occ])
+            F_grad[key] -= 1.0 * np.einsum("pmmq->pq", deriv1["TEI" + key][:, :occ, :occ, :])
             # np.save(os.path.join(datadir, f'F_grad_{key}.npy'), F_grad[key])
             F_grad_ref = np.load(os.path.join(datadir, f"F_grad_{key}.npy"))
             np.testing.assert_allclose(F_grad[key], F_grad_ref, rtol=0, atol=1.0e-10)
@@ -534,9 +522,7 @@ def test_geometric_hessian_rhf_outside_solver_chemists():
                 map_key = key + str(atom) + cart[p]
                 deriv1[map_key] = np.asarray(deriv1_mat[key + str(atom)][p])
                 deriv1_ref = np.load(os.path.join(datadir, f"{map_key}.npy"))
-                np.testing.assert_allclose(
-                    deriv1[map_key], deriv1_ref, rtol=0, atol=1.0e-10
-                )
+                np.testing.assert_allclose(deriv1[map_key], deriv1_ref, rtol=0, atol=1.0e-10)
 
     # 1st Derivative of TEIs
 
@@ -575,9 +561,7 @@ def test_geometric_hessian_rhf_outside_solver_chemists():
         for atom2 in range(atom1 + 1):
             for key in oei_dict:
                 string = key + str(atom1) + str(atom2)
-                deriv2_mat[string] = mints.mo_oei_deriv2(
-                    oei_dict[key], atom1, atom2, C, C
-                )
+                deriv2_mat[string] = mints.mo_oei_deriv2(oei_dict[key], atom1, atom2, C, C)
                 pq = 0
                 for p in range(3):
                     for q in range(3):
@@ -595,15 +579,11 @@ def test_geometric_hessian_rhf_outside_solver_chemists():
                                 "ii,ii->", F[o, o], deriv2[map_key][o, o]
                             )
                         else:
-                            Hes[key][row][col] = 2.0 * np.einsum(
-                                "ii->", deriv2[map_key][o, o]
-                            )
+                            Hes[key][row][col] = 2.0 * np.einsum("ii->", deriv2[map_key][o, o])
                         Hes[key][col][row] = Hes[key][row][col]
                         Hes[key][col][row] = Hes[key][row][col]
                         Hes_ref = np.load(os.path.join(datadir, f"Hes_{map_key}.npy"))
-                        np.testing.assert_allclose(
-                            Hes[key], Hes_ref, rtol=0, atol=1.0e-10
-                        )
+                        np.testing.assert_allclose(Hes[key], Hes_ref, rtol=0, atol=1.0e-10)
 
     for key in Hes:
         Mat = psi4.core.Matrix.from_array(Hes[key])
@@ -624,18 +604,12 @@ def test_geometric_hessian_rhf_outside_solver_chemists():
                     map_key = string + cart[p] + cart[q]
                     deriv2[map_key] = np.asarray(deriv2_mat[string][pq])
                     deriv2_ref = np.load(os.path.join(datadir, f"{map_key}.npy"))
-                    np.testing.assert_allclose(
-                        deriv2[map_key], deriv2_ref, rtol=0, atol=1.0e-10
-                    )
+                    np.testing.assert_allclose(deriv2[map_key], deriv2_ref, rtol=0, atol=1.0e-10)
                     pq = pq + 1
                     row = 3 * atom1 + p
                     col = 3 * atom2 + q
-                    Hes["J"][row][col] = 2.0 * np.einsum(
-                        "iijj->", deriv2[map_key][o, o, o, o]
-                    )
-                    Hes["K"][row][col] = -1.0 * np.einsum(
-                        "ijij->", deriv2[map_key][o, o, o, o]
-                    )
+                    Hes["J"][row][col] = 2.0 * np.einsum("iijj->", deriv2[map_key][o, o, o, o])
+                    Hes["K"][row][col] = -1.0 * np.einsum("ijij->", deriv2[map_key][o, o, o, o])
 
                     Hes["J"][col][row] = Hes["J"][row][col]
                     Hes["K"][col][row] = Hes["K"][row][col]
@@ -701,12 +675,8 @@ def test_geometric_hessian_rhf_outside_solver_chemists():
             key = str(atom) + cart[p]
             B[key] = np.einsum("ia,ii->ia", deriv1["S" + key][o, v], F[o, o])
             B[key] -= F_grad[key][o, v]
-            B[key] += 2.0 * np.einsum(
-                "iamn,mn->ia", MO[o, v, o, o], deriv1["S" + key][o, o]
-            )
-            B[key] += -1.0 * np.einsum(
-                "inma,mn->ia", MO[o, o, o, v], deriv1["S" + key][o, o]
-            )
+            B[key] += 2.0 * np.einsum("iamn,mn->ia", MO[o, v, o, o], deriv1["S" + key][o, o])
+            B[key] += -1.0 * np.einsum("inma,mn->ia", MO[o, o, o, v], deriv1["S" + key][o, o])
 
             print(f"B[{key}]")
             print(B[key])
@@ -959,9 +929,7 @@ def test_geometric_hessian_rhf_right_hand_side():
                 map_key = key + str(atom) + cart[p]
                 deriv1[map_key] = np.asarray(deriv1_mat[p])
                 deriv1_ref = np.load(os.path.join(datadir, f"{map_key}.npy"))
-                np.testing.assert_allclose(
-                    deriv1[map_key], deriv1_ref, rtol=0, atol=1.0e-10
-                )
+                np.testing.assert_allclose(deriv1[map_key], deriv1_ref, rtol=0, atol=1.0e-10)
 
     # 1st Derivative of TEIs
 
@@ -998,12 +966,8 @@ def test_geometric_hessian_rhf_right_hand_side():
             key = str(atom) + cart[p]
             B[key] = np.einsum("ia,ii->ia", deriv1["S" + key][o, v], F[o, o])
             B[key] -= F_grad[key][o, v]
-            B[key] += 2.0 * np.einsum(
-                "iamn,mn->ia", MO[o, v, o, o], deriv1["S" + key][o, o]
-            )
-            B[key] += -1.0 * np.einsum(
-                "inma,mn->ia", MO[o, o, o, v], deriv1["S" + key][o, o]
-            )
+            B[key] += 2.0 * np.einsum("iamn,mn->ia", MO[o, v, o, o], deriv1["S" + key][o, o])
+            B[key] += -1.0 * np.einsum("inma,mn->ia", MO[o, o, o, v], deriv1["S" + key][o, o])
 
             B_ref = np.load(os.path.join(datadir, f"B_{key}.npy"))
             np.testing.assert_allclose(B[key], B_ref.T, rtol=0, atol=1.0e-10)
@@ -1061,9 +1025,7 @@ def test_atomic_polar_tensor_rhf():
     operator_geometric = Operator(
         label="nuclear", is_imaginary=False, is_spin_dependent=False, triplet=False
     )
-    operator_geometric.form_rhs_geometric(
-        C, occupations, mol.natom(), solver.tei_mo[0], mints
-    )
+    operator_geometric.form_rhs_geometric(C, occupations, mol.natom(), solver.tei_mo[0], mints)
     print(operator_geometric.label)
     print(operator_geometric.mo_integrals_ai_alph)
     print(operator_diplen.label)

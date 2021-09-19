@@ -16,9 +16,7 @@ class AO2MOpyscf(AO2MO):
     """Perform AO-to-MO transformations using pyscf."""
 
     # TODO what does the pyscf compact kwarg do?
-    def __init__(
-        self, C: np.ndarray, verbose: int = 1, pyscfmol: Optional[Any] = None
-    ) -> None:
+    def __init__(self, C: np.ndarray, verbose: int = 1, pyscfmol: Optional[Any] = None) -> None:
         self.pyscfmol = pyscfmol
         occupations = occupations_from_pyscf_mol(self.pyscfmol, C)
         super().__init__(C, occupations, verbose, I=None)

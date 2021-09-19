@@ -61,17 +61,12 @@ def test_HF_both_singlet_HF_STO3G():
     )
     excitation_energies_rpa = driver_tdhf.solver.eigvals[:nroots].real
 
-    assert (
-        excitation_energies_tda_using_tda.shape
-        == excitation_energies_tda_using_tdhf.shape
-    )
+    assert excitation_energies_tda_using_tda.shape == excitation_energies_tda_using_tdhf.shape
     assert excitation_energies_tda_using_tdhf.shape == excitation_energies_rpa.shape
 
     # There should be no difference in the TDA results regardless of
     # which implementation used.
-    assert (
-        excitation_energies_tda_using_tda - excitation_energies_tda_using_tdhf
-    ).all() == 0
+    assert (excitation_energies_tda_using_tda - excitation_energies_tda_using_tdhf).all() == 0
 
     # Now compare against reference_data
     ref_tda = HF_neutral_singlet_HF_STO3G_CIS_qchem

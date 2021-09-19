@@ -156,8 +156,7 @@ class Splitter:
         them.
         """
         elements = [
-            line[start:end].strip()
-            for (start, end) in zip(self.start_indices, self.end_indices)
+            line[start:end].strip() for (start, end) in zip(self.start_indices, self.end_indices)
         ]
         if truncate:
             for i in range(1, len(elements)):
@@ -183,9 +182,7 @@ def fix_mocoeffs_shape(mocoeffs: Union[Tuple[np.ndarray, ...], np.ndarray]) -> n
     return mocoeffs_new
 
 
-def fix_moenergies_shape(
-    moenergies: Union[Tuple[np.ndarray, ...], np.ndarray]
-) -> np.ndarray:
+def fix_moenergies_shape(moenergies: Union[Tuple[np.ndarray, ...], np.ndarray]) -> np.ndarray:
     if isinstance(moenergies, tuple):
         # this will properly fall through to the else clause
         moenergies_new = fix_moenergies_shape(np.stack(moenergies, axis=0))
@@ -212,9 +209,7 @@ def fix_moenergies_shape(
                     # (2, norb)
                     moenergies_alph = np.diag(moenergies[0, :])[np.newaxis]
                     moenergies_beta = np.diag(moenergies[1, :])[np.newaxis]
-                    moenergies_new = np.concatenate(
-                        (moenergies_alph, moenergies_beta), axis=0
-                    )
+                    moenergies_new = np.concatenate((moenergies_alph, moenergies_beta), axis=0)
         else:
             assert shape[0] in (1, 2)
             assert shape[1] == shape[2]
@@ -252,9 +247,7 @@ def tensor_printer(tensor: np.ndarray) -> Tuple[np.ndarray, float, float]:
     return (eigvals, iso, aniso)
 
 
-def form_vec_energy_differences(
-    moene_occ: np.ndarray, moene_virt: np.ndarray
-) -> np.ndarray:
+def form_vec_energy_differences(moene_occ: np.ndarray, moene_virt: np.ndarray) -> np.ndarray:
     nocc = moene_occ.shape[0]
     nvirt = moene_virt.shape[0]
     nov = nocc * nvirt

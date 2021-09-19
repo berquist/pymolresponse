@@ -109,9 +109,7 @@ def test_final_result_rhf_h2o_sto3g_rpa_singlet_iter() -> None:
         Program.Psi4,
         mol,
         cphf.CPHF(
-            solvers.IterativeLinEqSolver(
-                C, E, occupations, integrals.JKPsi4(wfn), conv=1.0e-12
-            )
+            solvers.IterativeLinEqSolver(C, E, occupations, integrals.JKPsi4(wfn), conv=1.0e-12)
         ),
         C,
         E,

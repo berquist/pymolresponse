@@ -85,12 +85,8 @@ def get_uhf_values(
     # These are the indices for unique pairs considering the full
     # dimensionality of the system (correct orbital window), [norb,
     # norb], starting from 1.
-    indices_display_uhf_a = [
-        (p + 1, q + 1) for p in range_uhf_a_closed for q in range_uhf_a_virt
-    ]
-    indices_display_uhf_b = [
-        (p + 1, q + 1) for p in range_uhf_b_closed for q in range_uhf_b_virt
-    ]
+    indices_display_uhf_a = [(p + 1, q + 1) for p in range_uhf_a_closed for q in range_uhf_a_virt]
+    indices_display_uhf_b = [(p + 1, q + 1) for p in range_uhf_b_closed for q in range_uhf_b_virt]
 
     values = []
     if pair_rohf in indices_display_uhf_a:

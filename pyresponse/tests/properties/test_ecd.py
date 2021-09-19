@@ -193,9 +193,7 @@ def test_ECD_TDA_singlet_BC2H4_cation_HF_STO3G() -> None:
 
     print("dipole (length) oscillator strengths")
     ref_etoscslen = np.array(ref["etoscslen"])
-    res_etoscslen = ecd_dipvel_tda.driver.solver.operators[1].total_oscillator_strengths[
-        :nroots
-    ]
+    res_etoscslen = ecd_dipvel_tda.driver.solver.operators[1].total_oscillator_strengths[:nroots]
     print("ref, res")
     for refval, resval in zip(ref_etoscslen, res_etoscslen):
         print(refval, resval)
@@ -281,9 +279,7 @@ def test_ECD_RPA_singlet_BC2H4_cation_HF_STO3G() -> None:
 
     print("dipole (length) oscillator strengths")
     ref_etoscslen = np.array(ref["etoscslen"])
-    res_etoscslen = ecd_dipvel_rpa.driver.solver.operators[1].total_oscillator_strengths[
-        :nroots
-    ]
+    res_etoscslen = ecd_dipvel_rpa.driver.solver.operators[1].total_oscillator_strengths[:nroots]
     print("ref, res")
     for refval, resval in zip(ref_etoscslen, res_etoscslen):
         print(refval, resval)
@@ -298,9 +294,7 @@ def test_ECD_RPA_singlet_BC2H4_cation_HF_STO3G() -> None:
     # TODO
     print("TODO dipole (velocity) oscillator strengths")
     ref_etoscsvel = np.array(ref["etoscsvel"])
-    res_etoscsvel = ecd_dipvel_rpa.driver.solver.operators[2].total_oscillator_strengths[
-        :nroots
-    ]
+    res_etoscsvel = ecd_dipvel_rpa.driver.solver.operators[2].total_oscillator_strengths[:nroots]
     # print('ref, res')
     # for refval, resval in zip(ref_etoscsvel, res_etoscsvel):
     #     print(refval, resval)

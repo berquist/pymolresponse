@@ -19,9 +19,7 @@ class Driver(ABC):
         self.results = []
 
     @abstractmethod
-    def run(
-        self, hamiltonian: Hamiltonian, spin: Spin, program: Program, program_obj
-    ) -> None:
+    def run(self, hamiltonian: Hamiltonian, spin: Spin, program: Program, program_obj) -> None:
         pass
 
 
@@ -50,9 +48,7 @@ class CPHF(Driver):
         assert self.solver is not None
         self.solver.add_operator(operator)
 
-    def run(
-        self, hamiltonian: Hamiltonian, spin: Spin, program: Program, program_obj
-    ) -> None:
+    def run(self, hamiltonian: Hamiltonian, spin: Spin, program: Program, program_obj) -> None:
         assert isinstance(hamiltonian, Hamiltonian)
         assert isinstance(spin, Spin)
         assert isinstance(program, (Program, type(None)))
@@ -94,12 +90,8 @@ class CPHF(Driver):
 
             frequency = self.solver.frequencies[f]
             ediff_supervector_alph = ediff_supervector_alph_static.copy()
-            ediff_supervector_alph[:nov_alph] = (
-                ediff_supervector_alph_static[:nov_alph] - frequency
-            )
-            ediff_supervector_alph[nov_alph:] = (
-                ediff_supervector_alph_static[nov_alph:] + frequency
-            )
+            ediff_supervector_alph[:nov_alph] = ediff_supervector_alph_static[:nov_alph] - frequency
+            ediff_supervector_alph[nov_alph:] = ediff_supervector_alph_static[nov_alph:] + frequency
             if self.solver.is_uhf:
                 ediff_supervector_beta = ediff_supervector_beta_static.copy()
                 ediff_supervector_beta[:nov_beta] = (

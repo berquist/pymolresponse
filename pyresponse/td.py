@@ -20,9 +20,7 @@ class TDHF(CPHF):
         assert isinstance(solver, EigSolver)
         super().__init__(solver)
 
-    def run(
-        self, hamiltonian: Hamiltonian, spin: Spin, program: Program, program_obj
-    ) -> None:
+    def run(self, hamiltonian: Hamiltonian, spin: Spin, program: Program, program_obj) -> None:
         assert isinstance(hamiltonian, Hamiltonian)
         assert isinstance(spin, Spin)
         assert isinstance(program, (Program, type(None)))
@@ -44,9 +42,7 @@ class TDHF(CPHF):
             x_normed, y_normed = self.solver.norm_xy(
                 self.solver.eigvecs[:, idx], nocc_alph, nvirt_alph
             )
-            eigvec_normed = np.concatenate(
-                (x_normed.flatten(), y_normed.flatten()), axis=0
-            )
+            eigvec_normed = np.concatenate((x_normed.flatten(), y_normed.flatten()), axis=0)
             self.solver.eigvecs_normed[:, idx] = eigvec_normed
             eigval = self.solver.eigvals[idx].real
             # contract the components of every operator with every
@@ -72,9 +68,7 @@ class TDHF(CPHF):
         for operator in self.solver.operators:
             operator.transition_moments = np.array(operator.transition_moments)
             operator.oscillator_strengths = np.array(operator.oscillator_strengths)
-            operator.total_oscillator_strengths = np.array(
-                operator.total_oscillator_strengths
-            )
+            operator.total_oscillator_strengths = np.array(operator.total_oscillator_strengths)
         return
 
     def print_results(self) -> None:
@@ -218,6 +212,4 @@ class TDA(TDHF):
         for operator in self.solver.operators:
             operator.transition_moments = np.array(operator.transition_moments)
             operator.oscillator_strengths = np.array(operator.oscillator_strengths)
-            operator.total_oscillator_strengths = np.array(
-                operator.total_oscillator_strengths
-            )
+            operator.total_oscillator_strengths = np.array(operator.total_oscillator_strengths)

@@ -95,12 +95,8 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_small
         rhsvec = rhsvecs[i, :, 0]
         rhsvec_top = rhsvec[:nov_alph]
         rhsvec_bot = rhsvec[nov_alph:]
-        rhsvec_top_mat = utils.repack_vector_to_matrix(
-            rhsvec_top, (nvirt_alph, nocc_alph)
-        )
-        rhsvec_bot_mat = utils.repack_vector_to_matrix(
-            rhsvec_bot, (nvirt_alph, nocc_alph)
-        )
+        rhsvec_top_mat = utils.repack_vector_to_matrix(rhsvec_top, (nvirt_alph, nocc_alph))
+        rhsvec_bot_mat = utils.repack_vector_to_matrix(rhsvec_bot, (nvirt_alph, nocc_alph))
         rhsmats[i, :nocc_alph, nocc_alph:] = rhsvec_top_mat.T
         rhsmats[i, nocc_alph:, :nocc_alph] = rhsvec_bot_mat
 
@@ -167,33 +163,17 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_small
         b = off1[r]
         c = off2[r]
         for a in range(3):
-            tl1 = np.trace(
-                rspmats_2[a].T.dot(G_1[b]).dot(rspmats_1[c])[:nocc_alph, :nocc_alph]
-            )
-            tl2 = np.trace(
-                rspmats_1[c].dot(G_1[b]).dot(rspmats_2[a].T)[:nocc_alph, :nocc_alph]
-            )
-            tl3 = np.trace(
-                rspmats_2[a].T.dot(G_1[c]).dot(rspmats_1[b])[:nocc_alph, :nocc_alph]
-            )
-            tl4 = np.trace(
-                rspmats_1[b].dot(G_1[c]).dot(rspmats_2[a].T)[:nocc_alph, :nocc_alph]
-            )
-            tl5 = np.trace(
-                rspmats_1[c].dot(-G_2[a].T).dot(rspmats_1[b])[:nocc_alph, :nocc_alph]
-            )
-            tl6 = np.trace(
-                rspmats_1[b].dot(-G_2[a].T).dot(rspmats_1[c])[:nocc_alph, :nocc_alph]
-            )
+            tl1 = np.trace(rspmats_2[a].T.dot(G_1[b]).dot(rspmats_1[c])[:nocc_alph, :nocc_alph])
+            tl2 = np.trace(rspmats_1[c].dot(G_1[b]).dot(rspmats_2[a].T)[:nocc_alph, :nocc_alph])
+            tl3 = np.trace(rspmats_2[a].T.dot(G_1[c]).dot(rspmats_1[b])[:nocc_alph, :nocc_alph])
+            tl4 = np.trace(rspmats_1[b].dot(G_1[c]).dot(rspmats_2[a].T)[:nocc_alph, :nocc_alph])
+            tl5 = np.trace(rspmats_1[c].dot(-G_2[a].T).dot(rspmats_1[b])[:nocc_alph, :nocc_alph])
+            tl6 = np.trace(rspmats_1[b].dot(-G_2[a].T).dot(rspmats_1[c])[:nocc_alph, :nocc_alph])
             tr1 = np.trace(
-                rspmats_1[c]
-                .dot(rspmats_1[b])
-                .dot(-epsilon_2[a].T)[:nocc_alph, :nocc_alph]
+                rspmats_1[c].dot(rspmats_1[b]).dot(-epsilon_2[a].T)[:nocc_alph, :nocc_alph]
             )
             tr2 = np.trace(
-                rspmats_1[b]
-                .dot(rspmats_1[c])
-                .dot(-epsilon_2[a].T)[:nocc_alph, :nocc_alph]
+                rspmats_1[b].dot(rspmats_1[c]).dot(-epsilon_2[a].T)[:nocc_alph, :nocc_alph]
             )
             tr3 = np.trace(
                 rspmats_1[c].dot(rspmats_2[a].T).dot(epsilon_1[b])[:nocc_alph, :nocc_alph]
@@ -230,11 +210,7 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_small
     thresh = 2.5e-04
     assert np.all(diff < thresh)
 
-    print(
-        "hyperpolarizability: SHG, (-{}; {}, {}), symmetry-unique components".format(
-            f2, f1, f1
-        )
-    )
+    print("hyperpolarizability: SHG, (-{}; {}, {}), symmetry-unique components".format(f2, f1, f1))
     print(hyperpolarizability)
     print("ref")
     print(ref)
@@ -404,12 +380,8 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_large
         rhsvec = rhsvecs[i, :, 0]
         rhsvec_top = rhsvec[:nov_alph]
         rhsvec_bot = rhsvec[nov_alph:]
-        rhsvec_top_mat = utils.repack_vector_to_matrix(
-            rhsvec_top, (nvirt_alph, nocc_alph)
-        )
-        rhsvec_bot_mat = utils.repack_vector_to_matrix(
-            rhsvec_bot, (nvirt_alph, nocc_alph)
-        )
+        rhsvec_top_mat = utils.repack_vector_to_matrix(rhsvec_top, (nvirt_alph, nocc_alph))
+        rhsvec_bot_mat = utils.repack_vector_to_matrix(rhsvec_bot, (nvirt_alph, nocc_alph))
         rhsmats[i, :nocc_alph, nocc_alph:] = rhsvec_top_mat.T
         rhsmats[i, nocc_alph:, :nocc_alph] = rhsvec_bot_mat
 
@@ -471,33 +443,17 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_large
         b = off1[r]
         c = off2[r]
         for a in range(3):
-            tl1 = np.trace(
-                rspmats_2[a].T.dot(G_1[b]).dot(rspmats_1[c])[:nocc_alph, :nocc_alph]
-            )
-            tl2 = np.trace(
-                rspmats_1[c].dot(G_1[b]).dot(rspmats_2[a].T)[:nocc_alph, :nocc_alph]
-            )
-            tl3 = np.trace(
-                rspmats_2[a].T.dot(G_1[c]).dot(rspmats_1[b])[:nocc_alph, :nocc_alph]
-            )
-            tl4 = np.trace(
-                rspmats_1[b].dot(G_1[c]).dot(rspmats_2[a].T)[:nocc_alph, :nocc_alph]
-            )
-            tl5 = np.trace(
-                rspmats_1[c].dot(-G_2[a].T).dot(rspmats_1[b])[:nocc_alph, :nocc_alph]
-            )
-            tl6 = np.trace(
-                rspmats_1[b].dot(-G_2[a].T).dot(rspmats_1[c])[:nocc_alph, :nocc_alph]
-            )
+            tl1 = np.trace(rspmats_2[a].T.dot(G_1[b]).dot(rspmats_1[c])[:nocc_alph, :nocc_alph])
+            tl2 = np.trace(rspmats_1[c].dot(G_1[b]).dot(rspmats_2[a].T)[:nocc_alph, :nocc_alph])
+            tl3 = np.trace(rspmats_2[a].T.dot(G_1[c]).dot(rspmats_1[b])[:nocc_alph, :nocc_alph])
+            tl4 = np.trace(rspmats_1[b].dot(G_1[c]).dot(rspmats_2[a].T)[:nocc_alph, :nocc_alph])
+            tl5 = np.trace(rspmats_1[c].dot(-G_2[a].T).dot(rspmats_1[b])[:nocc_alph, :nocc_alph])
+            tl6 = np.trace(rspmats_1[b].dot(-G_2[a].T).dot(rspmats_1[c])[:nocc_alph, :nocc_alph])
             tr1 = np.trace(
-                rspmats_1[c]
-                .dot(rspmats_1[b])
-                .dot(-epsilon_2[a].T)[:nocc_alph, :nocc_alph]
+                rspmats_1[c].dot(rspmats_1[b]).dot(-epsilon_2[a].T)[:nocc_alph, :nocc_alph]
             )
             tr2 = np.trace(
-                rspmats_1[b]
-                .dot(rspmats_1[c])
-                .dot(-epsilon_2[a].T)[:nocc_alph, :nocc_alph]
+                rspmats_1[b].dot(rspmats_1[c]).dot(-epsilon_2[a].T)[:nocc_alph, :nocc_alph]
             )
             tr3 = np.trace(
                 rspmats_1[c].dot(rspmats_2[a].T).dot(epsilon_1[b])[:nocc_alph, :nocc_alph]
@@ -534,11 +490,7 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_large
     thresh = 2.5e-04
     assert np.all(diff < thresh)
 
-    print(
-        "hyperpolarizability: SHG, (-{}; {}, {}), symmetry-unique components".format(
-            f2, f1, f1
-        )
-    )
+    print("hyperpolarizability: SHG, (-{}; {}, {}), symmetry-unique components".format(f2, f1, f1))
     print(hyperpolarizability)
     print("ref")
     print(ref)

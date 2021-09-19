@@ -84,15 +84,9 @@ def test_explicit_uhf_from_rhf_outside_solver():
             C_b[:, nocc_b:].T, np.dot(integrals_dipole_ao[comp, ...], C_b[:, :nocc_b])
         )
 
-        integrals_dipole_mo_ai_comp_r = np.reshape(
-            integrals_dipole_mo_ai_comp_r, -1, order="F"
-        )
-        integrals_dipole_mo_ai_comp_a = np.reshape(
-            integrals_dipole_mo_ai_comp_a, -1, order="F"
-        )
-        integrals_dipole_mo_ai_comp_b = np.reshape(
-            integrals_dipole_mo_ai_comp_b, -1, order="F"
-        )
+        integrals_dipole_mo_ai_comp_r = np.reshape(integrals_dipole_mo_ai_comp_r, -1, order="F")
+        integrals_dipole_mo_ai_comp_a = np.reshape(integrals_dipole_mo_ai_comp_a, -1, order="F")
+        integrals_dipole_mo_ai_comp_b = np.reshape(integrals_dipole_mo_ai_comp_b, -1, order="F")
 
         integrals_dipole_mo_ai_r.append(integrals_dipole_mo_ai_comp_r)
         integrals_dipole_mo_ai_a.append(integrals_dipole_mo_ai_comp_a)
@@ -218,12 +212,8 @@ def test_explicit_uhf_outside_solver():
             C_b[:, nocc_b:].T, np.dot(integrals_dipole_ao[comp, ...], C_b[:, :nocc_b])
         )
 
-        integrals_dipole_mo_ai_comp_a = np.reshape(
-            integrals_dipole_mo_ai_comp_a, -1, order="F"
-        )
-        integrals_dipole_mo_ai_comp_b = np.reshape(
-            integrals_dipole_mo_ai_comp_b, -1, order="F"
-        )
+        integrals_dipole_mo_ai_comp_a = np.reshape(integrals_dipole_mo_ai_comp_a, -1, order="F")
+        integrals_dipole_mo_ai_comp_b = np.reshape(integrals_dipole_mo_ai_comp_b, -1, order="F")
 
         integrals_dipole_mo_ai_a.append(integrals_dipole_mo_ai_comp_a)
         integrals_dipole_mo_ai_b.append(integrals_dipole_mo_ai_comp_b)
@@ -299,9 +289,7 @@ def test_explicit_uhf():
 
     driver.set_frequencies()
 
-    driver.run(
-        hamiltonian=Hamiltonian.RPA, spin=Spin.singlet, program=None, program_obj=None
-    )
+    driver.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet, program=None, program_obj=None)
     assert len(driver.frequencies) == len(driver.results) == 1
     res = driver.results[0]
     print(res)
