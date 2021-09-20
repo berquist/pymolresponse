@@ -55,7 +55,7 @@ jobs:
         with:
           docs-folder: "docs/"
       - name: GitHub Pages deploy
-        uses: JamesIves/github-pages-deploy-action@4
+        uses: JamesIves/github-pages-deploy-action@4.1.5
         with:
           branch: gh-pages
           folder: docs/build/html
