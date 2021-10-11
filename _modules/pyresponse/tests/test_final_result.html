@@ -78,6 +78,10 @@
 
 
 <div class="viewcode-block" id="test_final_result_rhf_h2o_sto3g_rpa_singlet"><a class="viewcode-back" href="../../../pyresponse.tests.html#pyresponse.tests.test_final_result.test_final_result_rhf_h2o_sto3g_rpa_singlet">[docs]</a><span class="k">def</span> <span class="nf">test_final_result_rhf_h2o_sto3g_rpa_singlet</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Test correctness of the final result for water/STO-3G with full RPA for</span>
+<span class="sd">    singlet response induced by the dipole length operator (the electric</span>
+<span class="sd">    polarizability) computed with quantities from disk.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">hamiltonian</span> <span class="o">=</span> <span class="n">Hamiltonian</span><span class="o">.</span><span class="n">RPA</span>
     <span class="n">spin</span> <span class="o">=</span> <span class="n">Spin</span><span class="o">.</span><span class="n">singlet</span>
 
@@ -155,12 +159,14 @@
     <span class="p">)</span>
     <span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_allclose</span><span class="p">(</span>
         <span class="n">polarizability</span><span class="o">.</span><span class="n">polarizabilities</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">result__0_10</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="n">rtol</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">atol</span>
-    <span class="p">)</span>
-
-    <span class="k">return</span></div>
+    <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="test_final_result_rhf_h2o_sto3g_rpa_triplet"><a class="viewcode-back" href="../../../pyresponse.tests.html#pyresponse.tests.test_final_result.test_final_result_rhf_h2o_sto3g_rpa_triplet">[docs]</a><span class="k">def</span> <span class="nf">test_final_result_rhf_h2o_sto3g_rpa_triplet</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Test correctness of the final result for water/STO-3G with full RPA for</span>
+<span class="sd">    triplet response induced by the dipole length operator computed with</span>
+<span class="sd">    quantities from disk.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">hamiltonian</span> <span class="o">=</span> <span class="n">Hamiltonian</span><span class="o">.</span><span class="n">RPA</span>
     <span class="n">spin</span> <span class="o">=</span> <span class="n">Spin</span><span class="o">.</span><span class="n">triplet</span>
 
@@ -238,12 +244,14 @@
     <span class="p">)</span>
     <span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_allclose</span><span class="p">(</span>
         <span class="n">polarizability</span><span class="o">.</span><span class="n">polarizabilities</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">result__0_10</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="n">rtol</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">atol</span>
-    <span class="p">)</span>
-
-    <span class="k">return</span></div>
+    <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="test_final_result_rhf_h2o_sto3g_tda_singlet"><a class="viewcode-back" href="../../../pyresponse.tests.html#pyresponse.tests.test_final_result.test_final_result_rhf_h2o_sto3g_tda_singlet">[docs]</a><span class="k">def</span> <span class="nf">test_final_result_rhf_h2o_sto3g_tda_singlet</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Test correctness of the final result for water/STO-3G with the TDA</span>
+<span class="sd">    approximation/CIS for singlet response induced by the dipole length</span>
+<span class="sd">    operator computed with quantities from disk.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">hamiltonian</span> <span class="o">=</span> <span class="n">Hamiltonian</span><span class="o">.</span><span class="n">TDA</span>
     <span class="n">spin</span> <span class="o">=</span> <span class="n">Spin</span><span class="o">.</span><span class="n">singlet</span>
 
@@ -319,12 +327,14 @@
     <span class="p">)</span>
     <span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_allclose</span><span class="p">(</span>
         <span class="n">polarizability</span><span class="o">.</span><span class="n">polarizabilities</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">result__0_10</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="n">rtol</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">atol</span>
-    <span class="p">)</span>
-
-    <span class="k">return</span></div>
+    <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="test_final_result_rhf_h2o_sto3g_tda_triplet"><a class="viewcode-back" href="../../../pyresponse.tests.html#pyresponse.tests.test_final_result.test_final_result_rhf_h2o_sto3g_tda_triplet">[docs]</a><span class="k">def</span> <span class="nf">test_final_result_rhf_h2o_sto3g_tda_triplet</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Test correctness of the final result for water/STO-3G with the TDA</span>
+<span class="sd">    approximation/CIS for triplet response induced by the dipole length</span>
+<span class="sd">    operator computed with quantities from disk.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">hamiltonian</span> <span class="o">=</span> <span class="n">Hamiltonian</span><span class="o">.</span><span class="n">TDA</span>
     <span class="n">spin</span> <span class="o">=</span> <span class="n">Spin</span><span class="o">.</span><span class="n">triplet</span>
 
@@ -402,90 +412,22 @@
     <span class="p">)</span>
     <span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_allclose</span><span class="p">(</span>
         <span class="n">polarizability</span><span class="o">.</span><span class="n">polarizabilities</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">result__0_10</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="n">rtol</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">atol</span>
-    <span class="p">)</span>
-
-    <span class="k">return</span></div>
+    <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="test_as_many_as_possible_rhf_disk"><a class="viewcode-back" href="../../../pyresponse.tests.html#pyresponse.tests.test_final_result.test_as_many_as_possible_rhf_disk">[docs]</a><span class="k">def</span> <span class="nf">test_as_many_as_possible_rhf_disk</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Test correctness of the final result for closed-shell molecules against</span>
+<span class="sd">    DALTON references.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">run_as_many_tests_as_possible_rhf_disk</span><span class="p">(</span><span class="s2">&quot;r_lih_hf_sto-3g&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="test_as_many_as_possible_uhf_disk"><a class="viewcode-back" href="../../../pyresponse.tests.html#pyresponse.tests.test_final_result.test_as_many_as_possible_uhf_disk">[docs]</a><span class="k">def</span> <span class="nf">test_as_many_as_possible_uhf_disk</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Test correctness of the final result for open-shell (UHF )molecules</span>
+<span class="sd">    against DALTON (ROHF) references.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">run_as_many_tests_as_possible_uhf_disk</span><span class="p">(</span><span class="s2">&quot;u_lih_cation_hf_sto-3g&quot;</span><span class="p">)</span></div>
 
-
-<span class="c1"># TODO what is this?</span>
-<span class="c1"># if __name__ == &#39;__main__&#39;:</span>
-
-<span class="c1">#     from pyscf import ao2mo, gto, scf</span>
-
-<span class="c1">#     import utils</span>
-
-<span class="c1">#     mol = gto.Mole()</span>
-<span class="c1">#     mol.verbose = 5</span>
-<span class="c1">#     with open(&#39;water.xyz&#39;) as fh:</span>
-<span class="c1">#         mol.atom = fh.read()</span>
-<span class="c1">#     mol.unit = &#39;Bohr&#39;</span>
-<span class="c1">#     mol.basis = &#39;sto-3g&#39;</span>
-<span class="c1">#     mol.symmetry = False</span>
-<span class="c1">#     mol.build()</span>
-
-<span class="c1">#     mf = scf.RHF(mol)</span>
-<span class="c1">#     mf.kernel()</span>
-
-<span class="c1">#     # In the future, we want the full Fock matrices in the MO basis.</span>
-<span class="c1">#     fock = utils.fix_moenergies_shape(mf.mo_energy)</span>
-<span class="c1">#     mocoeffs = utils.fix_mocoeffs_shape(mf.mo_coeff)</span>
-<span class="c1">#     norb = mocoeffs.shape[-1]</span>
-<span class="c1">#     tei_mo = ao2mo.full(mol, mocoeffs, aosym=&#39;s4&#39;, compact=False).reshape(norb, norb, norb, norb)</span>
-
-<span class="c1">#     ao_integrals_dipole = mol.intor(&#39;cint1e_r_sph&#39;, comp=3)</span>
-<span class="c1">#     # &#39;cg&#39; stands for common gauge</span>
-<span class="c1">#     ao_integrals_angmom = mol.intor(&#39;cint1e_cg_irxp_sph&#39;, comp=3)</span>
-<span class="c1">#     # ao_integrals_spnorb = mol.intor(&#39;cint1e_ia01p_sph&#39;, comp=3)</span>
-<span class="c1">#     ao_integrals_spnorb = 0</span>
-<span class="c1">#     for atm_id in range(mol.natm):</span>
-<span class="c1">#         mol.set_rinv_orig(mol.atom_coord(atm_id))</span>
-<span class="c1">#         chg = mol.atom_charge(atm_id)</span>
-<span class="c1">#         ao_integrals_spnorb += chg * mol.intor(&#39;cint1e_prinvxp_sph&#39;, comp=3)</span>
-
-<span class="c1">#     operator_dipole = operators.Operator(label=&#39;dipole&#39;, is_imaginary=False, is_spin_dependent=False)</span>
-<span class="c1">#     operator_fermi = operators.Operator(label=&#39;fermi&#39;, is_imaginary=False, is_spin_dependent=True)</span>
-<span class="c1">#     operator_angmom = operators.Operator(label=&#39;angmom&#39;, is_imaginary=True, is_spin_dependent=False)</span>
-<span class="c1">#     operator_spnorb = operators.Operator(label=&#39;spinorb&#39;, is_imaginary=True, is_spin_dependent=True)</span>
-<span class="c1">#     operator_dipole.ao_integrals = ao_integrals_dipole</span>
-<span class="c1">#     from daltools import prop</span>
-<span class="c1">#     ao_integrals_fermi1 = prop.read(&#39;FC O  01&#39;, tmpdir=&#39;/home/eric/development/pyresponse/dalton_fermi/DALTON_scratch_eric/dalton.h2o_sto3g.response_static_rpa_singlet_5672&#39;)</span>
-<span class="c1">#     ao_integrals_fermi2 = prop.read(&#39;FC H  02&#39;, tmpdir=&#39;/home/eric/development/pyresponse/dalton_fermi/DALTON_scratch_eric/dalton.h2o_sto3g.response_static_rpa_singlet_5672&#39;)</span>
-<span class="c1">#     ao_integrals_fermi3 = prop.read(&#39;FC H  03&#39;, tmpdir=&#39;/home/eric/development/pyresponse/dalton_fermi/DALTON_scratch_eric/dalton.h2o_sto3g.response_static_rpa_singlet_5672&#39;)</span>
-<span class="c1">#     operator_fermi.ao_integrals = np.concatenate((ao_integrals_fermi1, ao_integrals_fermi2, ao_integrals_fermi3), axis=0)</span>
-<span class="c1">#     # print(operator_fermi.ao_integrals.shape)</span>
-<span class="c1">#     # import sys; sys.exit()</span>
-<span class="c1">#     operator_angmom.ao_integrals = ao_integrals_angmom</span>
-<span class="c1">#     operator_spnorb.ao_integrals = ao_integrals_spnorb</span>
-
-<span class="c1">#     nocc_a, nocc_b = mol.nelec</span>
-<span class="c1">#     nvirt_a, nvirt_b = norb - nocc_a, norb - nocc_b</span>
-<span class="c1">#     occupations = [nocc_a, nvirt_a, nocc_b, nvirt_b]</span>
-<span class="c1">#     cphf = CPHF(mocoeffs, fock, occupations)</span>
-<span class="c1">#     cphf.tei_mo = (tei_mo, )</span>
-<span class="c1">#     cphf.tei_mo_type = &#39;full&#39;</span>
-
-<span class="c1">#     # cphf.add_operator(operator_dipole)</span>
-<span class="c1">#     cphf.add_operator(operator_fermi)</span>
-<span class="c1">#     # cphf.add_operator(operator_angmom)</span>
-<span class="c1">#     cphf.add_operator(operator_spnorb)</span>
-
-<span class="c1">#     cphf.set_frequencies()</span>
-
-<span class="c1">#     for hamiltonian in (&#39;rpa&#39;, &#39;tda&#39;):</span>
-<span class="c1">#         for spin in (&#39;singlet&#39;, &#39;triplet&#39;):</span>
-<span class="c1">#             print(&#39;hamiltonian: {}, spin: {}&#39;.format(hamiltonian, spin))</span>
-<span class="c1">#             cphf.run(hamiltonian=hamiltonian, spin=spin)</span>
-<span class="c1">#             thresh = 1.0e-10</span>
-<span class="c1">#             cphf.results[0][cphf.results[0] &lt; thresh] = 0.0</span>
-<span class="c1">#             print(cphf.results[0])</span>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="n">test_final_result_rhf_h2o_sto3g_rpa_singlet</span><span class="p">()</span>
