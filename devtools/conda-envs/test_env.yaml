@@ -12,3 +12,7 @@ dependencies:
   - pytest-cov
   - pip:
       - pyscf
+  # documentation
+  - sphinx
+  - sphinx_rtd_theme
+  - numpydoc
