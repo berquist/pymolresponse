@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyresponse package &mdash; pyresponse  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="contents.html" class="icon icon-home"> pyresponse
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html">pyresponse</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="contents.html">pyresponse</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="contents.html" class="icon icon-home"></a> &raquo;</li>
+      <li>pyresponse package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/pyresponse.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pyresponse-package">
+<h1>pyresponse package<a class="headerlink" href="#pyresponse-package" title="Permalink to this headline"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
+</section>
+<section id="module-pyresponse.ao2mo">
+<span id="pyresponse-ao2mo-module"></span><h2>pyresponse.ao2mo module<a class="headerlink" href="#module-pyresponse.ao2mo" title="Permalink to this headline"></a></h2>
+<p>Tools for performing AO-to-MO transformations of two-electron integrals.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyresponse.ao2mo.AO2MO">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyresponse.ao2mo.</span></span><span class="sig-name descname"><span class="pre">AO2MO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">C</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occupations</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyresponse/ao2mo.html#AO2MO"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.ao2mo.AO2MO" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Interface for performing AO-to-MO tranformations of two-electron integrals.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.ao2mo.AO2MO.perform_rhf_full">
+<span class="sig-name descname"><span class="pre">perform_rhf_full</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyresponse/ao2mo.html#AO2MO.perform_rhf_full"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.ao2mo.AO2MO.perform_rhf_full" title="Permalink to this definition"></a></dt>
+<dd><p>Perform the transformation <span class="math notranslate nohighlight">\((\mu\nu|\lambda\sigma) \rightarrow (pq|rs)\)</span>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.ao2mo.AO2MO.perform_rhf_partial">
+<span class="sig-name descname"><span class="pre">perform_rhf_partial</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyresponse/ao2mo.html#AO2MO.perform_rhf_partial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.ao2mo.AO2MO.perform_rhf_partial" title="Permalink to this definition"></a></dt>
+<dd><p>Perform the transformation <span class="math notranslate nohighlight">\((\mu\nu|\lambda\sigma) \rightarrow (ia|jb), (ij|ab)\)</span>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.ao2mo.AO2MO.perform_uhf_full">
+<span class="sig-name descname"><span class="pre">perform_uhf_full</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyresponse/ao2mo.html#AO2MO.perform_uhf_full"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.ao2mo.AO2MO.perform_uhf_full" title="Permalink to this definition"></a></dt>
+<dd><p>Perform the transformation <span class="math notranslate nohighlight">\((\mu\nu|\lambda\sigma) \rightarrow (p^{\alpha}q^{\alpha}|r^{\alpha}s^{\alpha}), (p^{\alpha}q^{\alpha}|r^{\beta}s^{\beta}), (p^{\beta}q^{\beta}|r^{\alpha}s^{\alpha}), (p^{\beta}q^{\beta}|r^{\beta}s^{\beta})\)</span>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.ao2mo.AO2MO.perform_uhf_partial">
+<span class="sig-name descname"><span class="pre">perform_uhf_partial</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyresponse/ao2mo.html#AO2MO.perform_uhf_partial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.ao2mo.AO2MO.perform_uhf_partial" title="Permalink to this definition"></a></dt>
+<dd><p>Perform the transformation <span class="math notranslate nohighlight">\((\mu\nu|\lambda\sigma) \rightarrow (i^{\alpha}a^{\alpha}|j^{\alpha}b^{\alpha}), (i^{\alpha}a^{\alpha}|j^{\beta}b^{\beta}), (i^{\beta}a^{\beta}|j^{\alpha}b^{\alpha}), (i^{\beta}a^{\beta}|j^{\beta}b^{\beta}), (i^{\alpha}j^{\alpha}|a^{\alpha}b^{\alpha}), (i^{\beta}j^{\beta}|a^{\beta}b^{\beta})\)</span>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.ao2mo.AO2MO.transform">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C1</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C2</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C3</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C4</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyresponse/ao2mo.html#AO2MO.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.ao2mo.AO2MO.transform" title="Permalink to this definition"></a></dt>
+<dd><p>Transforms the 4-index ERI I with the 4 transformation matrices C1 to C4.</p>
+</dd></dl>
+
+</dd></dl>
+
+digraph inheritanced480980c81 {
+bgcolor=transparent;
+rankdir=LR;
+size=&quot;8.0, 12.0&quot;;
+  &quot;pyresponse.ao2mo.AO2MO&quot; [URL=&quot;#pyresponse.ao2mo.AO2MO&quot;,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5),filled&quot;,target=&quot;_top&quot;,tooltip=&quot;Interface for performing AO-to-MO tranformations of two-electron integrals.&quot;];
+}
+</section>
+<section id="module-pyresponse.constants">
+<span id="pyresponse-constants-module"></span><h2>pyresponse.constants module<a class="headerlink" href="#module-pyresponse.constants" title="Permalink to this headline"></a></h2>
+<p>Storage of common physical constants. Uses <cite>scipy.constants</cite>: <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/constants.html">https://docs.scipy.org/doc/scipy/reference/constants.html</a>.</p>
+</section>
+<section id="module-pyresponse.cphf">
+<span id="pyresponse-cphf-module"></span><h2>pyresponse.cphf module<a class="headerlink" href="#module-pyresponse.cphf" title="Permalink to this headline"></a></h2>
+<p>Driver for solving the coupled perturbed Hartree-Fock (CPHF) equations.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyresponse.cphf.CPHF">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyresponse.cphf.</span></span><span class="sig-name descname"><span class="pre">CPHF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pyresponse.solvers.Solver</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyresponse/cphf.html#CPHF"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.cphf.CPHF" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyresponse.cphf.Driver" title="pyresponse.cphf.Driver"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyresponse.cphf.Driver</span></code></a></p>
+<p>Driver for solving the coupled perturbed Hartree-Fock (CPHF) equations.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.cphf.CPHF.add_operator">
+<span class="sig-name descname"><span class="pre">add_operator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">operator</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#pyresponse.operators.Operator" title="pyresponse.operators.Operator"><span class="pre">pyresponse.operators.Operator</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyresponse/cphf.html#CPHF.add_operator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.cphf.CPHF.add_operator" title="Permalink to this definition"></a></dt>
+<dd><p>Add an operator to the list of operators that will be used as the
+right-hand side perturbation.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.cphf.CPHF.form_results">
+<span class="sig-name descname"><span class="pre">form_results</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyresponse/cphf.html#CPHF.form_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.cphf.CPHF.form_results" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.cphf.CPHF.form_uncoupled_results">
+<span class="sig-name descname"><span class="pre">form_uncoupled_results</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyresponse/cphf.html#CPHF.form_uncoupled_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.cphf.CPHF.form_uncoupled_results" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.cphf.CPHF.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hamiltonian</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pyresponse.core.Hamiltonian</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pyresponse.core.Spin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">program</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pyresponse.core.Program</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">program_obj</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyresponse/cphf.html#CPHF.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.cphf.CPHF.run" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.cphf.CPHF.set_frequencies">
+<span class="sig-name descname"><span class="pre">set_frequencies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequencies</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyresponse/cphf.html#CPHF.set_frequencies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.cphf.CPHF.set_frequencies" title="Permalink to this definition"></a></dt>
+<dd><p>Set the frequencies <span class="math notranslate nohighlight">\(\omega_f\)</span> for which frequency-dependent
+CPHF is performed.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyresponse.cphf.Driver">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyresponse.cphf.</span></span><span class="sig-name descname"><span class="pre">Driver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pyresponse.solvers.Solver</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyresponse/cphf.html#Driver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.cphf.Driver" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.cphf.Driver.run">
+<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hamiltonian</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pyresponse.core.Hamiltonian</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pyresponse.core.Spin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">program</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pyresponse.core.Program</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">program_obj</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyresponse/cphf.html#Driver.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.cphf.Driver.run" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+digraph inheritanced9742716d1 {
+bgcolor=transparent;
+rankdir=LR;
+size=&quot;8.0, 12.0&quot;;
+  &quot;abc.ABC&quot; [fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5),filled&quot;,tooltip=&quot;Helper class that provides a standard way to create an ABC using&quot;];
+  &quot;pyresponse.cphf.CPHF&quot; [URL=&quot;#pyresponse.cphf.CPHF&quot;,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5),filled&quot;,target=&quot;_top&quot;,tooltip=&quot;Driver for solving the coupled perturbed Hartree-Fock (CPHF) equations.&quot;];
+  &quot;pyresponse.cphf.Driver&quot; -&gt; &quot;pyresponse.cphf.CPHF&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;pyresponse.cphf.Driver&quot; [URL=&quot;#pyresponse.cphf.Driver&quot;,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5),filled&quot;,target=&quot;_top&quot;];
+  &quot;abc.ABC&quot; -&gt; &quot;pyresponse.cphf.Driver&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+}
+</section>
+<section id="pyresponse-ecd-module">
+<h2>pyresponse.ecd module<a class="headerlink" href="#pyresponse-ecd-module" title="Permalink to this headline"></a></h2>
+</section>
+<section id="pyresponse-electric-module">
+<h2>pyresponse.electric module<a class="headerlink" href="#pyresponse-electric-module" title="Permalink to this headline"></a></h2>
+</section>
+<section id="module-pyresponse.explicit_equations_full">
+<span id="pyresponse-explicit-equations-full-module"></span><h2>pyresponse.explicit_equations_full module<a class="headerlink" href="#module-pyresponse.explicit_equations_full" title="Permalink to this headline"></a></h2>
+<p>Explicit equations for orbital Hessian terms using fully-transformed MO-basis two-electron integrals, <em>e.g.</em>, <span class="math notranslate nohighlight">\((pq|rs)\)</span>.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.explicit_equations_full.form_rpa_a_matrix_mo_singlet_full">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.explicit_equations_full.</span></span><span class="sig-name descname"><span class="pre">form_rpa_a_matrix_mo_singlet_full</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">E_MO</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TEI_MO</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nocc</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyresponse/explicit_equations_full.html#form_rpa_a_matrix_mo_singlet_full"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.explicit_equations_full.form_rpa_a_matrix_mo_singlet_full" title="Permalink to this definition"></a></dt>
+<dd><p>Form the A (CIS) matrix in the MO basis. [singlet]</p>
+<p>The equation for element <span class="math notranslate nohighlight">\(\{ia,jb\}\)</span> is
+<span class="math notranslate nohighlight">\(\left&lt;aj||ib\right&gt; = \left&lt;aj|ib\right&gt; -
+\left&lt;aj|bi\right&gt; = [ai|jb] - [ab|ji] = 2(ai|jb) - (ab|ji)\)</span>. It
+also includes the virt-occ energy difference on the diagonal.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.explicit_equations_full.form_rpa_a_matrix_mo_singlet_os_full">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.explicit_equations_full.</span></span><span class="sig-name descname"><span class="pre">form_rpa_a_matrix_mo_singlet_os_full</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">TEI_MO_xxyy</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nocc_x</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nocc_y</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyresponse/explicit_equations_full.html#form_rpa_a_matrix_mo_singlet_os_full"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.explicit_equations_full.form_rpa_a_matrix_mo_singlet_os_full" title="Permalink to this definition"></a></dt>
+<dd><p>Form the opposite-spin part of the A (CIS) matrix in the MO
+basis. [singlet]</p>
+<p>The equation for element <span class="math notranslate nohighlight">\(\{ia,jb\}\)</span> is <span class="math notranslate nohighlight">\(????\)</span>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.explicit_equations_full.form_rpa_a_matrix_mo_singlet_ss_full">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.explicit_equations_full.</span></span><span class="sig-name descname"><span class="pre">form_rpa_a_matrix_mo_singlet_ss_full</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">E_MO</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TEI_MO</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nocc</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyresponse/explicit_equations_full.html#form_rpa_a_matrix_mo_singlet_ss_full"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.explicit_equations_full.form_rpa_a_matrix_mo_singlet_ss_full" title="Permalink to this definition"></a></dt>
+<dd><p>Form the same-spin part of the A (CIS) matrix in the MO
+basis. [singlet]</p>
+<p>The equation for element <span class="math notranslate nohighlight">\(\{ia,jb\}\)</span> is <span class="math notranslate nohighlight">\(????\)</span>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.explicit_equations_full.form_rpa_a_matrix_mo_triplet_full">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.explicit_equations_full.</span></span><span class="sig-name descname"><span class="pre">form_rpa_a_matrix_mo_triplet_full</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">E_MO</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TEI_MO</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nocc</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyresponse/explicit_equations_full.html#form_rpa_a_matrix_mo_triplet_full"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.explicit_equations_full.form_rpa_a_matrix_mo_triplet_full" title="Permalink to this definition"></a></dt>
+<dd><p>Form the A (CIS) matrix in the MO basis. [triplet]</p>
+<p>The equation for element <span class="math notranslate nohighlight">\(\{ia,jb\}\)</span> is <span class="math notranslate nohighlight">\(-
+\left&lt;aj|bi\right&gt; = - [ab|ji] = - (ab|ji)\)</span>. It also includes the
+virt-occ energy difference on the diagonal.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.explicit_equations_full.form_rpa_b_matrix_mo_singlet_full">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.explicit_equations_full.</span></span><span class="sig-name descname"><span class="pre">form_rpa_b_matrix_mo_singlet_full</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">TEI_MO</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nocc</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyresponse/explicit_equations_full.html#form_rpa_b_matrix_mo_singlet_full"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.explicit_equations_full.form_rpa_b_matrix_mo_singlet_full" title="Permalink to this definition"></a></dt>
+<dd><p>Form the B matrix for RPA in the MO basis. [singlet]</p>
+<p>The equation for element <span class="math notranslate nohighlight">\(\{ia,jb\}\)</span> is
+<span class="math notranslate nohighlight">\(\left&lt;ab||ij\right&gt; = \left&lt;ab|ij\right&gt; -
+\left&lt;ab|ji\right&gt; = [ai|bj] - [aj|bi] = 2(ai|bj) - (aj|bi)\)</span>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.explicit_equations_full.form_rpa_b_matrix_mo_singlet_os_full">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.explicit_equations_full.</span></span><span class="sig-name descname"><span class="pre">form_rpa_b_matrix_mo_singlet_os_full</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">TEI_MO_xxyy</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nocc_x</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nocc_y</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyresponse/explicit_equations_full.html#form_rpa_b_matrix_mo_singlet_os_full"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.explicit_equations_full.form_rpa_b_matrix_mo_singlet_os_full" title="Permalink to this definition"></a></dt>
+<dd><p>Form the opposite-spin part of the RPA B matrix in the MO
+basis. [singlet]</p>
+<p>The equation for element <span class="math notranslate nohighlight">\(\{ia,jb\}\)</span> is <span class="math notranslate nohighlight">\(????\)</span>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.explicit_equations_full.form_rpa_b_matrix_mo_singlet_ss_full">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.explicit_equations_full.</span></span><span class="sig-name descname"><span class="pre">form_rpa_b_matrix_mo_singlet_ss_full</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">TEI_MO</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nocc</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyresponse/explicit_equations_full.html#form_rpa_b_matrix_mo_singlet_ss_full"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.explicit_equations_full.form_rpa_b_matrix_mo_singlet_ss_full" title="Permalink to this definition"></a></dt>
+<dd><p>Form the same-spin part of the RPA B matrix in the MO
+basis. [singlet]</p>
+<p>The equation for element <span class="math notranslate nohighlight">\(\{ia,jb\}\)</span> is <span class="math notranslate nohighlight">\(????\)</span>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.explicit_equations_full.form_rpa_b_matrix_mo_triplet_full">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.explicit_equations_full.</span></span><span class="sig-name descname"><span class="pre">form_rpa_b_matrix_mo_triplet_full</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">TEI_MO</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nocc</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyresponse/explicit_equations_full.html#form_rpa_b_matrix_mo_triplet_full"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.explicit_equations_full.form_rpa_b_matrix_mo_triplet_full" title="Permalink to this definition"></a></dt>
+<dd><p>Form the B matrix for RPA in the MO basis. [triplet]</p>
+<p>The equation for element <span class="math notranslate nohighlight">\(\{ia,jb\}\)</span> is <span class="math notranslate nohighlight">\(????\)</span>.</p>
+</dd></dl>
+
+</section>
+<section id="module-pyresponse.explicit_equations_partial">
+<span id="pyresponse-explicit-equations-partial-module"></span><h2>pyresponse.explicit_equations_partial module<a class="headerlink" href="#module-pyresponse.explicit_equations_partial" title="Permalink to this headline"></a></h2>
+<p>Explicit equations for orbital Hessian terms using partially-transformed MO-basis two-electron integrals, <em>e.g.</em>, <span class="math notranslate nohighlight">\((ia|jb), (ij|ab)\)</span>.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.explicit_equations_partial.form_rpa_a_matrix_mo_singlet_os_partial">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.explicit_equations_partial.</span></span><span class="sig-name descname"><span class="pre">form_rpa_a_matrix_mo_singlet_os_partial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">TEI_MO_iajb_xxyy</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyresponse/explicit_equations_partial.html#form_rpa_a_matrix_mo_singlet_os_partial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.explicit_equations_partial.form_rpa_a_matrix_mo_singlet_os_partial" title="Permalink to this definition"></a></dt>
+<dd><p>Form the opposite-spin part of the A (CIS) matrix in the MO
+basis. [singlet]</p>
+<p>The equation for element <span class="math notranslate nohighlight">\(\{ia,jb\}\)</span> is <span class="math notranslate nohighlight">\(????\)</span>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.explicit_equations_partial.form_rpa_a_matrix_mo_singlet_partial">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.explicit_equations_partial.</span></span><span class="sig-name descname"><span class="pre">form_rpa_a_matrix_mo_singlet_partial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">E_MO</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TEI_MO_iajb</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TEI_MO_ijab</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyresponse/explicit_equations_partial.html#form_rpa_a_matrix_mo_singlet_partial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.explicit_equations_partial.form_rpa_a_matrix_mo_singlet_partial" title="Permalink to this definition"></a></dt>
+<dd><p>Form the A (CIS) matrix in the MO basis. [singlet]</p>
+<p>The equation for element <span class="math notranslate nohighlight">\(\{ia,jb\}\)</span> is
+<span class="math notranslate nohighlight">\(\left&lt;aj||ib\right&gt; = \left&lt;aj|ib\right&gt; -
+\left&lt;aj|bi\right&gt; = [ai|jb] - [ab|ji] = 2(ai|jb) - (ab|ji)\)</span>. It
+also includes the virt-occ energy difference on the diagonal.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.explicit_equations_partial.form_rpa_a_matrix_mo_singlet_ss_partial">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.explicit_equations_partial.</span></span><span class="sig-name descname"><span class="pre">form_rpa_a_matrix_mo_singlet_ss_partial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">E_MO</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TEI_MO_iajb</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TEI_MO_ijab</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyresponse/explicit_equations_partial.html#form_rpa_a_matrix_mo_singlet_ss_partial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.explicit_equations_partial.form_rpa_a_matrix_mo_singlet_ss_partial" title="Permalink to this definition"></a></dt>
+<dd><p>Form the same-spin part of the A (CIS) matrix in the MO
+basis. [singlet]</p>
+<p>The equation for element <span class="math notranslate nohighlight">\(\{ia,jb\}\)</span> is <span class="math notranslate nohighlight">\(????\)</span>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.explicit_equations_partial.form_rpa_a_matrix_mo_triplet_partial">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.explicit_equations_partial.</span></span><span class="sig-name descname"><span class="pre">form_rpa_a_matrix_mo_triplet_partial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">E_MO</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TEI_MO_ijab</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyresponse/explicit_equations_partial.html#form_rpa_a_matrix_mo_triplet_partial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.explicit_equations_partial.form_rpa_a_matrix_mo_triplet_partial" title="Permalink to this definition"></a></dt>
+<dd><p>Form the A (CIS) matrix in the MO basis. [triplet]</p>
+<p>The equation for element <span class="math notranslate nohighlight">\(\{ia,jb\}\)</span> is <span class="math notranslate nohighlight">\(-
+\left&lt;aj|bi\right&gt; = - [ab|ji] = - (ab|ji)\)</span>. It also includes the
+virt-occ energy difference on the diagonal.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.explicit_equations_partial.form_rpa_b_matrix_mo_singlet_os_partial">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.explicit_equations_partial.</span></span><span class="sig-name descname"><span class="pre">form_rpa_b_matrix_mo_singlet_os_partial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">TEI_MO_iajb_xxyy</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyresponse/explicit_equations_partial.html#form_rpa_b_matrix_mo_singlet_os_partial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.explicit_equations_partial.form_rpa_b_matrix_mo_singlet_os_partial" title="Permalink to this definition"></a></dt>
+<dd><p>Form the opposite-spin part of the RPA B matrix in the MO
+basis. [singlet]</p>
+<p>The equation for element <span class="math notranslate nohighlight">\(\{ia,jb\}\)</span> is <span class="math notranslate nohighlight">\(????\)</span>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.explicit_equations_partial.form_rpa_b_matrix_mo_singlet_partial">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.explicit_equations_partial.</span></span><span class="sig-name descname"><span class="pre">form_rpa_b_matrix_mo_singlet_partial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">TEI_MO_iajb</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyresponse/explicit_equations_partial.html#form_rpa_b_matrix_mo_singlet_partial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.explicit_equations_partial.form_rpa_b_matrix_mo_singlet_partial" title="Permalink to this definition"></a></dt>
+<dd><p>Form the B matrix for RPA in the MO basis. [singlet]</p>
+<p>The equation for element <span class="math notranslate nohighlight">\(\{ia,jb\}\)</span> is
+<span class="math notranslate nohighlight">\(\left&lt;ab||ij\right&gt; = \left&lt;ab|ij\right&gt; -
+\left&lt;ab|ji\right&gt; = [ai|bj] - [aj|bi] = 2(ai|bj) - (aj|bi)\)</span>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.explicit_equations_partial.form_rpa_b_matrix_mo_singlet_ss_partial">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.explicit_equations_partial.</span></span><span class="sig-name descname"><span class="pre">form_rpa_b_matrix_mo_singlet_ss_partial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">TEI_MO_iajb</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyresponse/explicit_equations_partial.html#form_rpa_b_matrix_mo_singlet_ss_partial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.explicit_equations_partial.form_rpa_b_matrix_mo_singlet_ss_partial" title="Permalink to this definition"></a></dt>
+<dd><p>Form the same-spin part of the RPA B matrix in the MO
+basis. [singlet]</p>
+<p>The equation for element <span class="math notranslate nohighlight">\(\{ia,jb\}\)</span> is <span class="math notranslate nohighlight">\(????\)</span>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.explicit_equations_partial.form_rpa_b_matrix_mo_triplet_partial">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.explicit_equations_partial.</span></span><span class="sig-name descname"><span class="pre">form_rpa_b_matrix_mo_triplet_partial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">TEI_MO_iajb</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyresponse/explicit_equations_partial.html#form_rpa_b_matrix_mo_triplet_partial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.explicit_equations_partial.form_rpa_b_matrix_mo_triplet_partial" title="Permalink to this definition"></a></dt>
+<dd><p>Form the B matrix for RPA in the MO basis. [triplet]</p>
+<p>The equation for element <span class="math notranslate nohighlight">\(\{ia,jb\}\)</span> is <span class="math notranslate nohighlight">\(????\)</span>.</p>
+</dd></dl>
+
+</section>
+<section id="module-pyresponse.helpers">
+<span id="pyresponse-helpers-module"></span><h2>pyresponse.helpers module<a class="headerlink" href="#module-pyresponse.helpers" title="Permalink to this headline"></a></h2>
+<p>Utility functions that are core to calculating physical values.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.helpers.calc_center_of_mass">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.helpers.</span></span><span class="sig-name descname"><span class="pre">calc_center_of_mass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coords</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">masses</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyresponse/helpers.html#calc_center_of_mass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.helpers.calc_center_of_mass" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.helpers.calc_center_of_nuclear_charge">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.helpers.</span></span><span class="sig-name descname"><span class="pre">calc_center_of_nuclear_charge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coords</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charges</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyresponse/helpers.html#calc_center_of_nuclear_charge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.helpers.calc_center_of_nuclear_charge" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.helpers.get_isotopic_masses">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.helpers.</span></span><span class="sig-name descname"><span class="pre">get_isotopic_masses</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">charges</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyresponse/helpers.html#get_isotopic_masses"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.helpers.get_isotopic_masses" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.helpers.get_most_abundant_isotope">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.helpers.</span></span><span class="sig-name descname"><span class="pre">get_most_abundant_isotope</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">periodictable.core.Element</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">periodictable.core.Isotope</span></span></span><a class="reference internal" href="_modules/pyresponse/helpers.html#get_most_abundant_isotope"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.helpers.get_most_abundant_isotope" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.helpers.get_uhf_values">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.helpers.</span></span><span class="sig-name descname"><span class="pre">get_uhf_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mat_uhf_a</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mat_uhf_b</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pair_rohf</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nocc_a</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nvirt_a</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nocc_b</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nvirt_b</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pyresponse/helpers.html#get_uhf_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.helpers.get_uhf_values" title="Permalink to this definition"></a></dt>
+<dd><p>For a pair ROHF 1-based indices, find the corresponing alpha- and
+beta-spin UHF values.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.helpers.mat_uhf_to_packed_rohf">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.helpers.</span></span><span class="sig-name descname"><span class="pre">mat_uhf_to_packed_rohf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mat_alpha</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mat_beta</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indices_display_rohf</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyresponse/helpers.html#mat_uhf_to_packed_rohf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.helpers.mat_uhf_to_packed_rohf" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.helpers.nuclear_dipole_contribution">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.helpers.</span></span><span class="sig-name descname"><span class="pre">nuclear_dipole_contribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nuccoords</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nuccharges</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin_in_bohrs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyresponse/helpers.html#nuclear_dipole_contribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.helpers.nuclear_dipole_contribution" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-pyresponse.integrals">
+<span id="pyresponse-integrals-module"></span><h2>pyresponse.integrals module<a class="headerlink" href="#module-pyresponse.integrals" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyresponse.integrals.IntegralLabel">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyresponse.integrals.</span></span><span class="sig-name descname"><span class="pre">IntegralLabel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comp</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symmetry</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#pyresponse.integrals.IntegralSymmetry" title="pyresponse.integrals.IntegralSymmetry"><span class="pre">pyresponse.integrals.IntegralSymmetry</span></a></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">IntegralSymmetry.SYMMETRIC</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyresponse/integrals.html#IntegralLabel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.integrals.IntegralLabel" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyresponse.integrals.IntegralLabel.comp">
+<span class="sig-name descname"><span class="pre">comp</span></span><a class="headerlink" href="#pyresponse.integrals.IntegralLabel.comp" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyresponse.integrals.IntegralLabel.label">
+<span class="sig-name descname"><span class="pre">label</span></span><a class="headerlink" href="#pyresponse.integrals.IntegralLabel.label" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyresponse.integrals.IntegralLabel.symmetry">
+<span class="sig-name descname"><span class="pre">symmetry</span></span><a class="headerlink" href="#pyresponse.integrals.IntegralLabel.symmetry" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyresponse.integrals.IntegralSymmetry">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyresponse.integrals.</span></span><span class="sig-name descname"><span class="pre">IntegralSymmetry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyresponse/integrals.html#IntegralSymmetry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.integrals.IntegralSymmetry" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyresponse.integrals.IntegralSymmetry.ANTISYMMETRIC">
+<span class="sig-name descname"><span class="pre">ANTISYMMETRIC</span></span><em class="property"> <span class="pre">=</span> <span class="pre">2</span></em><a class="headerlink" href="#pyresponse.integrals.IntegralSymmetry.ANTISYMMETRIC" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyresponse.integrals.IntegralSymmetry.SYMMETRIC">
+<span class="sig-name descname"><span class="pre">SYMMETRIC</span></span><em class="property"> <span class="pre">=</span> <span class="pre">1</span></em><a class="headerlink" href="#pyresponse.integrals.IntegralSymmetry.SYMMETRIC" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyresponse.integrals.Integrals">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyresponse.integrals.</span></span><span class="sig-name descname"><span class="pre">Integrals</span></span><a class="reference internal" href="_modules/pyresponse/integrals.html#Integrals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.integrals.Integrals" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.integrals.Integrals.integrals">
+<span class="sig-name descname"><span class="pre">integrals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#pyresponse.integrals.IntegralLabel" title="pyresponse.integrals.IntegralLabel"><span class="pre">pyresponse.integrals.IntegralLabel</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyresponse/integrals.html#Integrals.integrals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.integrals.Integrals.integrals" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyresponse.integrals.JK">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyresponse.integrals.</span></span><span class="sig-name descname"><span class="pre">JK</span></span><a class="reference internal" href="_modules/pyresponse/integrals.html#JK"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.integrals.JK" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>Interface for computing Coulomb and exchange integrals pre-contracted with
+the density.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.integrals.JK.compute_from_density">
+<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">compute_from_density</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">D</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pyresponse/integrals.html#JK.compute_from_density"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.integrals.JK.compute_from_density" title="Permalink to this definition"></a></dt>
+<dd><p>Compute J and K from some density.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.integrals.JK.compute_from_mocoeffs">
+<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">compute_from_mocoeffs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">C_left</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C_right</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pyresponse/integrals.html#JK.compute_from_mocoeffs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.integrals.JK.compute_from_mocoeffs" title="Permalink to this definition"></a></dt>
+<dd><p>Compute J and K from MO coefficients.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.integrals.parse_aoproper">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.integrals.</span></span><span class="sig-name descname"><span class="pre">parse_aoproper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">integralfilename</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pyresponse/integrals.html#parse_aoproper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.integrals.parse_aoproper" title="Permalink to this definition"></a></dt>
+<dd><p>Parse the AOPROPER file generated by DALTON and save the integral
+matrices to disk if asked.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.integrals.read_binary">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.integrals.</span></span><span class="sig-name descname"><span class="pre">read_binary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">binaryfilename</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bytes</span></span></span><a class="reference internal" href="_modules/pyresponse/integrals.html#read_binary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.integrals.read_binary" title="Permalink to this definition"></a></dt>
+<dd><p>Return the bytes present in the given binary file name.</p>
+</dd></dl>
+
+digraph inheritance4982429108 {
+bgcolor=transparent;
+rankdir=LR;
+size=&quot;8.0, 12.0&quot;;
+  &quot;abc.ABC&quot; [fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5),filled&quot;,tooltip=&quot;Helper class that provides a standard way to create an ABC using&quot;];
+  &quot;enum.Enum&quot; [fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5),filled&quot;,tooltip=&quot;Generic enumeration.&quot;];
+  &quot;pyresponse.integrals.IntegralLabel&quot; [URL=&quot;#pyresponse.integrals.IntegralLabel&quot;,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5),filled&quot;,target=&quot;_top&quot;];
+  &quot;pyresponse.integrals.IntegralSymmetry&quot; [URL=&quot;#pyresponse.integrals.IntegralSymmetry&quot;,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5),filled&quot;,target=&quot;_top&quot;,tooltip=&quot;An enumeration.&quot;];
+  &quot;enum.Enum&quot; -&gt; &quot;pyresponse.integrals.IntegralSymmetry&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;pyresponse.integrals.Integrals&quot; [URL=&quot;#pyresponse.integrals.Integrals&quot;,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5),filled&quot;,target=&quot;_top&quot;];
+  &quot;abc.ABC&quot; -&gt; &quot;pyresponse.integrals.Integrals&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;pyresponse.integrals.JK&quot; [URL=&quot;#pyresponse.integrals.JK&quot;,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5),filled&quot;,target=&quot;_top&quot;,tooltip=&quot;Interface for computing Coulomb and exchange integrals pre-contracted with&quot;];
+  &quot;abc.ABC&quot; -&gt; &quot;pyresponse.integrals.JK&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+}
+</section>
+<section id="pyresponse-iterators-module">
+<h2>pyresponse.iterators module<a class="headerlink" href="#pyresponse-iterators-module" title="Permalink to this headline"></a></h2>
+</section>
+<section id="pyresponse-magnetic-module">
+<h2>pyresponse.magnetic module<a class="headerlink" href="#pyresponse-magnetic-module" title="Permalink to this headline"></a></h2>
+</section>
+<section id="module-pyresponse.molecular_property">
+<span id="pyresponse-molecular-property-module"></span><h2>pyresponse.molecular_property module<a class="headerlink" href="#module-pyresponse.molecular_property" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyresponse.molecular_property.MolecularProperty">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyresponse.molecular_property.</span></span><span class="sig-name descname"><span class="pre">MolecularProperty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">program</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pyresponse.core.Program</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">program_obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">driver</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#pyresponse.cphf.Driver" title="pyresponse.cphf.Driver"><span class="pre">pyresponse.cphf.Driver</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">mocoeffs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moenergies</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occupations</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyresponse/molecular_property.html#MolecularProperty"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.molecular_property.MolecularProperty" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>A molecular property that is calculated from one or more operators.</p>
+<p>The</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.molecular_property.MolecularProperty.form_operators">
+<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">form_operators</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyresponse/molecular_property.html#MolecularProperty.form_operators"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.molecular_property.MolecularProperty.form_operators" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.molecular_property.MolecularProperty.form_results">
+<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">form_results</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyresponse/molecular_property.html#MolecularProperty.form_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.molecular_property.MolecularProperty.form_results" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.molecular_property.MolecularProperty.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hamiltonian</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pyresponse.core.Hamiltonian</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pyresponse.core.Spin</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyresponse/molecular_property.html#MolecularProperty.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.molecular_property.MolecularProperty.run" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyresponse.molecular_property.ResponseProperty">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyresponse.molecular_property.</span></span><span class="sig-name descname"><span class="pre">ResponseProperty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">program</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pyresponse.core.Program</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">program_obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">driver</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#pyresponse.cphf.CPHF" title="pyresponse.cphf.CPHF"><span class="pre">pyresponse.cphf.CPHF</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">mocoeffs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moenergies</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occupations</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequencies</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyresponse/molecular_property.html#ResponseProperty"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.molecular_property.ResponseProperty" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyresponse.molecular_property.MolecularProperty" title="pyresponse.molecular_property.MolecularProperty"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyresponse.molecular_property.MolecularProperty</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>A molecular property that is calculated as the response to one or more
+perturbations, each represented by an operator.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.molecular_property.ResponseProperty.form_operators">
+<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">form_operators</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyresponse/molecular_property.html#ResponseProperty.form_operators"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.molecular_property.ResponseProperty.form_operators" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.molecular_property.ResponseProperty.form_results">
+<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">form_results</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyresponse/molecular_property.html#ResponseProperty.form_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.molecular_property.ResponseProperty.form_results" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyresponse.molecular_property.TransitionProperty">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyresponse.molecular_property.</span></span><span class="sig-name descname"><span class="pre">TransitionProperty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">program</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pyresponse.core.Program</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">program_obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">driver</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#pyresponse.td.TDHF" title="pyresponse.td.TDHF"><span class="pre">pyresponse.td.TDHF</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">mocoeffs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moenergies</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occupations</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">do_tda</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyresponse/molecular_property.html#TransitionProperty"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.molecular_property.TransitionProperty" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyresponse.molecular_property.MolecularProperty" title="pyresponse.molecular_property.MolecularProperty"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyresponse.molecular_property.MolecularProperty</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.molecular_property.TransitionProperty.form_operators">
+<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">form_operators</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyresponse/molecular_property.html#TransitionProperty.form_operators"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.molecular_property.TransitionProperty.form_operators" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.molecular_property.TransitionProperty.form_results">
+<em class="property"><span class="pre">abstract</span> </em><span class="sig-name descname"><span class="pre">form_results</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyresponse/molecular_property.html#TransitionProperty.form_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.molecular_property.TransitionProperty.form_results" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+digraph inheritance1545ff0818 {
+bgcolor=transparent;
+rankdir=LR;
+size=&quot;8.0, 12.0&quot;;
+  &quot;abc.ABC&quot; [fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5),filled&quot;,tooltip=&quot;Helper class that provides a standard way to create an ABC using&quot;];
+  &quot;pyresponse.molecular_property.MolecularProperty&quot; [URL=&quot;#pyresponse.molecular_property.MolecularProperty&quot;,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5),filled&quot;,target=&quot;_top&quot;,tooltip=&quot;A molecular property that is calculated from one or more operators.&quot;];
+  &quot;abc.ABC&quot; -&gt; &quot;pyresponse.molecular_property.MolecularProperty&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;pyresponse.molecular_property.ResponseProperty&quot; [URL=&quot;#pyresponse.molecular_property.ResponseProperty&quot;,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5),filled&quot;,target=&quot;_top&quot;,tooltip=&quot;A molecular property that is calculated as the response to one or more&quot;];
+  &quot;pyresponse.molecular_property.MolecularProperty&quot; -&gt; &quot;pyresponse.molecular_property.ResponseProperty&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;abc.ABC&quot; -&gt; &quot;pyresponse.molecular_property.ResponseProperty&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;pyresponse.molecular_property.TransitionProperty&quot; [URL=&quot;#pyresponse.molecular_property.TransitionProperty&quot;,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5),filled&quot;,target=&quot;_top&quot;];
+  &quot;pyresponse.molecular_property.MolecularProperty&quot; -&gt; &quot;pyresponse.molecular_property.TransitionProperty&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;abc.ABC&quot; -&gt; &quot;pyresponse.molecular_property.TransitionProperty&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+}
+</section>
+<section id="module-pyresponse.operators">
+<span id="pyresponse-operators-module"></span><h2>pyresponse.operators module<a class="headerlink" href="#module-pyresponse.operators" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyresponse.operators.Operator">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyresponse.operators.</span></span><span class="sig-name descname"><span class="pre">Operator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_imaginary</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_spin_dependent</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">triplet</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slice_idx</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyresponse/operators.html#Operator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.operators.Operator" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Handle property integrals, taking them from the AO basis to a
+representation of a right-hand side perturbation for CPHF or
+transition properties.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.operators.Operator.calculate_ao_integrals">
+<span class="sig-name descname"><span class="pre">calculate_ao_integrals</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyresponse/operators.html#Operator.calculate_ao_integrals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.operators.Operator.calculate_ao_integrals" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.operators.Operator.form_rhs">
+<span class="sig-name descname"><span class="pre">form_rhs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">C</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occupations</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyresponse/operators.html#Operator.form_rhs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.operators.Operator.form_rhs" title="Permalink to this definition"></a></dt>
+<dd><p>Form the right-hand side for CPHF.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.operators.Operator.form_rhs_geometric">
+<span class="sig-name descname"><span class="pre">form_rhs_geometric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">C</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occupations</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">natoms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">MO_full</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mints</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_dict</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyresponse/operators.html#Operator.form_rhs_geometric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.operators.Operator.form_rhs_geometric" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+digraph inheritance2336ee0d4d {
+bgcolor=transparent;
+rankdir=LR;
+size=&quot;8.0, 12.0&quot;;
+  &quot;pyresponse.operators.Operator&quot; [URL=&quot;#pyresponse.operators.Operator&quot;,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5),filled&quot;,target=&quot;_top&quot;,tooltip=&quot;Handle property integrals, taking them from the AO basis to a&quot;];
+}
+</section>
+<section id="pyresponse-optrot-module">
+<h2>pyresponse.optrot module<a class="headerlink" href="#pyresponse-optrot-module" title="Permalink to this headline"></a></h2>
+</section>
+<section id="module-pyresponse.td">
+<span id="pyresponse-td-module"></span><h2>pyresponse.td module<a class="headerlink" href="#module-pyresponse.td" title="Permalink to this headline"></a></h2>
+<p>Drivers for solving the time-dependent Hartree-Fock (TDHF)
+equations.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyresponse.td.TDA">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyresponse.td.</span></span><span class="sig-name descname"><span class="pre">TDA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pyresponse.solvers.EigSolverTDA</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyresponse/td.html#TDA"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.td.TDA" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyresponse.td.TDHF" title="pyresponse.td.TDHF"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyresponse.td.TDHF</span></code></a></p>
+<p>Driver for solving the time-dependent Hartree-Fock equations with the
+Tamm-Dancoff approximation (TDA), also called the configuration
+interaction with single excitation (CIS) equations.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.td.TDA.form_results">
+<span class="sig-name descname"><span class="pre">form_results</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyresponse/td.html#TDA.form_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.td.TDA.form_results" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyresponse.td.TDHF">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyresponse.td.</span></span><span class="sig-name descname"><span class="pre">TDHF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solver</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pyresponse.solvers.Solver</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyresponse/td.html#TDHF"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.td.TDHF" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyresponse.cphf.CPHF" title="pyresponse.cphf.CPHF"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyresponse.cphf.CPHF</span></code></a></p>
+<p>Driver for solving the time-dependent Hartree-Fock (TDHF)
+equations, also called the random phase approximation (RPA)
+equations.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.td.TDHF.form_results">
+<span class="sig-name descname"><span class="pre">form_results</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyresponse/td.html#TDHF.form_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.td.TDHF.form_results" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.td.TDHF.print_results">
+<span class="sig-name descname"><span class="pre">print_results</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyresponse/td.html#TDHF.print_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.td.TDHF.print_results" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.td.TDHF.print_results_nwchem">
+<span class="sig-name descname"><span class="pre">print_results_nwchem</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/pyresponse/td.html#TDHF.print_results_nwchem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.td.TDHF.print_results_nwchem" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.td.TDHF.print_results_orca">
+<span class="sig-name descname"><span class="pre">print_results_orca</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cutoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyresponse/td.html#TDHF.print_results_orca"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.td.TDHF.print_results_orca" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.td.TDHF.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hamiltonian</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pyresponse.core.Hamiltonian</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pyresponse.core.Spin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">program</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pyresponse.core.Program</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">program_obj</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyresponse/td.html#TDHF.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.td.TDHF.run" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+digraph inheritancec636507aa9 {
+bgcolor=transparent;
+rankdir=LR;
+size=&quot;8.0, 12.0&quot;;
+  &quot;abc.ABC&quot; [fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5),filled&quot;,tooltip=&quot;Helper class that provides a standard way to create an ABC using&quot;];
+  &quot;pyresponse.cphf.CPHF&quot; [URL=&quot;#pyresponse.cphf.CPHF&quot;,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5),filled&quot;,target=&quot;_top&quot;,tooltip=&quot;Driver for solving the coupled perturbed Hartree-Fock (CPHF) equations.&quot;];
+  &quot;pyresponse.cphf.Driver&quot; -&gt; &quot;pyresponse.cphf.CPHF&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;pyresponse.cphf.Driver&quot; [URL=&quot;#pyresponse.cphf.Driver&quot;,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5),filled&quot;,target=&quot;_top&quot;];
+  &quot;abc.ABC&quot; -&gt; &quot;pyresponse.cphf.Driver&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;pyresponse.td.TDA&quot; [URL=&quot;#pyresponse.td.TDA&quot;,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5),filled&quot;,target=&quot;_top&quot;,tooltip=&quot;Driver for solving the time-dependent Hartree-Fock equations with the&quot;];
+  &quot;pyresponse.td.TDHF&quot; -&gt; &quot;pyresponse.td.TDA&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+  &quot;pyresponse.td.TDHF&quot; [URL=&quot;#pyresponse.td.TDHF&quot;,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5),filled&quot;,target=&quot;_top&quot;,tooltip=&quot;Driver for solving the time-dependent Hartree-Fock (TDHF)&quot;];
+  &quot;pyresponse.cphf.CPHF&quot; -&gt; &quot;pyresponse.td.TDHF&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
+}
+</section>
+<section id="module-pyresponse.utils">
+<span id="pyresponse-utils-module"></span><h2>pyresponse.utils module<a class="headerlink" href="#module-pyresponse.utils" title="Permalink to this headline"></a></h2>
+<p>Utility functions that are not core to calculating physical values.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyresponse.utils.Splitter">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyresponse.utils.</span></span><span class="sig-name descname"><span class="pre">Splitter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widths</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyresponse/utils.html#Splitter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.utils.Splitter" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Split a line based not on a character, but a given number of field
+widths.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.utils.Splitter.split">
+<span class="sig-name descname"><span class="pre">split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">truncate</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pyresponse/utils.html#Splitter.split"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.utils.Splitter.split" title="Permalink to this definition"></a></dt>
+<dd><p>Split the given line using the field widths passed in on class
+initialization.</p>
+<p>Handle lines that contain fewer fields than specified in the
+widths; they are added as empty strings. If <cite>truncate</cite>, remove
+them.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.utils.fix_mocoeffs_shape">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.utils.</span></span><span class="sig-name descname"><span class="pre">fix_mocoeffs_shape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mocoeffs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyresponse/utils.html#fix_mocoeffs_shape"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.utils.fix_mocoeffs_shape" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.utils.fix_moenergies_shape">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.utils.</span></span><span class="sig-name descname"><span class="pre">fix_moenergies_shape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">moenergies</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyresponse/utils.html#fix_moenergies_shape"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.utils.fix_moenergies_shape" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.utils.flip_triangle_sign">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.utils.</span></span><span class="sig-name descname"><span class="pre">flip_triangle_sign</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">triangle</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'lower'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyresponse/utils.html#flip_triangle_sign"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.utils.flip_triangle_sign" title="Permalink to this definition"></a></dt>
+<dd><p>Flip the sign of either the lower or upper triangle of a sqare
+matrix. Assume nothing about its symmetry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>A</strong><span class="classifier">np.ndarray</span></dt><dd></dd>
+<dt><strong>triangle</strong><span class="classifier">{‘lower’, ‘upper’}</span></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>np.ndarray</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.utils.form_first_hyperpolarizability_averages">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.utils.</span></span><span class="sig-name descname"><span class="pre">form_first_hyperpolarizability_averages</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pyresponse/utils.html#form_first_hyperpolarizability_averages"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.utils.form_first_hyperpolarizability_averages" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.utils.form_indices_orbwin">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.utils.</span></span><span class="sig-name descname"><span class="pre">form_indices_orbwin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nocc</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nvirt</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pyresponse/utils.html#form_indices_orbwin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.utils.form_indices_orbwin" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.utils.form_indices_zero">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.utils.</span></span><span class="sig-name descname"><span class="pre">form_indices_zero</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nocc</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nvirt</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pyresponse/utils.html#form_indices_zero"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.utils.form_indices_zero" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.utils.form_results">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.utils.</span></span><span class="sig-name descname"><span class="pre">form_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vecs_property</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vecs_response</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyresponse/utils.html#form_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.utils.form_results" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.utils.form_vec_energy_differences">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.utils.</span></span><span class="sig-name descname"><span class="pre">form_vec_energy_differences</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">moene_occ</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moene_virt</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyresponse/utils.html#form_vec_energy_differences"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.utils.form_vec_energy_differences" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.utils.get_reference_value_from_file">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.utils.</span></span><span class="sig-name descname"><span class="pre">get_reference_value_from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">,</span> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hamiltonian</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_1</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_2</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/pyresponse/utils.html#get_reference_value_from_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.utils.get_reference_value_from_file" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.utils.matsym">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.utils.</span></span><span class="sig-name descname"><span class="pre">matsym</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">amat</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thrzer</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">1e-14</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/pyresponse/utils.html#matsym"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.utils.matsym" title="Permalink to this definition"></a></dt>
+<dd><ul class="simple">
+<li><p>Copied from <code class="docutils literal notranslate"><span class="pre">DALTON/gp/gphjj.F/MATSYM</span></code>.</p></li>
+<li><p><cite>thrzer</cite> taken from <code class="docutils literal notranslate"><span class="pre">DALTON/include/thrzer.h</span></code>.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>amat</strong><span class="classifier">np.ndarray</span></dt><dd></dd>
+<dt><strong>thrzer</strong><span class="classifier">float</span></dt><dd><p>Threshold below which a (floating point) number is considered
+zero.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>int</dt><dd><ul class="simple">
+<li><p>1 if the matrix is symmetric to threshold <cite>thrzer</cite></p></li>
+<li><p>2 if the matrix is antisymmetric to threshold <cite>thrzer</cite></p></li>
+<li><p>3 if all elements are below <cite>thrzer</cite></p></li>
+<li><p>0 otherwise (the matrix is unsymmetric about the diagonal)</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.utils.np_load">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.utils.</span></span><span class="sig-name descname"><span class="pre">np_load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyresponse/utils.html#np_load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.utils.np_load" title="Permalink to this definition"></a></dt>
+<dd><p>Read a file using NumPy.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.utils.occupations_from_sirifc">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.utils.</span></span><span class="sig-name descname"><span class="pre">occupations_from_sirifc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ifc</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyresponse/utils.html#occupations_from_sirifc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.utils.occupations_from_sirifc" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.utils.parse_int_file_2">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.utils.</span></span><span class="sig-name descname"><span class="pre">parse_int_file_2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dim</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyresponse/utils.html#parse_int_file_2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.utils.parse_int_file_2" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.utils.read_dalton_propfile">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.utils.</span></span><span class="sig-name descname"><span class="pre">read_dalton_propfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tmpdir</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pathlib.Path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyresponse/utils.html#read_dalton_propfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.utils.read_dalton_propfile" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.utils.read_file_1">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.utils.</span></span><span class="sig-name descname"><span class="pre">read_file_1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">,</span> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyresponse/utils.html#read_file_1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.utils.read_file_1" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.utils.read_file_2">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.utils.</span></span><span class="sig-name descname"><span class="pre">read_file_2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">,</span> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyresponse/utils.html#read_file_2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.utils.read_file_2" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.utils.read_file_3">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.utils.</span></span><span class="sig-name descname"><span class="pre">read_file_3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">,</span> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyresponse/utils.html#read_file_3"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.utils.read_file_3" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.utils.read_file_4">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.utils.</span></span><span class="sig-name descname"><span class="pre">read_file_4</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">,</span> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyresponse/utils.html#read_file_4"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.utils.read_file_4" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.utils.read_file_occupations">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.utils.</span></span><span class="sig-name descname"><span class="pre">read_file_occupations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">,</span> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyresponse/utils.html#read_file_occupations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.utils.read_file_occupations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.utils.repack_matrix_to_vector">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.utils.</span></span><span class="sig-name descname"><span class="pre">repack_matrix_to_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mat</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyresponse/utils.html#repack_matrix_to_vector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.utils.repack_matrix_to_vector" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.utils.repack_vector_to_matrix">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.utils.</span></span><span class="sig-name descname"><span class="pre">repack_vector_to_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vec</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyresponse/utils.html#repack_vector_to_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.utils.repack_vector_to_matrix" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.utils.screen">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.utils.</span></span><span class="sig-name descname"><span class="pre">screen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mat</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thresh</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">1e-16</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyresponse/utils.html#screen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.utils.screen" title="Permalink to this definition"></a></dt>
+<dd><p>Set all values smaller than the given threshold to zero
+(considering them as numerical noise).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>mat</strong><span class="classifier">np.ndarray</span></dt><dd></dd>
+<dt><strong>thresh</strong><span class="classifier">float</span></dt><dd><p>Threshold below which all elements of <cite>mat</cite> smaller than
+<cite>thresh</cite> are set to zero.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>np.ndarray</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.utils.tensor_printer">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.utils.</span></span><span class="sig-name descname"><span class="pre">tensor_printer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tensor</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pyresponse/utils.html#tensor_printer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.utils.tensor_printer" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+digraph inheritancea9fd25cb69 {
+bgcolor=transparent;
+rankdir=LR;
+size=&quot;8.0, 12.0&quot;;
+  &quot;pyresponse.utils.Splitter&quot; [URL=&quot;#pyresponse.utils.Splitter&quot;,fillcolor=white,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5),filled&quot;,target=&quot;_top&quot;,tooltip=&quot;Split a line based not on a character, but a given number of field&quot;];
+}
+</section>
+<section id="module-pyresponse">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyresponse" title="Permalink to this headline"></a></h2>
+<p>isort:skip_file</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2019, Eric Berquist.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

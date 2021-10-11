@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyresponse &mdash; pyresponse  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Table of Contents" href="contents.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="contents.html" class="icon icon-home"> pyresponse
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">pyresponse</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#other-python-dependencies">Other Python dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#testing">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#caveats">Caveats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#desired-features-in-no-specific-order">Desired features (in no specific order)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#desired-features-that-don-t-fix-the-caveats">Desired features that don’t fix the caveats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="contents.html">pyresponse</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="contents.html" class="icon icon-home"></a> &raquo;</li>
+      <li>pyresponse</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pyresponse">
+<h1>pyresponse<a class="headerlink" href="#pyresponse" title="Permalink to this headline"></a></h1>
+<p>Molecular frequency-dependent response properties for arbitrary operators.</p>
+<p><a class="reference external" href="https://travis-ci.org/berquist/pyresponse">build status</a>
+<a class="reference external" href="https://codecov.io/gh/berquist/pyresponse">codecov</a>
+<a class="reference external" href="https://github.com/berquist/pyresponse/blob/master/LICENSE">license</a></p>
+<p>For documentation, go to <a class="reference external" href="https://berquist.github.io/pyresponse_docs/">https://berquist.github.io/pyresponse_docs/</a>.</p>
+<p>Currently, the goal is to provide:</p>
+<ol class="arabic simple">
+<li><p>a pedagogical example of a working molecular orbital response program as an almost direct translation from equations to code,</p></li>
+<li><p>an implementation that gives “exact” results for testing, and</p></li>
+<li><p>an example of testing and documenting scientific code using modern software development tools.</p></li>
+</ol>
+<section id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p>Python &gt;= [STRIKEOUT:3.2 because of pyscf]3.6 because of <a class="reference external" href="https://cito.github.io/blog/f-strings/">f-strings</a>.</p></li>
+<li><p><a class="reference external" href="https://github.com/sunqm/pyscf">pyscf</a> and its dependencies</p></li>
+</ul>
+<section id="other-python-dependencies">
+<h3>Other Python dependencies<a class="headerlink" href="#other-python-dependencies" title="Permalink to this headline"></a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/pkienzle/periodictable">periodictable</a> (for calculating the center of mass)</p></li>
+<li><p><a class="reference external" href="http://doc.pytest.org/en/latest/">pytest</a> (for testing)</p></li>
+<li><p><a class="reference external" href="https://github.com/vahtras/daltools">daltools</a> (for testing?)</p></li>
+<li><p><a class="reference external" href="https://github.com/cclib/cclib">cclib</a> (for ?)</p></li>
+</ul>
+</section>
+</section>
+<section id="testing">
+<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make pytest
+</pre></div>
+</div>
+</section>
+<section id="caveats">
+<h2>Caveats<a class="headerlink" href="#caveats" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p>RHF and UHF references only.</p></li>
+<li><p>Hartree-Fock and DFT only; no post-HF methods yet.</p></li>
+<li><p>Because the dimensioning of all arrays is based around the ov/vo space, methods that have non-zero contributions from the oo space (specifically derivatives of GIAOs/London orbitals w.r.t. the B-field) are not currently possible.</p></li>
+<li><p>No iterative schemes are implemented, only “exact” methods involving explicit construction of the full orbital Hessian and then inverting it (for response) or diagonalizing it (for excitation energies/transition moments/residues). Better have lots of memory!</p></li>
+<li><p>Linear response and single residues only.</p></li>
+<li><p><em>unrestricted diagonalization-based properties are not implemented/working</em></p></li>
+</ul>
+</section>
+<section id="desired-features-in-no-specific-order">
+<h2>Desired features (in no specific order)<a class="headerlink" href="#desired-features-in-no-specific-order" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p>Non-orthogonal orbitals. Requires switch from using MO energies to full Fock matrices.</p></li>
+<li><p>ROHF reference (compare against DALTON). Requires equations for the ROHF orbital Hessian.</p></li>
+<li><p>Post-HF support: MP2, CCSD, and CIS. Requires constriction of a Lagrangian.</p></li>
+<li><p>Support for GIAOs. Only requires re-dimensioning as long as AO matrix elements are available??</p></li>
+<li><p>At least one iterative method for each property type, for example DIIS for inversion and Davidson for diagonalization. Requires matrix-vector products.</p></li>
+<li><p>Quadratic response and associated single residues (needed for phosphorescence) and double residues (excited state expectation values and transition moments of linear operators). Requires permutation of linear response solution vectors.</p></li>
+</ul>
+</section>
+<section id="desired-features-that-don-t-fix-the-caveats">
+<h2>Desired features that don’t fix the caveats<a class="headerlink" href="#desired-features-that-don-t-fix-the-caveats" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p>Open-ended response: see <a class="reference external" href="https://doi.org/10.1002/jcc.23533">Ringholm, Jonsson, and Ruud</a>.</p></li>
+<li><p>Finite-difference for testing and higher-order response.</p></li>
+<li><p>Independence from pyscf, requires molecule/basis set handling, AO integral engine, and RHF/UHF solver.</p></li>
+<li><p>Interface to <a class="reference external" href="https://github.com/berquist/pyquante">PyQuante</a> and/or <a class="reference external" href="https://github.com/rpmuller/pyquante2">pyquante2</a>.</p></li>
+<li><p>Interface to <a class="reference external" href="https://github.com/psi4/psi4">Psi4</a> (through Python, not C++).</p></li>
+<li><p>Jupyter Notebook-based tutorials.</p></li>
+<li><p>Argument type-checking using <a class="reference external" href="http://mypy-lang.org/">mypy</a>.</p></li>
+</ul>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline"></a></h2>
+<p>Forthcoming…</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="contents.html" class="btn btn-neutral float-left" title="Table of Contents" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2019, Eric Berquist.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
