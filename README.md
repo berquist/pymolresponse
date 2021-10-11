@@ -2,9 +2,10 @@
 
 Molecular frequency-dependent response properties for arbitrary operators.
 
-[![build status](http://img.shields.io/travis/cclib/cclib/master.svg?style=flat)](https://travis-ci.org/berquist/pyresponse)
+[![build status](https://github.com/berquist/pyresponse/actions/workflows/test.yml/badge.svg)](https://github.com/berquist/pyresponse/blob/master/.github/workflows/test.yml)
 [![codecov](https://codecov.io/gh/berquist/pyresponse/branch/master/graph/badge.svg)](https://codecov.io/gh/berquist/pyresponse)
 [![license](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg?style=flat)](https://github.com/berquist/pyresponse/blob/master/LICENSE)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/berquist/pyresponse/master.svg)](https://results.pre-commit.ci/latest/github/berquist/pyresponse/master)
 
 For documentation, go to https://berquist.github.io/pyresponse_docs/.
 
