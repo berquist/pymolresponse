@@ -59,4 +59,5 @@ jobs:
         with:
           branch: gh-pages
           folder: docs/build/html
-        if: ${{ github.event_name == 'push' }}
+        # yamllint disable-line rule:line-length
+        if: ${{ github.event_name == 'push' and matrix.python-version == "3.9" }}
