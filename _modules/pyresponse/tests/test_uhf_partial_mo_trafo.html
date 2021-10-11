@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyresponse.tests.test_uhf_partial_mo_trafo &mdash; pyresponse  documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../contents.html" class="icon icon-home"> pyresponse
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">pyresponse</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../contents.html">pyresponse</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../contents.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>pyresponse.tests.test_uhf_partial_mo_trafo</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyresponse.tests.test_uhf_partial_mo_trafo</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">pyscf</span>
+
+<span class="kn">from</span> <span class="nn">pyresponse</span> <span class="kn">import</span> <span class="n">cphf</span>
+<span class="kn">from</span> <span class="nn">pyresponse</span> <span class="kn">import</span> <span class="n">explicit_equations_partial</span> <span class="k">as</span> <span class="n">eqns</span>
+<span class="kn">from</span> <span class="nn">pyresponse</span> <span class="kn">import</span> <span class="n">operators</span><span class="p">,</span> <span class="n">solvers</span>
+<span class="kn">from</span> <span class="nn">pyresponse.core</span> <span class="kn">import</span> <span class="n">AO2MOTransformationType</span><span class="p">,</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">Program</span><span class="p">,</span> <span class="n">Spin</span>
+<span class="kn">from</span> <span class="nn">pyresponse.pyscf</span> <span class="kn">import</span> <span class="n">molecules</span>
+
+<span class="kn">from</span> <span class="nn">.test_uhf</span> <span class="kn">import</span> <span class="n">ref_water_cation_UHF_HF_STO3G</span>
+
+
+<div class="viewcode-block" id="test_explicit_uhf_outside_solver"><a class="viewcode-back" href="../../../pyresponse.tests.html#pyresponse.tests.test_uhf_partial_mo_trafo.test_explicit_uhf_outside_solver">[docs]</a><span class="k">def</span> <span class="nf">test_explicit_uhf_outside_solver</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+    <span class="n">mol</span> <span class="o">=</span> <span class="n">molecules</span><span class="o">.</span><span class="n">molecule_water_sto3g</span><span class="p">()</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">charge</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">spin</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+
+    <span class="n">mf</span> <span class="o">=</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">scf</span><span class="o">.</span><span class="n">UHF</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+    <span class="n">mf</span><span class="o">.</span><span class="n">kernel</span><span class="p">()</span>
+    <span class="n">C_a</span> <span class="o">=</span> <span class="n">mf</span><span class="o">.</span><span class="n">mo_coeff</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">C_b</span> <span class="o">=</span> <span class="n">mf</span><span class="o">.</span><span class="n">mo_coeff</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">E_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">mf</span><span class="o">.</span><span class="n">mo_energy</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">E_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">mf</span><span class="o">.</span><span class="n">mo_energy</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">assert</span> <span class="n">C_a</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">C_b</span><span class="o">.</span><span class="n">shape</span>
+    <span class="k">assert</span> <span class="n">E_a</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">E_b</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">norb</span> <span class="o">=</span> <span class="n">C_a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">nocc_a</span><span class="p">,</span> <span class="n">nocc_b</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">nelec</span>
+    <span class="n">nvirt_a</span><span class="p">,</span> <span class="n">nvirt_b</span> <span class="o">=</span> <span class="n">norb</span> <span class="o">-</span> <span class="n">nocc_a</span><span class="p">,</span> <span class="n">norb</span> <span class="o">-</span> <span class="n">nocc_b</span>
+    <span class="n">occupations</span> <span class="o">=</span> <span class="p">[</span><span class="n">nocc_a</span><span class="p">,</span> <span class="n">nvirt_a</span><span class="p">,</span> <span class="n">nocc_b</span><span class="p">,</span> <span class="n">nvirt_b</span><span class="p">]</span>
+
+    <span class="n">C_occ_alph</span> <span class="o">=</span> <span class="n">C_a</span><span class="p">[:,</span> <span class="p">:</span><span class="n">nocc_a</span><span class="p">]</span>
+    <span class="n">C_virt_alph</span> <span class="o">=</span> <span class="n">C_a</span><span class="p">[:,</span> <span class="n">nocc_a</span><span class="p">:]</span>
+    <span class="n">C_occ_beta</span> <span class="o">=</span> <span class="n">C_b</span><span class="p">[:,</span> <span class="p">:</span><span class="n">nocc_b</span><span class="p">]</span>
+    <span class="n">C_virt_beta</span> <span class="o">=</span> <span class="n">C_b</span><span class="p">[:,</span> <span class="n">nocc_b</span><span class="p">:]</span>
+    <span class="n">C_ovov_aaaa</span> <span class="o">=</span> <span class="p">(</span><span class="n">C_occ_alph</span><span class="p">,</span> <span class="n">C_virt_alph</span><span class="p">,</span> <span class="n">C_occ_alph</span><span class="p">,</span> <span class="n">C_virt_alph</span><span class="p">)</span>
+    <span class="n">C_ovov_aabb</span> <span class="o">=</span> <span class="p">(</span><span class="n">C_occ_alph</span><span class="p">,</span> <span class="n">C_virt_alph</span><span class="p">,</span> <span class="n">C_occ_beta</span><span class="p">,</span> <span class="n">C_virt_beta</span><span class="p">)</span>
+    <span class="n">C_ovov_bbaa</span> <span class="o">=</span> <span class="p">(</span><span class="n">C_occ_beta</span><span class="p">,</span> <span class="n">C_virt_beta</span><span class="p">,</span> <span class="n">C_occ_alph</span><span class="p">,</span> <span class="n">C_virt_alph</span><span class="p">)</span>
+    <span class="n">C_ovov_bbbb</span> <span class="o">=</span> <span class="p">(</span><span class="n">C_occ_beta</span><span class="p">,</span> <span class="n">C_virt_beta</span><span class="p">,</span> <span class="n">C_occ_beta</span><span class="p">,</span> <span class="n">C_virt_beta</span><span class="p">)</span>
+    <span class="n">C_oovv_aaaa</span> <span class="o">=</span> <span class="p">(</span><span class="n">C_occ_alph</span><span class="p">,</span> <span class="n">C_occ_alph</span><span class="p">,</span> <span class="n">C_virt_alph</span><span class="p">,</span> <span class="n">C_virt_alph</span><span class="p">)</span>
+    <span class="n">C_oovv_bbbb</span> <span class="o">=</span> <span class="p">(</span><span class="n">C_occ_beta</span><span class="p">,</span> <span class="n">C_occ_beta</span><span class="p">,</span> <span class="n">C_virt_beta</span><span class="p">,</span> <span class="n">C_virt_beta</span><span class="p">)</span>
+    <span class="n">tei_mo_ovov_aaaa</span> <span class="o">=</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">ao2mo</span><span class="o">.</span><span class="n">general</span><span class="p">(</span>
+        <span class="n">mol</span><span class="p">,</span> <span class="n">C_ovov_aaaa</span><span class="p">,</span> <span class="n">aosym</span><span class="o">=</span><span class="s2">&quot;s4&quot;</span><span class="p">,</span> <span class="n">compact</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">5</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nocc_a</span><span class="p">,</span> <span class="n">nvirt_a</span><span class="p">,</span> <span class="n">nocc_a</span><span class="p">,</span> <span class="n">nvirt_a</span><span class="p">)</span>
+    <span class="n">tei_mo_ovov_aabb</span> <span class="o">=</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">ao2mo</span><span class="o">.</span><span class="n">general</span><span class="p">(</span>
+        <span class="n">mol</span><span class="p">,</span> <span class="n">C_ovov_aabb</span><span class="p">,</span> <span class="n">aosym</span><span class="o">=</span><span class="s2">&quot;s4&quot;</span><span class="p">,</span> <span class="n">compact</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">5</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nocc_a</span><span class="p">,</span> <span class="n">nvirt_a</span><span class="p">,</span> <span class="n">nocc_b</span><span class="p">,</span> <span class="n">nvirt_b</span><span class="p">)</span>
+    <span class="n">tei_mo_ovov_bbaa</span> <span class="o">=</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">ao2mo</span><span class="o">.</span><span class="n">general</span><span class="p">(</span>
+        <span class="n">mol</span><span class="p">,</span> <span class="n">C_ovov_bbaa</span><span class="p">,</span> <span class="n">aosym</span><span class="o">=</span><span class="s2">&quot;s4&quot;</span><span class="p">,</span> <span class="n">compact</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">5</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nocc_b</span><span class="p">,</span> <span class="n">nvirt_b</span><span class="p">,</span> <span class="n">nocc_a</span><span class="p">,</span> <span class="n">nvirt_a</span><span class="p">)</span>
+    <span class="n">tei_mo_ovov_bbbb</span> <span class="o">=</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">ao2mo</span><span class="o">.</span><span class="n">general</span><span class="p">(</span>
+        <span class="n">mol</span><span class="p">,</span> <span class="n">C_ovov_bbbb</span><span class="p">,</span> <span class="n">aosym</span><span class="o">=</span><span class="s2">&quot;s4&quot;</span><span class="p">,</span> <span class="n">compact</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">5</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nocc_b</span><span class="p">,</span> <span class="n">nvirt_b</span><span class="p">,</span> <span class="n">nocc_b</span><span class="p">,</span> <span class="n">nvirt_b</span><span class="p">)</span>
+    <span class="n">tei_mo_oovv_aaaa</span> <span class="o">=</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">ao2mo</span><span class="o">.</span><span class="n">general</span><span class="p">(</span>
+        <span class="n">mol</span><span class="p">,</span> <span class="n">C_oovv_aaaa</span><span class="p">,</span> <span class="n">aosym</span><span class="o">=</span><span class="s2">&quot;s4&quot;</span><span class="p">,</span> <span class="n">compact</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">5</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nocc_a</span><span class="p">,</span> <span class="n">nocc_a</span><span class="p">,</span> <span class="n">nvirt_a</span><span class="p">,</span> <span class="n">nvirt_a</span><span class="p">)</span>
+    <span class="n">tei_mo_oovv_bbbb</span> <span class="o">=</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">ao2mo</span><span class="o">.</span><span class="n">general</span><span class="p">(</span>
+        <span class="n">mol</span><span class="p">,</span> <span class="n">C_oovv_bbbb</span><span class="p">,</span> <span class="n">aosym</span><span class="o">=</span><span class="s2">&quot;s4&quot;</span><span class="p">,</span> <span class="n">compact</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">5</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nocc_b</span><span class="p">,</span> <span class="n">nocc_b</span><span class="p">,</span> <span class="n">nvirt_b</span><span class="p">,</span> <span class="n">nvirt_b</span><span class="p">)</span>
+
+    <span class="n">A_s_ss_a</span> <span class="o">=</span> <span class="n">eqns</span><span class="o">.</span><span class="n">form_rpa_a_matrix_mo_singlet_ss_partial</span><span class="p">(</span><span class="n">E_a</span><span class="p">,</span> <span class="n">tei_mo_ovov_aaaa</span><span class="p">,</span> <span class="n">tei_mo_oovv_aaaa</span><span class="p">)</span>
+    <span class="n">A_s_os_a</span> <span class="o">=</span> <span class="n">eqns</span><span class="o">.</span><span class="n">form_rpa_a_matrix_mo_singlet_os_partial</span><span class="p">(</span><span class="n">tei_mo_ovov_aabb</span><span class="p">)</span>
+    <span class="n">B_s_ss_a</span> <span class="o">=</span> <span class="n">eqns</span><span class="o">.</span><span class="n">form_rpa_b_matrix_mo_singlet_ss_partial</span><span class="p">(</span><span class="n">tei_mo_ovov_aaaa</span><span class="p">)</span>
+    <span class="n">B_s_os_a</span> <span class="o">=</span> <span class="n">eqns</span><span class="o">.</span><span class="n">form_rpa_b_matrix_mo_singlet_os_partial</span><span class="p">(</span><span class="n">tei_mo_ovov_aabb</span><span class="p">)</span>
+    <span class="n">A_s_ss_b</span> <span class="o">=</span> <span class="n">eqns</span><span class="o">.</span><span class="n">form_rpa_a_matrix_mo_singlet_ss_partial</span><span class="p">(</span><span class="n">E_b</span><span class="p">,</span> <span class="n">tei_mo_ovov_bbbb</span><span class="p">,</span> <span class="n">tei_mo_oovv_bbbb</span><span class="p">)</span>
+    <span class="n">A_s_os_b</span> <span class="o">=</span> <span class="n">eqns</span><span class="o">.</span><span class="n">form_rpa_a_matrix_mo_singlet_os_partial</span><span class="p">(</span><span class="n">tei_mo_ovov_bbaa</span><span class="p">)</span>
+    <span class="n">B_s_ss_b</span> <span class="o">=</span> <span class="n">eqns</span><span class="o">.</span><span class="n">form_rpa_b_matrix_mo_singlet_ss_partial</span><span class="p">(</span><span class="n">tei_mo_ovov_bbbb</span><span class="p">)</span>
+    <span class="n">B_s_os_b</span> <span class="o">=</span> <span class="n">eqns</span><span class="o">.</span><span class="n">form_rpa_b_matrix_mo_singlet_os_partial</span><span class="p">(</span><span class="n">tei_mo_ovov_bbaa</span><span class="p">)</span>
+    <span class="c1"># Since the &quot;triplet&quot; part contains no Coulomb contribution, and</span>
+    <span class="c1"># (xx|yy) is only in the Coulomb part, there is no ss/os</span>
+    <span class="c1"># separation for the triplet part.</span>
+
+    <span class="n">G_aa</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">block</span><span class="p">([[</span><span class="n">A_s_ss_a</span><span class="p">,</span> <span class="n">B_s_ss_a</span><span class="p">],</span> <span class="p">[</span><span class="n">B_s_ss_a</span><span class="p">,</span> <span class="n">A_s_ss_a</span><span class="p">]])</span>
+    <span class="n">G_bb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">block</span><span class="p">([[</span><span class="n">A_s_ss_b</span><span class="p">,</span> <span class="n">B_s_ss_b</span><span class="p">],</span> <span class="p">[</span><span class="n">B_s_ss_b</span><span class="p">,</span> <span class="n">A_s_ss_b</span><span class="p">]])</span>
+    <span class="n">G_ab</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">block</span><span class="p">([[</span><span class="n">A_s_os_a</span><span class="p">,</span> <span class="n">B_s_os_a</span><span class="p">],</span> <span class="p">[</span><span class="n">B_s_os_a</span><span class="p">,</span> <span class="n">A_s_os_a</span><span class="p">]])</span>
+    <span class="n">G_ba</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">block</span><span class="p">([[</span><span class="n">A_s_os_b</span><span class="p">,</span> <span class="n">B_s_os_b</span><span class="p">],</span> <span class="p">[</span><span class="n">B_s_os_b</span><span class="p">,</span> <span class="n">A_s_os_b</span><span class="p">]])</span>
+
+    <span class="n">G_aa_inv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">G_aa</span><span class="p">)</span>
+    <span class="n">G_bb_inv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">G_bb</span><span class="p">)</span>
+
+    <span class="n">nov_aa</span> <span class="o">=</span> <span class="n">nocc_a</span> <span class="o">*</span> <span class="n">nvirt_a</span>
+    <span class="n">nov_bb</span> <span class="o">=</span> <span class="n">nocc_b</span> <span class="o">*</span> <span class="n">nvirt_b</span>
+
+    <span class="k">assert</span> <span class="n">G_aa_inv</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">nov_aa</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">nov_aa</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">G_bb_inv</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">nov_bb</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">nov_bb</span><span class="p">)</span>
+
+    <span class="c1"># Form the operator-independent part of the response vectors.</span>
+    <span class="n">left_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">G_aa</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">G_ab</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">G_bb_inv</span><span class="p">,</span> <span class="n">G_ba</span><span class="p">)))</span>
+    <span class="n">left_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">G_bb</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">G_ba</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">G_aa_inv</span><span class="p">,</span> <span class="n">G_ab</span><span class="p">)))</span>
+
+    <span class="n">integrals_dipole_ao</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">intor</span><span class="p">(</span><span class="s2">&quot;cint1e_r_sph&quot;</span><span class="p">,</span> <span class="n">comp</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+    <span class="n">integrals_dipole_mo_ai_a</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">integrals_dipole_mo_ai_b</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">comp</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+
+        <span class="n">integrals_dipole_mo_ai_comp_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span>
+            <span class="n">C_a</span><span class="p">[:,</span> <span class="n">nocc_a</span><span class="p">:]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">integrals_dipole_ao</span><span class="p">[</span><span class="n">comp</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">C_a</span><span class="p">[:,</span> <span class="p">:</span><span class="n">nocc_a</span><span class="p">])</span>
+        <span class="p">)</span>
+        <span class="n">integrals_dipole_mo_ai_comp_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span>
+            <span class="n">C_b</span><span class="p">[:,</span> <span class="n">nocc_b</span><span class="p">:]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">integrals_dipole_ao</span><span class="p">[</span><span class="n">comp</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">C_b</span><span class="p">[:,</span> <span class="p">:</span><span class="n">nocc_b</span><span class="p">])</span>
+        <span class="p">)</span>
+
+        <span class="n">integrals_dipole_mo_ai_comp_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">integrals_dipole_mo_ai_comp_a</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;F&quot;</span><span class="p">)</span>
+        <span class="n">integrals_dipole_mo_ai_comp_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">integrals_dipole_mo_ai_comp_b</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;F&quot;</span><span class="p">)</span>
+
+        <span class="n">integrals_dipole_mo_ai_a</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">integrals_dipole_mo_ai_comp_a</span><span class="p">)</span>
+        <span class="n">integrals_dipole_mo_ai_b</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">integrals_dipole_mo_ai_comp_b</span><span class="p">)</span>
+
+    <span class="n">integrals_dipole_mo_ai_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">integrals_dipole_mo_ai_a</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">integrals_dipole_mo_ai_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">integrals_dipole_mo_ai_b</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="n">integrals_dipole_mo_ai_a_super</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">integrals_dipole_mo_ai_a</span><span class="p">,</span> <span class="o">-</span><span class="n">integrals_dipole_mo_ai_a</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span>
+    <span class="p">)</span>
+    <span class="n">integrals_dipole_mo_ai_b_super</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">integrals_dipole_mo_ai_b</span><span class="p">,</span> <span class="o">-</span><span class="n">integrals_dipole_mo_ai_b</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Form the operator-dependent part of the response vectors.</span>
+    <span class="n">right_a</span> <span class="o">=</span> <span class="n">integrals_dipole_mo_ai_a_super</span> <span class="o">-</span> <span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">G_ab</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">G_bb_inv</span><span class="p">,</span> <span class="n">integrals_dipole_mo_ai_b_super</span><span class="p">))</span>
+    <span class="p">)</span>
+    <span class="n">right_b</span> <span class="o">=</span> <span class="n">integrals_dipole_mo_ai_b_super</span> <span class="o">-</span> <span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">G_ba</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">G_aa_inv</span><span class="p">,</span> <span class="n">integrals_dipole_mo_ai_a_super</span><span class="p">))</span>
+    <span class="p">)</span>
+
+    <span class="c1"># The total response vector for each spin is the product of the</span>
+    <span class="c1"># operator-independent (left) and operator-dependent (right)</span>
+    <span class="c1"># parts.</span>
+    <span class="n">rspvec_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">left_a</span><span class="p">,</span> <span class="n">right_a</span><span class="p">)</span>
+    <span class="n">rspvec_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">left_b</span><span class="p">,</span> <span class="n">right_b</span><span class="p">)</span>
+
+    <span class="n">res_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">integrals_dipole_mo_ai_a_super</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">rspvec_a</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">res_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">integrals_dipole_mo_ai_b_super</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">rspvec_b</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">res_u</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">res_a</span> <span class="o">+</span> <span class="n">res_b</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">res_u</span><span class="p">)</span>
+
+    <span class="n">atol</span> <span class="o">=</span> <span class="mf">1.0e-5</span>
+    <span class="n">rtol</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+    <span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_allclose</span><span class="p">(</span><span class="n">res_u</span><span class="p">,</span> <span class="n">ref_water_cation_UHF_HF_STO3G</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="n">rtol</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">atol</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="test_explicit_uhf"><a class="viewcode-back" href="../../../pyresponse.tests.html#pyresponse.tests.test_uhf_partial_mo_trafo.test_explicit_uhf">[docs]</a><span class="k">def</span> <span class="nf">test_explicit_uhf</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+    <span class="n">mol</span> <span class="o">=</span> <span class="n">molecules</span><span class="o">.</span><span class="n">molecule_water_sto3g</span><span class="p">()</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">charge</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">spin</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+
+    <span class="n">mf</span> <span class="o">=</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">scf</span><span class="o">.</span><span class="n">UHF</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+    <span class="n">mf</span><span class="o">.</span><span class="n">kernel</span><span class="p">()</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">mf</span><span class="o">.</span><span class="n">mo_coeff</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">C_a</span> <span class="o">=</span> <span class="n">C</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+    <span class="n">C_b</span> <span class="o">=</span> <span class="n">C</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+    <span class="n">E_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">mf</span><span class="o">.</span><span class="n">mo_energy</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">E_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">mf</span><span class="o">.</span><span class="n">mo_energy</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">assert</span> <span class="n">C_a</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">C_b</span><span class="o">.</span><span class="n">shape</span>
+    <span class="k">assert</span> <span class="n">E_a</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">E_b</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">E</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">E_a</span><span class="p">,</span> <span class="n">E_b</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">norb</span> <span class="o">=</span> <span class="n">C_a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">nocc_a</span><span class="p">,</span> <span class="n">nocc_b</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">nelec</span>
+    <span class="n">nvirt_a</span><span class="p">,</span> <span class="n">nvirt_b</span> <span class="o">=</span> <span class="n">norb</span> <span class="o">-</span> <span class="n">nocc_a</span><span class="p">,</span> <span class="n">norb</span> <span class="o">-</span> <span class="n">nocc_b</span>
+    <span class="n">occupations</span> <span class="o">=</span> <span class="p">[</span><span class="n">nocc_a</span><span class="p">,</span> <span class="n">nvirt_a</span><span class="p">,</span> <span class="n">nocc_b</span><span class="p">,</span> <span class="n">nvirt_b</span><span class="p">]</span>
+
+    <span class="n">C_occ_alph</span> <span class="o">=</span> <span class="n">C_a</span><span class="p">[:,</span> <span class="p">:</span><span class="n">nocc_a</span><span class="p">]</span>
+    <span class="n">C_virt_alph</span> <span class="o">=</span> <span class="n">C_a</span><span class="p">[:,</span> <span class="n">nocc_a</span><span class="p">:]</span>
+    <span class="n">C_occ_beta</span> <span class="o">=</span> <span class="n">C_b</span><span class="p">[:,</span> <span class="p">:</span><span class="n">nocc_b</span><span class="p">]</span>
+    <span class="n">C_virt_beta</span> <span class="o">=</span> <span class="n">C_b</span><span class="p">[:,</span> <span class="n">nocc_b</span><span class="p">:]</span>
+    <span class="n">C_ovov_aaaa</span> <span class="o">=</span> <span class="p">(</span><span class="n">C_occ_alph</span><span class="p">,</span> <span class="n">C_virt_alph</span><span class="p">,</span> <span class="n">C_occ_alph</span><span class="p">,</span> <span class="n">C_virt_alph</span><span class="p">)</span>
+    <span class="n">C_ovov_aabb</span> <span class="o">=</span> <span class="p">(</span><span class="n">C_occ_alph</span><span class="p">,</span> <span class="n">C_virt_alph</span><span class="p">,</span> <span class="n">C_occ_beta</span><span class="p">,</span> <span class="n">C_virt_beta</span><span class="p">)</span>
+    <span class="n">C_ovov_bbaa</span> <span class="o">=</span> <span class="p">(</span><span class="n">C_occ_beta</span><span class="p">,</span> <span class="n">C_virt_beta</span><span class="p">,</span> <span class="n">C_occ_alph</span><span class="p">,</span> <span class="n">C_virt_alph</span><span class="p">)</span>
+    <span class="n">C_ovov_bbbb</span> <span class="o">=</span> <span class="p">(</span><span class="n">C_occ_beta</span><span class="p">,</span> <span class="n">C_virt_beta</span><span class="p">,</span> <span class="n">C_occ_beta</span><span class="p">,</span> <span class="n">C_virt_beta</span><span class="p">)</span>
+    <span class="n">C_oovv_aaaa</span> <span class="o">=</span> <span class="p">(</span><span class="n">C_occ_alph</span><span class="p">,</span> <span class="n">C_occ_alph</span><span class="p">,</span> <span class="n">C_virt_alph</span><span class="p">,</span> <span class="n">C_virt_alph</span><span class="p">)</span>
+    <span class="n">C_oovv_bbbb</span> <span class="o">=</span> <span class="p">(</span><span class="n">C_occ_beta</span><span class="p">,</span> <span class="n">C_occ_beta</span><span class="p">,</span> <span class="n">C_virt_beta</span><span class="p">,</span> <span class="n">C_virt_beta</span><span class="p">)</span>
+    <span class="n">tei_mo_ovov_aaaa</span> <span class="o">=</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">ao2mo</span><span class="o">.</span><span class="n">general</span><span class="p">(</span>
+        <span class="n">mol</span><span class="p">,</span> <span class="n">C_ovov_aaaa</span><span class="p">,</span> <span class="n">aosym</span><span class="o">=</span><span class="s2">&quot;s4&quot;</span><span class="p">,</span> <span class="n">compact</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">5</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nocc_a</span><span class="p">,</span> <span class="n">nvirt_a</span><span class="p">,</span> <span class="n">nocc_a</span><span class="p">,</span> <span class="n">nvirt_a</span><span class="p">)</span>
+    <span class="n">tei_mo_ovov_aabb</span> <span class="o">=</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">ao2mo</span><span class="o">.</span><span class="n">general</span><span class="p">(</span>
+        <span class="n">mol</span><span class="p">,</span> <span class="n">C_ovov_aabb</span><span class="p">,</span> <span class="n">aosym</span><span class="o">=</span><span class="s2">&quot;s4&quot;</span><span class="p">,</span> <span class="n">compact</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">5</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nocc_a</span><span class="p">,</span> <span class="n">nvirt_a</span><span class="p">,</span> <span class="n">nocc_b</span><span class="p">,</span> <span class="n">nvirt_b</span><span class="p">)</span>
+    <span class="n">tei_mo_ovov_bbaa</span> <span class="o">=</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">ao2mo</span><span class="o">.</span><span class="n">general</span><span class="p">(</span>
+        <span class="n">mol</span><span class="p">,</span> <span class="n">C_ovov_bbaa</span><span class="p">,</span> <span class="n">aosym</span><span class="o">=</span><span class="s2">&quot;s4&quot;</span><span class="p">,</span> <span class="n">compact</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">5</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nocc_b</span><span class="p">,</span> <span class="n">nvirt_b</span><span class="p">,</span> <span class="n">nocc_a</span><span class="p">,</span> <span class="n">nvirt_a</span><span class="p">)</span>
+    <span class="n">tei_mo_ovov_bbbb</span> <span class="o">=</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">ao2mo</span><span class="o">.</span><span class="n">general</span><span class="p">(</span>
+        <span class="n">mol</span><span class="p">,</span> <span class="n">C_ovov_bbbb</span><span class="p">,</span> <span class="n">aosym</span><span class="o">=</span><span class="s2">&quot;s4&quot;</span><span class="p">,</span> <span class="n">compact</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">5</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nocc_b</span><span class="p">,</span> <span class="n">nvirt_b</span><span class="p">,</span> <span class="n">nocc_b</span><span class="p">,</span> <span class="n">nvirt_b</span><span class="p">)</span>
+    <span class="n">tei_mo_oovv_aaaa</span> <span class="o">=</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">ao2mo</span><span class="o">.</span><span class="n">general</span><span class="p">(</span>
+        <span class="n">mol</span><span class="p">,</span> <span class="n">C_oovv_aaaa</span><span class="p">,</span> <span class="n">aosym</span><span class="o">=</span><span class="s2">&quot;s4&quot;</span><span class="p">,</span> <span class="n">compact</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">5</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nocc_a</span><span class="p">,</span> <span class="n">nocc_a</span><span class="p">,</span> <span class="n">nvirt_a</span><span class="p">,</span> <span class="n">nvirt_a</span><span class="p">)</span>
+    <span class="n">tei_mo_oovv_bbbb</span> <span class="o">=</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">ao2mo</span><span class="o">.</span><span class="n">general</span><span class="p">(</span>
+        <span class="n">mol</span><span class="p">,</span> <span class="n">C_oovv_bbbb</span><span class="p">,</span> <span class="n">aosym</span><span class="o">=</span><span class="s2">&quot;s4&quot;</span><span class="p">,</span> <span class="n">compact</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">5</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nocc_b</span><span class="p">,</span> <span class="n">nocc_b</span><span class="p">,</span> <span class="n">nvirt_b</span><span class="p">,</span> <span class="n">nvirt_b</span><span class="p">)</span>
+
+    <span class="n">integrals_dipole_ao</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">intor</span><span class="p">(</span><span class="s2">&quot;cint1e_r_sph&quot;</span><span class="p">,</span> <span class="n">comp</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+    <span class="n">solver</span> <span class="o">=</span> <span class="n">solvers</span><span class="o">.</span><span class="n">ExactInv</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">occupations</span><span class="p">)</span>
+
+    <span class="n">solver</span><span class="o">.</span><span class="n">tei_mo</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">tei_mo_ovov_aaaa</span><span class="p">,</span>
+        <span class="n">tei_mo_ovov_aabb</span><span class="p">,</span>
+        <span class="n">tei_mo_ovov_bbaa</span><span class="p">,</span>
+        <span class="n">tei_mo_ovov_bbbb</span><span class="p">,</span>
+        <span class="n">tei_mo_oovv_aaaa</span><span class="p">,</span>
+        <span class="n">tei_mo_oovv_bbbb</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">solver</span><span class="o">.</span><span class="n">tei_mo_type</span> <span class="o">=</span> <span class="n">AO2MOTransformationType</span><span class="o">.</span><span class="n">partial</span>
+
+    <span class="n">driver</span> <span class="o">=</span> <span class="n">cphf</span><span class="o">.</span><span class="n">CPHF</span><span class="p">(</span><span class="n">solver</span><span class="p">)</span>
+
+    <span class="n">operator_dipole</span> <span class="o">=</span> <span class="n">operators</span><span class="o">.</span><span class="n">Operator</span><span class="p">(</span>
+        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;dipole&quot;</span><span class="p">,</span> <span class="n">is_imaginary</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">is_spin_dependent</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="n">operator_dipole</span><span class="o">.</span><span class="n">ao_integrals</span> <span class="o">=</span> <span class="n">integrals_dipole_ao</span>
+    <span class="n">driver</span><span class="o">.</span><span class="n">add_operator</span><span class="p">(</span><span class="n">operator_dipole</span><span class="p">)</span>
+
+    <span class="n">driver</span><span class="o">.</span><span class="n">set_frequencies</span><span class="p">()</span>
+
+    <span class="n">driver</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+        <span class="n">hamiltonian</span><span class="o">=</span><span class="n">Hamiltonian</span><span class="o">.</span><span class="n">RPA</span><span class="p">,</span>
+        <span class="n">spin</span><span class="o">=</span><span class="n">Spin</span><span class="o">.</span><span class="n">singlet</span><span class="p">,</span>
+        <span class="n">program</span><span class="o">=</span><span class="n">Program</span><span class="o">.</span><span class="n">PySCF</span><span class="p">,</span>
+        <span class="n">program_obj</span><span class="o">=</span><span class="n">mol</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">driver</span><span class="o">.</span><span class="n">frequencies</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">driver</span><span class="o">.</span><span class="n">results</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+
+    <span class="n">atol</span> <span class="o">=</span> <span class="mf">1.0e-5</span>
+    <span class="n">rtol</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+    <span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_allclose</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">ref_water_cation_UHF_HF_STO3G</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="n">rtol</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">atol</span><span class="p">)</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">test_explicit_uhf_outside_solver</span><span class="p">()</span>
+    <span class="n">test_explicit_uhf</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Eric Berquist.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

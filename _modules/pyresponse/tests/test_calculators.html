@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyresponse.tests.test_calculators &mdash; pyresponse  documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../contents.html" class="icon icon-home"> pyresponse
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">pyresponse</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../contents.html">pyresponse</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../contents.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>pyresponse.tests.test_calculators</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyresponse.tests.test_calculators</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">cclib.io</span> <span class="kn">import</span> <span class="n">ccopen</span>
+<span class="kn">from</span> <span class="nn">cclib.parser.utils</span> <span class="kn">import</span> <span class="n">convertor</span>
+
+<span class="kn">import</span> <span class="nn">pyscf</span>
+
+<span class="kn">from</span> <span class="nn">pyresponse</span> <span class="kn">import</span> <span class="n">cphf</span><span class="p">,</span> <span class="n">operators</span><span class="p">,</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">utils</span>
+<span class="kn">from</span> <span class="nn">pyresponse.core</span> <span class="kn">import</span> <span class="n">AO2MOTransformationType</span><span class="p">,</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">Spin</span>
+<span class="kn">from</span> <span class="nn">pyresponse.dalton.utils</span> <span class="kn">import</span> <span class="n">dalton_label_to_operator</span>
+<span class="kn">from</span> <span class="nn">pyresponse.pyscf.ao2mo</span> <span class="kn">import</span> <span class="n">AO2MOpyscf</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">daltools</span> <span class="kn">import</span> <span class="n">mol</span> <span class="k">as</span> <span class="n">dalmol</span>
+    <span class="kn">from</span> <span class="nn">daltools</span> <span class="kn">import</span> <span class="n">sirifc</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+
+<div class="viewcode-block" id="calculate_disk_rhf"><a class="viewcode-back" href="../../../pyresponse.tests.html#pyresponse.tests.test_calculators.calculate_disk_rhf">[docs]</a><span class="k">def</span> <span class="nf">calculate_disk_rhf</span><span class="p">(</span>
+    <span class="n">testcasedir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
+    <span class="n">hamiltonian</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">spin</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">frequency</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">label_1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">label_2</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+
+    <span class="n">occupations</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">read_file_occupations</span><span class="p">(</span><span class="n">testcasedir</span> <span class="o">/</span> <span class="s2">&quot;occupations&quot;</span><span class="p">)</span>
+    <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">,</span> <span class="n">nvirt_beta</span> <span class="o">=</span> <span class="n">occupations</span>
+    <span class="k">assert</span> <span class="n">nocc_alph</span> <span class="o">==</span> <span class="n">nocc_beta</span>
+    <span class="k">assert</span> <span class="n">nvirt_alph</span> <span class="o">==</span> <span class="n">nvirt_beta</span>
+    <span class="n">norb</span> <span class="o">=</span> <span class="n">nocc_alph</span> <span class="o">+</span> <span class="n">nvirt_alph</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">read_file_3</span><span class="p">(</span><span class="n">testcasedir</span> <span class="o">/</span> <span class="s2">&quot;C&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">C</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="k">assert</span> <span class="n">C</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">norb</span>
+    <span class="n">nbasis</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">moene</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">read_file_2</span><span class="p">(</span><span class="n">testcasedir</span> <span class="o">/</span> <span class="s2">&quot;moene&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">moene</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="n">norb</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">moints_iajb_aaaa</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">read_file_4</span><span class="p">(</span><span class="n">testcasedir</span> <span class="o">/</span> <span class="s2">&quot;moints_iajb_aaaa&quot;</span><span class="p">)</span>
+    <span class="n">moints_ijab_aaaa</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">read_file_4</span><span class="p">(</span><span class="n">testcasedir</span> <span class="o">/</span> <span class="s2">&quot;moints_ijab_aaaa&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">moints_iajb_aaaa</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">,</span> <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">moints_ijab_aaaa</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">)</span>
+
+    <span class="n">operator_1</span> <span class="o">=</span> <span class="n">dalton_label_to_operator</span><span class="p">(</span><span class="n">label_1</span><span class="p">)</span>
+    <span class="n">operator_2</span> <span class="o">=</span> <span class="n">dalton_label_to_operator</span><span class="p">(</span><span class="n">label_2</span><span class="p">)</span>
+
+    <span class="n">operator_1_integrals_mn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">read_file_3</span><span class="p">(</span><span class="n">testcasedir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;operator_mn_</span><span class="si">{</span><span class="n">operator_1</span><span class="o">.</span><span class="n">label</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">operator_2_integrals_mn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">read_file_3</span><span class="p">(</span><span class="n">testcasedir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;operator_mn_</span><span class="si">{</span><span class="n">operator_2</span><span class="o">.</span><span class="n">label</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="c1"># The first dimension can&quot;t be checked since there may be multiple</span>
+    <span class="c1"># components.</span>
+    <span class="k">assert</span> <span class="n">operator_1_integrals_mn</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">==</span> <span class="p">(</span><span class="n">nbasis</span><span class="p">,</span> <span class="n">nbasis</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">operator_2_integrals_mn</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">==</span> <span class="p">(</span><span class="n">nbasis</span><span class="p">,</span> <span class="n">nbasis</span><span class="p">)</span>
+
+    <span class="c1"># Only take the component/slice from the integral as determined</span>
+    <span class="c1"># from the DALTON operator label.</span>
+    <span class="n">operator_1_integrals_mn</span> <span class="o">=</span> <span class="n">operator_1_integrals_mn</span><span class="p">[</span><span class="n">operator_1</span><span class="o">.</span><span class="n">slice_idx</span><span class="p">]</span>
+    <span class="n">operator_2_integrals_mn</span> <span class="o">=</span> <span class="n">operator_2_integrals_mn</span><span class="p">[</span><span class="n">operator_2</span><span class="o">.</span><span class="n">slice_idx</span><span class="p">]</span>
+    <span class="c1"># However, this eliminates an axis, which needs to be added back.</span>
+    <span class="n">operator_1_integrals_mn</span> <span class="o">=</span> <span class="n">operator_1_integrals_mn</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+    <span class="n">operator_2_integrals_mn</span> <span class="o">=</span> <span class="n">operator_2_integrals_mn</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+
+    <span class="n">operator_1</span><span class="o">.</span><span class="n">ao_integrals</span> <span class="o">=</span> <span class="n">operator_1_integrals_mn</span>
+    <span class="n">operator_2</span><span class="o">.</span><span class="n">ao_integrals</span> <span class="o">=</span> <span class="n">operator_2_integrals_mn</span>
+
+    <span class="n">moene</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">moene</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="n">moene</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">norb</span><span class="p">,</span> <span class="n">norb</span><span class="p">)</span>
+
+    <span class="n">solver</span> <span class="o">=</span> <span class="n">solvers</span><span class="o">.</span><span class="n">ExactInv</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">moene</span><span class="p">,</span> <span class="n">occupations</span><span class="p">)</span>
+    <span class="n">solver</span><span class="o">.</span><span class="n">tei_mo</span> <span class="o">=</span> <span class="p">(</span><span class="n">moints_iajb_aaaa</span><span class="p">,</span> <span class="n">moints_ijab_aaaa</span><span class="p">)</span>
+    <span class="n">solver</span><span class="o">.</span><span class="n">tei_mo_type</span> <span class="o">=</span> <span class="n">AO2MOTransformationType</span><span class="o">.</span><span class="n">partial</span>
+
+    <span class="n">driver</span> <span class="o">=</span> <span class="n">cphf</span><span class="o">.</span><span class="n">CPHF</span><span class="p">(</span><span class="n">solver</span><span class="p">)</span>
+    <span class="n">driver</span><span class="o">.</span><span class="n">add_operator</span><span class="p">(</span><span class="n">operator_1</span><span class="p">)</span>
+    <span class="n">driver</span><span class="o">.</span><span class="n">add_operator</span><span class="p">(</span><span class="n">operator_2</span><span class="p">)</span>
+
+    <span class="n">driver</span><span class="o">.</span><span class="n">set_frequencies</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">frequency</span><span class="p">)])</span>
+
+    <span class="n">driver</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+        <span class="n">hamiltonian</span><span class="o">=</span><span class="n">Hamiltonian</span><span class="p">[</span><span class="n">hamiltonian</span><span class="o">.</span><span class="n">upper</span><span class="p">()],</span>
+        <span class="n">spin</span><span class="o">=</span><span class="n">Spin</span><span class="p">[</span><span class="n">spin</span><span class="p">],</span>
+        <span class="n">program</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">program_obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">driver</span><span class="o">.</span><span class="n">frequencies</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">driver</span><span class="o">.</span><span class="n">results</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="n">res</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">bl</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">tr</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">diff</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">bl</span><span class="p">)</span> <span class="o">-</span> <span class="nb">abs</span><span class="p">(</span><span class="n">tr</span><span class="p">))</span>
+    <span class="c1"># Results should be symmetric w.r.t. interchange between operators</span>
+    <span class="c1"># in the LR equations.</span>
+    <span class="n">thresh</span> <span class="o">=</span> <span class="mf">1.0e-13</span>
+    <span class="k">assert</span> <span class="n">diff</span> <span class="o">&lt;</span> <span class="n">thresh</span>
+
+    <span class="k">return</span> <span class="n">bl</span></div>
+
+
+<div class="viewcode-block" id="calculate_disk_uhf"><a class="viewcode-back" href="../../../pyresponse.tests.html#pyresponse.tests.test_calculators.calculate_disk_uhf">[docs]</a><span class="k">def</span> <span class="nf">calculate_disk_uhf</span><span class="p">(</span>
+    <span class="n">testcasedir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
+    <span class="n">hamiltonian</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">spin</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">frequency</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">label_1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">label_2</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+
+    <span class="n">occupations</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">read_file_occupations</span><span class="p">(</span><span class="n">testcasedir</span> <span class="o">/</span> <span class="s2">&quot;occupations&quot;</span><span class="p">)</span>
+    <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">,</span> <span class="n">nvirt_beta</span> <span class="o">=</span> <span class="n">occupations</span>
+    <span class="n">norb</span> <span class="o">=</span> <span class="n">nocc_alph</span> <span class="o">+</span> <span class="n">nvirt_alph</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">read_file_3</span><span class="p">(</span><span class="n">testcasedir</span> <span class="o">/</span> <span class="s2">&quot;C&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">C</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span>
+    <span class="k">assert</span> <span class="n">C</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">norb</span>
+    <span class="n">nbasis</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">moene</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">read_file_2</span><span class="p">(</span><span class="n">testcasedir</span> <span class="o">/</span> <span class="s2">&quot;moene&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">moene</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="n">norb</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">moints_iajb_aaaa</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">read_file_4</span><span class="p">(</span><span class="n">testcasedir</span> <span class="o">/</span> <span class="s2">&quot;moints_iajb_aaaa&quot;</span><span class="p">)</span>
+    <span class="n">moints_iajb_aabb</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">read_file_4</span><span class="p">(</span><span class="n">testcasedir</span> <span class="o">/</span> <span class="s2">&quot;moints_iajb_aabb&quot;</span><span class="p">)</span>
+    <span class="n">moints_iajb_bbaa</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">read_file_4</span><span class="p">(</span><span class="n">testcasedir</span> <span class="o">/</span> <span class="s2">&quot;moints_iajb_bbaa&quot;</span><span class="p">)</span>
+    <span class="n">moints_iajb_bbbb</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">read_file_4</span><span class="p">(</span><span class="n">testcasedir</span> <span class="o">/</span> <span class="s2">&quot;moints_iajb_bbbb&quot;</span><span class="p">)</span>
+    <span class="n">moints_ijab_aaaa</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">read_file_4</span><span class="p">(</span><span class="n">testcasedir</span> <span class="o">/</span> <span class="s2">&quot;moints_ijab_aaaa&quot;</span><span class="p">)</span>
+    <span class="n">moints_ijab_bbbb</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">read_file_4</span><span class="p">(</span><span class="n">testcasedir</span> <span class="o">/</span> <span class="s2">&quot;moints_ijab_bbbb&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">moints_iajb_aaaa</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">,</span> <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">moints_iajb_aabb</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">,</span> <span class="n">nvirt_beta</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">moints_iajb_bbaa</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="n">nocc_beta</span><span class="p">,</span> <span class="n">nvirt_beta</span><span class="p">,</span> <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">moints_iajb_bbbb</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="n">nocc_beta</span><span class="p">,</span> <span class="n">nvirt_beta</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">,</span> <span class="n">nvirt_beta</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">moints_ijab_aaaa</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">moints_ijab_bbbb</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="n">nocc_beta</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">,</span> <span class="n">nvirt_beta</span><span class="p">,</span> <span class="n">nvirt_beta</span><span class="p">)</span>
+
+    <span class="n">operator_1</span> <span class="o">=</span> <span class="n">dalton_label_to_operator</span><span class="p">(</span><span class="n">label_1</span><span class="p">)</span>
+    <span class="n">operator_2</span> <span class="o">=</span> <span class="n">dalton_label_to_operator</span><span class="p">(</span><span class="n">label_2</span><span class="p">)</span>
+
+    <span class="n">operator_1_integrals_mn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">read_file_3</span><span class="p">(</span><span class="n">testcasedir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;operator_mn_</span><span class="si">{</span><span class="n">operator_1</span><span class="o">.</span><span class="n">label</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">operator_2_integrals_mn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">read_file_3</span><span class="p">(</span><span class="n">testcasedir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;operator_mn_</span><span class="si">{</span><span class="n">operator_2</span><span class="o">.</span><span class="n">label</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="c1"># The first dimension can&quot;t be checked since there may be multiple</span>
+    <span class="c1"># components.</span>
+    <span class="k">assert</span> <span class="n">operator_1_integrals_mn</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">==</span> <span class="p">(</span><span class="n">nbasis</span><span class="p">,</span> <span class="n">nbasis</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">operator_2_integrals_mn</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">==</span> <span class="p">(</span><span class="n">nbasis</span><span class="p">,</span> <span class="n">nbasis</span><span class="p">)</span>
+
+    <span class="c1"># Only take the component/slice from the integral as determined</span>
+    <span class="c1"># from the DALTON operator label.</span>
+    <span class="n">operator_1_integrals_mn</span> <span class="o">=</span> <span class="n">operator_1_integrals_mn</span><span class="p">[</span><span class="n">operator_1</span><span class="o">.</span><span class="n">slice_idx</span><span class="p">]</span>
+    <span class="n">operator_2_integrals_mn</span> <span class="o">=</span> <span class="n">operator_2_integrals_mn</span><span class="p">[</span><span class="n">operator_2</span><span class="o">.</span><span class="n">slice_idx</span><span class="p">]</span>
+    <span class="c1"># However, this eliminates an axis, which needs to be added back.</span>
+    <span class="n">operator_1_integrals_mn</span> <span class="o">=</span> <span class="n">operator_1_integrals_mn</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+    <span class="n">operator_2_integrals_mn</span> <span class="o">=</span> <span class="n">operator_2_integrals_mn</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+
+    <span class="n">operator_1</span><span class="o">.</span><span class="n">ao_integrals</span> <span class="o">=</span> <span class="n">operator_1_integrals_mn</span>
+    <span class="n">operator_2</span><span class="o">.</span><span class="n">ao_integrals</span> <span class="o">=</span> <span class="n">operator_2_integrals_mn</span>
+
+    <span class="n">moene_alph</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">moene</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="n">moene_beta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">moene</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="n">moene</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">moene_alph</span><span class="p">,</span> <span class="n">moene_beta</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">moene</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">norb</span><span class="p">,</span> <span class="n">norb</span><span class="p">)</span>
+
+    <span class="n">solver</span> <span class="o">=</span> <span class="n">solvers</span><span class="o">.</span><span class="n">ExactInv</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">moene</span><span class="p">,</span> <span class="n">occupations</span><span class="p">)</span>
+    <span class="n">solver</span><span class="o">.</span><span class="n">tei_mo</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">moints_iajb_aaaa</span><span class="p">,</span>
+        <span class="n">moints_iajb_aabb</span><span class="p">,</span>
+        <span class="n">moints_iajb_bbaa</span><span class="p">,</span>
+        <span class="n">moints_iajb_bbbb</span><span class="p">,</span>
+        <span class="n">moints_ijab_aaaa</span><span class="p">,</span>
+        <span class="n">moints_ijab_bbbb</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">solver</span><span class="o">.</span><span class="n">tei_mo_type</span> <span class="o">=</span> <span class="n">AO2MOTransformationType</span><span class="o">.</span><span class="n">partial</span>
+
+    <span class="n">driver</span> <span class="o">=</span> <span class="n">cphf</span><span class="o">.</span><span class="n">CPHF</span><span class="p">(</span><span class="n">solver</span><span class="p">)</span>
+    <span class="n">driver</span><span class="o">.</span><span class="n">add_operator</span><span class="p">(</span><span class="n">operator_1</span><span class="p">)</span>
+    <span class="n">driver</span><span class="o">.</span><span class="n">add_operator</span><span class="p">(</span><span class="n">operator_2</span><span class="p">)</span>
+
+    <span class="n">driver</span><span class="o">.</span><span class="n">set_frequencies</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">frequency</span><span class="p">)])</span>
+
+    <span class="n">driver</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+        <span class="n">hamiltonian</span><span class="o">=</span><span class="n">Hamiltonian</span><span class="p">[</span><span class="n">hamiltonian</span><span class="o">.</span><span class="n">upper</span><span class="p">()],</span>
+        <span class="n">spin</span><span class="o">=</span><span class="n">Spin</span><span class="p">[</span><span class="n">spin</span><span class="p">],</span>
+        <span class="n">program</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">program_obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">driver</span><span class="o">.</span><span class="n">frequencies</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">driver</span><span class="o">.</span><span class="n">results</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="n">res</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">bl</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">tr</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">diff</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">bl</span><span class="p">)</span> <span class="o">-</span> <span class="nb">abs</span><span class="p">(</span><span class="n">tr</span><span class="p">))</span>
+    <span class="c1"># Results should be symmetric w.r.t. interchange between operators</span>
+    <span class="c1"># in the LR equations.</span>
+    <span class="n">thresh</span> <span class="o">=</span> <span class="mf">1.0e-14</span>
+    <span class="k">assert</span> <span class="n">diff</span> <span class="o">&lt;</span> <span class="n">thresh</span>
+
+    <span class="k">return</span> <span class="n">bl</span></div>
+
+
+<div class="viewcode-block" id="calculate_rhf"><a class="viewcode-back" href="../../../pyresponse.tests.html#pyresponse.tests.test_calculators.calculate_rhf">[docs]</a><span class="k">def</span> <span class="nf">calculate_rhf</span><span class="p">(</span>
+    <span class="n">dalton_tmpdir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
+    <span class="n">hamiltonian</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">spin</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">operator_label</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">operator</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">source_moenergies</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">source_mocoeffs</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">source_operator</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<span class="p">):</span>
+
+    <span class="k">if</span> <span class="n">operator_label</span><span class="p">:</span>
+        <span class="c1"># TODO add dipvel</span>
+        <span class="k">assert</span> <span class="n">operator_label</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;dipole&quot;</span><span class="p">,</span> <span class="s2">&quot;angmom&quot;</span><span class="p">,</span> <span class="s2">&quot;spinorb&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">source_moenergies</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;pyscf&quot;</span><span class="p">,</span> <span class="s2">&quot;dalton&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">source_mocoeffs</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;pyscf&quot;</span><span class="p">,</span> <span class="s2">&quot;dalton&quot;</span><span class="p">)</span>
+
+    <span class="n">dalton_molecule</span> <span class="o">=</span> <span class="n">dalmol</span><span class="o">.</span><span class="n">readin</span><span class="p">(</span><span class="n">dalton_tmpdir</span> <span class="o">/</span> <span class="s2">&quot;DALTON.BAS&quot;</span><span class="p">)</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">dalton_molecule</span><span class="p">:</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">atom</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">center</span> <span class="o">=</span> <span class="n">atom</span><span class="p">[</span><span class="s2">&quot;center&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">center_str</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;</span><span class="si">{:f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span> <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="n">center</span><span class="p">])</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:3}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">center_str</span><span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+
+    <span class="c1"># PySCF molecule setup, needed for generating the TEIs in the MO</span>
+    <span class="c1"># basis.</span>
+    <span class="n">mol</span> <span class="o">=</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">()</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">atom</span> <span class="o">=</span> <span class="n">lines</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="s2">&quot;Bohr&quot;</span>
+    <span class="c1"># TODO read basis from DALTON molecule</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">basis</span> <span class="o">=</span> <span class="s2">&quot;sto-3g&quot;</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">symmetry</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="c1"># TODO read charge from DALTON molecule?</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">charge</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1"># TODO read spin from DALTON molecule?</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">spin</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="n">mol</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+
+    <span class="n">ifc</span> <span class="o">=</span> <span class="n">sirifc</span><span class="o">.</span><span class="n">sirifc</span><span class="p">(</span><span class="n">dalton_tmpdir</span> <span class="o">/</span> <span class="s2">&quot;SIRIFC&quot;</span><span class="p">)</span>
+    <span class="n">occupations</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">occupations_from_sirifc</span><span class="p">(</span><span class="n">ifc</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">source_moenergies</span> <span class="o">==</span> <span class="s2">&quot;pyscf&quot;</span> <span class="ow">or</span> <span class="n">source_mocoeffs</span> <span class="o">==</span> <span class="s2">&quot;pyscf&quot;</span><span class="p">:</span>
+        <span class="n">mf</span> <span class="o">=</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">scf</span><span class="o">.</span><span class="n">RHF</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+        <span class="n">mf</span><span class="o">.</span><span class="n">kernel</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">source_moenergies</span> <span class="o">==</span> <span class="s2">&quot;pyscf&quot;</span><span class="p">:</span>
+        <span class="n">E</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">mf</span><span class="o">.</span><span class="n">mo_energy</span><span class="p">)[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">source_moenergies</span> <span class="o">==</span> <span class="s2">&quot;dalton&quot;</span><span class="p">:</span>
+        <span class="n">job</span> <span class="o">=</span> <span class="n">ccopen</span><span class="p">(</span><span class="n">dalton_tmpdir</span> <span class="o">/</span> <span class="s2">&quot;DALTON.OUT&quot;</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
+        <span class="c1"># pylint: disable=no-member</span>
+        <span class="n">E</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">([</span><span class="n">convertor</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">&quot;eV&quot;</span><span class="p">,</span> <span class="s2">&quot;hartree&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">moenergies</span><span class="p">[</span><span class="mi">0</span><span class="p">]])[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="k">if</span> <span class="n">source_mocoeffs</span> <span class="o">==</span> <span class="s2">&quot;pyscf&quot;</span><span class="p">:</span>
+        <span class="n">C</span> <span class="o">=</span> <span class="n">mf</span><span class="o">.</span><span class="n">mo_coeff</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">source_mocoeffs</span> <span class="o">==</span> <span class="s2">&quot;dalton&quot;</span><span class="p">:</span>
+        <span class="n">C</span> <span class="o">=</span> <span class="n">ifc</span><span class="o">.</span><span class="n">cmo</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="n">solver</span> <span class="o">=</span> <span class="n">solvers</span><span class="o">.</span><span class="n">ExactInv</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">occupations</span><span class="p">)</span>
+
+    <span class="n">solver</span><span class="o">.</span><span class="n">tei_mo</span> <span class="o">=</span> <span class="n">AO2MOpyscf</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">C</span><span class="p">)</span><span class="o">.</span><span class="n">perform_rhf_partial</span><span class="p">()</span>
+    <span class="n">solver</span><span class="o">.</span><span class="n">tei_mo_type</span> <span class="o">=</span> <span class="n">AO2MOTransformationType</span><span class="o">.</span><span class="n">partial</span>
+
+    <span class="n">driver</span> <span class="o">=</span> <span class="n">cphf</span><span class="o">.</span><span class="n">CPHF</span><span class="p">(</span><span class="n">solver</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">operator</span><span class="p">:</span>
+        <span class="n">driver</span><span class="o">.</span><span class="n">add_operator</span><span class="p">(</span><span class="n">operator</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">operator_label</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">operator_label</span> <span class="o">==</span> <span class="s2">&quot;dipole&quot;</span><span class="p">:</span>
+            <span class="n">operator_dipole</span> <span class="o">=</span> <span class="n">operators</span><span class="o">.</span><span class="n">Operator</span><span class="p">(</span>
+                <span class="n">label</span><span class="o">=</span><span class="s2">&quot;dipole&quot;</span><span class="p">,</span> <span class="n">is_imaginary</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">is_spin_dependent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">triplet</span><span class="o">=</span><span class="kc">False</span>
+            <span class="p">)</span>
+            <span class="n">integrals_dipole_ao</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">intor</span><span class="p">(</span><span class="s2">&quot;cint1e_r_sph&quot;</span><span class="p">,</span> <span class="n">comp</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+            <span class="n">operator_dipole</span><span class="o">.</span><span class="n">ao_integrals</span> <span class="o">=</span> <span class="n">integrals_dipole_ao</span>
+            <span class="n">driver</span><span class="o">.</span><span class="n">add_operator</span><span class="p">(</span><span class="n">operator_dipole</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">operator_label</span> <span class="o">==</span> <span class="s2">&quot;angmom&quot;</span><span class="p">:</span>
+            <span class="n">operator_angmom</span> <span class="o">=</span> <span class="n">operators</span><span class="o">.</span><span class="n">Operator</span><span class="p">(</span>
+                <span class="n">label</span><span class="o">=</span><span class="s2">&quot;angmom&quot;</span><span class="p">,</span> <span class="n">is_imaginary</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">is_spin_dependent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">triplet</span><span class="o">=</span><span class="kc">False</span>
+            <span class="p">)</span>
+            <span class="n">integrals_angmom_ao</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">intor</span><span class="p">(</span><span class="s2">&quot;cint1e_cg_irxp_sph&quot;</span><span class="p">,</span> <span class="n">comp</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+            <span class="n">operator_angmom</span><span class="o">.</span><span class="n">ao_integrals</span> <span class="o">=</span> <span class="n">integrals_angmom_ao</span>
+            <span class="n">driver</span><span class="o">.</span><span class="n">add_operator</span><span class="p">(</span><span class="n">operator_angmom</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">operator_label</span> <span class="o">==</span> <span class="s2">&quot;spinorb&quot;</span><span class="p">:</span>
+            <span class="n">operator_spinorb</span> <span class="o">=</span> <span class="n">operators</span><span class="o">.</span><span class="n">Operator</span><span class="p">(</span>
+                <span class="n">label</span><span class="o">=</span><span class="s2">&quot;spinorb&quot;</span><span class="p">,</span> <span class="n">is_imaginary</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">is_spin_dependent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">triplet</span><span class="o">=</span><span class="kc">False</span>
+            <span class="p">)</span>
+            <span class="n">integrals_spinorb_ao</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">atm_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">natm</span><span class="p">):</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">set_rinv_orig</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">atom_coord</span><span class="p">(</span><span class="n">atm_id</span><span class="p">))</span>
+                <span class="n">chg</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">atom_charge</span><span class="p">(</span><span class="n">atm_id</span><span class="p">)</span>
+                <span class="n">integrals_spinorb_ao</span> <span class="o">+=</span> <span class="n">chg</span> <span class="o">*</span> <span class="n">mol</span><span class="o">.</span><span class="n">intor</span><span class="p">(</span><span class="s2">&quot;cint1e_prinvxp_sph&quot;</span><span class="p">,</span> <span class="n">comp</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+            <span class="n">operator_spinorb</span><span class="o">.</span><span class="n">ao_integrals</span> <span class="o">=</span> <span class="n">integrals_spinorb_ao</span>
+            <span class="n">driver</span><span class="o">.</span><span class="n">add_operator</span><span class="p">(</span><span class="n">operator_spinorb</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">pass</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="n">driver</span><span class="o">.</span><span class="n">set_frequencies</span><span class="p">()</span>
+
+    <span class="n">driver</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">hamiltonian</span><span class="o">=</span><span class="n">Hamiltonian</span><span class="p">[</span><span class="n">hamiltonian</span><span class="o">.</span><span class="n">upper</span><span class="p">()],</span> <span class="n">spin</span><span class="o">=</span><span class="n">Spin</span><span class="p">[</span><span class="n">spin</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">driver</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="calculate_uhf"><a class="viewcode-back" href="../../../pyresponse.tests.html#pyresponse.tests.test_calculators.calculate_uhf">[docs]</a><span class="k">def</span> <span class="nf">calculate_uhf</span><span class="p">(</span>
+    <span class="n">dalton_tmpdir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
+    <span class="n">hamiltonian</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">spin</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">operator_label</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">operator</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">source_moenergies</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">source_mocoeffs</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">source_operator</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<span class="p">):</span>
+
+    <span class="k">if</span> <span class="n">operator_label</span><span class="p">:</span>
+        <span class="c1"># TODO add dipvel</span>
+        <span class="k">assert</span> <span class="n">operator_label</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;dipole&quot;</span><span class="p">,</span> <span class="s2">&quot;angmom&quot;</span><span class="p">,</span> <span class="s2">&quot;spinorb&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">source_moenergies</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;pyscf&quot;</span><span class="p">,</span> <span class="s2">&quot;dalton&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">source_mocoeffs</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;pyscf&quot;</span><span class="p">,</span> <span class="s2">&quot;dalton&quot;</span><span class="p">)</span>
+
+    <span class="n">dalton_molecule</span> <span class="o">=</span> <span class="n">dalmol</span><span class="o">.</span><span class="n">readin</span><span class="p">(</span><span class="n">dalton_tmpdir</span> <span class="o">/</span> <span class="s2">&quot;DALTON.BAS&quot;</span><span class="p">)</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">dalton_molecule</span><span class="p">:</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">atom</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">center</span> <span class="o">=</span> <span class="n">atom</span><span class="p">[</span><span class="s2">&quot;center&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">center_str</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;</span><span class="si">{:f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span> <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="n">center</span><span class="p">])</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:3}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">center_str</span><span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+
+    <span class="c1"># PySCF molecule setup, needed for generating the TEIs in the MO</span>
+    <span class="c1"># basis.</span>
+    <span class="n">mol</span> <span class="o">=</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">()</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">atom</span> <span class="o">=</span> <span class="n">lines</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="s2">&quot;Bohr&quot;</span>
+    <span class="c1"># TODO read basis from DALTON molecule</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">basis</span> <span class="o">=</span> <span class="s2">&quot;sto-3g&quot;</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">symmetry</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="c1"># TODO read charge from DALTON molecule?</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">charge</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="c1"># TODO read spin from DALTON molecule?</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">spin</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="n">mol</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+
+    <span class="n">ifc</span> <span class="o">=</span> <span class="n">sirifc</span><span class="o">.</span><span class="n">sirifc</span><span class="p">(</span><span class="n">dalton_tmpdir</span> <span class="o">/</span> <span class="s2">&quot;SIRIFC&quot;</span><span class="p">)</span>
+    <span class="n">occupations</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">occupations_from_sirifc</span><span class="p">(</span><span class="n">ifc</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">source_moenergies</span> <span class="o">==</span> <span class="s2">&quot;pyscf&quot;</span> <span class="ow">or</span> <span class="n">source_mocoeffs</span> <span class="o">==</span> <span class="s2">&quot;pyscf&quot;</span><span class="p">:</span>
+        <span class="n">mf</span> <span class="o">=</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">scf</span><span class="o">.</span><span class="n">UHF</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+        <span class="n">mf</span><span class="o">.</span><span class="n">kernel</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">source_moenergies</span> <span class="o">==</span> <span class="s2">&quot;pyscf&quot;</span><span class="p">:</span>
+        <span class="n">E_alph</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">mf</span><span class="o">.</span><span class="n">mo_energy</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">E_beta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">mf</span><span class="o">.</span><span class="n">mo_energy</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">E</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">E_alph</span><span class="p">,</span> <span class="n">E_beta</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">source_moenergies</span> <span class="o">==</span> <span class="s2">&quot;dalton&quot;</span><span class="p">:</span>
+        <span class="n">job</span> <span class="o">=</span> <span class="n">ccopen</span><span class="p">(</span><span class="n">dalton_tmpdir</span> <span class="o">/</span> <span class="s2">&quot;DALTON.OUT&quot;</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
+        <span class="c1"># pylint: disable=no-member</span>
+        <span class="n">E</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">([</span><span class="n">convertor</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">&quot;eV&quot;</span><span class="p">,</span> <span class="s2">&quot;hartree&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">moenergies</span><span class="p">[</span><span class="mi">0</span><span class="p">]])[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+        <span class="n">E</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">E</span><span class="p">,</span> <span class="n">E</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="k">if</span> <span class="n">source_mocoeffs</span> <span class="o">==</span> <span class="s2">&quot;pyscf&quot;</span><span class="p">:</span>
+        <span class="n">C</span> <span class="o">=</span> <span class="n">mf</span><span class="o">.</span><span class="n">mo_coeff</span>
+    <span class="k">elif</span> <span class="n">source_mocoeffs</span> <span class="o">==</span> <span class="s2">&quot;dalton&quot;</span><span class="p">:</span>
+        <span class="n">C</span> <span class="o">=</span> <span class="n">ifc</span><span class="o">.</span><span class="n">cmo</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+        <span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">C</span><span class="p">,</span> <span class="n">C</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="n">solver</span> <span class="o">=</span> <span class="n">solvers</span><span class="o">.</span><span class="n">ExactInv</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">occupations</span><span class="p">)</span>
+
+    <span class="n">solver</span><span class="o">.</span><span class="n">tei_mo</span> <span class="o">=</span> <span class="n">AO2MOpyscf</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">C</span><span class="p">)</span><span class="o">.</span><span class="n">perform_uhf_partial</span><span class="p">()</span>
+    <span class="n">solver</span><span class="o">.</span><span class="n">tei_mo_type</span> <span class="o">=</span> <span class="n">AO2MOTransformationType</span><span class="o">.</span><span class="n">partial</span>
+
+    <span class="n">driver</span> <span class="o">=</span> <span class="n">cphf</span><span class="o">.</span><span class="n">CPHF</span><span class="p">(</span><span class="n">solver</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">operator</span><span class="p">:</span>
+        <span class="n">driver</span><span class="o">.</span><span class="n">add_operator</span><span class="p">(</span><span class="n">operator</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">operator_label</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">operator_label</span> <span class="o">==</span> <span class="s2">&quot;dipole&quot;</span><span class="p">:</span>
+            <span class="n">operator_dipole</span> <span class="o">=</span> <span class="n">operators</span><span class="o">.</span><span class="n">Operator</span><span class="p">(</span>
+                <span class="n">label</span><span class="o">=</span><span class="s2">&quot;dipole&quot;</span><span class="p">,</span> <span class="n">is_imaginary</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">is_spin_dependent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">triplet</span><span class="o">=</span><span class="kc">False</span>
+            <span class="p">)</span>
+            <span class="n">integrals_dipole_ao</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">intor</span><span class="p">(</span><span class="s2">&quot;cint1e_r_sph&quot;</span><span class="p">,</span> <span class="n">comp</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+            <span class="n">operator_dipole</span><span class="o">.</span><span class="n">ao_integrals</span> <span class="o">=</span> <span class="n">integrals_dipole_ao</span>
+            <span class="n">driver</span><span class="o">.</span><span class="n">add_operator</span><span class="p">(</span><span class="n">operator_dipole</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">operator_label</span> <span class="o">==</span> <span class="s2">&quot;angmom&quot;</span><span class="p">:</span>
+            <span class="n">operator_angmom</span> <span class="o">=</span> <span class="n">operators</span><span class="o">.</span><span class="n">Operator</span><span class="p">(</span>
+                <span class="n">label</span><span class="o">=</span><span class="s2">&quot;angmom&quot;</span><span class="p">,</span> <span class="n">is_imaginary</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">is_spin_dependent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">triplet</span><span class="o">=</span><span class="kc">False</span>
+            <span class="p">)</span>
+            <span class="n">integrals_angmom_ao</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">intor</span><span class="p">(</span><span class="s2">&quot;cint1e_cg_irxp_sph&quot;</span><span class="p">,</span> <span class="n">comp</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+            <span class="n">operator_angmom</span><span class="o">.</span><span class="n">ao_integrals</span> <span class="o">=</span> <span class="n">integrals_angmom_ao</span>
+            <span class="n">driver</span><span class="o">.</span><span class="n">add_operator</span><span class="p">(</span><span class="n">operator_angmom</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">operator_label</span> <span class="o">==</span> <span class="s2">&quot;spinorb&quot;</span><span class="p">:</span>
+            <span class="n">operator_spinorb</span> <span class="o">=</span> <span class="n">operators</span><span class="o">.</span><span class="n">Operator</span><span class="p">(</span>
+                <span class="n">label</span><span class="o">=</span><span class="s2">&quot;spinorb&quot;</span><span class="p">,</span> <span class="n">is_imaginary</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">is_spin_dependent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">triplet</span><span class="o">=</span><span class="kc">False</span>
+            <span class="p">)</span>
+            <span class="n">integrals_spinorb_ao</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">atm_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">natm</span><span class="p">):</span>
+                <span class="n">mol</span><span class="o">.</span><span class="n">set_rinv_orig</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">atom_coord</span><span class="p">(</span><span class="n">atm_id</span><span class="p">))</span>
+                <span class="n">chg</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">atom_charge</span><span class="p">(</span><span class="n">atm_id</span><span class="p">)</span>
+                <span class="n">integrals_spinorb_ao</span> <span class="o">+=</span> <span class="n">chg</span> <span class="o">*</span> <span class="n">mol</span><span class="o">.</span><span class="n">intor</span><span class="p">(</span><span class="s2">&quot;cint1e_prinvxp_sph&quot;</span><span class="p">,</span> <span class="n">comp</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+            <span class="n">operator_spinorb</span><span class="o">.</span><span class="n">ao_integrals</span> <span class="o">=</span> <span class="n">integrals_spinorb_ao</span>
+            <span class="n">driver</span><span class="o">.</span><span class="n">add_operator</span><span class="p">(</span><span class="n">operator_spinorb</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">pass</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="n">driver</span><span class="o">.</span><span class="n">set_frequencies</span><span class="p">()</span>
+
+    <span class="n">driver</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">hamiltonian</span><span class="o">=</span><span class="n">Hamiltonian</span><span class="p">[</span><span class="n">hamiltonian</span><span class="o">.</span><span class="n">upper</span><span class="p">()],</span> <span class="n">spin</span><span class="o">=</span><span class="n">Spin</span><span class="p">[</span><span class="n">spin</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">driver</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Eric Berquist.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

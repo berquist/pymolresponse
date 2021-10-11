@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyresponse.psi4 package &mdash; pyresponse  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="contents.html" class="icon icon-home"> pyresponse
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html">pyresponse</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="contents.html">pyresponse</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="contents.html" class="icon icon-home"></a> &raquo;</li>
+      <li>pyresponse.psi4 package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/pyresponse.psi4.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pyresponse-psi4-package">
+<h1>pyresponse.psi4 package<a class="headerlink" href="#pyresponse-psi4-package" title="Permalink to this headline"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
+</section>
+<section id="module-pyresponse.psi4.integrals">
+<span id="pyresponse-psi4-integrals-module"></span><h2>pyresponse.psi4.integrals module<a class="headerlink" href="#module-pyresponse.psi4.integrals" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyresponse.psi4.integrals.IntegralsPsi4">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyresponse.psi4.integrals.</span></span><span class="sig-name descname"><span class="pre">IntegralsPsi4</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wfn_or_mol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyresponse/psi4/integrals.html#IntegralsPsi4"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.psi4.integrals.IntegralsPsi4" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="pyresponse.html#pyresponse.integrals.Integrals" title="pyresponse.integrals.Integrals"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyresponse.integrals.Integrals</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyresponse.psi4.integrals.JKPsi4">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyresponse.psi4.integrals.</span></span><span class="sig-name descname"><span class="pre">JKPsi4</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wfn</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyresponse/psi4/integrals.html#JKPsi4"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.psi4.integrals.JKPsi4" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="pyresponse.html#pyresponse.integrals.JK" title="pyresponse.integrals.JK"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyresponse.integrals.JK</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.psi4.integrals.JKPsi4.compute_from_density">
+<span class="sig-name descname"><span class="pre">compute_from_density</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">D</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pyresponse/psi4/integrals.html#JKPsi4.compute_from_density"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.psi4.integrals.JKPsi4.compute_from_density" title="Permalink to this definition"></a></dt>
+<dd><p>Compute J and K from some density.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.psi4.integrals.JKPsi4.compute_from_mocoeffs">
+<span class="sig-name descname"><span class="pre">compute_from_mocoeffs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">C_left</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C_right</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pyresponse/psi4/integrals.html#JKPsi4.compute_from_mocoeffs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.psi4.integrals.JKPsi4.compute_from_mocoeffs" title="Permalink to this definition"></a></dt>
+<dd><p>Compute J and K from MO coefficients.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.psi4.integrals.compute_jk">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.psi4.integrals.</span></span><span class="sig-name descname"><span class="pre">compute_jk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jk</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C_left</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C_right</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyresponse/psi4/integrals.html#compute_jk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.psi4.integrals.compute_jk" title="Permalink to this definition"></a></dt>
+<dd><p>A python wrapper for a Psi4 JK object to consume and produce NumPy arrays.</p>
+<p>Computes the following matrices:
+D = C_left C_right.T
+J_pq = (pq|rs) D_rs
+K_pq = (pr|qs) D_rs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>jk</strong><span class="classifier">psi4.core.JK</span></dt><dd><p>A initialized Psi4 JK object</p>
+</dd>
+<dt><strong>C_left</strong><span class="classifier">list of array_like or a array_like object</span></dt><dd><p>Orbitals used to compute the JK object with</p>
+</dd>
+<dt><strong>C_right</strong><span class="classifier">list of array_like (optional, None)</span></dt><dd><p>Optional C_right orbitals, otherwise it is assumed C_right == C_left</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>JK</strong><span class="classifier">tuple of ndarray</span></dt><dd><p>Returns the J and K objects</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This function uses the Psi4 JK object and will compute the initialized JK type (DF, PK, OUT_OF_CORE, etc)</p>
+<p class="rubric">Examples</p>
+<p>ndocc = 5
+nbf = 15</p>
+<p>Cocc = np.random.rand(nbf, ndocc)</p>
+<p>jk = psi4.core.JK.build(wfn.basisset())
+jk.set_memory(int(1.25e8))  # 1GB
+jk.initialize()
+jk.print_header()</p>
+<p>J, K = compute_jk(jk, Cocc)</p>
+<p>J_list, K_list = compute_jk(jk, [Cocc, Cocc])</p>
+</dd></dl>
+
+</section>
+<section id="module-pyresponse.psi4.molecules">
+<span id="pyresponse-psi4-molecules-module"></span><h2>pyresponse.psi4.molecules module<a class="headerlink" href="#module-pyresponse.psi4.molecules" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.psi4.molecules.hydrogen_atom_sto3g">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.psi4.molecules.</span></span><span class="sig-name descname"><span class="pre">hydrogen_atom_sto3g</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">psi4.core.Molecule</span></span></span><a class="reference internal" href="_modules/pyresponse/psi4/molecules.html#hydrogen_atom_sto3g"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.psi4.molecules.hydrogen_atom_sto3g" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.psi4.molecules.molecule_0w4a_dication_321g">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.psi4.molecules.</span></span><span class="sig-name descname"><span class="pre">molecule_0w4a_dication_321g</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">psi4.core.Molecule</span></span></span><a class="reference internal" href="_modules/pyresponse/psi4/molecules.html#molecule_0w4a_dication_321g"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.psi4.molecules.molecule_0w4a_dication_321g" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.psi4.molecules.molecule_bc2h4_cation_sto3g">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.psi4.molecules.</span></span><span class="sig-name descname"><span class="pre">molecule_bc2h4_cation_sto3g</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">psi4.core.Molecule</span></span></span><a class="reference internal" href="_modules/pyresponse/psi4/molecules.html#molecule_bc2h4_cation_sto3g"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.psi4.molecules.molecule_bc2h4_cation_sto3g" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.psi4.molecules.molecule_bh_cation_def2_svp">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.psi4.molecules.</span></span><span class="sig-name descname"><span class="pre">molecule_bh_cation_def2_svp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">psi4.core.Molecule</span></span></span><a class="reference internal" href="_modules/pyresponse/psi4/molecules.html#molecule_bh_cation_def2_svp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.psi4.molecules.molecule_bh_cation_def2_svp" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.psi4.molecules.molecule_glycine_sto3g">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.psi4.molecules.</span></span><span class="sig-name descname"><span class="pre">molecule_glycine_sto3g</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">psi4.core.Molecule</span></span></span><a class="reference internal" href="_modules/pyresponse/psi4/molecules.html#molecule_glycine_sto3g"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.psi4.molecules.molecule_glycine_sto3g" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.psi4.molecules.molecule_lih_cation_sto3g">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.psi4.molecules.</span></span><span class="sig-name descname"><span class="pre">molecule_lih_cation_sto3g</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">psi4.core.Molecule</span></span></span><a class="reference internal" href="_modules/pyresponse/psi4/molecules.html#molecule_lih_cation_sto3g"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.psi4.molecules.molecule_lih_cation_sto3g" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.psi4.molecules.molecule_physicists_water_augccpvdz">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.psi4.molecules.</span></span><span class="sig-name descname"><span class="pre">molecule_physicists_water_augccpvdz</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">psi4.core.Molecule</span></span></span><a class="reference internal" href="_modules/pyresponse/psi4/molecules.html#molecule_physicists_water_augccpvdz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.psi4.molecules.molecule_physicists_water_augccpvdz" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.psi4.molecules.molecule_physicists_water_sto3g">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.psi4.molecules.</span></span><span class="sig-name descname"><span class="pre">molecule_physicists_water_sto3g</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">psi4.core.Molecule</span></span></span><a class="reference internal" href="_modules/pyresponse/psi4/molecules.html#molecule_physicists_water_sto3g"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.psi4.molecules.molecule_physicists_water_sto3g" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.psi4.molecules.molecule_trithiolane_sto3g">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.psi4.molecules.</span></span><span class="sig-name descname"><span class="pre">molecule_trithiolane_sto3g</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">psi4.core.Molecule</span></span></span><a class="reference internal" href="_modules/pyresponse/psi4/molecules.html#molecule_trithiolane_sto3g"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.psi4.molecules.molecule_trithiolane_sto3g" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.psi4.molecules.molecule_water_sto3g">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.psi4.molecules.</span></span><span class="sig-name descname"><span class="pre">molecule_water_sto3g</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">psi4.core.Molecule</span></span></span><a class="reference internal" href="_modules/pyresponse/psi4/molecules.html#molecule_water_sto3g"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.psi4.molecules.molecule_water_sto3g" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-pyresponse.psi4.utils">
+<span id="pyresponse-psi4-utils-module"></span><h2>pyresponse.psi4.utils module<a class="headerlink" href="#module-pyresponse.psi4.utils" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.psi4.utils.mocoeffs_from_psi4wfn">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.psi4.utils.</span></span><span class="sig-name descname"><span class="pre">mocoeffs_from_psi4wfn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wfn</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">psi4.core.Wavefunction</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyresponse/psi4/utils.html#mocoeffs_from_psi4wfn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.psi4.utils.mocoeffs_from_psi4wfn" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.psi4.utils.moenergies_from_psi4wfn">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.psi4.utils.</span></span><span class="sig-name descname"><span class="pre">moenergies_from_psi4wfn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wfn</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">psi4.core.Wavefunction</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyresponse/psi4/utils.html#moenergies_from_psi4wfn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.psi4.utils.moenergies_from_psi4wfn" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pyresponse.psi4.utils.occupations_from_psi4wfn">
+<span class="sig-prename descclassname"><span class="pre">pyresponse.psi4.utils.</span></span><span class="sig-name descname"><span class="pre">occupations_from_psi4wfn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wfn</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">psi4.core.Wavefunction</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="reference internal" href="_modules/pyresponse/psi4/utils.html#occupations_from_psi4wfn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.psi4.utils.occupations_from_psi4wfn" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-pyresponse.psi4">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyresponse.psi4" title="Permalink to this headline"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Eric Berquist.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

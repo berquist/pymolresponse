@@ -3,11 +3,7 @@ pyresponse
 
 Molecular frequency-dependent response properties for arbitrary operators.
 
-`build status <https://travis-ci.org/berquist/pyresponse>`__
-`codecov <https://codecov.io/gh/berquist/pyresponse>`__
-`license <https://github.com/berquist/pyresponse/blob/master/LICENSE>`__
-
-For documentation, go to https://berquist.github.io/pyresponse_docs/.
+For documentation, go to https://berquist.github.io/pyresponse/.
 
 Currently, the goal is to provide:
 
@@ -15,19 +11,25 @@ Currently, the goal is to provide:
 2. an implementation that gives "exact" results for testing, and
 3. an example of testing and documenting scientific code using modern software development tools.
 
+Installation
+------------
+
+To set up a conda environment with all dependencies for running, testing, and building the documentation, look under ``devtools``.
+
 Requirements
 ------------
 
-- Python >= [STRIKEOUT:3.2 because of pyscf]\ 3.6 because of `f-strings <https://cito.github.io/blog/f-strings/>`__.
-- `pyscf <https://github.com/sunqm/pyscf>`__ and its dependencies
+- Python 3.6 because of `f-strings <https://cito.github.io/blog/f-strings/>`_.
+- `pyscf <https://github.com/sunqm/pyscf>`_ and its dependencies
+- `Psi4 <https://psicode.org/>`_
 
 Other Python dependencies
 `````````````````````````
 
-- `periodictable <https://github.com/pkienzle/periodictable>`__ (for calculating the center of mass)
-- `pytest <http://doc.pytest.org/en/latest/>`__ (for testing)
-- `daltools <https://github.com/vahtras/daltools>`__ (for testing?)
-- `cclib <https://github.com/cclib/cclib>`__ (for ?)
+- `periodictable <https://github.com/pkienzle/periodictable>`_ (for calculating the center of mass)
+- `pytest <http://doc.pytest.org/en/latest/>`_ (for testing)
+- `daltools <https://github.com/vahtras/daltools>`_ (for testing?)
+- `cclib <https://github.com/cclib/cclib>`_ (for testing)
 
 Testing
 -------
@@ -39,10 +41,11 @@ Testing
 Caveats
 -------
 
-- RHF and UHF references only.
+- RHF and UHF references only; no ROHF yet.
 - Hartree-Fock and DFT only; no post-HF methods yet.
+- Real orbitals only; no complex or generalized orbitals yet.
 - Because the dimensioning of all arrays is based around the ov/vo space, methods that have non-zero contributions from the oo space (specifically derivatives of GIAOs/London orbitals w.r.t. the B-field) are not currently possible.
-- No iterative schemes are implemented, only "exact" methods involving explicit construction of the full orbital Hessian and then inverting it (for response) or diagonalizing it (for excitation energies/transition moments/residues). Better have lots of memory!
+- An iterative solver exists for response properties, not transition properties, where only explicit formation and then diagonalization of the orbital Hessian is available.
 - Linear response and single residues only.
 - *unrestricted diagonalization-based properties are not implemented/working*
 
@@ -59,13 +62,11 @@ Desired features (in no specific order)
 Desired features that don't fix the caveats
 -------------------------------------------
 
-- Open-ended response: see `Ringholm, Jonsson, and Ruud <https://doi.org/10.1002/jcc.23533>`__.
+- Open-ended response: see `Ringholm, Jonsson, and Ruud <https://doi.org/10.1002/jcc.23533>`_.
 - Finite-difference for testing and higher-order response.
-- Independence from pyscf, requires molecule/basis set handling, AO integral engine, and RHF/UHF solver.
-- Interface to `PyQuante <https://github.com/berquist/pyquante>`__ and/or `pyquante2 <https://github.com/rpmuller/pyquante2>`__.
-- Interface to `Psi4 <https://github.com/psi4/psi4>`__ (through Python, not C++).
+- Interface to `PyQuante <https://github.com/berquist/pyquante>`_ and/or `pyquante2 <https://github.com/rpmuller/pyquante2>`_.
 - Jupyter Notebook-based tutorials.
-- Argument type-checking using `mypy <http://mypy-lang.org/>`__.
+- Argument type-checking using `mypy <http://mypy-lang.org/>`_.
 
 References
 ----------

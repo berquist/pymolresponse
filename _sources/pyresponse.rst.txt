@@ -1,175 +1,130 @@
 pyresponse package
 ==================
 
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   pyresponse.dalton
+   pyresponse.data
+   pyresponse.properties
+   pyresponse.psi4
+   pyresponse.pyscf
+   pyresponse.tests
+
 Submodules
 ----------
 
-pyresponse\.ao2mo module
-------------------------
-
-.. automodule:: pyresponse.ao2mo
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-.. inheritance-diagram:: pyresponse.ao2mo
-
-pyresponse\.constants module
-----------------------------
-
-.. automodule:: pyresponse.constants
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-.. inheritance-diagram:: pyresponse.constants
-
-pyresponse\.cphf module
+pyresponse.ao2mo module
 -----------------------
 
-.. automodule:: pyresponse.cphf
-    :members:
-    :undoc-members:
-    :show-inheritance:
+.. automodule:: pyresponse.ao2mo
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
-.. inheritance-diagram:: pyresponse.cphf
+pyresponse.constants module
+---------------------------
 
-pyresponse\.ecd module
+.. automodule:: pyresponse.constants
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pyresponse.core module
 ----------------------
 
-.. automodule:: pyresponse.ecd
-    :members:
-    :undoc-members:
-    :show-inheritance:
+.. automodule:: pyresponse.core
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
-.. inheritance-diagram:: pyresponse.ecd
+pyresponse.cphf module
+----------------------
 
-pyresponse\.electric module
----------------------------
+.. automodule:: pyresponse.cphf
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
-.. automodule:: pyresponse.electric
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-.. inheritance-diagram:: pyresponse.electric
-
-pyresponse\.explicit\_equations\_full module
---------------------------------------------
+pyresponse.explicit\_equations\_full module
+-------------------------------------------
 
 .. automodule:: pyresponse.explicit_equations_full
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
-.. inheritance-diagram:: pyresponse.explicit_equations_full
-
-pyresponse\.explicit\_equations\_partial module
------------------------------------------------
+pyresponse.explicit\_equations\_partial module
+----------------------------------------------
 
 .. automodule:: pyresponse.explicit_equations_partial
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
-.. inheritance-diagram:: pyresponse.explicit_equations_partial
-
-pyresponse\.helpers module
---------------------------
-
-.. automodule:: pyresponse.helpers
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-.. inheritance-diagram:: pyresponse.helpers
-
-pyresponse\.integrals module
-----------------------------
-
-.. automodule:: pyresponse.integrals
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-.. inheritance-diagram:: pyresponse.integrals
-
-pyresponse\.iterators module
-----------------------------
-
-.. automodule:: pyresponse.iterators
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-.. inheritance-diagram:: pyresponse.iterators
-
-pyresponse\.magnetic module
----------------------------
-
-.. automodule:: pyresponse.magnetic
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-.. inheritance-diagram:: pyresponse.magnetic
-
-pyresponse\.molecular\_property module
---------------------------------------
-
-.. automodule:: pyresponse.molecular_property
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-.. inheritance-diagram:: pyresponse.molecular_property
-
-pyresponse\.operators module
-----------------------------
-
-.. automodule:: pyresponse.operators
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-.. inheritance-diagram:: pyresponse.operators
-
-pyresponse\.optrot module
+pyresponse.helpers module
 -------------------------
 
-.. automodule:: pyresponse.optrot
-    :members:
-    :undoc-members:
-    :show-inheritance:
+.. automodule:: pyresponse.helpers
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
-.. inheritance-diagram:: pyresponse.optrot
+pyresponse.integrals module
+---------------------------
 
-pyresponse\.td module
----------------------
+.. automodule:: pyresponse.integrals
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pyresponse.molecular\_property module
+-------------------------------------
+
+.. automodule:: pyresponse.molecular_property
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pyresponse.operators module
+---------------------------
+
+.. automodule:: pyresponse.operators
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pyresponse.solvers module
+-------------------------
+
+.. automodule:: pyresponse.solvers
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pyresponse.td module
+--------------------
 
 .. automodule:: pyresponse.td
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
-.. inheritance-diagram:: pyresponse.td
-
-pyresponse\.utils module
-------------------------
+pyresponse.utils module
+-----------------------
 
 .. automodule:: pyresponse.utils
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-.. inheritance-diagram:: pyresponse.utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 Module contents
 ---------------
 
 .. automodule:: pyresponse
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-.. inheritance-diagram:: pyresponse
+   :members:
+   :undoc-members:
+   :show-inheritance:

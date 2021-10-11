@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyresponse.tests.test_uncoupled &mdash; pyresponse  documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../contents.html" class="icon icon-home"> pyresponse
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">pyresponse</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../contents.html">pyresponse</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../contents.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>pyresponse.tests.test_uncoupled</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyresponse.tests.test_uncoupled</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">pyscf</span>
+
+<span class="kn">from</span> <span class="nn">pyresponse</span> <span class="kn">import</span> <span class="n">cphf</span><span class="p">,</span> <span class="n">operators</span><span class="p">,</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">utils</span>
+<span class="kn">from</span> <span class="nn">pyresponse.core</span> <span class="kn">import</span> <span class="n">AO2MOTransformationType</span><span class="p">,</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">Program</span><span class="p">,</span> <span class="n">Spin</span>
+<span class="kn">from</span> <span class="nn">pyresponse.pyscf</span> <span class="kn">import</span> <span class="n">molecules</span>
+<span class="kn">from</span> <span class="nn">pyresponse.pyscf.ao2mo</span> <span class="kn">import</span> <span class="n">AO2MOpyscf</span>
+<span class="kn">from</span> <span class="nn">pyresponse.pyscf.utils</span> <span class="kn">import</span> <span class="n">occupations_from_pyscf_mol</span>
+
+
+<div class="viewcode-block" id="mol_atom"><a class="viewcode-back" href="../../../pyresponse.tests.html#pyresponse.tests.test_uncoupled.mol_atom">[docs]</a><span class="k">def</span> <span class="nf">mol_atom</span><span class="p">(</span>
+    <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;He&quot;</span><span class="p">,</span>
+    <span class="n">charge</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">spin</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">basis</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;sto-3g&quot;</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">:</span>
+    <span class="n">mol</span> <span class="o">=</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">()</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">atom</span> <span class="o">=</span> <span class="p">[[</span><span class="n">symbol</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)]]</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">basis</span> <span class="o">=</span> <span class="n">basis</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">charge</span> <span class="o">=</span> <span class="n">charge</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">spin</span> <span class="o">=</span> <span class="n">spin</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">mol</span></div>
+
+
+<span class="c1"># pylint: disable=bad-whitespace</span>
+<span class="n">rhf_coupled</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mf">0.0</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">[</span><span class="mf">3.47899e01</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.77591e-05</span><span class="p">,</span> <span class="mf">2.24416e-04</span><span class="p">],</span>
+                <span class="p">[</span><span class="o">-</span><span class="mf">1.77591e-05</span><span class="p">,</span> <span class="mf">4.43286e01</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.91191e-01</span><span class="p">],</span>
+                <span class="p">[</span><span class="mf">2.24416e-04</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.91191e-01</span><span class="p">,</span> <span class="mf">1.68476e01</span><span class="p">],</span>
+            <span class="p">]</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;error_max_diag&quot;</span><span class="p">:</span> <span class="mf">1.0e-4</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="mf">0.0773178</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">[</span><span class="mf">3.53972e01</span><span class="p">,</span> <span class="o">-</span><span class="mf">8.48249e-06</span><span class="p">,</span> <span class="mf">2.05118e-04</span><span class="p">],</span>
+                <span class="p">[</span><span class="o">-</span><span class="mf">8.48249e-06</span><span class="p">,</span> <span class="mf">4.52552e01</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.17003e-01</span><span class="p">],</span>
+                <span class="p">[</span><span class="mf">2.05118e-04</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.17003e-01</span><span class="p">,</span> <span class="mf">1.70848e01</span><span class="p">],</span>
+            <span class="p">]</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;error_max_diag&quot;</span><span class="p">:</span> <span class="mf">1.0e-4</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="mf">0.128347</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">[</span><span class="mf">3.65252e01</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.36748e-06</span><span class="p">,</span> <span class="mf">1.76171e-04</span><span class="p">],</span>
+                <span class="p">[</span><span class="o">-</span><span class="mf">2.36748e-06</span><span class="p">,</span> <span class="mf">4.70314e01</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.86868e-01</span><span class="p">],</span>
+                <span class="p">[</span><span class="mf">1.76171e-04</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.86868e-01</span><span class="p">,</span> <span class="mf">1.75452e01</span><span class="p">],</span>
+            <span class="p">]</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;error_max_diag&quot;</span><span class="p">:</span> <span class="mf">1.0e-4</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+
+
+<span class="c1"># pylint: disable=bad-whitespace</span>
+<span class="n">rhf_uncoupled</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mf">0.0</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">[</span><span class="mf">3.22077e01</span><span class="p">,</span> <span class="mf">1.50870e-04</span><span class="p">,</span> <span class="mf">5.33903e-04</span><span class="p">],</span>
+                <span class="p">[</span><span class="mf">1.50870e-04</span><span class="p">,</span> <span class="mf">4.04007e01</span><span class="p">,</span> <span class="mf">2.38977e00</span><span class="p">],</span>
+                <span class="p">[</span><span class="mf">5.33903e-04</span><span class="p">,</span> <span class="mf">2.38977e00</span><span class="p">,</span> <span class="mf">1.49105e01</span><span class="p">],</span>
+            <span class="p">]</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;error_max_diag&quot;</span><span class="p">:</span> <span class="mf">1.0e-4</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="mf">0.0773178</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">[</span><span class="mf">3.25145e01</span><span class="p">,</span> <span class="mf">1.51073e-04</span><span class="p">,</span> <span class="mf">5.32981e-04</span><span class="p">],</span>
+                <span class="p">[</span><span class="mf">1.51073e-04</span><span class="p">,</span> <span class="mf">4.08495e01</span><span class="p">,</span> <span class="mf">2.43278e00</span><span class="p">],</span>
+                <span class="p">[</span><span class="mf">5.32981e-04</span><span class="p">,</span> <span class="mf">2.43278e00</span><span class="p">,</span> <span class="mf">1.50160e01</span><span class="p">],</span>
+            <span class="p">]</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;error_max_diag&quot;</span><span class="p">:</span> <span class="mf">1.0e-4</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="mf">0.128347</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">[</span><span class="mf">3.30688e01</span><span class="p">,</span> <span class="mf">1.51325e-04</span><span class="p">,</span> <span class="mf">5.30935e-04</span><span class="p">],</span>
+                <span class="p">[</span><span class="mf">1.51325e-04</span><span class="p">,</span> <span class="mf">4.16650e01</span><span class="p">,</span> <span class="mf">2.51199e00</span><span class="p">],</span>
+                <span class="p">[</span><span class="mf">5.30935e-04</span><span class="p">,</span> <span class="mf">2.51199e00</span><span class="p">,</span> <span class="mf">1.52058e01</span><span class="p">],</span>
+            <span class="p">]</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;error_max_diag&quot;</span><span class="p">:</span> <span class="mf">1.0e-4</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+
+
+<span class="c1"># pylint: disable=bad-whitespace</span>
+<span class="n">uhf_coupled</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mf">0.0</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">[</span><span class="mf">3.63373e01</span><span class="p">,</span> <span class="o">-</span><span class="mf">8.63039e-04</span><span class="p">,</span> <span class="mf">4.27969e-04</span><span class="p">],</span>
+                <span class="p">[</span><span class="o">-</span><span class="mf">8.63039e-04</span><span class="p">,</span> <span class="mf">3.50789e01</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.31340e00</span><span class="p">],</span>
+                <span class="p">[</span><span class="mf">4.27969e-04</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.31340e00</span><span class="p">,</span> <span class="mf">1.91465e01</span><span class="p">],</span>
+            <span class="p">]</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;error_max_diag&quot;</span><span class="p">:</span> <span class="mf">1.0e-4</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="mf">0.0773178</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">[</span><span class="mf">3.70513e01</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.35934e-02</span><span class="p">,</span> <span class="mf">2.24680e-03</span><span class="p">],</span>
+                <span class="p">[</span><span class="o">-</span><span class="mf">1.35934e-02</span><span class="p">,</span> <span class="mf">4.33419e01</span><span class="p">,</span> <span class="mf">1.02081e-01</span><span class="p">],</span>
+                <span class="p">[</span><span class="mf">2.24680e-03</span><span class="p">,</span> <span class="mf">1.02081e-01</span><span class="p">,</span> <span class="mf">2.04381e01</span><span class="p">],</span>
+            <span class="p">]</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;error_max_diag&quot;</span><span class="p">:</span> <span class="mf">1.0e-3</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="mf">0.128347</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">[</span><span class="mf">3.97633e01</span><span class="p">,</span> <span class="mf">2.90266e-02</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.85016e-03</span><span class="p">],</span>
+                <span class="p">[</span><span class="mf">2.90266e-02</span><span class="p">,</span> <span class="mf">4.65961e01</span><span class="p">,</span> <span class="mf">1.43676e00</span><span class="p">],</span>
+                <span class="p">[</span><span class="o">-</span><span class="mf">2.85016e-03</span><span class="p">,</span> <span class="mf">1.43676e00</span><span class="p">,</span> <span class="mf">2.25248e01</span><span class="p">],</span>
+            <span class="p">]</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;error_max_diag&quot;</span><span class="p">:</span> <span class="mf">1.0e-2</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="c1"># 100 nm!</span>
+    <span class="mf">0.4556355</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">[</span><span class="mf">1.55494e02</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.03311e-01</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.85361e-01</span><span class="p">],</span>
+                <span class="p">[</span><span class="o">-</span><span class="mf">4.03311e-01</span><span class="p">,</span> <span class="o">-</span><span class="mf">6.60084e02</span><span class="p">,</span> <span class="o">-</span><span class="mf">9.94324e01</span><span class="p">],</span>
+                <span class="p">[</span><span class="o">-</span><span class="mf">4.85361e-01</span><span class="p">,</span> <span class="o">-</span><span class="mf">9.94324e01</span><span class="p">,</span> <span class="mf">2.80687e01</span><span class="p">],</span>
+            <span class="p">]</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;error_max_diag&quot;</span><span class="p">:</span> <span class="mf">2.0e-0</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+
+
+<span class="c1"># pylint: disable=bad-whitespace</span>
+<span class="n">uhf_uncoupled</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mf">0.0</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">[</span><span class="mf">3.45537e01</span><span class="p">,</span> <span class="mf">8.12383e-05</span><span class="p">,</span> <span class="mf">9.13783e-04</span><span class="p">],</span>
+                <span class="p">[</span><span class="mf">8.12383e-05</span><span class="p">,</span> <span class="mf">5.73968e01</span><span class="p">,</span> <span class="mf">8.85793e00</span><span class="p">],</span>
+                <span class="p">[</span><span class="mf">9.13783e-04</span><span class="p">,</span> <span class="mf">8.85793e00</span><span class="p">,</span> <span class="mf">1.95421e01</span><span class="p">],</span>
+            <span class="p">]</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;error_max_diag&quot;</span><span class="p">:</span> <span class="mf">1.0e-4</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="mf">0.0773178</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">[</span><span class="mf">3.49369e01</span><span class="p">,</span> <span class="mf">9.40696e-05</span><span class="p">,</span> <span class="mf">9.31091e-04</span><span class="p">],</span>
+                <span class="p">[</span><span class="mf">9.40696e-05</span><span class="p">,</span> <span class="mf">5.89094e01</span><span class="p">,</span> <span class="mf">9.26378e00</span><span class="p">],</span>
+                <span class="p">[</span><span class="mf">9.31091e-04</span><span class="p">,</span> <span class="mf">9.26378e00</span><span class="p">,</span> <span class="mf">1.98017e01</span><span class="p">],</span>
+            <span class="p">]</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;error_max_diag&quot;</span><span class="p">:</span> <span class="mf">1.0e-4</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="mf">0.128347</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">[</span><span class="mf">3.56387e01</span><span class="p">,</span> <span class="mf">1.22202e-04</span><span class="p">,</span> <span class="mf">9.68661e-04</span><span class="p">],</span>
+                <span class="p">[</span><span class="mf">1.22202e-04</span><span class="p">,</span> <span class="mf">6.19498e01</span><span class="p">,</span> <span class="mf">1.00967e01</span><span class="p">],</span>
+                <span class="p">[</span><span class="mf">9.68661e-04</span><span class="p">,</span> <span class="mf">1.00967e01</span><span class="p">,</span> <span class="mf">2.03043e01</span><span class="p">],</span>
+            <span class="p">]</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;error_max_diag&quot;</span><span class="p">:</span> <span class="mf">2.0e-4</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="mf">0.4556355</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">[</span><span class="mf">1.03406e02</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.24375e-02</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.16407e-02</span><span class="p">],</span>
+                <span class="p">[</span><span class="o">-</span><span class="mf">1.24375e-02</span><span class="p">,</span> <span class="mf">7.97942e01</span><span class="p">,</span> <span class="mf">1.90354e01</span><span class="p">],</span>
+                <span class="p">[</span><span class="o">-</span><span class="mf">1.16407e-02</span><span class="p">,</span> <span class="mf">1.90354e01</span><span class="p">,</span> <span class="mf">3.33718e01</span><span class="p">],</span>
+            <span class="p">]</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;error_max_diag&quot;</span><span class="p">:</span> <span class="mf">2.0e-2</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="test_uncoupled_rhf"><a class="viewcode-back" href="../../../pyresponse.tests.html#pyresponse.tests.test_uncoupled.test_uncoupled_rhf">[docs]</a><span class="k">def</span> <span class="nf">test_uncoupled_rhf</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">mol</span> <span class="o">=</span> <span class="n">molecules</span><span class="o">.</span><span class="n">molecule_trithiolane_sto3g</span><span class="p">()</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+
+    <span class="n">mf</span> <span class="o">=</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">scf</span><span class="o">.</span><span class="n">RHF</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+    <span class="n">mf</span><span class="o">.</span><span class="n">scf</span><span class="p">()</span>
+
+    <span class="n">C</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">fix_mocoeffs_shape</span><span class="p">(</span><span class="n">mf</span><span class="o">.</span><span class="n">mo_coeff</span><span class="p">)</span>
+    <span class="n">E</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">fix_moenergies_shape</span><span class="p">(</span><span class="n">mf</span><span class="o">.</span><span class="n">mo_energy</span><span class="p">)</span>
+    <span class="n">occupations</span> <span class="o">=</span> <span class="n">occupations_from_pyscf_mol</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">C</span><span class="p">)</span>
+
+    <span class="n">solver</span> <span class="o">=</span> <span class="n">solvers</span><span class="o">.</span><span class="n">ExactInv</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">occupations</span><span class="p">)</span>
+
+    <span class="n">ao2mo</span> <span class="o">=</span> <span class="n">AO2MOpyscf</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span> <span class="n">mol</span><span class="p">)</span>
+    <span class="n">ao2mo</span><span class="o">.</span><span class="n">perform_rhf_partial</span><span class="p">()</span>
+    <span class="n">solver</span><span class="o">.</span><span class="n">tei_mo</span> <span class="o">=</span> <span class="n">ao2mo</span><span class="o">.</span><span class="n">tei_mo</span>
+    <span class="n">solver</span><span class="o">.</span><span class="n">tei_mo_type</span> <span class="o">=</span> <span class="n">AO2MOTransformationType</span><span class="o">.</span><span class="n">partial</span>
+
+    <span class="n">driver</span> <span class="o">=</span> <span class="n">cphf</span><span class="o">.</span><span class="n">CPHF</span><span class="p">(</span><span class="n">solver</span><span class="p">)</span>
+
+    <span class="n">operator_diplen</span> <span class="o">=</span> <span class="n">operators</span><span class="o">.</span><span class="n">Operator</span><span class="p">(</span>
+        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;dipole&quot;</span><span class="p">,</span> <span class="n">is_imaginary</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">is_spin_dependent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">triplet</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="n">integrals_diplen_ao</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">intor</span><span class="p">(</span><span class="s2">&quot;cint1e_r_sph&quot;</span><span class="p">,</span> <span class="n">comp</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">operator_diplen</span><span class="o">.</span><span class="n">ao_integrals</span> <span class="o">=</span> <span class="n">integrals_diplen_ao</span>
+    <span class="n">driver</span><span class="o">.</span><span class="n">add_operator</span><span class="p">(</span><span class="n">operator_diplen</span><span class="p">)</span>
+
+    <span class="n">frequencies</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0773178</span><span class="p">,</span> <span class="mf">0.128347</span><span class="p">]</span>
+    <span class="n">driver</span><span class="o">.</span><span class="n">set_frequencies</span><span class="p">(</span><span class="n">frequencies</span><span class="p">)</span>
+
+    <span class="n">driver</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+        <span class="n">hamiltonian</span><span class="o">=</span><span class="n">Hamiltonian</span><span class="o">.</span><span class="n">RPA</span><span class="p">,</span>
+        <span class="n">spin</span><span class="o">=</span><span class="n">Spin</span><span class="o">.</span><span class="n">singlet</span><span class="p">,</span>
+        <span class="n">program</span><span class="o">=</span><span class="n">Program</span><span class="o">.</span><span class="n">PySCF</span><span class="p">,</span>
+        <span class="n">program_obj</span><span class="o">=</span><span class="n">mol</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">idxf</span><span class="p">,</span> <span class="n">frequency</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">frequencies</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">idxf</span><span class="p">,</span> <span class="n">frequency</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;uncoupled&quot;</span><span class="p">)</span>
+        <span class="n">diag_res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">driver</span><span class="o">.</span><span class="n">uncoupled_results</span><span class="p">[</span><span class="n">idxf</span><span class="p">])</span>
+        <span class="n">diag_ref</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">rhf_uncoupled</span><span class="p">[</span><span class="n">frequency</span><span class="p">][</span><span class="s2">&quot;result&quot;</span><span class="p">])</span>
+        <span class="n">diff</span> <span class="o">=</span> <span class="n">diag_res</span> <span class="o">-</span> <span class="n">diag_ref</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">diag_res</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">diag_ref</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">diff</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">diff</span><span class="p">))</span> <span class="o">&lt;</span> <span class="n">rhf_uncoupled</span><span class="p">[</span><span class="n">frequency</span><span class="p">][</span><span class="s2">&quot;error_max_diag&quot;</span><span class="p">]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;coupled&quot;</span><span class="p">)</span>
+        <span class="n">diag_res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">driver</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="n">idxf</span><span class="p">])</span>
+        <span class="n">diag_ref</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">rhf_coupled</span><span class="p">[</span><span class="n">frequency</span><span class="p">][</span><span class="s2">&quot;result&quot;</span><span class="p">])</span>
+        <span class="n">diff</span> <span class="o">=</span> <span class="n">diag_res</span> <span class="o">-</span> <span class="n">diag_ref</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">diag_res</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">diag_ref</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">diff</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">diff</span><span class="p">))</span> <span class="o">&lt;</span> <span class="n">rhf_coupled</span><span class="p">[</span><span class="n">frequency</span><span class="p">][</span><span class="s2">&quot;error_max_diag&quot;</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="test_uncoupled_uhf"><a class="viewcode-back" href="../../../pyresponse.tests.html#pyresponse.tests.test_uncoupled.test_uncoupled_uhf">[docs]</a><span class="k">def</span> <span class="nf">test_uncoupled_uhf</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">mol</span> <span class="o">=</span> <span class="n">molecules</span><span class="o">.</span><span class="n">molecule_trithiolane_sto3g</span><span class="p">()</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">charge</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">spin</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+
+    <span class="n">mf</span> <span class="o">=</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">scf</span><span class="o">.</span><span class="n">uhf</span><span class="o">.</span><span class="n">UHF</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+    <span class="n">mf</span><span class="o">.</span><span class="n">scf</span><span class="p">()</span>
+
+    <span class="n">C</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">fix_mocoeffs_shape</span><span class="p">(</span><span class="n">mf</span><span class="o">.</span><span class="n">mo_coeff</span><span class="p">)</span>
+    <span class="n">E</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">fix_moenergies_shape</span><span class="p">(</span><span class="n">mf</span><span class="o">.</span><span class="n">mo_energy</span><span class="p">)</span>
+    <span class="n">occupations</span> <span class="o">=</span> <span class="n">occupations_from_pyscf_mol</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">C</span><span class="p">)</span>
+
+    <span class="n">solver</span> <span class="o">=</span> <span class="n">solvers</span><span class="o">.</span><span class="n">ExactInv</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">occupations</span><span class="p">)</span>
+
+    <span class="n">ao2mo</span> <span class="o">=</span> <span class="n">AO2MOpyscf</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span> <span class="n">mol</span><span class="p">)</span>
+    <span class="n">ao2mo</span><span class="o">.</span><span class="n">perform_uhf_partial</span><span class="p">()</span>
+    <span class="n">solver</span><span class="o">.</span><span class="n">tei_mo</span> <span class="o">=</span> <span class="n">ao2mo</span><span class="o">.</span><span class="n">tei_mo</span>
+    <span class="n">solver</span><span class="o">.</span><span class="n">tei_mo_type</span> <span class="o">=</span> <span class="n">AO2MOTransformationType</span><span class="o">.</span><span class="n">partial</span>
+
+    <span class="n">driver</span> <span class="o">=</span> <span class="n">cphf</span><span class="o">.</span><span class="n">CPHF</span><span class="p">(</span><span class="n">solver</span><span class="p">)</span>
+
+    <span class="n">operator_diplen</span> <span class="o">=</span> <span class="n">operators</span><span class="o">.</span><span class="n">Operator</span><span class="p">(</span>
+        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;dipole&quot;</span><span class="p">,</span> <span class="n">is_imaginary</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">is_spin_dependent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">triplet</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="n">integrals_diplen_ao</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">intor</span><span class="p">(</span><span class="s2">&quot;cint1e_r_sph&quot;</span><span class="p">,</span> <span class="n">comp</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">operator_diplen</span><span class="o">.</span><span class="n">ao_integrals</span> <span class="o">=</span> <span class="n">integrals_diplen_ao</span>
+    <span class="n">driver</span><span class="o">.</span><span class="n">add_operator</span><span class="p">(</span><span class="n">operator_diplen</span><span class="p">)</span>
+
+    <span class="n">frequencies</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0773178</span><span class="p">,</span> <span class="mf">0.128347</span><span class="p">,</span> <span class="mf">0.4556355</span><span class="p">]</span>
+    <span class="n">driver</span><span class="o">.</span><span class="n">set_frequencies</span><span class="p">(</span><span class="n">frequencies</span><span class="p">)</span>
+
+    <span class="n">driver</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+        <span class="n">hamiltonian</span><span class="o">=</span><span class="n">Hamiltonian</span><span class="o">.</span><span class="n">RPA</span><span class="p">,</span>
+        <span class="n">spin</span><span class="o">=</span><span class="n">Spin</span><span class="o">.</span><span class="n">singlet</span><span class="p">,</span>
+        <span class="n">program</span><span class="o">=</span><span class="n">Program</span><span class="o">.</span><span class="n">PySCF</span><span class="p">,</span>
+        <span class="n">program_obj</span><span class="o">=</span><span class="n">mol</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">idxf</span><span class="p">,</span> <span class="n">frequency</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">frequencies</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">idxf</span><span class="p">,</span> <span class="n">frequency</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;uncoupled&quot;</span><span class="p">)</span>
+        <span class="n">diag_res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">driver</span><span class="o">.</span><span class="n">uncoupled_results</span><span class="p">[</span><span class="n">idxf</span><span class="p">])</span>
+        <span class="n">diag_ref</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">uhf_uncoupled</span><span class="p">[</span><span class="n">frequency</span><span class="p">][</span><span class="s2">&quot;result&quot;</span><span class="p">])</span>
+        <span class="n">diff</span> <span class="o">=</span> <span class="n">diag_res</span> <span class="o">-</span> <span class="n">diag_ref</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">diag_res</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">diag_ref</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">diff</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">driver</span><span class="o">.</span><span class="n">uncoupled_results</span><span class="p">[</span><span class="n">idxf</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">uhf_uncoupled</span><span class="p">[</span><span class="n">frequency</span><span class="p">][</span><span class="s2">&quot;result&quot;</span><span class="p">])</span>
+        <span class="c1"># FIXME why only look at the diagonal elements?</span>
+        <span class="c1"># assert np.max(np.abs(diff)) &lt; uhf_uncoupled[frequency][&quot;error_max_diag&quot;]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;coupled&quot;</span><span class="p">)</span>
+        <span class="n">diag_res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">driver</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="n">idxf</span><span class="p">])</span>
+        <span class="n">diag_ref</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">uhf_coupled</span><span class="p">[</span><span class="n">frequency</span><span class="p">][</span><span class="s2">&quot;result&quot;</span><span class="p">])</span>
+        <span class="n">diff</span> <span class="o">=</span> <span class="n">diag_res</span> <span class="o">-</span> <span class="n">diag_ref</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">diag_res</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">diag_ref</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">diff</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">diff</span><span class="p">))</span> <span class="o">&lt;</span> <span class="n">uhf_coupled</span><span class="p">[</span><span class="n">frequency</span><span class="p">][</span><span class="s2">&quot;error_max_diag&quot;</span><span class="p">]</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">test_uncoupled_rhf</span><span class="p">()</span>
+    <span class="n">test_uncoupled_uhf</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Eric Berquist.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

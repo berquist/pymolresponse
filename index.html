@@ -39,6 +39,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">pyresponse</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#other-python-dependencies">Other Python dependencies</a></li>
 </ul>
@@ -79,21 +80,23 @@
   <section id="pyresponse">
 <h1>pyresponse<a class="headerlink" href="#pyresponse" title="Permalink to this headline"></a></h1>
 <p>Molecular frequency-dependent response properties for arbitrary operators.</p>
-<p><a class="reference external" href="https://travis-ci.org/berquist/pyresponse">build status</a>
-<a class="reference external" href="https://codecov.io/gh/berquist/pyresponse">codecov</a>
-<a class="reference external" href="https://github.com/berquist/pyresponse/blob/master/LICENSE">license</a></p>
-<p>For documentation, go to <a class="reference external" href="https://berquist.github.io/pyresponse_docs/">https://berquist.github.io/pyresponse_docs/</a>.</p>
+<p>For documentation, go to <a class="reference external" href="https://berquist.github.io/pyresponse/">https://berquist.github.io/pyresponse/</a>.</p>
 <p>Currently, the goal is to provide:</p>
 <ol class="arabic simple">
 <li><p>a pedagogical example of a working molecular orbital response program as an almost direct translation from equations to code,</p></li>
 <li><p>an implementation that gives “exact” results for testing, and</p></li>
 <li><p>an example of testing and documenting scientific code using modern software development tools.</p></li>
 </ol>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h2>
+<p>To set up a conda environment with all dependencies for running, testing, and building the documentation, look under <code class="docutils literal notranslate"><span class="pre">devtools</span></code>.</p>
+</section>
 <section id="requirements">
 <h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline"></a></h2>
 <ul class="simple">
-<li><p>Python &gt;= [STRIKEOUT:3.2 because of pyscf]3.6 because of <a class="reference external" href="https://cito.github.io/blog/f-strings/">f-strings</a>.</p></li>
+<li><p>Python 3.6 because of <a class="reference external" href="https://cito.github.io/blog/f-strings/">f-strings</a>.</p></li>
 <li><p><a class="reference external" href="https://github.com/sunqm/pyscf">pyscf</a> and its dependencies</p></li>
+<li><p><a class="reference external" href="https://psicode.org/">Psi4</a></p></li>
 </ul>
 <section id="other-python-dependencies">
 <h3>Other Python dependencies<a class="headerlink" href="#other-python-dependencies" title="Permalink to this headline"></a></h3>
@@ -101,7 +104,7 @@
 <li><p><a class="reference external" href="https://github.com/pkienzle/periodictable">periodictable</a> (for calculating the center of mass)</p></li>
 <li><p><a class="reference external" href="http://doc.pytest.org/en/latest/">pytest</a> (for testing)</p></li>
 <li><p><a class="reference external" href="https://github.com/vahtras/daltools">daltools</a> (for testing?)</p></li>
-<li><p><a class="reference external" href="https://github.com/cclib/cclib">cclib</a> (for ?)</p></li>
+<li><p><a class="reference external" href="https://github.com/cclib/cclib">cclib</a> (for testing)</p></li>
 </ul>
 </section>
 </section>
@@ -114,10 +117,11 @@
 <section id="caveats">
 <h2>Caveats<a class="headerlink" href="#caveats" title="Permalink to this headline"></a></h2>
 <ul class="simple">
-<li><p>RHF and UHF references only.</p></li>
+<li><p>RHF and UHF references only; no ROHF yet.</p></li>
 <li><p>Hartree-Fock and DFT only; no post-HF methods yet.</p></li>
+<li><p>Real orbitals only; no complex or generalized orbitals yet.</p></li>
 <li><p>Because the dimensioning of all arrays is based around the ov/vo space, methods that have non-zero contributions from the oo space (specifically derivatives of GIAOs/London orbitals w.r.t. the B-field) are not currently possible.</p></li>
-<li><p>No iterative schemes are implemented, only “exact” methods involving explicit construction of the full orbital Hessian and then inverting it (for response) or diagonalizing it (for excitation energies/transition moments/residues). Better have lots of memory!</p></li>
+<li><p>An iterative solver exists for response properties, not transition properties, where only explicit formation and then diagonalization of the orbital Hessian is available.</p></li>
 <li><p>Linear response and single residues only.</p></li>
 <li><p><em>unrestricted diagonalization-based properties are not implemented/working</em></p></li>
 </ul>
@@ -138,9 +142,7 @@
 <ul class="simple">
 <li><p>Open-ended response: see <a class="reference external" href="https://doi.org/10.1002/jcc.23533">Ringholm, Jonsson, and Ruud</a>.</p></li>
 <li><p>Finite-difference for testing and higher-order response.</p></li>
-<li><p>Independence from pyscf, requires molecule/basis set handling, AO integral engine, and RHF/UHF solver.</p></li>
 <li><p>Interface to <a class="reference external" href="https://github.com/berquist/pyquante">PyQuante</a> and/or <a class="reference external" href="https://github.com/rpmuller/pyquante2">pyquante2</a>.</p></li>
-<li><p>Interface to <a class="reference external" href="https://github.com/psi4/psi4">Psi4</a> (through Python, not C++).</p></li>
 <li><p>Jupyter Notebook-based tutorials.</p></li>
 <li><p>Argument type-checking using <a class="reference external" href="http://mypy-lang.org/">mypy</a>.</p></li>
 </ul>
@@ -161,7 +163,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2019, Eric Berquist.</p>
+    <p>&#169; Copyright 2021, Eric Berquist.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

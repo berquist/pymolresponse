@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyresponse.solvers &mdash; pyresponse  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../contents.html" class="icon icon-home"> pyresponse
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">pyresponse</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../contents.html">pyresponse</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../contents.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      <li>pyresponse.solvers</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyresponse.solvers</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy</span> <span class="k">as</span> <span class="nn">sp</span>
+
+<span class="kn">from</span> <span class="nn">pyresponse.core</span> <span class="kn">import</span> <span class="n">AO2MOTransformationType</span><span class="p">,</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">Program</span><span class="p">,</span> <span class="n">Spin</span>
+<span class="kn">from</span> <span class="nn">pyresponse.explicit_equations_full</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">form_rpa_a_matrix_mo_singlet_full</span><span class="p">,</span>
+    <span class="n">form_rpa_a_matrix_mo_singlet_os_full</span><span class="p">,</span>
+    <span class="n">form_rpa_a_matrix_mo_singlet_ss_full</span><span class="p">,</span>
+    <span class="n">form_rpa_a_matrix_mo_triplet_full</span><span class="p">,</span>
+    <span class="n">form_rpa_b_matrix_mo_singlet_full</span><span class="p">,</span>
+    <span class="n">form_rpa_b_matrix_mo_singlet_os_full</span><span class="p">,</span>
+    <span class="n">form_rpa_b_matrix_mo_singlet_ss_full</span><span class="p">,</span>
+    <span class="n">form_rpa_b_matrix_mo_triplet_full</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">pyresponse.explicit_equations_partial</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">form_rpa_a_matrix_mo_singlet_os_partial</span><span class="p">,</span>
+    <span class="n">form_rpa_a_matrix_mo_singlet_partial</span><span class="p">,</span>
+    <span class="n">form_rpa_a_matrix_mo_singlet_ss_partial</span><span class="p">,</span>
+    <span class="n">form_rpa_a_matrix_mo_triplet_partial</span><span class="p">,</span>
+    <span class="n">form_rpa_b_matrix_mo_singlet_os_partial</span><span class="p">,</span>
+    <span class="n">form_rpa_b_matrix_mo_singlet_partial</span><span class="p">,</span>
+    <span class="n">form_rpa_b_matrix_mo_singlet_ss_partial</span><span class="p">,</span>
+    <span class="n">form_rpa_b_matrix_mo_triplet_partial</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">pyresponse.integrals</span> <span class="kn">import</span> <span class="n">JK</span>
+<span class="kn">from</span> <span class="nn">pyresponse.operators</span> <span class="kn">import</span> <span class="n">Operator</span>
+<span class="kn">from</span> <span class="nn">pyresponse.utils</span> <span class="kn">import</span> <span class="n">repack_matrix_to_vector</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">suppress</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Solver"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.Solver">[docs]</a><span class="k">class</span> <span class="nc">Solver</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A Solver does all of the TODO</span>
+
+<span class="sd">    There are two principal algorithm classes for forming response vectors:</span>
+
+<span class="sd">    - Exact, where the full electronic Hessian is formed explicitly,</span>
+<span class="sd">      diagonalized, and then contracted with property gradient vectors to</span>
+<span class="sd">      response vectors, or</span>
+
+<span class="sd">    - Iterative, where the electronic Hessian is never formed explicitly, TODO</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">mocoeffs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">occupations</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="c1"># MO coefficients: the first axis is alpha/beta</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">mocoeffs</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">mocoeffs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">mocoeffs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_uhf</span> <span class="o">=</span> <span class="n">mocoeffs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span>
+        <span class="c1"># MO energies: the first axis is alpha/beta, the other two represent a</span>
+        <span class="c1"># diagonal square matrix.</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">moenergies</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">moenergies</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">moenergies</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_uhf</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">moenergies</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">moenergies</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="k">assert</span> <span class="n">moenergies</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">moenergies</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">occupations</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">mocoeffs</span> <span class="o">=</span> <span class="n">mocoeffs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moenergies</span> <span class="o">=</span> <span class="n">moenergies</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">occupations</span> <span class="o">=</span> <span class="n">occupations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">form_ranges_from_occupations</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">operators</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">indices_closed_act</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indices_closed_secondary</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indices_act_secondary</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indices_rohf</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indices_display_rohf</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># These are needed for MO-based solvers.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo_type</span> <span class="o">=</span> <span class="n">AO2MOTransformationType</span><span class="o">.</span><span class="n">partial</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">explicit_hessian</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">explicit_hessian_inv</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="Solver.form_tei_mo"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.Solver.form_tei_mo">[docs]</a>    <span class="k">def</span> <span class="nf">form_tei_mo</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">program</span><span class="p">:</span> <span class="n">Program</span><span class="p">,</span> <span class="n">program_obj</span><span class="p">,</span> <span class="n">tei_mo_type</span><span class="p">:</span> <span class="n">AO2MOTransformationType</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="n">Program</span><span class="p">)</span>
+        <span class="c1"># TODO program_obj</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tei_mo_type</span><span class="p">,</span> <span class="n">AO2MOTransformationType</span><span class="p">)</span>
+        <span class="n">nden</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mocoeffs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="n">nden</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">program</span> <span class="o">==</span> <span class="n">Program</span><span class="o">.</span><span class="n">PySCF</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">pyresponse.pyscf.ao2mo</span> <span class="kn">import</span> <span class="n">AO2MOpyscf</span>
+
+            <span class="n">ao2mo</span> <span class="o">=</span> <span class="n">AO2MOpyscf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mocoeffs</span><span class="p">,</span> <span class="n">program_obj</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span> <span class="n">program_obj</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">program</span> <span class="o">==</span> <span class="n">Program</span><span class="o">.</span><span class="n">Psi4</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">psi4</span>
+
+            <span class="kn">from</span> <span class="nn">pyresponse.ao2mo</span> <span class="kn">import</span> <span class="n">AO2MO</span>
+
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">program_obj</span><span class="p">,</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Molecule</span><span class="p">)</span>
+            <span class="n">ao2mo</span> <span class="o">=</span> <span class="n">AO2MO</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mocoeffs</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">occupations</span><span class="p">,</span>
+                <span class="n">I</span><span class="o">=</span><span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">MintsHelper</span><span class="p">(</span>
+                    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Wavefunction</span><span class="o">.</span><span class="n">build</span><span class="p">(</span>
+                        <span class="n">program_obj</span><span class="p">,</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">get_global_option</span><span class="p">(</span><span class="s2">&quot;BASIS&quot;</span><span class="p">)</span>
+                    <span class="p">)</span><span class="o">.</span><span class="n">basisset</span><span class="p">()</span>
+                <span class="p">)</span>
+                <span class="o">.</span><span class="n">ao_eri</span><span class="p">()</span>
+                <span class="o">.</span><span class="n">np</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span>
+        <span class="k">if</span> <span class="n">tei_mo_type</span> <span class="o">==</span> <span class="n">AO2MOTransformationType</span><span class="o">.</span><span class="n">partial</span> <span class="ow">and</span> <span class="n">nden</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">ao2mo</span><span class="o">.</span><span class="n">perform_uhf_partial</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">tei_mo_type</span> <span class="o">==</span> <span class="n">AO2MOTransformationType</span><span class="o">.</span><span class="n">partial</span> <span class="ow">and</span> <span class="n">nden</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">ao2mo</span><span class="o">.</span><span class="n">perform_rhf_partial</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">tei_mo_type</span> <span class="o">==</span> <span class="n">AO2MOTransformationType</span><span class="o">.</span><span class="n">full</span> <span class="ow">and</span> <span class="n">nden</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">ao2mo</span><span class="o">.</span><span class="n">perform_uhf_full</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">tei_mo_type</span> <span class="o">==</span> <span class="n">AO2MOTransformationType</span><span class="o">.</span><span class="n">full</span> <span class="ow">and</span> <span class="n">nden</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">ao2mo</span><span class="o">.</span><span class="n">perform_rhf_full</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown combination of tei_mo_type </span><span class="si">{</span><span class="n">tei_mo_type</span><span class="si">}</span><span class="s2"> and nden </span><span class="si">{</span><span class="n">nden</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span> <span class="o">=</span> <span class="n">ao2mo</span><span class="o">.</span><span class="n">tei_mo</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo_type</span> <span class="o">=</span> <span class="n">tei_mo_type</span></div>
+
+<div class="viewcode-block" id="Solver.form_ranges_from_occupations"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.Solver.form_ranges_from_occupations">[docs]</a>    <span class="k">def</span> <span class="nf">form_ranges_from_occupations</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">occupations</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span>
+        <span class="n">nocc_a</span><span class="p">,</span> <span class="n">nvirt_a</span><span class="p">,</span> <span class="n">nocc_b</span><span class="p">,</span> <span class="n">nvirt_b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">occupations</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">nocc_a</span> <span class="o">+</span> <span class="n">nvirt_a</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="n">nocc_b</span> <span class="o">+</span> <span class="n">nvirt_b</span><span class="p">)</span>
+        <span class="n">norb</span> <span class="o">=</span> <span class="n">nocc_a</span> <span class="o">+</span> <span class="n">nvirt_a</span>
+        <span class="n">nelec</span> <span class="o">=</span> <span class="n">nocc_a</span> <span class="o">+</span> <span class="n">nocc_b</span>
+        <span class="n">nact</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">nocc_a</span> <span class="o">-</span> <span class="n">nocc_b</span><span class="p">))</span>
+        <span class="n">nclosed</span> <span class="o">=</span> <span class="p">(</span><span class="n">nelec</span> <span class="o">-</span> <span class="n">nact</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+        <span class="n">nsecondary</span> <span class="o">=</span> <span class="n">norb</span> <span class="o">-</span> <span class="p">(</span><span class="n">nclosed</span> <span class="o">+</span> <span class="n">nact</span><span class="p">)</span>
+        <span class="n">range_closed</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">nclosed</span><span class="p">))</span>
+        <span class="n">range_act</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">nclosed</span><span class="p">,</span> <span class="n">nclosed</span> <span class="o">+</span> <span class="n">nact</span><span class="p">))</span>
+        <span class="n">range_secondary</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">nclosed</span> <span class="o">+</span> <span class="n">nact</span><span class="p">,</span> <span class="n">nclosed</span> <span class="o">+</span> <span class="n">nact</span> <span class="o">+</span> <span class="n">nsecondary</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indices_closed_act</span> <span class="o">=</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">range_closed</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">range_act</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indices_closed_secondary</span> <span class="o">=</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">range_closed</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">range_secondary</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indices_act_secondary</span> <span class="o">=</span> <span class="p">[(</span><span class="n">t</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">range_act</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">range_secondary</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indices_rohf</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">indices_closed_act</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">indices_closed_secondary</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">indices_act_secondary</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indices_display_rohf</span> <span class="o">=</span> <span class="p">[(</span><span class="n">p</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">q</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">indices_rohf</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Solver.set_frequencies"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.Solver.set_frequencies">[docs]</a>    <span class="k">def</span> <span class="nf">set_frequencies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frequencies</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">frequencies</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span> <span class="o">=</span> <span class="n">frequencies</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;operators&quot;</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">operator</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operators</span><span class="p">:</span>
+                <span class="n">operator</span><span class="o">.</span><span class="n">frequencies</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span></div>
+
+<div class="viewcode-block" id="Solver.add_operator"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.Solver.add_operator">[docs]</a>    <span class="k">def</span> <span class="nf">add_operator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operator</span><span class="p">:</span> <span class="n">Operator</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># First dimension is the number of Cartesian components, next</span>
+        <span class="c1"># two are the number of AOs.</span>
+        <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">operator</span><span class="p">,</span> <span class="s2">&quot;ao_integrals&quot;</span><span class="p">)</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="n">operator</span><span class="o">.</span><span class="n">ao_integrals</span><span class="o">.</span><span class="n">shape</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span>
+        <span class="k">assert</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">1</span>
+        <span class="k">assert</span> <span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">operator</span><span class="o">.</span><span class="n">indices_closed_act</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">indices_closed_act</span>
+        <span class="n">operator</span><span class="o">.</span><span class="n">indices_closed_secondary</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">indices_closed_secondary</span>
+        <span class="n">operator</span><span class="o">.</span><span class="n">indices_act_secondary</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">indices_act_secondary</span>
+        <span class="c1"># Form the property gradient.</span>
+        <span class="n">operator</span><span class="o">.</span><span class="n">form_rhs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mocoeffs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">occupations</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">operators</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">operator</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Solver.run"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.Solver.run">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hamiltonian</span><span class="p">:</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">spin</span><span class="p">:</span> <span class="n">Spin</span><span class="p">,</span> <span class="n">program</span><span class="p">:</span> <span class="n">Program</span><span class="p">,</span> <span class="n">program_obj</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Run the solver.&quot;&quot;&quot;</span></div></div>
+
+
+<div class="viewcode-block" id="LineqSolver"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.LineqSolver">[docs]</a><span class="k">class</span> <span class="nc">LineqSolver</span><span class="p">(</span><span class="n">Solver</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base class for all solvers of the type $AX = B$.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">mocoeffs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">occupations</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">mocoeffs</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">,</span> <span class="n">occupations</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ExactLineqSolver"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactLineqSolver">[docs]</a><span class="k">class</span> <span class="nc">ExactLineqSolver</span><span class="p">(</span><span class="n">LineqSolver</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base class for all solvers of the type $AX = B$, where $A$ is formed</span>
+<span class="sd">    explicitly.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">mocoeffs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">occupations</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">mocoeffs</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">,</span> <span class="n">occupations</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ExactLineqSolver.form_explicit_hessian"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactLineqSolver.form_explicit_hessian">[docs]</a>    <span class="k">def</span> <span class="nf">form_explicit_hessian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hamiltonian</span><span class="p">:</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">spin</span><span class="p">:</span> <span class="n">Spin</span><span class="p">,</span> <span class="n">frequency</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tei_mo_type</span><span class="p">,</span> <span class="n">AO2MOTransformationType</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hamiltonian</span><span class="p">,</span> <span class="n">Hamiltonian</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">spin</span><span class="p">,</span> <span class="n">Spin</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">frequency</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
+
+        <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">,</span> <span class="n">nvirt_beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">occupations</span>
+        <span class="n">nov_alph</span> <span class="o">=</span> <span class="n">nocc_alph</span> <span class="o">*</span> <span class="n">nvirt_alph</span>
+        <span class="n">nov_beta</span> <span class="o">=</span> <span class="n">nocc_beta</span> <span class="o">*</span> <span class="n">nvirt_beta</span>
+
+        <span class="n">superoverlap_alph</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">block</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">nov_alph</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">nov_alph</span><span class="p">,</span> <span class="n">nov_alph</span><span class="p">))],</span>
+                    <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">nov_alph</span><span class="p">,</span> <span class="n">nov_alph</span><span class="p">)),</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">nov_alph</span><span class="p">)],</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+            <span class="o">*</span> <span class="n">frequency</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_uhf</span><span class="p">:</span>
+
+            <span class="c1"># Set up &quot;function pointers&quot;.</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo_type</span> <span class="o">==</span> <span class="n">AO2MOTransformationType</span><span class="o">.</span><span class="n">full</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+                <span class="n">tei_mo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo_type</span> <span class="o">==</span> <span class="n">AO2MOTransformationType</span><span class="o">.</span><span class="n">partial</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+                <span class="n">tei_mo_ovov</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">tei_mo_oovv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo_type</span> <span class="o">==</span> <span class="n">AO2MOTransformationType</span><span class="o">.</span><span class="n">full</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">hamiltonian</span> <span class="o">==</span> <span class="n">Hamiltonian</span><span class="o">.</span><span class="n">RPA</span> <span class="ow">and</span> <span class="n">spin</span> <span class="o">==</span> <span class="n">Spin</span><span class="o">.</span><span class="n">singlet</span><span class="p">:</span>
+                    <span class="n">A</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_singlet_full</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">moenergies</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tei_mo</span><span class="p">,</span> <span class="n">nocc_alph</span><span class="p">)</span>
+                    <span class="n">B</span> <span class="o">=</span> <span class="n">form_rpa_b_matrix_mo_singlet_full</span><span class="p">(</span><span class="n">tei_mo</span><span class="p">,</span> <span class="n">nocc_alph</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">hamiltonian</span> <span class="o">==</span> <span class="n">Hamiltonian</span><span class="o">.</span><span class="n">RPA</span> <span class="ow">and</span> <span class="n">spin</span> <span class="o">==</span> <span class="n">Spin</span><span class="o">.</span><span class="n">triplet</span><span class="p">:</span>
+                    <span class="n">A</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_triplet_full</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">moenergies</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tei_mo</span><span class="p">,</span> <span class="n">nocc_alph</span><span class="p">)</span>
+                    <span class="n">B</span> <span class="o">=</span> <span class="n">form_rpa_b_matrix_mo_triplet_full</span><span class="p">(</span><span class="n">tei_mo</span><span class="p">,</span> <span class="n">nocc_alph</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">hamiltonian</span> <span class="o">==</span> <span class="n">Hamiltonian</span><span class="o">.</span><span class="n">TDA</span> <span class="ow">and</span> <span class="n">spin</span> <span class="o">==</span> <span class="n">Spin</span><span class="o">.</span><span class="n">singlet</span><span class="p">:</span>
+                    <span class="n">A</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_singlet_full</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">moenergies</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tei_mo</span><span class="p">,</span> <span class="n">nocc_alph</span><span class="p">)</span>
+                    <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">nov_alph</span><span class="p">,</span> <span class="n">nov_alph</span><span class="p">))</span>
+                <span class="k">elif</span> <span class="n">hamiltonian</span> <span class="o">==</span> <span class="n">Hamiltonian</span><span class="o">.</span><span class="n">TDA</span> <span class="ow">and</span> <span class="n">spin</span> <span class="o">==</span> <span class="n">Spin</span><span class="o">.</span><span class="n">triplet</span><span class="p">:</span>
+                    <span class="n">A</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_triplet_full</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">moenergies</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tei_mo</span><span class="p">,</span> <span class="n">nocc_alph</span><span class="p">)</span>
+                    <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">nov_alph</span><span class="p">,</span> <span class="n">nov_alph</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo_type</span> <span class="o">==</span> <span class="n">AO2MOTransformationType</span><span class="o">.</span><span class="n">partial</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">hamiltonian</span> <span class="o">==</span> <span class="n">Hamiltonian</span><span class="o">.</span><span class="n">RPA</span> <span class="ow">and</span> <span class="n">spin</span> <span class="o">==</span> <span class="n">Spin</span><span class="o">.</span><span class="n">singlet</span><span class="p">:</span>
+                    <span class="n">A</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_singlet_partial</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">moenergies</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tei_mo_ovov</span><span class="p">,</span> <span class="n">tei_mo_oovv</span>
+                    <span class="p">)</span>
+                    <span class="n">B</span> <span class="o">=</span> <span class="n">form_rpa_b_matrix_mo_singlet_partial</span><span class="p">(</span><span class="n">tei_mo_ovov</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">hamiltonian</span> <span class="o">==</span> <span class="n">Hamiltonian</span><span class="o">.</span><span class="n">RPA</span> <span class="ow">and</span> <span class="n">spin</span> <span class="o">==</span> <span class="n">Spin</span><span class="o">.</span><span class="n">triplet</span><span class="p">:</span>
+                    <span class="n">A</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_triplet_partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">moenergies</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tei_mo_oovv</span><span class="p">)</span>
+                    <span class="n">B</span> <span class="o">=</span> <span class="n">form_rpa_b_matrix_mo_triplet_partial</span><span class="p">(</span><span class="n">tei_mo_ovov</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">hamiltonian</span> <span class="o">==</span> <span class="n">Hamiltonian</span><span class="o">.</span><span class="n">TDA</span> <span class="ow">and</span> <span class="n">spin</span> <span class="o">==</span> <span class="n">Spin</span><span class="o">.</span><span class="n">singlet</span><span class="p">:</span>
+                    <span class="n">A</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_singlet_partial</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">moenergies</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tei_mo_ovov</span><span class="p">,</span> <span class="n">tei_mo_oovv</span>
+                    <span class="p">)</span>
+                    <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">nov_alph</span><span class="p">,</span> <span class="n">nov_alph</span><span class="p">))</span>
+                <span class="k">elif</span> <span class="n">hamiltonian</span> <span class="o">==</span> <span class="n">Hamiltonian</span><span class="o">.</span><span class="n">TDA</span> <span class="ow">and</span> <span class="n">spin</span> <span class="o">==</span> <span class="n">Spin</span><span class="o">.</span><span class="n">triplet</span><span class="p">:</span>
+                    <span class="n">A</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_triplet_partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">moenergies</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tei_mo_oovv</span><span class="p">)</span>
+                    <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">nov_alph</span><span class="p">,</span> <span class="n">nov_alph</span><span class="p">))</span>
+
+            <span class="n">G</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">block</span><span class="p">([[</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">],</span> <span class="p">[</span><span class="n">B</span><span class="p">,</span> <span class="n">A</span><span class="p">]])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">explicit_hessian</span> <span class="o">=</span> <span class="n">G</span> <span class="o">-</span> <span class="n">superoverlap_alph</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># For UHF there are both &quot;operator-dependent&quot; and</span>
+            <span class="c1"># operator-indepenent parts of the orbital Hessian because</span>
+            <span class="c1"># the opposite-spin property gradient couples in. Here,</span>
+            <span class="c1"># only form the 4 blocks of the &quot;super-Hessian&quot; (a</span>
+            <span class="c1"># supermatrix of supermatrices); the equations will get</span>
+            <span class="c1"># pieced together when it is time ot form the response</span>
+            <span class="c1"># vectors.</span>
+
+            <span class="c1"># Set up &quot;function pointers&quot;.</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo_type</span> <span class="o">==</span> <span class="n">AO2MOTransformationType</span><span class="o">.</span><span class="n">full</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span>
+                <span class="n">tei_mo_aaaa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">tei_mo_aabb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">tei_mo_bbaa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+                <span class="n">tei_mo_bbbb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo_type</span> <span class="o">==</span> <span class="n">AO2MOTransformationType</span><span class="o">.</span><span class="n">partial</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">)</span> <span class="o">==</span> <span class="mi">6</span>
+                <span class="n">tei_mo_ovov_aaaa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">tei_mo_ovov_aabb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">tei_mo_ovov_bbaa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+                <span class="n">tei_mo_ovov_bbbb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+                <span class="n">tei_mo_oovv_aaaa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+                <span class="n">tei_mo_oovv_bbbb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">pass</span>
+
+            <span class="n">E_a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">moenergies</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">E_b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">moenergies</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+            <span class="c1"># TODO clean this up...</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo_type</span> <span class="o">==</span> <span class="n">AO2MOTransformationType</span><span class="o">.</span><span class="n">full</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">hamiltonian</span> <span class="o">==</span> <span class="n">Hamiltonian</span><span class="o">.</span><span class="n">RPA</span> <span class="ow">and</span> <span class="n">spin</span> <span class="o">==</span> <span class="n">Spin</span><span class="o">.</span><span class="n">singlet</span><span class="p">:</span>
+                    <span class="n">A_ss_a</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_singlet_ss_full</span><span class="p">(</span><span class="n">E_a</span><span class="p">,</span> <span class="n">tei_mo_aaaa</span><span class="p">,</span> <span class="n">nocc_alph</span><span class="p">)</span>
+                    <span class="n">A_os_a</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_singlet_os_full</span><span class="p">(</span><span class="n">tei_mo_aabb</span><span class="p">,</span> <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">)</span>
+                    <span class="n">B_ss_a</span> <span class="o">=</span> <span class="n">form_rpa_b_matrix_mo_singlet_ss_full</span><span class="p">(</span><span class="n">tei_mo_aaaa</span><span class="p">,</span> <span class="n">nocc_alph</span><span class="p">)</span>
+                    <span class="n">B_os_a</span> <span class="o">=</span> <span class="n">form_rpa_b_matrix_mo_singlet_os_full</span><span class="p">(</span><span class="n">tei_mo_aabb</span><span class="p">,</span> <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">)</span>
+                    <span class="n">A_ss_b</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_singlet_ss_full</span><span class="p">(</span><span class="n">E_b</span><span class="p">,</span> <span class="n">tei_mo_bbbb</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">)</span>
+                    <span class="n">A_os_b</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_singlet_os_full</span><span class="p">(</span><span class="n">tei_mo_bbaa</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">,</span> <span class="n">nocc_alph</span><span class="p">)</span>
+                    <span class="n">B_ss_b</span> <span class="o">=</span> <span class="n">form_rpa_b_matrix_mo_singlet_ss_full</span><span class="p">(</span><span class="n">tei_mo_bbbb</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">)</span>
+                    <span class="n">B_os_b</span> <span class="o">=</span> <span class="n">form_rpa_b_matrix_mo_singlet_os_full</span><span class="p">(</span><span class="n">tei_mo_bbaa</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">,</span> <span class="n">nocc_alph</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">hamiltonian</span> <span class="o">==</span> <span class="n">Hamiltonian</span><span class="o">.</span><span class="n">RPA</span> <span class="ow">and</span> <span class="n">spin</span> <span class="o">==</span> <span class="n">Spin</span><span class="o">.</span><span class="n">triplet</span><span class="p">:</span>
+                    <span class="c1"># Since the &quot;triplet&quot; part contains no Coulomb contribution, and</span>
+                    <span class="c1"># (xx|yy) is only in the Coulomb part, there is no ss/os</span>
+                    <span class="c1"># separation for the triplet part.</span>
+                    <span class="n">zeros_ab</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">nov_alph</span><span class="p">,</span> <span class="n">nov_beta</span><span class="p">))</span>
+                    <span class="n">zeros_ba</span> <span class="o">=</span> <span class="n">zeros_ab</span><span class="o">.</span><span class="n">T</span>
+                    <span class="n">A_ss_a</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_triplet_full</span><span class="p">(</span><span class="n">E_a</span><span class="p">,</span> <span class="n">tei_mo_aaaa</span><span class="p">,</span> <span class="n">nocc_alph</span><span class="p">)</span>
+                    <span class="n">A_os_a</span> <span class="o">=</span> <span class="n">zeros_ab</span>
+                    <span class="n">B_ss_a</span> <span class="o">=</span> <span class="n">form_rpa_b_matrix_mo_triplet_full</span><span class="p">(</span><span class="n">tei_mo_aaaa</span><span class="p">,</span> <span class="n">nocc_alph</span><span class="p">)</span>
+                    <span class="n">B_os_a</span> <span class="o">=</span> <span class="n">zeros_ab</span>
+                    <span class="n">A_ss_b</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_triplet_full</span><span class="p">(</span><span class="n">E_b</span><span class="p">,</span> <span class="n">tei_mo_bbbb</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">)</span>
+                    <span class="n">A_os_b</span> <span class="o">=</span> <span class="n">zeros_ba</span>
+                    <span class="n">B_ss_b</span> <span class="o">=</span> <span class="n">form_rpa_b_matrix_mo_triplet_full</span><span class="p">(</span><span class="n">tei_mo_bbbb</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">)</span>
+                    <span class="n">B_os_b</span> <span class="o">=</span> <span class="n">zeros_ba</span>
+                <span class="k">elif</span> <span class="n">hamiltonian</span> <span class="o">==</span> <span class="n">Hamiltonian</span><span class="o">.</span><span class="n">TDA</span> <span class="ow">and</span> <span class="n">spin</span> <span class="o">==</span> <span class="n">Spin</span><span class="o">.</span><span class="n">singlet</span><span class="p">:</span>
+                    <span class="n">zeros_aa</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">nov_alph</span><span class="p">,</span> <span class="n">nov_alph</span><span class="p">))</span>
+                    <span class="n">zeros_ab</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">nov_alph</span><span class="p">,</span> <span class="n">nov_beta</span><span class="p">))</span>
+                    <span class="n">zeros_ba</span> <span class="o">=</span> <span class="n">zeros_ab</span><span class="o">.</span><span class="n">T</span>
+                    <span class="n">zeros_bb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">nov_beta</span><span class="p">,</span> <span class="n">nov_beta</span><span class="p">))</span>
+                    <span class="n">A_ss_a</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_singlet_ss_full</span><span class="p">(</span><span class="n">E_a</span><span class="p">,</span> <span class="n">tei_mo_aaaa</span><span class="p">,</span> <span class="n">nocc_alph</span><span class="p">)</span>
+                    <span class="n">A_os_a</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_singlet_os_full</span><span class="p">(</span><span class="n">tei_mo_aabb</span><span class="p">,</span> <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">)</span>
+                    <span class="n">B_ss_a</span> <span class="o">=</span> <span class="n">zeros_aa</span>
+                    <span class="n">B_os_a</span> <span class="o">=</span> <span class="n">zeros_ab</span>
+                    <span class="n">A_ss_b</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_singlet_ss_full</span><span class="p">(</span><span class="n">E_b</span><span class="p">,</span> <span class="n">tei_mo_bbbb</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">)</span>
+                    <span class="n">A_os_b</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_singlet_os_full</span><span class="p">(</span><span class="n">tei_mo_bbaa</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">,</span> <span class="n">nocc_alph</span><span class="p">)</span>
+                    <span class="n">B_ss_b</span> <span class="o">=</span> <span class="n">zeros_bb</span>
+                    <span class="n">B_os_b</span> <span class="o">=</span> <span class="n">zeros_ba</span>
+                <span class="k">elif</span> <span class="n">hamiltonian</span> <span class="o">==</span> <span class="n">Hamiltonian</span><span class="o">.</span><span class="n">TDA</span> <span class="ow">and</span> <span class="n">spin</span> <span class="o">==</span> <span class="n">Spin</span><span class="o">.</span><span class="n">triplet</span><span class="p">:</span>
+                    <span class="n">zeros_aa</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">nov_alph</span><span class="p">,</span> <span class="n">nov_alph</span><span class="p">))</span>
+                    <span class="n">zeros_ab</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">nov_alph</span><span class="p">,</span> <span class="n">nov_beta</span><span class="p">))</span>
+                    <span class="n">zeros_ba</span> <span class="o">=</span> <span class="n">zeros_ab</span><span class="o">.</span><span class="n">T</span>
+                    <span class="n">zeros_bb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">nov_beta</span><span class="p">,</span> <span class="n">nov_beta</span><span class="p">))</span>
+                    <span class="n">A_ss_a</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_triplet_full</span><span class="p">(</span><span class="n">E_a</span><span class="p">,</span> <span class="n">tei_mo_aaaa</span><span class="p">,</span> <span class="n">nocc_alph</span><span class="p">)</span>
+                    <span class="n">A_os_a</span> <span class="o">=</span> <span class="n">zeros_ab</span>
+                    <span class="n">B_ss_a</span> <span class="o">=</span> <span class="n">zeros_aa</span>
+                    <span class="n">B_os_a</span> <span class="o">=</span> <span class="n">zeros_ab</span>
+                    <span class="n">A_ss_b</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_triplet_full</span><span class="p">(</span><span class="n">E_b</span><span class="p">,</span> <span class="n">tei_mo_bbbb</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">)</span>
+                    <span class="n">A_os_b</span> <span class="o">=</span> <span class="n">zeros_ba</span>
+                    <span class="n">B_ss_b</span> <span class="o">=</span> <span class="n">zeros_bb</span>
+                    <span class="n">B_os_b</span> <span class="o">=</span> <span class="n">zeros_ba</span>
+
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo_type</span> <span class="o">==</span> <span class="n">AO2MOTransformationType</span><span class="o">.</span><span class="n">partial</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">hamiltonian</span> <span class="o">==</span> <span class="n">Hamiltonian</span><span class="o">.</span><span class="n">RPA</span> <span class="ow">and</span> <span class="n">spin</span> <span class="o">==</span> <span class="n">Spin</span><span class="o">.</span><span class="n">singlet</span><span class="p">:</span>
+                    <span class="n">A_ss_a</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_singlet_ss_partial</span><span class="p">(</span>
+                        <span class="n">E_a</span><span class="p">,</span> <span class="n">tei_mo_ovov_aaaa</span><span class="p">,</span> <span class="n">tei_mo_oovv_aaaa</span>
+                    <span class="p">)</span>
+                    <span class="n">A_os_a</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_singlet_os_partial</span><span class="p">(</span><span class="n">tei_mo_ovov_aabb</span><span class="p">)</span>
+                    <span class="n">B_ss_a</span> <span class="o">=</span> <span class="n">form_rpa_b_matrix_mo_singlet_ss_partial</span><span class="p">(</span><span class="n">tei_mo_ovov_aaaa</span><span class="p">)</span>
+                    <span class="n">B_os_a</span> <span class="o">=</span> <span class="n">form_rpa_b_matrix_mo_singlet_os_partial</span><span class="p">(</span><span class="n">tei_mo_ovov_aabb</span><span class="p">)</span>
+                    <span class="n">A_ss_b</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_singlet_ss_partial</span><span class="p">(</span>
+                        <span class="n">E_b</span><span class="p">,</span> <span class="n">tei_mo_ovov_bbbb</span><span class="p">,</span> <span class="n">tei_mo_oovv_bbbb</span>
+                    <span class="p">)</span>
+                    <span class="n">A_os_b</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_singlet_os_partial</span><span class="p">(</span><span class="n">tei_mo_ovov_bbaa</span><span class="p">)</span>
+                    <span class="n">B_ss_b</span> <span class="o">=</span> <span class="n">form_rpa_b_matrix_mo_singlet_ss_partial</span><span class="p">(</span><span class="n">tei_mo_ovov_bbbb</span><span class="p">)</span>
+                    <span class="n">B_os_b</span> <span class="o">=</span> <span class="n">form_rpa_b_matrix_mo_singlet_os_partial</span><span class="p">(</span><span class="n">tei_mo_ovov_bbaa</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">hamiltonian</span> <span class="o">==</span> <span class="n">Hamiltonian</span><span class="o">.</span><span class="n">RPA</span> <span class="ow">and</span> <span class="n">spin</span> <span class="o">==</span> <span class="n">Spin</span><span class="o">.</span><span class="n">triplet</span><span class="p">:</span>
+                    <span class="c1"># Since the &quot;triplet&quot; part contains no Coulomb contribution, and</span>
+                    <span class="c1"># (xx|yy) is only in the Coulomb part, there is no ss/os</span>
+                    <span class="c1"># separation for the triplet part.</span>
+                    <span class="n">zeros_ab</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">nov_alph</span><span class="p">,</span> <span class="n">nov_beta</span><span class="p">))</span>
+                    <span class="n">zeros_ba</span> <span class="o">=</span> <span class="n">zeros_ab</span><span class="o">.</span><span class="n">T</span>
+                    <span class="n">A_ss_a</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_triplet_partial</span><span class="p">(</span><span class="n">E_a</span><span class="p">,</span> <span class="n">tei_mo_oovv_aaaa</span><span class="p">)</span>
+                    <span class="n">A_os_a</span> <span class="o">=</span> <span class="n">zeros_ab</span>
+                    <span class="n">B_ss_a</span> <span class="o">=</span> <span class="n">form_rpa_b_matrix_mo_triplet_partial</span><span class="p">(</span><span class="n">tei_mo_ovov_aaaa</span><span class="p">)</span>
+                    <span class="n">B_os_a</span> <span class="o">=</span> <span class="n">zeros_ab</span>
+                    <span class="n">A_ss_b</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_triplet_partial</span><span class="p">(</span><span class="n">E_b</span><span class="p">,</span> <span class="n">tei_mo_oovv_bbbb</span><span class="p">)</span>
+                    <span class="n">A_os_b</span> <span class="o">=</span> <span class="n">zeros_ba</span>
+                    <span class="n">B_ss_b</span> <span class="o">=</span> <span class="n">form_rpa_b_matrix_mo_triplet_partial</span><span class="p">(</span><span class="n">tei_mo_ovov_bbbb</span><span class="p">)</span>
+                    <span class="n">B_os_b</span> <span class="o">=</span> <span class="n">zeros_ba</span>
+                <span class="k">elif</span> <span class="n">hamiltonian</span> <span class="o">==</span> <span class="n">Hamiltonian</span><span class="o">.</span><span class="n">TDA</span> <span class="ow">and</span> <span class="n">spin</span> <span class="o">==</span> <span class="n">Spin</span><span class="o">.</span><span class="n">singlet</span><span class="p">:</span>
+                    <span class="n">zeros_aa</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">nov_alph</span><span class="p">,</span> <span class="n">nov_alph</span><span class="p">))</span>
+                    <span class="n">zeros_ab</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">nov_alph</span><span class="p">,</span> <span class="n">nov_beta</span><span class="p">))</span>
+                    <span class="n">zeros_ba</span> <span class="o">=</span> <span class="n">zeros_ab</span><span class="o">.</span><span class="n">T</span>
+                    <span class="n">zeros_bb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">nov_beta</span><span class="p">,</span> <span class="n">nov_beta</span><span class="p">))</span>
+                    <span class="n">A_ss_a</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_singlet_ss_partial</span><span class="p">(</span>
+                        <span class="n">E_a</span><span class="p">,</span> <span class="n">tei_mo_ovov_aaaa</span><span class="p">,</span> <span class="n">tei_mo_oovv_aaaa</span>
+                    <span class="p">)</span>
+                    <span class="n">A_os_a</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_singlet_os_partial</span><span class="p">(</span><span class="n">tei_mo_ovov_aabb</span><span class="p">)</span>
+                    <span class="n">B_ss_a</span> <span class="o">=</span> <span class="n">zeros_aa</span>
+                    <span class="n">B_os_a</span> <span class="o">=</span> <span class="n">zeros_ab</span>
+                    <span class="n">A_ss_b</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_singlet_ss_partial</span><span class="p">(</span>
+                        <span class="n">E_b</span><span class="p">,</span> <span class="n">tei_mo_ovov_bbbb</span><span class="p">,</span> <span class="n">tei_mo_oovv_bbbb</span>
+                    <span class="p">)</span>
+                    <span class="n">A_os_b</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_singlet_os_partial</span><span class="p">(</span><span class="n">tei_mo_ovov_bbaa</span><span class="p">)</span>
+                    <span class="n">B_ss_b</span> <span class="o">=</span> <span class="n">zeros_bb</span>
+                    <span class="n">B_os_b</span> <span class="o">=</span> <span class="n">zeros_ba</span>
+                <span class="k">elif</span> <span class="n">hamiltonian</span> <span class="o">==</span> <span class="n">Hamiltonian</span><span class="o">.</span><span class="n">TDA</span> <span class="ow">and</span> <span class="n">spin</span> <span class="o">==</span> <span class="n">Spin</span><span class="o">.</span><span class="n">triplet</span><span class="p">:</span>
+                    <span class="n">zeros_aa</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">nov_alph</span><span class="p">,</span> <span class="n">nov_alph</span><span class="p">))</span>
+                    <span class="n">zeros_ab</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">nov_alph</span><span class="p">,</span> <span class="n">nov_beta</span><span class="p">))</span>
+                    <span class="n">zeros_ba</span> <span class="o">=</span> <span class="n">zeros_ab</span><span class="o">.</span><span class="n">T</span>
+                    <span class="n">zeros_bb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">nov_beta</span><span class="p">,</span> <span class="n">nov_beta</span><span class="p">))</span>
+                    <span class="n">A_ss_a</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_triplet_partial</span><span class="p">(</span><span class="n">E_a</span><span class="p">,</span> <span class="n">tei_mo_oovv_aaaa</span><span class="p">)</span>
+                    <span class="n">A_os_a</span> <span class="o">=</span> <span class="n">zeros_ab</span>
+                    <span class="n">B_ss_a</span> <span class="o">=</span> <span class="n">zeros_aa</span>
+                    <span class="n">B_os_a</span> <span class="o">=</span> <span class="n">zeros_ab</span>
+                    <span class="n">A_ss_b</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_triplet_partial</span><span class="p">(</span><span class="n">E_b</span><span class="p">,</span> <span class="n">tei_mo_oovv_bbbb</span><span class="p">)</span>
+                    <span class="n">A_os_b</span> <span class="o">=</span> <span class="n">zeros_ba</span>
+                    <span class="n">B_ss_b</span> <span class="o">=</span> <span class="n">zeros_bb</span>
+                    <span class="n">B_os_b</span> <span class="o">=</span> <span class="n">zeros_ba</span>
+
+            <span class="n">superoverlap_beta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">block</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">nov_beta</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">nov_beta</span><span class="p">,</span> <span class="n">nov_beta</span><span class="p">))],</span>
+                    <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">nov_beta</span><span class="p">,</span> <span class="n">nov_beta</span><span class="p">)),</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">nov_beta</span><span class="p">)],</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+            <span class="n">superoverlap_beta</span> <span class="o">=</span> <span class="n">superoverlap_beta</span> <span class="o">*</span> <span class="n">frequency</span>
+
+            <span class="n">G_aa</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">block</span><span class="p">([[</span><span class="n">A_ss_a</span><span class="p">,</span> <span class="n">B_ss_a</span><span class="p">],</span> <span class="p">[</span><span class="n">B_ss_a</span><span class="p">,</span> <span class="n">A_ss_a</span><span class="p">]])</span>
+            <span class="n">G_ab</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">block</span><span class="p">([[</span><span class="n">A_os_a</span><span class="p">,</span> <span class="n">B_os_a</span><span class="p">],</span> <span class="p">[</span><span class="n">B_os_a</span><span class="p">,</span> <span class="n">A_os_a</span><span class="p">]])</span>
+            <span class="n">G_ba</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">block</span><span class="p">([[</span><span class="n">A_os_b</span><span class="p">,</span> <span class="n">B_os_b</span><span class="p">],</span> <span class="p">[</span><span class="n">B_os_b</span><span class="p">,</span> <span class="n">A_os_b</span><span class="p">]])</span>
+            <span class="n">G_bb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">block</span><span class="p">([[</span><span class="n">A_ss_b</span><span class="p">,</span> <span class="n">B_ss_b</span><span class="p">],</span> <span class="p">[</span><span class="n">B_ss_b</span><span class="p">,</span> <span class="n">A_ss_b</span><span class="p">]])</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">explicit_hessian</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">G_aa</span> <span class="o">-</span> <span class="n">superoverlap_alph</span><span class="p">,</span>
+                <span class="n">G_ab</span><span class="p">,</span>
+                <span class="n">G_ba</span><span class="p">,</span>
+                <span class="n">G_bb</span> <span class="o">-</span> <span class="n">superoverlap_beta</span><span class="p">,</span>
+            <span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExactLineqSolver.invert_explicit_hessian"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactLineqSolver.invert_explicit_hessian">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">invert_explicit_hessian</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Invert the full explicitly-constructed electronic Hessian.&quot;&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="ExactLineqSolver.form_response_vectors"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactLineqSolver.form_response_vectors">[docs]</a>    <span class="k">def</span> <span class="nf">form_response_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_uhf</span><span class="p">:</span>
+            <span class="n">G_aa</span><span class="p">,</span> <span class="n">G_ab</span><span class="p">,</span> <span class="n">G_ba</span><span class="p">,</span> <span class="n">G_bb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">explicit_hessian</span>
+            <span class="n">G_aa_inv</span><span class="p">,</span> <span class="n">G_bb_inv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">explicit_hessian_inv</span>
+        <span class="k">for</span> <span class="n">operator</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operators</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_uhf</span><span class="p">:</span>
+                <span class="n">rspvecs_operator</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">idx_operator_component</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">operator</span><span class="o">.</span><span class="n">ao_integrals</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                    <span class="n">shape</span> <span class="o">=</span> <span class="n">operator</span><span class="o">.</span><span class="n">mo_integrals_ai_supervector_alph</span><span class="p">[</span><span class="n">idx_operator_component</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
+                    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+                    <span class="k">assert</span> <span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
+                    <span class="n">rspvec_operator_component</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">explicit_hessian_inv</span><span class="p">,</span>
+                        <span class="n">operator</span><span class="o">.</span><span class="n">mo_integrals_ai_supervector_alph</span><span class="p">[</span><span class="n">idx_operator_component</span><span class="p">],</span>
+                    <span class="p">)</span>
+                    <span class="k">assert</span> <span class="n">rspvec_operator_component</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">shape</span>
+                    <span class="n">rspvecs_operator</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rspvec_operator_component</span><span class="p">)</span>
+                <span class="c1"># TODO this isn&#39;t working and I don&#39;t know why</span>
+                <span class="c1"># rspvecs_operator = np.stack(rspvecs_operator, axis=0)</span>
+
+                <span class="c1"># All the lines with &#39;tmp&#39; could be replaced by a working</span>
+                <span class="c1"># stack call.</span>
+                <span class="n">tmp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span>
+                    <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rspvecs_operator</span><span class="p">),</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">),</span>
+                    <span class="n">dtype</span><span class="o">=</span><span class="n">rspvec_operator_component</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">rspvec_operator_component</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">rspvecs_operator</span><span class="p">):</span>
+                    <span class="n">tmp</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">rspvec_operator_component</span>
+                <span class="n">rspvecs_operator</span> <span class="o">=</span> <span class="n">tmp</span>
+                <span class="n">operator</span><span class="o">.</span><span class="n">rspvecs_alph</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rspvecs_operator</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Form the operator-dependent part of the response vectors.</span>
+                <span class="n">rspvecs_operator_alph</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">rspvecs_operator_beta</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">idx_operator_component</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">operator</span><span class="o">.</span><span class="n">ao_integrals</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                    <span class="n">operator_component_alph</span> <span class="o">=</span> <span class="n">operator</span><span class="o">.</span><span class="n">mo_integrals_ai_supervector_alph</span><span class="p">[</span>
+                        <span class="n">idx_operator_component</span>
+                    <span class="p">]</span>
+                    <span class="n">operator_component_beta</span> <span class="o">=</span> <span class="n">operator</span><span class="o">.</span><span class="n">mo_integrals_ai_supervector_beta</span><span class="p">[</span>
+                        <span class="n">idx_operator_component</span>
+                    <span class="p">]</span>
+                    <span class="n">shape_alph</span> <span class="o">=</span> <span class="n">operator_component_alph</span><span class="o">.</span><span class="n">shape</span>
+                    <span class="n">shape_beta</span> <span class="o">=</span> <span class="n">operator_component_beta</span><span class="o">.</span><span class="n">shape</span>
+                    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape_alph</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape_beta</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+                    <span class="k">assert</span> <span class="n">shape_alph</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">shape_beta</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
+                    <span class="n">right_alph</span> <span class="o">=</span> <span class="n">operator_component_alph</span> <span class="o">-</span> <span class="p">(</span>
+                        <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">G_ab</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">G_bb_inv</span><span class="p">,</span> <span class="n">operator_component_beta</span><span class="p">))</span>
+                    <span class="p">)</span>
+                    <span class="n">right_beta</span> <span class="o">=</span> <span class="n">operator_component_beta</span> <span class="o">-</span> <span class="p">(</span>
+                        <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">G_ba</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">G_aa_inv</span><span class="p">,</span> <span class="n">operator_component_alph</span><span class="p">))</span>
+                    <span class="p">)</span>
+                    <span class="k">assert</span> <span class="n">right_alph</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">shape_alph</span>
+                    <span class="k">assert</span> <span class="n">right_beta</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">shape_beta</span>
+                    <span class="n">rspvecs_operator_alph</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left_alph</span><span class="p">,</span> <span class="n">right_alph</span><span class="p">))</span>
+                    <span class="n">rspvecs_operator_beta</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left_beta</span><span class="p">,</span> <span class="n">right_beta</span><span class="p">))</span>
+                <span class="n">tmp_alph</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span>
+                    <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rspvecs_operator_alph</span><span class="p">),</span> <span class="n">shape_alph</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">),</span>
+                    <span class="n">dtype</span><span class="o">=</span><span class="n">operator_component_alph</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">tmp_beta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span>
+                    <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rspvecs_operator_beta</span><span class="p">),</span> <span class="n">shape_beta</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">),</span>
+                    <span class="n">dtype</span><span class="o">=</span><span class="n">operator_component_beta</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="k">for</span> <span class="n">idx_alph</span><span class="p">,</span> <span class="n">operator_component_alph</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">rspvecs_operator_alph</span><span class="p">):</span>
+                    <span class="n">tmp_alph</span><span class="p">[</span><span class="n">idx_alph</span><span class="p">]</span> <span class="o">=</span> <span class="n">operator_component_alph</span>
+                <span class="k">for</span> <span class="n">idx_beta</span><span class="p">,</span> <span class="n">operator_component_beta</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">rspvecs_operator_beta</span><span class="p">):</span>
+                    <span class="n">tmp_beta</span><span class="p">[</span><span class="n">idx_beta</span><span class="p">]</span> <span class="o">=</span> <span class="n">operator_component_beta</span>
+                <span class="n">rspvecs_operator_alph</span> <span class="o">=</span> <span class="n">tmp_alph</span>
+                <span class="n">rspvecs_operator_beta</span> <span class="o">=</span> <span class="n">tmp_beta</span>
+                <span class="n">operator</span><span class="o">.</span><span class="n">rspvecs_alph</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rspvecs_operator_alph</span><span class="p">)</span>
+                <span class="n">operator</span><span class="o">.</span><span class="n">rspvecs_beta</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rspvecs_operator_beta</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExactLineqSolver.run"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactLineqSolver.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hamiltonian</span><span class="p">:</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">spin</span><span class="p">:</span> <span class="n">Spin</span><span class="p">,</span> <span class="n">program</span><span class="p">:</span> <span class="n">Program</span><span class="p">,</span> <span class="n">program_obj</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hamiltonian</span><span class="p">,</span> <span class="n">Hamiltonian</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">spin</span><span class="p">,</span> <span class="n">Spin</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="p">(</span><span class="n">Program</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
+        <span class="c1"># TODO program_obj</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">form_tei_mo</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="n">program_obj</span><span class="p">,</span> <span class="n">AO2MOTransformationType</span><span class="o">.</span><span class="n">partial</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">frequency</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">form_explicit_hessian</span><span class="p">(</span><span class="n">hamiltonian</span><span class="p">,</span> <span class="n">spin</span><span class="p">,</span> <span class="n">frequency</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">invert_explicit_hessian</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">form_response_vectors</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="ExactInv"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactInv">[docs]</a><span class="k">class</span> <span class="nc">ExactInv</span><span class="p">(</span><span class="n">ExactLineqSolver</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">mocoeffs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">moenergies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">occupations</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">inv_func</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">mocoeffs</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">,</span> <span class="n">occupations</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">inv_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">inv_func</span> <span class="o">=</span> <span class="n">inv_func</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">inv_func</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span>
+
+<div class="viewcode-block" id="ExactInv.invert_explicit_hessian"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactInv.invert_explicit_hessian">[docs]</a>    <span class="k">def</span> <span class="nf">invert_explicit_hessian</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;explicit_hessian&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_uhf</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">explicit_hessian_inv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inv_func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">explicit_hessian</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">explicit_hessian</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">explicit_hessian_inv</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">G_aa</span><span class="p">,</span> <span class="n">G_ab</span><span class="p">,</span> <span class="n">G_ba</span><span class="p">,</span> <span class="n">G_bb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">explicit_hessian</span>
+            <span class="c1"># The inverse of the opposite-spin blocks is not</span>
+            <span class="c1"># necessary.</span>
+            <span class="n">G_aa_inv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inv_func</span><span class="p">(</span><span class="n">G_aa</span><span class="p">)</span>
+            <span class="n">G_bb_inv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inv_func</span><span class="p">(</span><span class="n">G_bb</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">explicit_hessian_inv</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">G_aa_inv</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">explicit_hessian_inv</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">G_bb_inv</span><span class="p">)</span>
+            <span class="c1"># Form the operator-independent part of the response</span>
+            <span class="c1"># vectors.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">left_alph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inv_func</span><span class="p">(</span><span class="n">G_aa</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">G_ab</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">G_bb_inv</span><span class="p">,</span> <span class="n">G_ba</span><span class="p">)))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">left_beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inv_func</span><span class="p">(</span><span class="n">G_bb</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">G_ba</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">G_aa_inv</span><span class="p">,</span> <span class="n">G_ab</span><span class="p">)))</span></div></div>
+
+
+<div class="viewcode-block" id="ExactInvCholesky"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactInvCholesky">[docs]</a><span class="k">class</span> <span class="nc">ExactInvCholesky</span><span class="p">(</span><span class="n">ExactLineqSolver</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">mocoeffs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">occupations</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">mocoeffs</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">,</span> <span class="n">occupations</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ExactInvCholesky.invert_explicit_hessian"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactInvCholesky.invert_explicit_hessian">[docs]</a>    <span class="k">def</span> <span class="nf">invert_explicit_hessian</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;explicit_hessian&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_uhf</span><span class="p">:</span>
+            <span class="n">fac</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cholesky</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">explicit_hessian</span><span class="p">)</span>
+            <span class="n">fac_inv</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">fac</span><span class="p">)</span>
+            <span class="n">inv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">fac_inv</span><span class="p">,</span> <span class="n">fac_inv</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">explicit_hessian_inv</span> <span class="o">=</span> <span class="n">inv</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">explicit_hessian</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">explicit_hessian_inv</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">G_aa</span><span class="p">,</span> <span class="n">G_ab</span><span class="p">,</span> <span class="n">G_ba</span><span class="p">,</span> <span class="n">G_bb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">explicit_hessian</span>
+            <span class="c1"># The inverse of the opposite-spin blocks is not</span>
+            <span class="c1"># necessary.</span>
+            <span class="n">G_aa_R_inv</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cholesky</span><span class="p">(</span><span class="n">G_aa</span><span class="p">,</span> <span class="n">lower</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+            <span class="n">G_bb_R_inv</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cholesky</span><span class="p">(</span><span class="n">G_bb</span><span class="p">,</span> <span class="n">lower</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+            <span class="n">G_aa_inv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">G_aa_R_inv</span><span class="p">,</span> <span class="n">G_aa_R_inv</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+            <span class="n">G_bb_inv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">G_bb_R_inv</span><span class="p">,</span> <span class="n">G_bb_R_inv</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">explicit_hessian_inv</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">G_aa_inv</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">explicit_hessian_inv</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">G_bb_inv</span><span class="p">)</span>
+            <span class="c1"># Form the operator-independent part of the response</span>
+            <span class="c1"># vectors.</span>
+            <span class="n">left_alph_R</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cholesky</span><span class="p">(</span>
+                <span class="n">G_aa</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">G_ab</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">G_bb_inv</span><span class="p">,</span> <span class="n">G_ba</span><span class="p">)),</span> <span class="n">lower</span><span class="o">=</span><span class="kc">False</span>
+            <span class="p">)</span>
+            <span class="n">left_beta_R</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cholesky</span><span class="p">(</span>
+                <span class="n">G_bb</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">G_ba</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">G_aa_inv</span><span class="p">,</span> <span class="n">G_ab</span><span class="p">)),</span> <span class="n">lower</span><span class="o">=</span><span class="kc">False</span>
+            <span class="p">)</span>
+            <span class="n">left_alph_R_inv</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">left_alph_R</span><span class="p">)</span>
+            <span class="n">left_beta_R_inv</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">left_beta_R</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">left_alph</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">left_alph_R_inv</span><span class="p">,</span> <span class="n">left_alph_R_inv</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">left_beta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">left_beta_R_inv</span><span class="p">,</span> <span class="n">left_beta_R_inv</span><span class="o">.</span><span class="n">T</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="IterativeLinEqSolver"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.IterativeLinEqSolver">[docs]</a><span class="k">class</span> <span class="nc">IterativeLinEqSolver</span><span class="p">(</span><span class="n">LineqSolver</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">mocoeffs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">moenergies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">occupations</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">jk_generator</span><span class="p">:</span> <span class="n">JK</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">maxiter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span>
+        <span class="n">conv</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0e-9</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">jk_generator</span><span class="p">,</span> <span class="n">JK</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">maxiter</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">conv</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">mocoeffs</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">,</span> <span class="n">occupations</span><span class="p">)</span>
+
+        <span class="c1"># TODO</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">jk_generator</span> <span class="o">=</span> <span class="n">jk_generator</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maxiter</span> <span class="o">=</span> <span class="n">maxiter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv</span> <span class="o">=</span> <span class="n">conv</span>
+
+<div class="viewcode-block" id="IterativeLinEqSolver.run"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.IterativeLinEqSolver.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hamiltonian</span><span class="p">:</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">spin</span><span class="p">:</span> <span class="n">Spin</span><span class="p">,</span> <span class="n">program</span><span class="p">:</span> <span class="n">Program</span><span class="p">,</span> <span class="n">program_obj</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hamiltonian</span><span class="p">,</span> <span class="n">Hamiltonian</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">spin</span><span class="p">,</span> <span class="n">Spin</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="p">(</span><span class="n">Program</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
+        <span class="c1"># TODO program_obj</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span>
+        <span class="k">for</span> <span class="n">frequency</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_run</span><span class="p">(</span><span class="n">hamiltonian</span><span class="p">,</span> <span class="n">spin</span><span class="p">,</span> <span class="n">frequency</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxiter</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_run</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">hamiltonian</span><span class="p">:</span> <span class="n">Hamiltonian</span><span class="p">,</span>
+        <span class="n">spin</span><span class="p">:</span> <span class="n">Spin</span><span class="p">,</span>
+        <span class="n">omega</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">maxiter</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">conv</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">,</span> <span class="n">nvirt_beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">occupations</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">nocc_alph</span> <span class="o">+</span> <span class="n">nvirt_alph</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="n">nocc_beta</span> <span class="o">+</span> <span class="n">nvirt_beta</span><span class="p">)</span>
+        <span class="n">norb</span> <span class="o">=</span> <span class="n">nocc_alph</span> <span class="o">+</span> <span class="n">nvirt_alph</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_uhf</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">epsilon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">moenergies</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">ia_denom</span> <span class="o">=</span> <span class="n">epsilon</span><span class="p">[</span><span class="n">nocc_alph</span><span class="p">:]</span> <span class="o">-</span> <span class="n">epsilon</span><span class="p">[:</span><span class="n">nocc_alph</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">omega</span>
+            <span class="n">all_denom</span> <span class="o">=</span> <span class="n">epsilon</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">epsilon</span> <span class="o">-</span> <span class="n">omega</span>
+            <span class="n">C</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mocoeffs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">Co</span> <span class="o">=</span> <span class="n">C</span><span class="p">[:,</span> <span class="p">:</span><span class="n">nocc_alph</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">operator</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operators</span><span class="p">:</span>
+                <span class="n">ncomponents</span> <span class="o">=</span> <span class="n">operator</span><span class="o">.</span><span class="n">ao_integrals</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">x_old</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="c1"># TODO implement DIIS</span>
+                <span class="n">rhsmats</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="n">C</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">operator</span><span class="o">.</span><span class="n">ao_integrals</span><span class="p">[</span><span class="n">component</span><span class="p">]</span> <span class="o">@</span> <span class="n">C</span> <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncomponents</span><span class="p">)</span>
+                <span class="p">]</span>
+                <span class="k">for</span> <span class="n">rhsmat</span> <span class="ow">in</span> <span class="n">rhsmats</span><span class="p">:</span>
+                    <span class="n">U</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">norb</span><span class="p">,</span> <span class="n">norb</span><span class="p">))</span>
+                    <span class="n">U</span><span class="p">[:</span><span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nocc_alph</span><span class="p">:]</span> <span class="o">=</span> <span class="n">rhsmat</span><span class="p">[:</span><span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nocc_alph</span><span class="p">:]</span> <span class="o">/</span> <span class="n">ia_denom</span>
+                    <span class="n">U</span><span class="p">[</span><span class="n">nocc_alph</span><span class="p">:,</span> <span class="p">:</span><span class="n">nocc_alph</span><span class="p">]</span> <span class="o">=</span> <span class="n">rhsmat</span><span class="p">[</span><span class="n">nocc_alph</span><span class="p">:,</span> <span class="p">:</span><span class="n">nocc_alph</span><span class="p">]</span> <span class="o">/</span> <span class="o">-</span><span class="n">ia_denom</span><span class="o">.</span><span class="n">T</span>
+                    <span class="n">x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">U</span><span class="p">)</span>
+                    <span class="n">x_old</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">U</span><span class="p">))</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">maxiter</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                    <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncomponents</span><span class="p">):</span>
+                        <span class="n">C_left_1</span> <span class="o">=</span> <span class="n">Co</span>
+                        <span class="n">C_right_1</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">component</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">)[:,</span> <span class="p">:</span><span class="n">nocc_alph</span><span class="p">]</span>
+                        <span class="n">C_left_2</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">C</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">component</span><span class="p">])[:,</span> <span class="p">:</span><span class="n">nocc_alph</span><span class="p">]</span>
+                        <span class="n">C_right_2</span> <span class="o">=</span> <span class="n">Co</span>
+                        <span class="n">J_1</span><span class="p">,</span> <span class="n">K_1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">jk_generator</span><span class="o">.</span><span class="n">compute_from_mocoeffs</span><span class="p">(</span><span class="n">C_left_1</span><span class="p">,</span> <span class="n">C_right_1</span><span class="p">)</span>
+                        <span class="n">J_2</span><span class="p">,</span> <span class="n">K_2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">jk_generator</span><span class="o">.</span><span class="n">compute_from_mocoeffs</span><span class="p">(</span><span class="n">C_left_2</span><span class="p">,</span> <span class="n">C_right_2</span><span class="p">)</span>
+                        <span class="n">U</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">component</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                        <span class="n">upd</span> <span class="o">=</span> <span class="p">(</span>
+                            <span class="n">rhsmats</span><span class="p">[</span><span class="n">component</span><span class="p">]</span>
+                            <span class="o">-</span> <span class="p">(</span>
+                                <span class="n">x</span><span class="p">[</span><span class="n">component</span><span class="p">]</span> <span class="o">*</span> <span class="n">all_denom</span>
+                                <span class="o">-</span> <span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">J_1</span> <span class="o">-</span> <span class="n">K_1</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">J_2</span> <span class="o">-</span> <span class="n">K_2</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">C</span><span class="p">)</span>
+                            <span class="p">)</span>
+                        <span class="p">)</span> <span class="o">/</span> <span class="n">all_denom</span>
+                        <span class="n">U</span><span class="p">[:</span><span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nocc_alph</span><span class="p">:]</span> <span class="o">+=</span> <span class="n">upd</span><span class="p">[:</span><span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nocc_alph</span><span class="p">:]</span>
+                        <span class="n">U</span><span class="p">[</span><span class="n">nocc_alph</span><span class="p">:,</span> <span class="p">:</span><span class="n">nocc_alph</span><span class="p">]</span> <span class="o">+=</span> <span class="n">upd</span><span class="p">[</span><span class="n">nocc_alph</span><span class="p">:,</span> <span class="p">:</span><span class="n">nocc_alph</span><span class="p">]</span>
+                        <span class="n">x</span><span class="p">[</span><span class="n">component</span><span class="p">]</span> <span class="o">=</span> <span class="n">U</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                    <span class="n">rms</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncomponents</span><span class="p">):</span>
+                        <span class="n">rms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">component</span><span class="p">]</span> <span class="o">-</span> <span class="n">x_old</span><span class="p">[</span><span class="n">component</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+                        <span class="n">x_old</span><span class="p">[</span><span class="n">component</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">component</span><span class="p">]</span>
+                    <span class="n">avg_rms</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">rms</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">rms</span><span class="p">)</span>
+                    <span class="n">max_rms</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">rms</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">max_rms</span> <span class="o">&lt;</span> <span class="n">conv</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;CPHF converged in </span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s2">d</span><span class="si">}</span><span class="s2"> iterations.&quot;</span><span class="p">)</span>
+                        <span class="n">operator</span><span class="o">.</span><span class="n">rspvecs_alph</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                            <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span>
+                                <span class="p">[</span>
+                                    <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+                                        <span class="p">(</span>
+                                            <span class="n">repack_matrix_to_vector</span><span class="p">(</span>
+                                                <span class="n">x</span><span class="p">[</span><span class="n">component</span><span class="p">][:</span><span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nocc_alph</span><span class="p">:]</span><span class="o">.</span><span class="n">T</span>
+                                            <span class="p">),</span>
+                                            <span class="n">repack_matrix_to_vector</span><span class="p">(</span>
+                                                <span class="n">x</span><span class="p">[</span><span class="n">component</span><span class="p">][</span><span class="n">nocc_alph</span><span class="p">:,</span> <span class="p">:</span><span class="n">nocc_alph</span><span class="p">]</span>
+                                            <span class="p">),</span>
+                                        <span class="p">)</span>
+                                    <span class="p">)</span>
+                                    <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncomponents</span><span class="p">)</span>
+                                <span class="p">],</span>
+                                <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                            <span class="p">)[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+                        <span class="p">)</span>
+                        <span class="k">break</span>
+                    <span class="nb">print</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;CPHF Iteration </span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s2">3d</span><span class="si">}</span><span class="s2">: Average RMS = </span><span class="si">{</span><span class="n">avg_rms</span><span class="si">:</span><span class="s2">3.8f</span><span class="si">}</span><span class="s2">  Maximum RMS = </span><span class="si">{</span><span class="n">max_rms</span><span class="si">:</span><span class="s2">3.8f</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="EigSolver"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.EigSolver">[docs]</a><span class="k">class</span> <span class="nc">EigSolver</span><span class="p">(</span><span class="n">Solver</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base class for all solvers of the type $AX = 0$ (eigensolvers).&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">mocoeffs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">occupations</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">mocoeffs</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">,</span> <span class="n">occupations</span><span class="p">)</span>
+
+<div class="viewcode-block" id="EigSolver.norm_xy"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.EigSolver.norm_xy">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">norm_xy</span><span class="p">(</span><span class="n">z</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">nocc</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">nvirt</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">nvirt</span><span class="p">,</span> <span class="n">nocc</span><span class="p">)</span>
+        <span class="n">norm</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">norm</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">norm</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">norm</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="p">(</span><span class="n">y</span> <span class="o">*</span> <span class="n">norm</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="EigSolverTDA"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.EigSolverTDA">[docs]</a><span class="k">class</span> <span class="nc">EigSolverTDA</span><span class="p">(</span><span class="n">EigSolver</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base class for eigensolvers that use the Tamm-Dancoff approximation</span>
+<span class="sd">    (TDA) rather than the random phase approximation (RPA).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">mocoeffs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">occupations</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">mocoeffs</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">,</span> <span class="n">occupations</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ExactDiagonalizationSolver"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactDiagonalizationSolver">[docs]</a><span class="k">class</span> <span class="nc">ExactDiagonalizationSolver</span><span class="p">(</span><span class="n">EigSolver</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get the eigenvectors and eigenvalues of the RPA Hamiltonian by forming the</span>
+<span class="sd">    electronic Hessian explicitly and diagonalizing it exactly.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">mocoeffs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">occupations</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">mocoeffs</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">,</span> <span class="n">occupations</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ExactDiagonalizationSolver.form_explicit_hessian"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactDiagonalizationSolver.form_explicit_hessian">[docs]</a>    <span class="k">def</span> <span class="nf">form_explicit_hessian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hamiltonian</span><span class="p">:</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">spin</span><span class="p">:</span> <span class="n">Spin</span><span class="p">,</span> <span class="n">frequency</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;tei_mo&quot;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tei_mo_type</span><span class="p">,</span> <span class="n">AO2MOTransformationType</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hamiltonian</span><span class="p">,</span> <span class="n">Hamiltonian</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">spin</span><span class="p">,</span> <span class="n">Spin</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">frequency</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
+
+        <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">,</span> <span class="n">nvirt_beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">occupations</span>
+        <span class="n">nov_alph</span> <span class="o">=</span> <span class="n">nocc_alph</span> <span class="o">*</span> <span class="n">nvirt_alph</span>
+        <span class="n">nov_beta</span> <span class="o">=</span> <span class="n">nocc_beta</span> <span class="o">*</span> <span class="n">nvirt_beta</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_uhf</span><span class="p">:</span>
+
+            <span class="c1"># Set up &quot;function pointers&quot;.</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo_type</span> <span class="o">==</span> <span class="n">AO2MOTransformationType</span><span class="o">.</span><span class="n">full</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+                <span class="n">tei_mo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo_type</span> <span class="o">==</span> <span class="n">AO2MOTransformationType</span><span class="o">.</span><span class="n">partial</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+                <span class="n">tei_mo_ovov</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">tei_mo_oovv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo_type</span> <span class="o">==</span> <span class="n">AO2MOTransformationType</span><span class="o">.</span><span class="n">full</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">hamiltonian</span> <span class="o">==</span> <span class="n">Hamiltonian</span><span class="o">.</span><span class="n">RPA</span> <span class="ow">and</span> <span class="n">spin</span> <span class="o">==</span> <span class="n">Spin</span><span class="o">.</span><span class="n">singlet</span><span class="p">:</span>
+                    <span class="n">A</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_singlet_full</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">moenergies</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tei_mo</span><span class="p">,</span> <span class="n">nocc_alph</span><span class="p">)</span>
+                    <span class="n">B</span> <span class="o">=</span> <span class="n">form_rpa_b_matrix_mo_singlet_full</span><span class="p">(</span><span class="n">tei_mo</span><span class="p">,</span> <span class="n">nocc_alph</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">hamiltonian</span> <span class="o">==</span> <span class="n">Hamiltonian</span><span class="o">.</span><span class="n">RPA</span> <span class="ow">and</span> <span class="n">spin</span> <span class="o">==</span> <span class="n">Spin</span><span class="o">.</span><span class="n">triplet</span><span class="p">:</span>
+                    <span class="n">A</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_triplet_full</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">moenergies</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tei_mo</span><span class="p">,</span> <span class="n">nocc_alph</span><span class="p">)</span>
+                    <span class="n">B</span> <span class="o">=</span> <span class="n">form_rpa_b_matrix_mo_triplet_full</span><span class="p">(</span><span class="n">tei_mo</span><span class="p">,</span> <span class="n">nocc_alph</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">hamiltonian</span> <span class="o">==</span> <span class="n">Hamiltonian</span><span class="o">.</span><span class="n">TDA</span> <span class="ow">and</span> <span class="n">spin</span> <span class="o">==</span> <span class="n">Spin</span><span class="o">.</span><span class="n">singlet</span><span class="p">:</span>
+                    <span class="n">A</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_singlet_full</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">moenergies</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tei_mo</span><span class="p">,</span> <span class="n">nocc_alph</span><span class="p">)</span>
+                    <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">nov_alph</span><span class="p">,</span> <span class="n">nov_alph</span><span class="p">))</span>
+                <span class="k">elif</span> <span class="n">hamiltonian</span> <span class="o">==</span> <span class="n">Hamiltonian</span><span class="o">.</span><span class="n">TDA</span> <span class="ow">and</span> <span class="n">spin</span> <span class="o">==</span> <span class="n">Spin</span><span class="o">.</span><span class="n">triplet</span><span class="p">:</span>
+                    <span class="n">A</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_triplet_full</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">moenergies</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tei_mo</span><span class="p">,</span> <span class="n">nocc_alph</span><span class="p">)</span>
+                    <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">nov_alph</span><span class="p">,</span> <span class="n">nov_alph</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo_type</span> <span class="o">==</span> <span class="n">AO2MOTransformationType</span><span class="o">.</span><span class="n">partial</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">hamiltonian</span> <span class="o">==</span> <span class="n">Hamiltonian</span><span class="o">.</span><span class="n">RPA</span> <span class="ow">and</span> <span class="n">spin</span> <span class="o">==</span> <span class="n">Spin</span><span class="o">.</span><span class="n">singlet</span><span class="p">:</span>
+                    <span class="n">A</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_singlet_partial</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">moenergies</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tei_mo_ovov</span><span class="p">,</span> <span class="n">tei_mo_oovv</span>
+                    <span class="p">)</span>
+                    <span class="n">B</span> <span class="o">=</span> <span class="n">form_rpa_b_matrix_mo_singlet_partial</span><span class="p">(</span><span class="n">tei_mo_ovov</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">hamiltonian</span> <span class="o">==</span> <span class="n">Hamiltonian</span><span class="o">.</span><span class="n">RPA</span> <span class="ow">and</span> <span class="n">spin</span> <span class="o">==</span> <span class="n">Spin</span><span class="o">.</span><span class="n">triplet</span><span class="p">:</span>
+                    <span class="n">A</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_triplet_partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">moenergies</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tei_mo_oovv</span><span class="p">)</span>
+                    <span class="n">B</span> <span class="o">=</span> <span class="n">form_rpa_b_matrix_mo_triplet_partial</span><span class="p">(</span><span class="n">tei_mo_ovov</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">hamiltonian</span> <span class="o">==</span> <span class="n">Hamiltonian</span><span class="o">.</span><span class="n">TDA</span> <span class="ow">and</span> <span class="n">spin</span> <span class="o">==</span> <span class="n">Spin</span><span class="o">.</span><span class="n">singlet</span><span class="p">:</span>
+                    <span class="n">A</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_singlet_partial</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">moenergies</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tei_mo_ovov</span><span class="p">,</span> <span class="n">tei_mo_oovv</span>
+                    <span class="p">)</span>
+                    <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">nov_alph</span><span class="p">,</span> <span class="n">nov_alph</span><span class="p">))</span>
+                <span class="k">elif</span> <span class="n">hamiltonian</span> <span class="o">==</span> <span class="n">Hamiltonian</span><span class="o">.</span><span class="n">TDA</span> <span class="ow">and</span> <span class="n">spin</span> <span class="o">==</span> <span class="n">Spin</span><span class="o">.</span><span class="n">triplet</span><span class="p">:</span>
+                    <span class="n">A</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_triplet_partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">moenergies</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tei_mo_oovv</span><span class="p">)</span>
+                    <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">nov_alph</span><span class="p">,</span> <span class="n">nov_alph</span><span class="p">))</span>
+
+            <span class="n">G</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">block</span><span class="p">([[</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="n">B</span><span class="p">,</span> <span class="o">-</span><span class="n">A</span><span class="p">]])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">explicit_hessian</span> <span class="o">=</span> <span class="n">G</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># TODO UHF</span>
+            <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ExactDiagonalizationSolver.diagonalize_explicit_hessian"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactDiagonalizationSolver.diagonalize_explicit_hessian">[docs]</a>    <span class="k">def</span> <span class="nf">diagonalize_explicit_hessian</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">,</span> <span class="n">nvirt_beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">occupations</span>
+        <span class="n">nov_alph</span> <span class="o">=</span> <span class="n">nocc_alph</span> <span class="o">*</span> <span class="n">nvirt_alph</span>
+        <span class="n">nov_beta</span> <span class="o">=</span> <span class="n">nocc_beta</span> <span class="o">*</span> <span class="n">nvirt_beta</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_uhf</span><span class="p">:</span>
+            <span class="n">eigvals</span><span class="p">,</span> <span class="n">eigvecs</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">explicit_hessian</span><span class="p">)</span>
+            <span class="c1"># Sort from lowest to highest eigenvalue (excitation</span>
+            <span class="c1"># energy).</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">eigvals</span><span class="o">.</span><span class="n">argsort</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">eigvals</span> <span class="o">=</span> <span class="n">eigvals</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+            <span class="c1"># Each eigenvector is a column vector.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">eigvecs</span> <span class="o">=</span> <span class="n">eigvecs</span><span class="p">[:,</span> <span class="n">idx</span><span class="p">]</span>
+            <span class="c1"># Fix the ordering of everything. The first eigenvectors</span>
+            <span class="c1"># are those with negative excitation energies.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">eigvals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eigvals</span><span class="p">[</span><span class="n">nov_alph</span><span class="p">:]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">eigvecs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eigvecs</span><span class="p">[:,</span> <span class="n">nov_alph</span><span class="p">:]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># TODO UHF</span>
+            <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ExactDiagonalizationSolver.run"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactDiagonalizationSolver.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hamiltonian</span><span class="p">:</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">spin</span><span class="p">:</span> <span class="n">Spin</span><span class="p">,</span> <span class="n">program</span><span class="p">:</span> <span class="n">Program</span><span class="p">,</span> <span class="n">program_obj</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hamiltonian</span><span class="p">,</span> <span class="n">Hamiltonian</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">spin</span><span class="p">,</span> <span class="n">Spin</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="n">Program</span><span class="p">)</span>
+        <span class="c1"># TODO program_obj</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">form_tei_mo</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="n">program_obj</span><span class="p">,</span> <span class="n">AO2MOTransformationType</span><span class="o">.</span><span class="n">partial</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">form_explicit_hessian</span><span class="p">(</span><span class="n">hamiltonian</span><span class="p">,</span> <span class="n">spin</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">diagonalize_explicit_hessian</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="ExactDiagonalizationSolverTDA"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactDiagonalizationSolverTDA">[docs]</a><span class="k">class</span> <span class="nc">ExactDiagonalizationSolverTDA</span><span class="p">(</span><span class="n">ExactDiagonalizationSolver</span><span class="p">,</span> <span class="n">EigSolverTDA</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get the eigenvectors and eigenvalues of the TDA Hamiltonian by forming the</span>
+<span class="sd">    electronic Hessian explicitly and diagonalizing it exactly.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">mocoeffs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">occupations</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">mocoeffs</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">,</span> <span class="n">occupations</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ExactDiagonalizationSolverTDA.form_explicit_hessian"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactDiagonalizationSolverTDA.form_explicit_hessian">[docs]</a>    <span class="k">def</span> <span class="nf">form_explicit_hessian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hamiltonian</span><span class="p">:</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">spin</span><span class="p">:</span> <span class="n">Spin</span><span class="p">,</span> <span class="n">frequency</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;tei_mo&quot;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tei_mo_type</span><span class="p">,</span> <span class="n">AO2MOTransformationType</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="n">hamiltonian</span> <span class="o">==</span> <span class="n">Hamiltonian</span><span class="o">.</span><span class="n">TDA</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">spin</span><span class="p">,</span> <span class="n">Spin</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">frequency</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
+
+        <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">,</span> <span class="n">nvirt_beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">occupations</span>
+        <span class="n">nov_alph</span> <span class="o">=</span> <span class="n">nocc_alph</span> <span class="o">*</span> <span class="n">nvirt_alph</span>
+        <span class="n">nov_beta</span> <span class="o">=</span> <span class="n">nocc_beta</span> <span class="o">*</span> <span class="n">nvirt_beta</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_uhf</span><span class="p">:</span>
+
+            <span class="c1"># Set up &quot;function pointers&quot;.</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo_type</span> <span class="o">==</span> <span class="n">AO2MOTransformationType</span><span class="o">.</span><span class="n">full</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+                <span class="n">tei_mo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo_type</span> <span class="o">==</span> <span class="n">AO2MOTransformationType</span><span class="o">.</span><span class="n">partial</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+                <span class="n">tei_mo_ovov</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">tei_mo_oovv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo_type</span> <span class="o">==</span> <span class="n">AO2MOTransformationType</span><span class="o">.</span><span class="n">full</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">spin</span> <span class="o">==</span> <span class="n">Spin</span><span class="o">.</span><span class="n">singlet</span><span class="p">:</span>
+                    <span class="n">A</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_singlet_full</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">moenergies</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tei_mo</span><span class="p">,</span> <span class="n">nocc_alph</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">spin</span> <span class="o">==</span> <span class="n">Spin</span><span class="o">.</span><span class="n">triplet</span><span class="p">:</span>
+                    <span class="n">A</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_triplet_full</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">moenergies</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tei_mo</span><span class="p">,</span> <span class="n">nocc_alph</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo_type</span> <span class="o">==</span> <span class="n">AO2MOTransformationType</span><span class="o">.</span><span class="n">partial</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">spin</span> <span class="o">==</span> <span class="n">Spin</span><span class="o">.</span><span class="n">singlet</span><span class="p">:</span>
+                    <span class="n">A</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_singlet_partial</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">moenergies</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tei_mo_ovov</span><span class="p">,</span> <span class="n">tei_mo_oovv</span>
+                    <span class="p">)</span>
+                <span class="k">elif</span> <span class="n">spin</span> <span class="o">==</span> <span class="n">Spin</span><span class="o">.</span><span class="n">triplet</span><span class="p">:</span>
+                    <span class="n">A</span> <span class="o">=</span> <span class="n">form_rpa_a_matrix_mo_triplet_partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">moenergies</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tei_mo_oovv</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">explicit_hessian</span> <span class="o">=</span> <span class="n">A</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># TODO UHF</span>
+            <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ExactDiagonalizationSolverTDA.diagonalize_explicit_hessian"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactDiagonalizationSolverTDA.diagonalize_explicit_hessian">[docs]</a>    <span class="k">def</span> <span class="nf">diagonalize_explicit_hessian</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">,</span> <span class="n">nvirt_beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">occupations</span>
+        <span class="n">nov_alph</span> <span class="o">=</span> <span class="n">nocc_alph</span> <span class="o">*</span> <span class="n">nvirt_alph</span>
+        <span class="n">nov_beta</span> <span class="o">=</span> <span class="n">nocc_beta</span> <span class="o">*</span> <span class="n">nvirt_beta</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_uhf</span><span class="p">:</span>
+            <span class="n">eigvals</span><span class="p">,</span> <span class="n">eigvecs</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">explicit_hessian</span><span class="p">)</span>
+            <span class="c1"># Sort from lowest to highest eigenvalue (excitation</span>
+            <span class="c1"># energy).</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">eigvals</span><span class="o">.</span><span class="n">argsort</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">eigvals</span> <span class="o">=</span> <span class="n">eigvals</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+            <span class="c1"># Each eigenvector is a column vector.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">eigvecs</span> <span class="o">=</span> <span class="n">eigvecs</span><span class="p">[:,</span> <span class="n">idx</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># TODO UHF</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Eric Berquist.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyresponse.properties package &mdash; pyresponse  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="contents.html" class="icon icon-home"> pyresponse
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html">pyresponse</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="contents.html">pyresponse</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="contents.html" class="icon icon-home"></a> &raquo;</li>
+      <li>pyresponse.properties package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/pyresponse.properties.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pyresponse-properties-package">
+<h1>pyresponse.properties package<a class="headerlink" href="#pyresponse-properties-package" title="Permalink to this headline"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
+</section>
+<section id="module-pyresponse.properties.ecd">
+<span id="pyresponse-properties-ecd-module"></span><h2>pyresponse.properties.ecd module<a class="headerlink" href="#module-pyresponse.properties.ecd" title="Permalink to this headline"></a></h2>
+<p>Wrapper for performing an electronic circular dichroism (ECD)
+calculation.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyresponse.properties.ecd.ECD">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyresponse.properties.ecd.</span></span><span class="sig-name descname"><span class="pre">ECD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">program</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="pyresponse.html#pyresponse.core.Program" title="pyresponse.core.Program"><span class="pre">pyresponse.core.Program</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">program_obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">driver</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="pyresponse.html#pyresponse.td.TDHF" title="pyresponse.td.TDHF"><span class="pre">pyresponse.td.TDHF</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">mocoeffs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moenergies</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occupations</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">do_tda</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">do_dipvel</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyresponse/properties/ecd.html#ECD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.properties.ecd.ECD" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="pyresponse.html#pyresponse.molecular_property.TransitionProperty" title="pyresponse.molecular_property.TransitionProperty"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyresponse.molecular_property.TransitionProperty</span></code></a></p>
+<p>Wrapper for performing an electronic circular dichroism (ECD)
+calculation.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.properties.ecd.ECD.form_operators">
+<span class="sig-name descname"><span class="pre">form_operators</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyresponse/properties/ecd.html#ECD.form_operators"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.properties.ecd.ECD.form_operators" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.properties.ecd.ECD.form_results">
+<span class="sig-name descname"><span class="pre">form_results</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyresponse/properties/ecd.html#ECD.form_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.properties.ecd.ECD.form_results" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.properties.ecd.ECD.print_results_nwchem">
+<span class="sig-name descname"><span class="pre">print_results_nwchem</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/pyresponse/properties/ecd.html#ECD.print_results_nwchem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.properties.ecd.ECD.print_results_nwchem" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.properties.ecd.ECD.print_results_orca">
+<span class="sig-name descname"><span class="pre">print_results_orca</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/pyresponse/properties/ecd.html#ECD.print_results_orca"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.properties.ecd.ECD.print_results_orca" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.properties.ecd.ECD.print_results_qchem">
+<span class="sig-name descname"><span class="pre">print_results_qchem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cutoff</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0.01</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/pyresponse/properties/ecd.html#ECD.print_results_qchem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.properties.ecd.ECD.print_results_qchem" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pyresponse.properties.electric">
+<span id="pyresponse-properties-electric-module"></span><h2>pyresponse.properties.electric module<a class="headerlink" href="#module-pyresponse.properties.electric" title="Permalink to this headline"></a></h2>
+<p>Wrapper for performing a dipole polarizability calculation.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyresponse.properties.electric.Polarizability">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyresponse.properties.electric.</span></span><span class="sig-name descname"><span class="pre">Polarizability</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">program</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="pyresponse.html#pyresponse.core.Program" title="pyresponse.core.Program"><span class="pre">pyresponse.core.Program</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">program_obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">driver</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="pyresponse.html#pyresponse.cphf.CPHF" title="pyresponse.cphf.CPHF"><span class="pre">pyresponse.cphf.CPHF</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">mocoeffs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moenergies</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occupations</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequencies</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">[0.0]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyresponse/properties/electric.html#Polarizability"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.properties.electric.Polarizability" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="pyresponse.html#pyresponse.molecular_property.ResponseProperty" title="pyresponse.molecular_property.ResponseProperty"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyresponse.molecular_property.ResponseProperty</span></code></a></p>
+<p>Wrapper for performing a dipole polarizability calculation.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.properties.electric.Polarizability.form_operators">
+<span class="sig-name descname"><span class="pre">form_operators</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyresponse/properties/electric.html#Polarizability.form_operators"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.properties.electric.Polarizability.form_operators" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.properties.electric.Polarizability.form_results">
+<span class="sig-name descname"><span class="pre">form_results</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyresponse/properties/electric.html#Polarizability.form_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.properties.electric.Polarizability.form_results" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pyresponse.properties.magnetic">
+<span id="pyresponse-properties-magnetic-module"></span><h2>pyresponse.properties.magnetic module<a class="headerlink" href="#module-pyresponse.properties.magnetic" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyresponse.properties.magnetic.ElectronicGTensor">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyresponse.properties.magnetic.</span></span><span class="sig-name descname"><span class="pre">ElectronicGTensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">program</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="pyresponse.html#pyresponse.core.Program" title="pyresponse.core.Program"><span class="pre">pyresponse.core.Program</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">program_obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">driver</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="pyresponse.html#pyresponse.cphf.CPHF" title="pyresponse.cphf.CPHF"><span class="pre">pyresponse.cphf.CPHF</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">mocoeffs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moenergies</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occupations</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gauge_origin</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'ecc'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyresponse/properties/magnetic.html#ElectronicGTensor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.properties.magnetic.ElectronicGTensor" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="pyresponse.html#pyresponse.molecular_property.ResponseProperty" title="pyresponse.molecular_property.ResponseProperty"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyresponse.molecular_property.ResponseProperty</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.properties.magnetic.ElectronicGTensor.form_operators">
+<span class="sig-name descname"><span class="pre">form_operators</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyresponse/properties/magnetic.html#ElectronicGTensor.form_operators"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.properties.magnetic.ElectronicGTensor.form_operators" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.properties.magnetic.ElectronicGTensor.form_results">
+<span class="sig-name descname"><span class="pre">form_results</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyresponse/properties/magnetic.html#ElectronicGTensor.form_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.properties.magnetic.ElectronicGTensor.form_results" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyresponse.properties.magnetic.Magnetizability">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyresponse.properties.magnetic.</span></span><span class="sig-name descname"><span class="pre">Magnetizability</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">program</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="pyresponse.html#pyresponse.core.Program" title="pyresponse.core.Program"><span class="pre">pyresponse.core.Program</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">program_obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">driver</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="pyresponse.html#pyresponse.cphf.CPHF" title="pyresponse.cphf.CPHF"><span class="pre">pyresponse.cphf.CPHF</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">mocoeffs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moenergies</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occupations</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_giao</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyresponse/properties/magnetic.html#Magnetizability"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.properties.magnetic.Magnetizability" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="pyresponse.html#pyresponse.molecular_property.ResponseProperty" title="pyresponse.molecular_property.ResponseProperty"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyresponse.molecular_property.ResponseProperty</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.properties.magnetic.Magnetizability.form_operators">
+<span class="sig-name descname"><span class="pre">form_operators</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyresponse/properties/magnetic.html#Magnetizability.form_operators"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.properties.magnetic.Magnetizability.form_operators" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.properties.magnetic.Magnetizability.form_results">
+<span class="sig-name descname"><span class="pre">form_results</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyresponse/properties/magnetic.html#Magnetizability.form_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.properties.magnetic.Magnetizability.form_results" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pyresponse.properties.optrot">
+<span id="pyresponse-properties-optrot-module"></span><h2>pyresponse.properties.optrot module<a class="headerlink" href="#module-pyresponse.properties.optrot" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyresponse.properties.optrot.ORD">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pyresponse.properties.optrot.</span></span><span class="sig-name descname"><span class="pre">ORD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">program</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="pyresponse.html#pyresponse.core.Program" title="pyresponse.core.Program"><span class="pre">pyresponse.core.Program</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">program_obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">driver</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="pyresponse.html#pyresponse.cphf.CPHF" title="pyresponse.cphf.CPHF"><span class="pre">pyresponse.cphf.CPHF</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">mocoeffs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moenergies</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occupations</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequencies</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">[0.0]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">do_dipvel</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyresponse/properties/optrot.html#ORD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.properties.optrot.ORD" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="pyresponse.html#pyresponse.molecular_property.ResponseProperty" title="pyresponse.molecular_property.ResponseProperty"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyresponse.molecular_property.ResponseProperty</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.properties.optrot.ORD.form_operators">
+<span class="sig-name descname"><span class="pre">form_operators</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyresponse/properties/optrot.html#ORD.form_operators"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.properties.optrot.ORD.form_operators" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyresponse.properties.optrot.ORD.form_results">
+<span class="sig-name descname"><span class="pre">form_results</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyresponse/properties/optrot.html#ORD.form_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyresponse.properties.optrot.ORD.form_results" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pyresponse.properties">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pyresponse.properties" title="Permalink to this headline"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Eric Berquist.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
