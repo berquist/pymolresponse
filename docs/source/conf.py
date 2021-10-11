@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+# pylint: skip-file
 #
 # pyresponse documentation build configuration file, created by
 # sphinx-quickstart on Sat Jul 15 15:04:03 2017.
@@ -19,6 +20,7 @@
 #
 import os
 import sys
+from typing import Dict, List
 
 sys.path.insert(0, os.path.abspath("../.."))
 
@@ -60,7 +62,7 @@ master_doc = "contents"
 
 # General information about the project.
 project = "pyresponse"
-copyright = "2019, Eric Berquist"
+copyright = "2021, Eric Berquist"
 author = "Eric Berquist"
 
 # The version info for the project you're documenting, acts as replacement for
@@ -82,7 +84,7 @@ language = None
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This patterns also effect to html_static_path and html_extra_path
-exclude_patterns = []
+exclude_patterns: List[str] = []
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = "sphinx"
@@ -133,7 +135,7 @@ htmlhelp_basename = "pyresponsedoc"
 
 # -- Options for LaTeX output ---------------------------------------------
 
-latex_elements = {
+latex_elements: Dict[str, str] = {
     # The paper size ('letterpaper' or 'a4paper').
     #
     # 'papersize': 'letterpaper',

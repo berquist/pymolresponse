@@ -7,7 +7,7 @@ Molecular frequency-dependent response properties for arbitrary operators.
 [![license](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg?style=flat)](https://github.com/berquist/pyresponse/blob/master/LICENSE)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/berquist/pyresponse/master.svg)](https://results.pre-commit.ci/latest/github/berquist/pyresponse/master)
 
-For documentation, go to https://berquist.github.io/pyresponse_docs/.
+For documentation, go to https://berquist.github.io/pyresponse/.
 
 Currently, the goal is to provide:
 
@@ -17,16 +17,13 @@ Currently, the goal is to provide:
 
 ## Installation
 
-To set up a conda environment with all dependencies for running, testing, and building the documentation:
-
-```bash
-bash ${PROJECT_DIR}/scripts/make_conda_env.bash
-```
+To set up a conda environment with all dependencies for running, testing, and building the documentation, look under `devtools`.
 
 ## Requirements
 
 * Python >= ~~3.2 because of pyscf~~3.6 because of [f-strings](https://cito.github.io/blog/f-strings/).
 * [pyscf](https://github.com/sunqm/pyscf) and its dependencies: CMake, NumPy, SciPy, HDF5 + h5py
+* [Psi4](https://psicode.org/)
 
 ### Other Python dependencies
 
@@ -34,8 +31,6 @@ bash ${PROJECT_DIR}/scripts/make_conda_env.bash
 * [pytest](http://doc.pytest.org/en/latest/) (for testing)
 * [daltools](https://github.com/vahtras/daltools) (for testing?)
 * [cclib](https://github.com/cclib/cclib) (for testing)
-
-Psi4 is also required for testing, and is installed as part of the [conda environment setup](scripts/make_conda_env.bash) from their conda channel. See the conda script for all dependencies.
 
 ## Testing
 
@@ -49,7 +44,7 @@ make pytest
 * Hartree-Fock and DFT only; no post-HF methods yet.
 * Real orbitals only; no complex or generalized orbitals yet.
 * Because the dimensioning of all arrays is based around the ov/vo space, methods that have non-zero contributions from the oo space (specifically derivatives of GIAOs/London orbitals w.r.t. the B-field) are not currently possible.
-* ~~No iterative schemes are implemented, only "exact" methods involving explicit construction of the full orbital Hessian and then inverting it (for response) or diagonalizing it (for excitation energies/transition moments/residues). Better have lots of memory!~~An iterative solver exists for response properties, not transition properties.
+* An iterative solver exists for response properties, not transition properties, where only explicit formation and then diagonalization of the orbital Hessian is available.
 * Linear response and single residues only.
 * _unrestricted diagonalization-based properties are not implemented/working_
 
