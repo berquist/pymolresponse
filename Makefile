@@ -9,4 +9,4 @@ precommit:
 .PHONY: docs
 docs:
 	sphinx-apidoc -o docs/source pyresponse
-	cd doc && make html
+	cd docs && make html
