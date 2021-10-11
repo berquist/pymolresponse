@@ -34,14 +34,12 @@ class TDHF(CPHF):
     def form_results(self) -> None:
         nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.solver.occupations
         nov_alph = nocc_alph * nvirt_alph
-        nov_beta = nocc_beta * nvirt_beta
+        # nov_beta = nocc_beta * nvirt_beta
         self.solver.eigvecs_normed = self.solver.eigvecs.copy()
         # This is because we've calculated all possible roots.
         for idx in range(nov_alph):
             eigvec = self.solver.eigvecs[:, idx]
-            x_normed, y_normed = self.solver.norm_xy(
-                self.solver.eigvecs[:, idx], nocc_alph, nvirt_alph
-            )
+            x_normed, y_normed = self.solver.norm_xy(eigvec, nocc_alph, nvirt_alph)
             eigvec_normed = np.concatenate((x_normed.flatten(), y_normed.flatten()), axis=0)
             self.solver.eigvecs_normed[:, idx] = eigvec_normed
             eigval = self.solver.eigvals[idx].real
@@ -69,7 +67,6 @@ class TDHF(CPHF):
             operator.transition_moments = np.array(operator.transition_moments)
             operator.oscillator_strengths = np.array(operator.oscillator_strengths)
             operator.total_oscillator_strengths = np.array(operator.total_oscillator_strengths)
-        return
 
     def print_results(self) -> None:
         energies = self.solver.eigvals.real
@@ -87,7 +84,6 @@ class TDHF(CPHF):
                 print(f" Transition moment: {transition_moment}")
                 print(f" Oscillator strength: {oscillator_strength}")
                 print(f" Oscillator strength (total): {total_oscillator_strength}")
-        return
 
     def print_results_nwchem(self) -> str:
         # TODO UHF
@@ -109,7 +105,8 @@ class TDHF(CPHF):
         for idx in range(ndiff):
             iocc, ivirt = indices_sorted[idx]
             lines.append(
-                f'{idx + 1:>5d}{1:>5d}{iocc + 1:>5d}{ivirt + 1:>5d} {"X":<5}{moene[iocc]:>10.3f}{moene[ivirt]:>10.3f}{ediff_sorted[idx]:>10.3f}'
+                f"{idx + 1:>5d}{1:>5d}{iocc + 1:>5d}{ivirt + 1:>5d} "
+                f'{"X":<5}{moene[iocc]:>10.3f}{moene[ivirt]:>10.3f}{ediff_sorted[idx]:>10.3f}'
             )
         lines.append("--------------------------------------------------------")
         return "\n".join(lines)
@@ -147,7 +144,8 @@ class TDHF(CPHF):
         nstates = len(energies)
         for state in range(nstates):
             lines.append(
-                f"STATE{state + 1:>3d}:  E={energies[state]:>11.6f} au{energies_ev[state]:>11.3f} eV{energies_invcm[state]:>11.1f} cm**-1"
+                f"STATE{state + 1:>3d}:  E={energies[state]:>11.6f} "
+                f"au{energies_ev[state]:>11.3f} eV{energies_invcm[state]:>11.1f} cm**-1"
             )
             eigvec_state = eigvecs[:, state]
             square_eigvec_state = square_eigvecs[:, state]
@@ -169,7 +167,8 @@ class TDHF(CPHF):
 class TDA(TDHF):
     """Driver for solving the time-dependent Hartree-Fock equations with the
     Tamm-Dancoff approximation (TDA), also called the configuration
-    interaction with single excitation (CIS) equations.
+    interaction with single excitation (CIS) equations when no XC contribution
+    is present.
     """
 
     def __init__(self, solver: EigSolverTDA) -> None:
@@ -186,7 +185,7 @@ class TDA(TDHF):
         for idx in range(nov_alph):
             norm = 1 / np.sqrt(2)
             eigvec = self.solver.eigvecs[:, idx]
-            eigvec_normed = self.solver.eigvecs[:, idx] * norm
+            eigvec_normed = eigvec * norm
             self.solver.eigvecs_normed[:, idx] = eigvec_normed
             eigval = self.solver.eigvals[idx].real
             # contract the components of every operator with every

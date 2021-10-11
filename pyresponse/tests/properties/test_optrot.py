@@ -258,8 +258,6 @@ def test_ORD_RPA_singlet_BC2H4_cation_HF_STO3G():
     # for idxf, frequency in enumerate(frequencies):
     #     print(sum(prefac * ecd.rotational_strengths_diplen / ((frequency ** 2) * (ecd.solver.eigvals.real ** 2))))
 
-    return
-
 
 def test_ORD_RPA_singlet_BC2H4_HF_STO3G():
 
@@ -318,8 +316,6 @@ def test_ORD_RPA_singlet_BC2H4_HF_STO3G():
             print(ref_beta)
             print(abs_diff)
             assert (abs_diff < thresh).all()
-
-    return
 
 
 def test_ORD_RPA_singlet_trithiolane_HF_STO3G():
@@ -388,8 +384,6 @@ def test_ORD_RPA_singlet_trithiolane_HF_STO3G():
     #         print(res_beta)
     #         print(abs_diff)
     #         assert (abs_diff < thresh).all()
-
-    return
 
 
 if __name__ == "__main__":

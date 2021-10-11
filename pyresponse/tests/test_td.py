@@ -82,8 +82,6 @@ def test_HF_both_singlet_HF_STO3G():
         abs_diff = abs(ref_rpa["etenergies"][i] - excitation_energies_rpa[i])
         assert abs_diff < thresh
 
-    return
-
 
 HF_neutral_singlet_HF_STO3G_qchem = -98.5707799863
 

@@ -14,7 +14,7 @@ short_description = __doc__.split("\n")
 try:
     with open("README.md", "r", encoding="utf-8") as handle:
         long_description = handle.read()
-except:
+except FileNotFoundError:
     long_description = "\n".join(short_description[2:])
 
 
@@ -25,7 +25,6 @@ def _get_files_recursive(top: Path) -> Sequence[Path]:
                 files.append(f.resolve(strict=True))
             elif f.is_dir():
                 get_files_recursive_acc(f.resolve(strict=True), files)
-        return
 
     files: List[Path] = []
     get_files_recursive_acc(top, files)

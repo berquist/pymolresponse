@@ -12,6 +12,10 @@ from pyresponse.tests.test_runners import (
 
 
 def test_final_result_rhf_h2o_sto3g_rpa_singlet() -> None:
+    """Test correctness of the final result for water/STO-3G with full RPA for
+    singlet response induced by the dipole length operator (the electric
+    polarizability) computed with quantities from disk.
+    """
     hamiltonian = Hamiltonian.RPA
     spin = Spin.singlet
 
@@ -91,10 +95,12 @@ def test_final_result_rhf_h2o_sto3g_rpa_singlet() -> None:
         polarizability.polarizabilities[3], result__0_10, rtol=rtol, atol=atol
     )
 
-    return
-
 
 def test_final_result_rhf_h2o_sto3g_rpa_triplet() -> None:
+    """Test correctness of the final result for water/STO-3G with full RPA for
+    triplet response induced by the dipole length operator computed with
+    quantities from disk.
+    """
     hamiltonian = Hamiltonian.RPA
     spin = Spin.triplet
 
@@ -174,10 +180,12 @@ def test_final_result_rhf_h2o_sto3g_rpa_triplet() -> None:
         polarizability.polarizabilities[3], result__0_10, rtol=rtol, atol=atol
     )
 
-    return
-
 
 def test_final_result_rhf_h2o_sto3g_tda_singlet() -> None:
+    """Test correctness of the final result for water/STO-3G with the TDA
+    approximation/CIS for singlet response induced by the dipole length
+    operator computed with quantities from disk.
+    """
     hamiltonian = Hamiltonian.TDA
     spin = Spin.singlet
 
@@ -255,10 +263,12 @@ def test_final_result_rhf_h2o_sto3g_tda_singlet() -> None:
         polarizability.polarizabilities[3], result__0_10, rtol=rtol, atol=atol
     )
 
-    return
-
 
 def test_final_result_rhf_h2o_sto3g_tda_triplet() -> None:
+    """Test correctness of the final result for water/STO-3G with the TDA
+    approximation/CIS for triplet response induced by the dipole length
+    operator computed with quantities from disk.
+    """
     hamiltonian = Hamiltonian.TDA
     spin = Spin.triplet
 
@@ -338,88 +348,20 @@ def test_final_result_rhf_h2o_sto3g_tda_triplet() -> None:
         polarizability.polarizabilities[3], result__0_10, rtol=rtol, atol=atol
     )
 
-    return
-
 
 def test_as_many_as_possible_rhf_disk() -> None:
+    """Test correctness of the final result for closed-shell molecules against
+    DALTON references.
+    """
     run_as_many_tests_as_possible_rhf_disk("r_lih_hf_sto-3g")
 
 
 def test_as_many_as_possible_uhf_disk() -> None:
+    """Test correctness of the final result for open-shell (UHF )molecules
+    against DALTON (ROHF) references.
+    """
     run_as_many_tests_as_possible_uhf_disk("u_lih_cation_hf_sto-3g")
 
-
-# TODO what is this?
-# if __name__ == '__main__':
-
-#     from pyscf import ao2mo, gto, scf
-
-#     import utils
-
-#     mol = gto.Mole()
-#     mol.verbose = 5
-#     with open('water.xyz') as fh:
-#         mol.atom = fh.read()
-#     mol.unit = 'Bohr'
-#     mol.basis = 'sto-3g'
-#     mol.symmetry = False
-#     mol.build()
-
-#     mf = scf.RHF(mol)
-#     mf.kernel()
-
-#     # In the future, we want the full Fock matrices in the MO basis.
-#     fock = utils.fix_moenergies_shape(mf.mo_energy)
-#     mocoeffs = utils.fix_mocoeffs_shape(mf.mo_coeff)
-#     norb = mocoeffs.shape[-1]
-#     tei_mo = ao2mo.full(mol, mocoeffs, aosym='s4', compact=False).reshape(norb, norb, norb, norb)
-
-#     ao_integrals_dipole = mol.intor('cint1e_r_sph', comp=3)
-#     # 'cg' stands for common gauge
-#     ao_integrals_angmom = mol.intor('cint1e_cg_irxp_sph', comp=3)
-#     # ao_integrals_spnorb = mol.intor('cint1e_ia01p_sph', comp=3)
-#     ao_integrals_spnorb = 0
-#     for atm_id in range(mol.natm):
-#         mol.set_rinv_orig(mol.atom_coord(atm_id))
-#         chg = mol.atom_charge(atm_id)
-#         ao_integrals_spnorb += chg * mol.intor('cint1e_prinvxp_sph', comp=3)
-
-#     operator_dipole = operators.Operator(label='dipole', is_imaginary=False, is_spin_dependent=False)
-#     operator_fermi = operators.Operator(label='fermi', is_imaginary=False, is_spin_dependent=True)
-#     operator_angmom = operators.Operator(label='angmom', is_imaginary=True, is_spin_dependent=False)
-#     operator_spnorb = operators.Operator(label='spinorb', is_imaginary=True, is_spin_dependent=True)
-#     operator_dipole.ao_integrals = ao_integrals_dipole
-#     from daltools import prop
-#     ao_integrals_fermi1 = prop.read('FC O  01', tmpdir='/home/eric/development/pyresponse/dalton_fermi/DALTON_scratch_eric/dalton.h2o_sto3g.response_static_rpa_singlet_5672')
-#     ao_integrals_fermi2 = prop.read('FC H  02', tmpdir='/home/eric/development/pyresponse/dalton_fermi/DALTON_scratch_eric/dalton.h2o_sto3g.response_static_rpa_singlet_5672')
-#     ao_integrals_fermi3 = prop.read('FC H  03', tmpdir='/home/eric/development/pyresponse/dalton_fermi/DALTON_scratch_eric/dalton.h2o_sto3g.response_static_rpa_singlet_5672')
-#     operator_fermi.ao_integrals = np.concatenate((ao_integrals_fermi1, ao_integrals_fermi2, ao_integrals_fermi3), axis=0)
-#     # print(operator_fermi.ao_integrals.shape)
-#     # import sys; sys.exit()
-#     operator_angmom.ao_integrals = ao_integrals_angmom
-#     operator_spnorb.ao_integrals = ao_integrals_spnorb
-
-#     nocc_a, nocc_b = mol.nelec
-#     nvirt_a, nvirt_b = norb - nocc_a, norb - nocc_b
-#     occupations = [nocc_a, nvirt_a, nocc_b, nvirt_b]
-#     cphf = CPHF(mocoeffs, fock, occupations)
-#     cphf.tei_mo = (tei_mo, )
-#     cphf.tei_mo_type = 'full'
-
-#     # cphf.add_operator(operator_dipole)
-#     cphf.add_operator(operator_fermi)
-#     # cphf.add_operator(operator_angmom)
-#     cphf.add_operator(operator_spnorb)
-
-#     cphf.set_frequencies()
-
-#     for hamiltonian in ('rpa', 'tda'):
-#         for spin in ('singlet', 'triplet'):
-#             print('hamiltonian: {}, spin: {}'.format(hamiltonian, spin))
-#             cphf.run(hamiltonian=hamiltonian, spin=spin)
-#             thresh = 1.0e-10
-#             cphf.results[0][cphf.results[0] < thresh] = 0.0
-#             print(cphf.results[0])
 
 if __name__ == "__main__":
     test_final_result_rhf_h2o_sto3g_rpa_singlet()
