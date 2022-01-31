@@ -358,7 +358,7 @@ def form_first_hyperpolarizability_averages(
     avgs = (-1 / 3) * (
         np.einsum("ijj->i", beta) + np.einsum("jij->i", beta) + np.einsum("jji->i", beta)
     )
-    avg = np.sum(avgs ** 2) ** (1 / 2)
+    avg = np.sum(avgs**2) ** (1 / 2)
     return avgs, avg
 
 

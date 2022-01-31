@@ -218,7 +218,7 @@ def test_first_hyperpolarizability_static_rhf_wigner_explicit():
     avgs = (-1 / 3) * (np.einsum("ijj->i", x) + np.einsum("jij->i", x) + np.einsum("jji->i", x))
     # print(list(set([''.join(p) for p in list(permutations('ijj', 3))])))
     assert np.allclose(ref_avgs, avgs, rtol=0, atol=1.0e-3)
-    avg = np.sum(avgs ** 2) ** (1 / 2)
+    avg = np.sum(avgs**2) ** (1 / 2)
     assert np.allclose([ref_avg], [avg], rtol=0, atol=1.0e-3)
     print(avgs)
     print(avg)
