@@ -8,6 +8,7 @@ untracked
 ## Psi4
 input.dat
 output*.dat
+psi4*clean
 timer.dat
 
 ## NWChem

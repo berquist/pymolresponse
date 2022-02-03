@@ -1,3 +1,5 @@
+from typing import Optional
+
 import numpy as np
 import scipy.constants as spc
 
@@ -16,6 +18,7 @@ class Operator:
         is_spin_dependent: bool = False,
         triplet: bool = False,
         slice_idx: int = -1,
+        ao_integrals: Optional[np.ndarray] = None,
     ) -> None:
         self.label = label
         self.is_imaginary = is_imaginary
@@ -29,7 +32,7 @@ class Operator:
             self.hsofac = (spc.alpha ** 2) / 4
 
         self.frequencies = None
-        self.ao_integrals = None
+        self.ao_integrals = ao_integrals
         self.rspvecs_alph = []
         self.rspvecs_beta = []
 

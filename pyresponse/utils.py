@@ -195,15 +195,18 @@ def fix_moenergies_shape(moenergies: Union[Tuple[np.ndarray, ...], np.ndarray]) 
             # It's a vector.
             moenergies_new = np.diag(moenergies)[np.newaxis]
         elif ls == 2:
-            # If it's a square matrix, assume it's already diagonal. If it
-            # isn't a square matrix, then it probably has one or two
-            # columns, one for each spin case.
+            # If it's a square matrix, assume it's already diagonal.  If it
+            # isn't a square matrix, then it probably has one or two columns,
+            # one for each spin case.  TODO check that all off-diagonal
+            # elements are zero?  Not true for Fock matrix in non-orthogonal
+            # basis.
             if shape[0] == shape[1]:
                 moenergies_new = moenergies[np.newaxis]
             else:
                 assert shape[0] in (1, 2)
                 if shape[0] == 1:
                     # (1, norb)
+                    # FIXME swapped?
                     moenergies_new = np.diag(moenergies[:, 0])[np.newaxis]
                 else:
                     # (2, norb)
@@ -212,6 +215,8 @@ def fix_moenergies_shape(moenergies: Union[Tuple[np.ndarray, ...], np.ndarray]) 
                     moenergies_new = np.concatenate((moenergies_alph, moenergies_beta), axis=0)
         else:
             assert shape[0] in (1, 2)
+            # You might think at first glance there's an assumption that nbsf
+            # == nmo here, but the (Fock) matrix is entirely in the MO basis.
             assert shape[1] == shape[2]
             moenergies_new = moenergies
     return moenergies_new

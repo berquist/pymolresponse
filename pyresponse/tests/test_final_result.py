@@ -357,7 +357,7 @@ def test_as_many_as_possible_rhf_disk() -> None:
 
 
 def test_as_many_as_possible_uhf_disk() -> None:
-    """Test correctness of the final result for open-shell (UHF )molecules
+    """Test correctness of the final result for open-shell (UHF) molecules
     against DALTON (ROHF) references.
     """
     run_as_many_tests_as_possible_uhf_disk("u_lih_cation_hf_sto-3g")

@@ -5,7 +5,7 @@ from enum import Enum, unique
 
 @unique
 class AO2MOTransformationType(Enum):
-    """For routines that perform AO-to-MO transformations, specify the kind of
+    r"""For routines that perform AO-to-MO transformations, specify the kind of
     transformation.
 
     Starting from :math:`(\mu\nu|\lambda\sigma)`,
