@@ -64,7 +64,9 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pyresponse.operators</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">scipy.constants</span> <span class="k">as</span> <span class="nn">spc</span>
 
 <span class="kn">from</span> <span class="nn">pyresponse.utils</span> <span class="kn">import</span> <span class="n">fix_mocoeffs_shape</span><span class="p">,</span> <span class="n">repack_matrix_to_vector</span>
@@ -82,6 +84,7 @@
         <span class="n">is_spin_dependent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">triplet</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">slice_idx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">ao_integrals</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">label</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">is_imaginary</span> <span class="o">=</span> <span class="n">is_imaginary</span>
@@ -95,7 +98,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">hsofac</span> <span class="o">=</span> <span class="p">(</span><span class="n">spc</span><span class="o">.</span><span class="n">alpha</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">4</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ao_integrals</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ao_integrals</span> <span class="o">=</span> <span class="n">ao_integrals</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rspvecs_alph</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rspvecs_beta</span> <span class="o">=</span> <span class="p">[]</span>
 

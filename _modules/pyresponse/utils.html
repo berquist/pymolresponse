@@ -261,15 +261,18 @@
             <span class="c1"># It&#39;s a vector.</span>
             <span class="n">moenergies_new</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">moenergies</span><span class="p">)[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
         <span class="k">elif</span> <span class="n">ls</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="c1"># If it&#39;s a square matrix, assume it&#39;s already diagonal. If it</span>
-            <span class="c1"># isn&#39;t a square matrix, then it probably has one or two</span>
-            <span class="c1"># columns, one for each spin case.</span>
+            <span class="c1"># If it&#39;s a square matrix, assume it&#39;s already diagonal.  If it</span>
+            <span class="c1"># isn&#39;t a square matrix, then it probably has one or two columns,</span>
+            <span class="c1"># one for each spin case.  TODO check that all off-diagonal</span>
+            <span class="c1"># elements are zero?  Not true for Fock matrix in non-orthogonal</span>
+            <span class="c1"># basis.</span>
             <span class="k">if</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
                 <span class="n">moenergies_new</span> <span class="o">=</span> <span class="n">moenergies</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">assert</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                     <span class="c1"># (1, norb)</span>
+                    <span class="c1"># FIXME swapped?</span>
                     <span class="n">moenergies_new</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">moenergies</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="c1"># (2, norb)</span>
@@ -278,6 +281,8 @@
                     <span class="n">moenergies_new</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">moenergies_alph</span><span class="p">,</span> <span class="n">moenergies_beta</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">assert</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="c1"># You might think at first glance there&#39;s an assumption that nbsf</span>
+            <span class="c1"># == nmo here, but the (Fock) matrix is entirely in the MO basis.</span>
             <span class="k">assert</span> <span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
             <span class="n">moenergies_new</span> <span class="o">=</span> <span class="n">moenergies</span>
     <span class="k">return</span> <span class="n">moenergies_new</span></div>
