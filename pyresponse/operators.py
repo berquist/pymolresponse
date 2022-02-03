@@ -29,7 +29,7 @@ class Operator:
         self.slice_idx = slice_idx
 
         if "spinorb" in label:
-            self.hsofac = (spc.alpha ** 2) / 4
+            self.hsofac = (spc.alpha**2) / 4
 
         self.frequencies = None
         self.ao_integrals = ao_integrals

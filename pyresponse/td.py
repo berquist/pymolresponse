@@ -50,7 +50,7 @@ class TDHF(CPHF):
                 # TODO why the 2?
                 res_normed = 2 * np.dot(integrals, eigvec_normed)
                 transition_moment = res_normed
-                oscillator_strength = (2 / 3) * eigval * transition_moment ** 2
+                oscillator_strength = (2 / 3) * eigval * transition_moment**2
                 total_oscillator_strength = (
                     (2 / 3) * eigval * np.dot(transition_moment, transition_moment)
                 )
@@ -195,7 +195,7 @@ class TDA(TDHF):
                 # TODO why the 2?
                 res_normed = 2 * np.dot(integrals, eigvec_normed)
                 transition_moment = res_normed
-                oscillator_strength = (2 / 3) * eigval * transition_moment ** 2
+                oscillator_strength = (2 / 3) * eigval * transition_moment**2
                 total_oscillator_strength = (
                     (2 / 3) * eigval * np.dot(transition_moment, transition_moment)
                 )
