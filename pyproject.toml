@@ -26,3 +26,6 @@ module = [
     "scipy",
 ]
 ignore_missing_imports = true
+
+[tool.doc8]
+ignore = "D001"
