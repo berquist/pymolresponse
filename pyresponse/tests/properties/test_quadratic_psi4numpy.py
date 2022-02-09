@@ -148,10 +148,10 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_small
     epsilon_2 = G_2.copy()
     for i in range(ncomp):
         eoU_1 = (E_diag[..., np.newaxis] + f1) * rspmats_1[i]
-        Ue_1 = rspmats_1[i] * E_diag[np.newaxis, ...]
+        Ue_1 = rspmats_1[i] * E_diag[np.newaxis]
         epsilon_1[i] += eoU_1 - Ue_1
         eoU_2 = (E_diag[..., np.newaxis] + f2) * rspmats_2[i]
-        Ue_2 = rspmats_2[i] * E_diag[np.newaxis, ...]
+        Ue_2 = rspmats_2[i] * E_diag[np.newaxis]
         epsilon_2[i] += eoU_2 - Ue_2
 
     # Assume some symmetry and calculate only part of the tensor.
@@ -423,15 +423,15 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_large
         G_1[i] = V + F_MO_1
         G_2[i] = V + F_MO_2
 
-    E_diag = np.diag(E[0, ...])
+    E_diag = np.diag(E[0])
     epsilon_1 = G_1.copy()
     epsilon_2 = G_2.copy()
     for i in range(ncomp):
         eoU_1 = (E_diag[..., np.newaxis] + f1) * rspmats_1[i]
-        Ue_1 = rspmats_1[i] * E_diag[np.newaxis, ...]
+        Ue_1 = rspmats_1[i] * E_diag[np.newaxis]
         epsilon_1[i] += eoU_1 - Ue_1
         eoU_2 = (E_diag[..., np.newaxis] + f2) * rspmats_2[i]
-        Ue_2 = rspmats_2[i] * E_diag[np.newaxis, ...]
+        Ue_2 = rspmats_2[i] * E_diag[np.newaxis]
         epsilon_2[i] += eoU_2 - Ue_2
 
     # Assume some symmetry and calculate only part of the tensor.
@@ -659,10 +659,10 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_large
 #     polarizability_full_2 = np.empty_like(polarizability_2)
 #     for a in (0, 1, 2):
 #         for b in (0, 1, 2):
-#             polarizability_full_1[a, b] = 2 * np.trace(np.dot(rhsmats[a, ...].T,
-#                                                               rspmats_1[b, ...]))
-#             polarizability_full_2[a, b] = 2 * np.trace(np.dot(rhsmats[a, ...].T,
-#                                                               rspmats_2[b, ...]))
+#             polarizability_full_1[a, b] = 2 * np.trace(np.dot(rhsmats[a].T,
+#                                                               rspmats_1[b]))
+#             polarizability_full_2[a, b] = 2 * np.trace(np.dot(rhsmats[a].T,
+#                                                               rspmats_2[b]))
 
 #     np.testing.assert_almost_equal(polarizability_1, -polarizability_full_1)
 #     np.testing.assert_almost_equal(polarizability_2, -polarizability_full_2)
@@ -671,7 +671,7 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_large
 #     integrals_ao = operator.ao_integrals
 #     integrals_mo = np.empty_like(integrals_ao)
 #     for i in range(ncomp):
-#         integrals_mo[i, ...] = (C[0, ...].T).dot(integrals_ao[i, ...]).dot(C[0, ...])
+#         integrals_mo[i] = (C[0].T).dot(integrals_ao[i]).dot(C[0])
 
 #     G_1 = np.empty_like(rspmats_1)
 #     G_2 = np.empty_like(rspmats_2)
@@ -679,7 +679,7 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_large
 #     # TODO I feel as though if I have all the MO-basis two-electron
 #     # integrals, I shouldn't need another JK build.
 #     for i in range(ncomp):
-#         V = integrals_mo[i, ...]
+#         V = integrals_mo[i]
 #         Dl_1 = (C[:, :nocc_alph]).dot(rspmats_1[i, :nocc_alph, :]).dot(C.T)
 #         Dr_1 = (-C).dot(rspmats_1[i, :, :nocc_alph]).dot(C[:, :nocc_alph].T)
 #         D_1 = Dl_1 + Dr_1
@@ -692,19 +692,19 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_large
 #         F_AO_2 = 2*J_2 - K_2
 #         F_MO_1 = (C.T).dot(F_AO_1).dot(C)
 #         F_MO_2 = (C.T).dot(F_AO_2).dot(C)
-#         G_1[i, ...] = V + F_MO_1
-#         G_2[i, ...] = V + F_MO_2
+#         G_1[i] = V + F_MO_1
+#         G_2[i] = V + F_MO_2
 
-#     E_diag = np.diag(E[0, ...])
+#     E_diag = np.diag(E[0])
 #     epsilon_1 = G_1.copy()
 #     epsilon_2 = G_2.copy()
 #     for i in range(ncomp):
-#         eoU_1 = (E_diag[..., np.newaxis] + f1) * rspmats_1[i, ...]
-#         Ue_1 = rspmats_1[i, ...] * E_diag[np.newaxis, ...]
-#         epsilon_1[i, ...] += (eoU_1 - Ue_1)
-#         eoU_2 = (E_diag[..., np.newaxis] + f2) * rspmats_2[i, ...]
-#         Ue_2 = rspmats_2[i, ...] * E_diag[np.newaxis, ...]
-#         epsilon_2[i, ...] += (eoU_2 - Ue_2)
+#         eoU_1 = (E_diag[..., np.newaxis] + f1) * rspmats_1[i]
+#         Ue_1 = rspmats_1[i] * E_diag[np.newaxis]
+#         epsilon_1[i] += (eoU_1 - Ue_1)
+#         eoU_2 = (E_diag[..., np.newaxis] + f2) * rspmats_2[i]
+#         Ue_2 = rspmats_2[i] * E_diag[np.newaxis]
+#         epsilon_2[i] += (eoU_2 - Ue_2)
 
 #     # Assume some symmetry and calculate only part of the tensor.
 
@@ -715,18 +715,18 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_large
 #         b = off1[r]
 #         c = off2[r]
 #         for a in range(3):
-#             tl1 = np.trace(rspmats_2[a, ...].T.dot(G_1[b, ...]).dot(rspmats_1[c, ...])[:nocc_alph, :nocc_alph])
-#             tl2 = np.trace(rspmats_1[c, ...].dot(G_1[b, ...]).dot(rspmats_2[a, ...].T)[:nocc_alph, :nocc_alph])
-#             tl3 = np.trace(rspmats_2[a, ...].T.dot(G_1[c, ...]).dot(rspmats_1[b, ...])[:nocc_alph, :nocc_alph])
-#             tl4 = np.trace(rspmats_1[b, ...].dot(G_1[c, ...]).dot(rspmats_2[a, ...].T)[:nocc_alph, :nocc_alph])
-#             tl5 = np.trace(rspmats_1[c, ...].dot(-G_2[a, ...].T).dot(rspmats_1[b, ...])[:nocc_alph, :nocc_alph])
-#             tl6 = np.trace(rspmats_1[b, ...].dot(-G_2[a, ...].T).dot(rspmats_1[c, ...])[:nocc_alph, :nocc_alph])
-#             tr1 = np.trace(rspmats_1[c, ...].dot(rspmats_1[b, ...]).dot(-epsilon_2[a, ...].T)[:nocc_alph, :nocc_alph])
-#             tr2 = np.trace(rspmats_1[b, ...].dot(rspmats_1[c, ...]).dot(-epsilon_2[a, ...].T)[:nocc_alph, :nocc_alph])
-#             tr3 = np.trace(rspmats_1[c, ...].dot(rspmats_2[a, ...].T).dot(epsilon_1[b, ...])[:nocc_alph, :nocc_alph])
-#             tr4 = np.trace(rspmats_2[a, ...].T.dot(rspmats_1[c, ...]).dot(epsilon_1[b, ...])[:nocc_alph, :nocc_alph])
-#             tr5 = np.trace(rspmats_1[b, ...].dot(rspmats_2[a, ...].T).dot(epsilon_1[c, ...])[:nocc_alph, :nocc_alph])
-#             tr6 = np.trace(rspmats_2[a, ...].T.dot(rspmats_1[b, ...]).dot(epsilon_1[c, ...])[:nocc_alph, :nocc_alph])
+#             tl1 = np.trace(rspmats_2[a].T.dot(G_1[b]).dot(rspmats_1[c])[:nocc_alph, :nocc_alph])
+#             tl2 = np.trace(rspmats_1[c].dot(G_1[b]).dot(rspmats_2[a].T)[:nocc_alph, :nocc_alph])
+#             tl3 = np.trace(rspmats_2[a].T.dot(G_1[c]).dot(rspmats_1[b])[:nocc_alph, :nocc_alph])
+#             tl4 = np.trace(rspmats_1[b].dot(G_1[c]).dot(rspmats_2[a].T)[:nocc_alph, :nocc_alph])
+#             tl5 = np.trace(rspmats_1[c].dot(-G_2[a].T).dot(rspmats_1[b])[:nocc_alph, :nocc_alph])
+#             tl6 = np.trace(rspmats_1[b].dot(-G_2[a].T).dot(rspmats_1[c])[:nocc_alph, :nocc_alph])
+#             tr1 = np.trace(rspmats_1[c].dot(rspmats_1[b]).dot(-epsilon_2[a].T)[:nocc_alph, :nocc_alph])
+#             tr2 = np.trace(rspmats_1[b].dot(rspmats_1[c]).dot(-epsilon_2[a].T)[:nocc_alph, :nocc_alph])
+#             tr3 = np.trace(rspmats_1[c].dot(rspmats_2[a].T).dot(epsilon_1[b])[:nocc_alph, :nocc_alph])
+#             tr4 = np.trace(rspmats_2[a].T.dot(rspmats_1[c]).dot(epsilon_1[b])[:nocc_alph, :nocc_alph])
+#             tr5 = np.trace(rspmats_1[b].dot(rspmats_2[a].T).dot(epsilon_1[c])[:nocc_alph, :nocc_alph])
+#             tr6 = np.trace(rspmats_2[a].T.dot(rspmats_1[b]).dot(epsilon_1[c])[:nocc_alph, :nocc_alph])
 #             tl = tl1 + tl2 + tl3 + tl4 + tl5 + tl6
 #             tr = tr1 + tr2 + tr3 + tr4 + tr5 + tr6
 #             hyperpolarizability[r, a] = -2 * (tl - tr)
@@ -756,9 +756,9 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_large
 #     # Transpose all frequency-doubled quantities (+2w) to get -2w.
 
 #     for i in range(ncomp):
-#         rspmats_2[i, ...] = rspmats_2[i, ...].T
-#         G_2[i, ...] = -G_2[i, ...].T
-#         epsilon_2[i, ...] = -epsilon_2[i, ...].T
+#         rspmats_2[i] = rspmats_2[i].T
+#         G_2[i] = -G_2[i].T
+#         epsilon_2[i] = -epsilon_2[i].T
 
 #     # Assume some symmetry and calculate only part of the tensor. This
 #     # time, work with the in-place manipulated quantities (this tests
@@ -775,18 +775,18 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_large
 #         b = off1[r]
 #         c = off2[r]
 #         for a in range(3):
-#             tl1 = np.trace(mU[0][a, ...].dot(mG[1][b, ...]).dot(mU[1][c, ...])[:nocc_alph, :nocc_alph])
-#             tl2 = np.trace(mU[1][c, ...].dot(mG[1][b, ...]).dot(mU[0][a, ...])[:nocc_alph, :nocc_alph])
-#             tl3 = np.trace(mU[0][a, ...].dot(mG[1][c, ...]).dot(mU[1][b, ...])[:nocc_alph, :nocc_alph])
-#             tl4 = np.trace(mU[1][b, ...].dot(mG[1][c, ...]).dot(mU[0][a, ...])[:nocc_alph, :nocc_alph])
-#             tl5 = np.trace(mU[1][c, ...].dot(mG[0][a, ...]).dot(mU[1][b, ...])[:nocc_alph, :nocc_alph])
-#             tl6 = np.trace(mU[1][b, ...].dot(mG[0][a, ...]).dot(mU[1][c, ...])[:nocc_alph, :nocc_alph])
-#             tr1 = np.trace(mU[1][c, ...].dot(mU[1][b, ...]).dot(me[0][a, ...])[:nocc_alph, :nocc_alph])
-#             tr2 = np.trace(mU[1][b, ...].dot(mU[1][c, ...]).dot(me[0][a, ...])[:nocc_alph, :nocc_alph])
-#             tr3 = np.trace(mU[1][c, ...].dot(mU[0][a, ...]).dot(me[1][b, ...])[:nocc_alph, :nocc_alph])
-#             tr4 = np.trace(mU[0][a, ...].dot(mU[1][c, ...]).dot(me[1][b, ...])[:nocc_alph, :nocc_alph])
-#             tr5 = np.trace(mU[1][b, ...].dot(mU[0][a, ...]).dot(me[1][c, ...])[:nocc_alph, :nocc_alph])
-#             tr6 = np.trace(mU[0][a, ...].dot(mU[1][b, ...]).dot(me[1][c, ...])[:nocc_alph, :nocc_alph])
+#             tl1 = np.trace(mU[0][a].dot(mG[1][b]).dot(mU[1][c])[:nocc_alph, :nocc_alph])
+#             tl2 = np.trace(mU[1][c].dot(mG[1][b]).dot(mU[0][a])[:nocc_alph, :nocc_alph])
+#             tl3 = np.trace(mU[0][a].dot(mG[1][c]).dot(mU[1][b])[:nocc_alph, :nocc_alph])
+#             tl4 = np.trace(mU[1][b].dot(mG[1][c]).dot(mU[0][a])[:nocc_alph, :nocc_alph])
+#             tl5 = np.trace(mU[1][c].dot(mG[0][a]).dot(mU[1][b])[:nocc_alph, :nocc_alph])
+#             tl6 = np.trace(mU[1][b].dot(mG[0][a]).dot(mU[1][c])[:nocc_alph, :nocc_alph])
+#             tr1 = np.trace(mU[1][c].dot(mU[1][b]).dot(me[0][a])[:nocc_alph, :nocc_alph])
+#             tr2 = np.trace(mU[1][b].dot(mU[1][c]).dot(me[0][a])[:nocc_alph, :nocc_alph])
+#             tr3 = np.trace(mU[1][c].dot(mU[0][a]).dot(me[1][b])[:nocc_alph, :nocc_alph])
+#             tr4 = np.trace(mU[0][a].dot(mU[1][c]).dot(me[1][b])[:nocc_alph, :nocc_alph])
+#             tr5 = np.trace(mU[1][b].dot(mU[0][a]).dot(me[1][c])[:nocc_alph, :nocc_alph])
+#             tr6 = np.trace(mU[0][a].dot(mU[1][b]).dot(me[1][c])[:nocc_alph, :nocc_alph])
 #             tl = [tl1, tl2, tl3, tl4, tl5, tl6]
 #             tr = [tr1, tr2, tr3, tr4, tr5, tr6]
 #             hyperpolarizability[r, a] = -2 * (sum(tl) - sum(tr))
@@ -805,10 +805,10 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_large
 #         # 2nd tuple -> index frequency (0 -> -2w, 1 -> +w)
 #         for iq, q in enumerate(list(permutations(zip(p, (0, 1, 1)), 3))):
 #             d, e, f = q
-#             tlp = (mU[d[1]][d[0], ...]).dot(mG[e[1]][e[0], ...]).dot(mU[f[1]][f[0], ...])
+#             tlp = (mU[d[1]][d[0]]).dot(mG[e[1]][e[0]]).dot(mU[f[1]][f[0]])
 #             tle = np.trace(tlp[:nocc_alph, :nocc_alph])
 #             tl.append(tle)
-#             trp = (mU[d[1]][d[0], ...]).dot(mU[e[1]][e[0], ...]).dot(me[f[1]][f[0], ...])
+#             trp = (mU[d[1]][d[0]]).dot(mU[e[1]][e[0]]).dot(me[f[1]][f[0]])
 #             tre = np.trace(trp[:nocc_alph, :nocc_alph])
 #             tr.append(tre)
 #         hyperpolarizability_full[a, b, c] = -2 * (sum(tl) - sum(tr))
