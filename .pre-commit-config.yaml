@@ -1,7 +1,5 @@
 ---
 fail_fast: true
-default_language_version:
-  python: python3.9
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: "v4.2.0"
@@ -25,18 +23,41 @@ repos:
     rev: "22.3.0"
     hooks:
       - id: black
+  - repo: https://github.com/asottile/blacken-docs
+    rev: "v1.12.1"
+    hooks:
+      - id: blacken-docs
+  # - repo: https://github.com/Carreau/velin
+  #   rev: "0.0.12"
+  #   hooks:
+  #     - id: velin
+  - repo: https://github.com/PyCQA/doc8
+    rev: "0.10.1"
+    hooks:
+      - id: doc8
+        additional_dependencies:
+          - toml
+        # not reading pyproject.toml? :(
+        args:
+          - "--ignore=D001"
+  - repo: https://github.com/PyCQA/pydocstyle
+    rev: "6.1.1"
+    hooks:
+      - id: pydocstyle
+        additional_dependencies:
+          - toml
   # - repo: https://github.com/PyCQA/flake8
   #   rev: "4.0.1"
   #   hooks:
   #     - id: flake8
   # - repo: https://github.com/PyCQA/pylint
-  #   rev: "v2.11.1"
+  #   rev: "v2.12.2"
   #   hooks:
   #     - id: pylint
   #       additional_dependencies:
   #         - numpy
   # - repo: https://github.com/pre-commit/mirrors-mypy
-  #   rev: "v0.910-1"
+  #   rev: "v0.931"
   #   hooks:
   #     - id: mypy
   #       args: []
@@ -49,6 +70,6 @@ repos:
     hooks:
       - id: yamllint
   - repo: https://github.com/sirosen/check-jsonschema
-    rev: "0.15.0"
+    rev: "0.10.2"
     hooks:
       - id: check-github-workflows
