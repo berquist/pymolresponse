@@ -70,6 +70,6 @@ repos:
     hooks:
       - id: yamllint
   - repo: https://github.com/sirosen/check-jsonschema
-    rev: "0.18.3"
+    rev: "0.18.4"
     hooks:
       - id: check-github-workflows
