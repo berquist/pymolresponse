@@ -9,7 +9,7 @@ import numpy as np
 from pyscf.ao2mo import full, general
 
 from pyresponse.ao2mo import AO2MO
-from pyresponse.pyscf.utils import occupations_from_pyscf_mol
+from pyresponse.interfaces.pyscf.utils import occupations_from_pyscf_mol
 
 
 class AO2MOpyscf(AO2MO):

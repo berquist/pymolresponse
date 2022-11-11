@@ -34,11 +34,11 @@ class ORD(ResponseProperty):
 
     def form_operators(self) -> None:
         if self.program == Program.PySCF:
-            from pyresponse.pyscf import integrals
+            from pyresponse.interfaces.pyscf import integrals
 
             integral_generator = integrals.IntegralsPyscf(self.program_obj)
         elif self.program == Program.Psi4:
-            from pyresponse.psi4 import integrals
+            from pyresponse.interfaces.psi4 import integrals
 
             integral_generator = integrals.IntegralsPsi4(self.program_obj)
         else:

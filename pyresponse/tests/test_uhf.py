@@ -8,8 +8,8 @@ from pyresponse import cphf
 from pyresponse import explicit_equations_full as eqns
 from pyresponse import operators, solvers
 from pyresponse.core import AO2MOTransformationType, Hamiltonian, Spin
-from pyresponse.pyscf import molecules, utils
-from pyresponse.pyscf.ao2mo import AO2MOpyscf
+from pyresponse.interfaces.pyscf import molecules, utils
+from pyresponse.interfaces.pyscf.ao2mo import AO2MOpyscf
 
 
 def test_explicit_uhf_from_rhf_outside_solver():

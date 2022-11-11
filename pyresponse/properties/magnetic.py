@@ -6,7 +6,7 @@ from pyresponse.core import Program
 from pyresponse.cphf import CPHF
 from pyresponse.molecular_property import ResponseProperty
 from pyresponse.operators import Operator
-from pyresponse.pyscf.helpers import calculate_origin_pyscf
+from pyresponse.interfaces.pyscf.helpers import calculate_origin_pyscf
 
 
 class Magnetizability(ResponseProperty):
@@ -33,11 +33,11 @@ class Magnetizability(ResponseProperty):
 
     def form_operators(self) -> None:
         if self.program == Program.PySCF:
-            from pyresponse.pyscf import integrals
+            from pyresponse.interfaces.pyscf import integrals
 
             integral_generator = integrals.IntegralsPyscf(self.program_obj)
         elif self.program == Program.Psi4:
-            from pyresponse.psi4 import integrals
+            from pyresponse.interfaces.psi4 import integrals
 
             integral_generator = integrals.IntegralsPsi4(self.program_obj)
         else:
@@ -113,11 +113,11 @@ class ElectronicGTensor(ResponseProperty):
 
     def form_operators(self) -> None:
         if self.program == Program.PySCF:
-            from pyresponse.pyscf import integrals
+            from pyresponse.interfaces.pyscf import integrals
 
             integral_generator = integrals.IntegralsPyscf(self.program_obj)
         elif self.program == Program.Psi4:
-            from pyresponse.psi4 import integrals
+            from pyresponse.interfaces.psi4 import integrals
 
             integral_generator = integrals.IntegralsPsi4(self.program_obj)
         else:

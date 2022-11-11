@@ -92,7 +92,7 @@ class Solver(ABC):
         nden = self.mocoeffs.shape[0]
         assert nden in (1, 2)
         if program == Program.PySCF:
-            from pyresponse.pyscf.ao2mo import AO2MOpyscf
+            from pyresponse.interfaces.pyscf.ao2mo import AO2MOpyscf
 
             ao2mo = AO2MOpyscf(self.mocoeffs, program_obj.verbose, program_obj)
         elif program == Program.Psi4:

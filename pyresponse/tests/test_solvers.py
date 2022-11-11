@@ -7,15 +7,15 @@ import pyscf
 from pyresponse import cphf, solvers, utils
 from pyresponse.core import Hamiltonian, Program, Spin
 from pyresponse.properties import electric, magnetic
-from pyresponse.psi4 import integrals
-from pyresponse.psi4 import molecules as molecules_psi4
-from pyresponse.psi4.utils import (
+from pyresponse.interfaces.psi4 import integrals
+from pyresponse.interfaces.psi4 import molecules as molecules_psi4
+from pyresponse.interfaces.psi4.utils import (
     mocoeffs_from_psi4wfn,
     moenergies_from_psi4wfn,
     occupations_from_psi4wfn,
 )
-from pyresponse.pyscf import molecules as molecules_pyscf
-from pyresponse.pyscf.utils import occupations_from_pyscf_mol
+from pyresponse.interfaces.pyscf import molecules as molecules_pyscf
+from pyresponse.interfaces.pyscf.utils import occupations_from_pyscf_mol
 
 
 def test_inversion() -> None:

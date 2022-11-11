@@ -4,9 +4,9 @@ import pyscf
 
 from pyresponse import cphf, operators, solvers, utils
 from pyresponse.core import AO2MOTransformationType, Hamiltonian, Program, Spin
-from pyresponse.pyscf import molecules
-from pyresponse.pyscf.ao2mo import AO2MOpyscf
-from pyresponse.pyscf.utils import occupations_from_pyscf_mol
+from pyresponse.interfaces.pyscf import molecules
+from pyresponse.interfaces.pyscf.ao2mo import AO2MOpyscf
+from pyresponse.interfaces.pyscf.utils import occupations_from_pyscf_mol
 
 
 def mol_atom(

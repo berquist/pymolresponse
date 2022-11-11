@@ -6,7 +6,7 @@ from pyresponse import cphf
 from pyresponse import explicit_equations_partial as eqns
 from pyresponse import operators, solvers
 from pyresponse.core import AO2MOTransformationType, Hamiltonian, Program, Spin
-from pyresponse.pyscf import molecules
+from pyresponse.interfaces.pyscf import molecules
 
 from .test_uhf import ref_water_cation_UHF_HF_STO3G
 

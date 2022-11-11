@@ -2,8 +2,8 @@ import pyscf
 
 from pyresponse import solvers, td, utils
 from pyresponse.core import AO2MOTransformationType, Hamiltonian, Program, Spin
-from pyresponse.pyscf.ao2mo import AO2MOpyscf
-from pyresponse.pyscf.utils import occupations_from_pyscf_mol
+from pyresponse.interfaces.pyscf.ao2mo import AO2MOpyscf
+from pyresponse.interfaces.pyscf.utils import occupations_from_pyscf_mol
 
 
 def test_HF_both_singlet_HF_STO3G():
@@ -111,7 +111,7 @@ HF_neutral_singlet_HF_STO3G_RPA_qchem = {
 # TODO
 #
 # def test_LiH_cation_TDA_singlet_HF_STO3G() -> None:
-#     from pyresponse.pyscf.molecules import molecule_lih_cation_sto3g
+#     from pyresponse.interfaces.pyscf.molecules import molecule_lih_cation_sto3g
 
 #     mol = molecule_lih_cation_sto3g()
 #     mf = pyscf.scf.UHF(mol)

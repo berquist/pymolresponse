@@ -1,6 +1,6 @@
 import numpy as np
 
-from pyresponse.pyscf import integrals, molecules
+from pyresponse.interfaces.pyscf import integrals, molecules
 
 
 def test_integrals_pyscf():

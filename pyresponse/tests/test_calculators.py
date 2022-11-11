@@ -9,8 +9,8 @@ import pyscf
 
 from pyresponse import cphf, operators, solvers, utils
 from pyresponse.core import AO2MOTransformationType, Hamiltonian, Spin
-from pyresponse.dalton.utils import dalton_label_to_operator
-from pyresponse.pyscf.ao2mo import AO2MOpyscf
+from pyresponse.interfaces.dalton.utils import dalton_label_to_operator
+from pyresponse.interfaces.pyscf.ao2mo import AO2MOpyscf
 
 try:
     from daltools import mol as dalmol
