@@ -33,7 +33,6 @@ class ORD(ResponseProperty):
         self.do_dipvel = do_dipvel
 
     def form_operators(self) -> None:
-
         if self.program == Program.PySCF:
             from pyresponse.pyscf import integrals
 
@@ -65,7 +64,6 @@ class ORD(ResponseProperty):
             self.driver.add_operator(operator_dipvel)
 
     def form_results(self) -> None:
-
         assert len(self.driver.results) == len(self.frequencies)
         self.polarizabilities = []
         self.polarizabilities_lenmag = []

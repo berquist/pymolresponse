@@ -114,7 +114,6 @@ ref_electronicgtensor_large = np.array(
 
 
 def test_electronicgtensor_tiny() -> None:
-
     mol = molecules.molecule_lih_cation_sto3g()
     mol.build()
 
@@ -149,7 +148,6 @@ def test_electronicgtensor_tiny() -> None:
 
 
 def test_electronicgtensor_small() -> None:
-
     mol = molecules.molecule_bc2h4_neutral_radical_sto3g()
     mol.build()
 

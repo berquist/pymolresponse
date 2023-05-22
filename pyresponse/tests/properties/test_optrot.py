@@ -192,7 +192,6 @@ trithiolane_HF_STO3G_RPA_singlet = {
 
 
 def test_ORD_RPA_singlet_BC2H4_cation_HF_STO3G():
-
     ref = BC2H4_cation_HF_STO3G_RPA_singlet_nwchem
 
     pyscfmol = molecules.molecule_bc2h4_cation_sto3g()
@@ -260,7 +259,6 @@ def test_ORD_RPA_singlet_BC2H4_cation_HF_STO3G():
 
 
 def test_ORD_RPA_singlet_BC2H4_HF_STO3G():
-
     ref = BC2H4_HF_STO3G_RPA_singlet_nwchem
 
     pyscfmol = molecules.molecule_bc2h4_neutral_radical_sto3g()
@@ -319,7 +317,6 @@ def test_ORD_RPA_singlet_BC2H4_HF_STO3G():
 
 
 def test_ORD_RPA_singlet_trithiolane_HF_STO3G():
-
     ref = trithiolane_HF_STO3G_RPA_singlet
 
     pyscfmol = molecules.molecule_trithiolane_sto3g()

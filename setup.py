@@ -40,7 +40,6 @@ def _get_package_data() -> Sequence[Path]:
 
 
 if __name__ == "__main__":
-
     setup(
         name="pyresponse",
         author="Eric Berquist",

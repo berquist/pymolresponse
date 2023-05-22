@@ -10,7 +10,6 @@ from pyresponse.pyscf.ao2mo import AO2MOpyscf
 
 
 def test_explicit_rhf_outside_solver_off_diagonal_blocks():
-
     mol = molecules.molecule_water_sto3g()
     mol.build()
 
@@ -42,7 +41,6 @@ def test_explicit_rhf_outside_solver_off_diagonal_blocks():
     integrals_dipole_mo_ai = []
 
     for component in range(components):
-
         integrals_dipole_mo_ai_component = np.dot(
             C[:, nocc:].T, np.dot(integrals_dipole_ao[component, ...], C[:, :nocc])
         ).reshape(-1, order="F")

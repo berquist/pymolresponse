@@ -874,7 +874,6 @@ def test_geometric_hessian_rhf_outside_solver_chemists():
 
 
 def test_geometric_hessian_rhf_right_hand_side():
-
     mol = molecules.molecule_physicists_water_sto3g()
     mol.reset_point_group("c1")
     mol.update_geometry()

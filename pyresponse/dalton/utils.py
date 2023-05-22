@@ -13,7 +13,6 @@ def clean_dalton_label(original_label: str) -> str:
 
 
 def dalton_label_to_operator(label: str) -> Operator:
-
     label = clean_dalton_label(label)
 
     coord1_to_slice = {"x": 0, "y": 1, "z": 2}

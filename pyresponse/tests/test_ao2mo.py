@@ -10,7 +10,6 @@ from pyresponse.utils import fix_mocoeffs_shape
 
 
 def test_ao2mo_hand_against_pyscf_rhf_full() -> None:
-
     mol = molecules_pyscf.molecule_physicists_water_sto3g()
     mol.build()
 
@@ -48,7 +47,6 @@ def test_ao2mo_hand_against_pyscf_rhf_full() -> None:
 
 
 def test_ao2mo_hand_against_pyscf_rhf_partial() -> None:
-
     mol = molecules_pyscf.molecule_physicists_water_sto3g()
     mol.build()
 

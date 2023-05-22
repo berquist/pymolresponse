@@ -36,7 +36,6 @@ class Polarizability(ResponseProperty):
         self.polarizabilities = []
 
     def form_operators(self) -> None:
-
         if self.program == Program.PySCF:
             from pyresponse.pyscf import integrals
 
@@ -55,7 +54,6 @@ class Polarizability(ResponseProperty):
         self.driver.add_operator(operator_diplen)
 
     def form_results(self) -> None:
-
         assert len(self.driver.results) == len(self.frequencies)
 
         for idxf, frequency in enumerate(self.frequencies):

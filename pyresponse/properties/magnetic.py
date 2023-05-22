@@ -32,7 +32,6 @@ class Magnetizability(ResponseProperty):
         self.use_giao = use_giao
 
     def form_operators(self) -> None:
-
         if self.program == Program.PySCF:
             from pyresponse.pyscf import integrals
 
@@ -55,7 +54,6 @@ class Magnetizability(ResponseProperty):
         self.driver.add_operator(operator_angmom)
 
     def form_results(self) -> None:
-
         assert len(self.driver.results) == 1
         operator_angmom = self.driver.solver.operators[0]
         self.magnetizability = (1 / 4) * self.driver.results[0]
@@ -114,7 +112,6 @@ class ElectronicGTensor(ResponseProperty):
             raise RuntimeError
 
     def form_operators(self) -> None:
-
         if self.program == Program.PySCF:
             from pyresponse.pyscf import integrals
 
@@ -160,7 +157,6 @@ class ElectronicGTensor(ResponseProperty):
         self.driver.add_operator(operator_spinorb_eff)
 
     def form_results(self) -> None:
-
         operator_angmom = self.driver.solver.operators[0]
         # angmom_grad_alph = operator_angmom.mo_integrals_ai_supervector_alph
         # print(angmom_grad_alph[0, :, 0])
