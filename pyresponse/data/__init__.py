@@ -1,8 +1,11 @@
-from pathlib import Path
+try:
+    from importlib.resources import files
+except ImportError:
+    from importlib_resources import files
 
-_datadir = Path(__file__).resolve().parent
+_datadir = files("pyresponse.data")
 COORDDIR = _datadir / "coords"
 REFDIR = _datadir / "reference"
 
-del Path
 del _datadir
+del files
