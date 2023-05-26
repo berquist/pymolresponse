@@ -62,7 +62,6 @@ class CPHF(Driver):
         self.form_results()
 
     def form_uncoupled_results(self) -> None:
-
         # We avoid the formation of the full Hessian, but the energy
         # differences on the diagonal are still needed. Form them
         # here. The dynamic frequency contribution will be handled
@@ -87,7 +86,6 @@ class CPHF(Driver):
         self.uncoupled_results = []
 
         for f in range(len(self.solver.frequencies)):
-
             frequency = self.solver.frequencies[f]
             ediff_supervector_alph = ediff_supervector_alph_static.copy()
             ediff_supervector_alph[:nov_alph] = ediff_supervector_alph_static[:nov_alph] - frequency
@@ -161,7 +159,6 @@ class CPHF(Driver):
             self.uncoupled_results.append(results)
 
     def form_results(self) -> None:
-
         self.results = []
 
         # TODO change now that Operators keep their own rspvecs
@@ -193,7 +190,6 @@ class CPHF(Driver):
                     )
 
         for f in range(len(self.solver.frequencies)):
-
             # dim_rows -> (number of operators) * (number of components for each operator)
             # dim_cols -> total number of response vectors
             dim_rows = sum(

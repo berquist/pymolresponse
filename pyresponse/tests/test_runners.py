@@ -27,7 +27,6 @@ def run_dalton_label_to_operator(
 
 
 def run_as_many_tests_as_possible_rhf_disk(testcase: Union[Path, str]) -> None:
-
     testcasedir = REFDIR / testcase
 
     thresh = 5.0e-3
@@ -65,7 +64,6 @@ def run_as_many_tests_as_possible_rhf_disk(testcase: Union[Path, str]) -> None:
 
 
 def run_as_many_tests_as_possible_uhf_disk(testcase: Union[Path, str]) -> None:
-
     from .test_calculators import calculate_disk_uhf
 
     testcasedir = REFDIR / testcase

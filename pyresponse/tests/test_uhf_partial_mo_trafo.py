@@ -12,7 +12,6 @@ from .test_uhf import ref_water_cation_UHF_HF_STO3G
 
 
 def test_explicit_uhf_outside_solver() -> None:
-
     mol = molecules.molecule_water_sto3g()
     mol.charge = 1
     mol.spin = 1
@@ -96,7 +95,6 @@ def test_explicit_uhf_outside_solver() -> None:
     integrals_dipole_mo_ai_b = []
 
     for comp in range(3):
-
         integrals_dipole_mo_ai_comp_a = np.dot(
             C_a[:, nocc_a:].T, np.dot(integrals_dipole_ao[comp, ...], C_a[:, :nocc_a])
         )
@@ -146,7 +144,6 @@ def test_explicit_uhf_outside_solver() -> None:
 
 
 def test_explicit_uhf() -> None:
-
     mol = molecules.molecule_water_sto3g()
     mol.charge = 1
     mol.spin = 1

@@ -27,7 +27,6 @@ def calculate_disk_rhf(
     label_1: str,
     label_2: str,
 ) -> float:
-
     occupations = utils.read_file_occupations(testcasedir / "occupations")
     nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = occupations
     assert nocc_alph == nocc_beta
@@ -107,7 +106,6 @@ def calculate_disk_uhf(
     label_1: str,
     label_2: str,
 ) -> float:
-
     occupations = utils.read_file_occupations(testcasedir / "occupations")
     nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = occupations
     norb = nocc_alph + nvirt_alph
@@ -204,7 +202,6 @@ def calculate_rhf(
     source_mocoeffs: str,
     source_operator: str,
 ):
-
     if operator_label:
         # TODO add dipvel
         assert operator_label in ("dipole", "angmom", "spinorb")
@@ -319,7 +316,6 @@ def calculate_uhf(
     source_mocoeffs: str,
     source_operator: str,
 ):
-
     if operator_label:
         # TODO add dipvel
         assert operator_label in ("dipole", "angmom", "spinorb")

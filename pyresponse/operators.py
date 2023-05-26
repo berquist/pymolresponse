@@ -78,7 +78,7 @@ class Operator:
             # response, remove inactive -> secondary excitations.
             # Is this only true for spin-orbit operators?
             if self.triplet:
-                for (i, a) in self.indices_closed_secondary:
+                for i, a in self.indices_closed_secondary:
                     operator_component_ai_alph[a - nocc_alph, i] = 0.0
             operator_component_ai_alph = repack_matrix_to_vector(operator_component_ai_alph)[
                 :, np.newaxis
@@ -97,7 +97,7 @@ class Operator:
                     np.dot(self.ao_integrals[idx], C_beta[:, :nocc_beta]),
                 )
                 if self.triplet:
-                    for (i, a) in self.indices_closed_secondary:
+                    for i, a in self.indices_closed_secondary:
                         operator_component_ai_beta[a - nocc_beta, i] = 0.0
                 operator_component_ai_beta = repack_matrix_to_vector(operator_component_ai_beta)[
                     :, np.newaxis

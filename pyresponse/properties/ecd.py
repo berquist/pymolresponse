@@ -34,7 +34,6 @@ class ECD(TransitionProperty):
         self.do_dipvel = do_dipvel
 
     def form_operators(self) -> None:
-
         if self.program == Program.PySCF:
             from pyresponse.pyscf import integrals
 
@@ -66,7 +65,6 @@ class ECD(TransitionProperty):
             self.driver.add_operator(operator_dipvel)
 
     def form_results(self) -> None:
-
         operator_angmom = self.driver.solver.operators[0]
         operator_diplen = self.driver.solver.operators[1]
         assert len(operator_angmom.transition_moments) == len(operator_diplen.transition_moments)

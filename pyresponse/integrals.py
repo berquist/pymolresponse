@@ -91,7 +91,6 @@ def parse_aoproper(integralfilename: str) -> Mapping[str, Any]:
     integralfile_records = integralfile_bytes.split(STARS.encode(encoding=encoding))
 
     for record in integralfile_records:
-
         full_label = record[8:24].decode(encoding=encoding)
         # The first part shows the structure of the matrix.
         #  SQUARE   -> stored as the full N^2 matrix

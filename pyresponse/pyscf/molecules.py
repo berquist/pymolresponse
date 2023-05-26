@@ -4,7 +4,6 @@ from pyresponse.data import COORDDIR
 
 
 def molecule_water_sto3g_angstrom(verbose: int = 0) -> pyscf.gto.Mole:
-
     mol = pyscf.gto.Mole()
     mol.verbose = verbose
     mol.output = None
@@ -22,7 +21,6 @@ H         -2.10234       -0.29131        0.45244
 
 
 def molecule_water_sto3g(verbose: int = 0) -> pyscf.gto.Mole:
-
     mol = pyscf.gto.Mole()
     mol.verbose = verbose
     mol.output = None
@@ -39,7 +37,6 @@ def molecule_water_sto3g(verbose: int = 0) -> pyscf.gto.Mole:
 
 
 def molecule_physicists_water_sto3g(verbose: int = 0) -> pyscf.gto.Mole:
-
     mol = pyscf.gto.Mole()
     mol.verbose = verbose
     mol.output = None
@@ -56,7 +53,6 @@ def molecule_physicists_water_sto3g(verbose: int = 0) -> pyscf.gto.Mole:
 
 
 def molecule_physicists_water_augccpvdz(verbose: int = 0) -> pyscf.gto.Mole:
-
     mol = pyscf.gto.Mole()
     mol.verbose = verbose
     mol.output = None
@@ -73,7 +69,6 @@ def molecule_physicists_water_augccpvdz(verbose: int = 0) -> pyscf.gto.Mole:
 
 
 def molecule_glycine_sto3g(verbose: int = 0) -> pyscf.gto.Mole:
-
     mol = pyscf.gto.Mole()
     mol.verbose = verbose
     mol.output = None
@@ -90,7 +85,6 @@ def molecule_glycine_sto3g(verbose: int = 0) -> pyscf.gto.Mole:
 
 
 def molecule_trithiolane_sto3g(verbose: int = 0) -> pyscf.gto.Mole:
-
     mol = pyscf.gto.Mole()
     mol.verbose = verbose
     mol.output = None
@@ -107,7 +101,6 @@ def molecule_trithiolane_sto3g(verbose: int = 0) -> pyscf.gto.Mole:
 
 
 def hydrogen_atom_sto3g(verbose: int = 0) -> pyscf.gto.Mole:
-
     mol = pyscf.gto.Mole()
     mol.verbose = verbose
     mol.output = None
@@ -121,7 +114,6 @@ def hydrogen_atom_sto3g(verbose: int = 0) -> pyscf.gto.Mole:
 
 
 def molecule_bc2h4_cation_sto3g(verbose: int = 0) -> pyscf.gto.Mole:
-
     mol = pyscf.gto.Mole()
     mol.verbose = verbose
     mol.output = None
@@ -138,7 +130,6 @@ def molecule_bc2h4_cation_sto3g(verbose: int = 0) -> pyscf.gto.Mole:
 
 
 def molecule_bc2h4_neutral_radical_sto3g(verbose: int = 0) -> pyscf.gto.Mole:
-
     mol = molecule_bc2h4_cation_sto3g(verbose)
     mol.charge = 0
     mol.spin = 1
@@ -147,7 +138,6 @@ def molecule_bc2h4_neutral_radical_sto3g(verbose: int = 0) -> pyscf.gto.Mole:
 
 
 def molecule_lih_cation_sto3g(verbose: int = 0) -> pyscf.gto.Mole:
-
     mol = pyscf.gto.Mole()
     mol.verbose = verbose
     mol.output = None
@@ -164,7 +154,6 @@ def molecule_lih_cation_sto3g(verbose: int = 0) -> pyscf.gto.Mole:
 
 
 def molecule_0w4a_dication_321g(verbose: int = 0) -> pyscf.gto.Mole:
-
     mol = pyscf.gto.Mole()
     mol.verbose = verbose
     mol.output = None
@@ -181,7 +170,6 @@ def molecule_0w4a_dication_321g(verbose: int = 0) -> pyscf.gto.Mole:
 
 
 def molecule_bh_cation_def2_svp(verbose: int = 0) -> pyscf.gto.Mole:
-
     mol = pyscf.gto.Mole()
     mol.verbose = verbose
     mol.output = None

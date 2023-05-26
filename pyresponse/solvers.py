@@ -47,7 +47,6 @@ class Solver(ABC):
     def __init__(
         self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: np.ndarray
     ) -> None:
-
         # MO coefficients: the first axis is alpha/beta
         assert len(mocoeffs.shape) == 3
         assert (mocoeffs.shape[0] == 1) or (mocoeffs.shape[0] == 2)
@@ -197,7 +196,6 @@ class ExactLineqSolver(LineqSolver, ABC):
         super().__init__(mocoeffs, moenergies, occupations)
 
     def form_explicit_hessian(self, hamiltonian: Hamiltonian, spin: Spin, frequency: float) -> None:
-
         assert self.tei_mo is not None
         assert len(self.tei_mo) in (1, 2, 4, 6)
         assert isinstance(self.tei_mo_type, AO2MOTransformationType)
@@ -221,7 +219,6 @@ class ExactLineqSolver(LineqSolver, ABC):
         )
 
         if not self.is_uhf:
-
             # Set up "function pointers".
             if self.tei_mo_type == AO2MOTransformationType.full:
                 assert len(self.tei_mo) == 1
@@ -742,7 +739,6 @@ class ExactDiagonalizationSolver(EigSolver):
         super().__init__(mocoeffs, moenergies, occupations)
 
     def form_explicit_hessian(self, hamiltonian: Hamiltonian, spin: Spin, frequency: float) -> None:
-
         assert hasattr(self, "tei_mo")
         assert self.tei_mo is not None
         assert len(self.tei_mo) in (1, 2, 4, 6)
@@ -757,7 +753,6 @@ class ExactDiagonalizationSolver(EigSolver):
         nov_beta = nocc_beta * nvirt_beta
 
         if not self.is_uhf:
-
             # Set up "function pointers".
             if self.tei_mo_type == AO2MOTransformationType.full:
                 assert len(self.tei_mo) == 1
@@ -847,7 +842,6 @@ class ExactDiagonalizationSolverTDA(ExactDiagonalizationSolver, EigSolverTDA):
         super().__init__(mocoeffs, moenergies, occupations)
 
     def form_explicit_hessian(self, hamiltonian: Hamiltonian, spin: Spin, frequency: float) -> None:
-
         assert hasattr(self, "tei_mo")
         assert self.tei_mo is not None
         assert len(self.tei_mo) in (1, 2, 4, 6)
@@ -862,7 +856,6 @@ class ExactDiagonalizationSolverTDA(ExactDiagonalizationSolver, EigSolverTDA):
         nov_beta = nocc_beta * nvirt_beta
 
         if not self.is_uhf:
-
             # Set up "function pointers".
             if self.tei_mo_type == AO2MOTransformationType.full:
                 assert len(self.tei_mo) == 1

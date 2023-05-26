@@ -13,7 +13,6 @@ from pyresponse.pyscf.ao2mo import AO2MOpyscf
 
 
 def test_explicit_uhf_from_rhf_outside_solver():
-
     mol = molecules.molecule_water_sto3g()
     mol.build()
 
@@ -73,7 +72,6 @@ def test_explicit_uhf_from_rhf_outside_solver():
     integrals_dipole_mo_ai_b = []
 
     for comp in range(3):
-
         integrals_dipole_mo_ai_comp_r = np.dot(
             C_a[:, nocc_a:].T, np.dot(integrals_dipole_ao[comp, ...], C_a[:, :nocc_a])
         )
@@ -146,7 +144,6 @@ ref_water_cation_UHF_HF_STO3G = np.array(
 
 
 def test_explicit_uhf_outside_solver():
-
     mol = molecules.molecule_water_sto3g()
     mol.charge = 1
     mol.spin = 1
@@ -204,7 +201,6 @@ def test_explicit_uhf_outside_solver():
     integrals_dipole_mo_ai_b = []
 
     for comp in range(3):
-
         integrals_dipole_mo_ai_comp_a = np.dot(
             C_a[:, nocc_a:].T, np.dot(integrals_dipole_ao[comp, ...], C_a[:, :nocc_a])
         )
@@ -254,7 +250,6 @@ def test_explicit_uhf_outside_solver():
 
 
 def test_explicit_uhf():
-
     mol = molecules.molecule_water_sto3g()
     mol.charge = 1
     mol.spin = 1

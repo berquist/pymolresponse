@@ -20,7 +20,6 @@ class AO2MO:
         verbose: int = 1,
         I: Optional[np.ndarray] = None,
     ) -> None:
-
         self.C = fix_mocoeffs_shape(C)
         self.occupations = occupations
         self.verbose = verbose

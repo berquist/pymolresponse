@@ -152,7 +152,6 @@ BC2H4_cation_HF_STO3G_TDA_singlet_orca = {
 
 
 def test_ECD_TDA_singlet_BC2H4_cation_HF_STO3G() -> None:
-
     ref = BC2H4_cation_HF_STO3G_TDA_singlet_orca
     nroots = ref["nroots"]
 
@@ -239,7 +238,6 @@ def test_ECD_TDA_singlet_BC2H4_cation_HF_STO3G() -> None:
 
 
 def test_ECD_RPA_singlet_BC2H4_cation_HF_STO3G() -> None:
-
     ref = BC2H4_cation_HF_STO3G_RPA_singlet_nwchem
     nroots = ref["nroots"]
 
