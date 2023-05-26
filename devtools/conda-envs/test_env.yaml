@@ -4,6 +4,7 @@ channels:
   - psi4
   - conda-forge
 dependencies:
+  - attrs
   - cclib
   - h5py
   - pip
