@@ -1,3 +1,4 @@
+# yamllint disable-line rule:document-start
 name: test
 
 # yamllint disable-line rule:truthy
@@ -24,6 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }} with conda
+        # yamllint disable-line rule:comments rule:line-length
         uses: conda-incubator/setup-miniconda@29c004f57289f8b93aaebc627f7c4e0b6543e222 # v2.2.0
         with:
           activate-environment: test
@@ -50,6 +52,7 @@ jobs:
           cd docs
           make html
       - name: GitHub Pages deploy
+        # yamllint disable-line rule:comments rule:line-length
         uses: JamesIves/github-pages-deploy-action@22a6ee251d6f13c6ab1ecb200d974f1a6feb1b8d # v4.4.2
         with:
           branch: gh-pages
