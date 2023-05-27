@@ -1,0 +1,19 @@
+# yamllint disable-line rule:document-start
+name: GitHub Updater (weekly)
+
+# yamllint disable-line rule:truthy
+on:
+  schedule:
+    - cron: "1 1 * * 6"
+
+jobs:
+  run-detect:
+    name: Run GitHub Updater
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+      - name: Detect and Update
+        uses: vsoch/github-updater@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
