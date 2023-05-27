@@ -6,7 +6,7 @@ channels:
 dependencies:
   - attrs
   - cclib
-  - h5py>=3.6
+  - h5py
   - pip
   - psi4
   - pytest-cov
