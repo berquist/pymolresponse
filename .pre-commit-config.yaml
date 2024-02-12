@@ -2,7 +2,7 @@
 fail_fast: true
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: "v4.4.0"
+    rev: "v4.5.0"
     hooks:
       - id: trailing-whitespace
         exclude: pyresponse/data
@@ -16,15 +16,15 @@ repos:
       - id: check-yaml
       - id: check-added-large-files
   - repo: https://github.com/PyCQA/isort
-    rev: "5.12.0"
+    rev: "5.13.2"
     hooks:
       - id: isort
   - repo: https://github.com/psf/black
-    rev: "23.3.0"
+    rev: "24.1.1"
     hooks:
       - id: black
   - repo: https://github.com/asottile/blacken-docs
-    rev: "1.13.0"
+    rev: "1.16.0"
     hooks:
       - id: blacken-docs
   # - repo: https://github.com/Carreau/velin
@@ -66,10 +66,10 @@ repos:
   #         - numpy
   #         - types-pyyaml
   - repo: https://github.com/adrienverge/yamllint
-    rev: "v1.32.0"
+    rev: "v1.34.0"
     hooks:
       - id: yamllint
   - repo: https://github.com/sirosen/check-jsonschema
-    rev: "0.23.0"
+    rev: "0.28.0"
     hooks:
       - id: check-github-workflows
