@@ -4,9 +4,9 @@ import numpy as np
 
 from pyresponse.core import Program
 from pyresponse.cphf import CPHF
+from pyresponse.interfaces.pyscf.helpers import calculate_origin_pyscf
 from pyresponse.molecular_property import ResponseProperty
 from pyresponse.operators import Operator
-from pyresponse.interfaces.pyscf.helpers import calculate_origin_pyscf
 
 
 class Magnetizability(ResponseProperty):

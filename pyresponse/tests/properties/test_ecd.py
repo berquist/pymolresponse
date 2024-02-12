@@ -4,9 +4,9 @@ import pyscf
 
 from pyresponse import solvers, td, utils
 from pyresponse.core import Hamiltonian, Program, Spin
-from pyresponse.properties import ecd
 from pyresponse.interfaces.pyscf import molecules
 from pyresponse.interfaces.pyscf.utils import occupations_from_pyscf_mol
+from pyresponse.properties import ecd
 
 BC2H4_cation_HF_STO3G_RPA_singlet_nwchem = {
     "etenergies": [
