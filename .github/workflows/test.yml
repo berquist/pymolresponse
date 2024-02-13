@@ -23,7 +23,7 @@ jobs:
       run:
         shell: "bash -l {0}"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }} with conda
         uses: conda-incubator/setup-miniconda@v3
         with:
