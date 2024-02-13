@@ -47,11 +47,12 @@ def test_inversion() -> None:
     calculator_ref.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)
     calculator_ref.form_results()
 
-    inv_funcs = (sp.linalg.inv, sp.linalg.pinv, sp.linalg.pinv2)
+    inv_funcs = (sp.linalg.inv, sp.linalg.pinv)
 
     thresh = 6.0e-14
 
-    for inv_func in inv_funcs:
+    # TODO actually test the different inversion functions...
+    for _ in inv_funcs:
         calculator_res = magnetic.Magnetizability(
             Program.PySCF,
             mol,
