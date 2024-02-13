@@ -113,26 +113,17 @@
 
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;TDA using TDA()&quot;</span><span class="p">)</span>
     <span class="n">driver_tda</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
-        <span class="n">hamiltonian</span><span class="o">=</span><span class="n">Hamiltonian</span><span class="o">.</span><span class="n">TDA</span><span class="p">,</span>
-        <span class="n">spin</span><span class="o">=</span><span class="n">Spin</span><span class="o">.</span><span class="n">singlet</span><span class="p">,</span>
-        <span class="n">program</span><span class="o">=</span><span class="n">Program</span><span class="o">.</span><span class="n">PySCF</span><span class="p">,</span>
-        <span class="n">program_obj</span><span class="o">=</span><span class="n">mol</span><span class="p">,</span>
+        <span class="n">hamiltonian</span><span class="o">=</span><span class="n">Hamiltonian</span><span class="o">.</span><span class="n">TDA</span><span class="p">,</span> <span class="n">spin</span><span class="o">=</span><span class="n">Spin</span><span class="o">.</span><span class="n">singlet</span><span class="p">,</span> <span class="n">program</span><span class="o">=</span><span class="n">Program</span><span class="o">.</span><span class="n">PySCF</span><span class="p">,</span> <span class="n">program_obj</span><span class="o">=</span><span class="n">mol</span>
     <span class="p">)</span>
     <span class="n">excitation_energies_tda_using_tda</span> <span class="o">=</span> <span class="n">driver_tda</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">eigvals</span><span class="p">[:</span><span class="n">nroots</span><span class="p">]</span><span class="o">.</span><span class="n">real</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;TDA using TDHF()&quot;</span><span class="p">)</span>
     <span class="n">driver_tdhf</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
-        <span class="n">hamiltonian</span><span class="o">=</span><span class="n">Hamiltonian</span><span class="o">.</span><span class="n">TDA</span><span class="p">,</span>
-        <span class="n">spin</span><span class="o">=</span><span class="n">Spin</span><span class="o">.</span><span class="n">singlet</span><span class="p">,</span>
-        <span class="n">program</span><span class="o">=</span><span class="n">Program</span><span class="o">.</span><span class="n">PySCF</span><span class="p">,</span>
-        <span class="n">program_obj</span><span class="o">=</span><span class="n">mol</span><span class="p">,</span>
+        <span class="n">hamiltonian</span><span class="o">=</span><span class="n">Hamiltonian</span><span class="o">.</span><span class="n">TDA</span><span class="p">,</span> <span class="n">spin</span><span class="o">=</span><span class="n">Spin</span><span class="o">.</span><span class="n">singlet</span><span class="p">,</span> <span class="n">program</span><span class="o">=</span><span class="n">Program</span><span class="o">.</span><span class="n">PySCF</span><span class="p">,</span> <span class="n">program_obj</span><span class="o">=</span><span class="n">mol</span>
     <span class="p">)</span>
     <span class="n">excitation_energies_tda_using_tdhf</span> <span class="o">=</span> <span class="n">driver_tdhf</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">eigvals</span><span class="p">[:</span><span class="n">nroots</span><span class="p">]</span><span class="o">.</span><span class="n">real</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;RPA using TDHF()&quot;</span><span class="p">)</span>
     <span class="n">driver_tdhf</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
-        <span class="n">hamiltonian</span><span class="o">=</span><span class="n">Hamiltonian</span><span class="o">.</span><span class="n">RPA</span><span class="p">,</span>
-        <span class="n">spin</span><span class="o">=</span><span class="n">Spin</span><span class="o">.</span><span class="n">singlet</span><span class="p">,</span>
-        <span class="n">program</span><span class="o">=</span><span class="n">Program</span><span class="o">.</span><span class="n">PySCF</span><span class="p">,</span>
-        <span class="n">program_obj</span><span class="o">=</span><span class="n">mol</span><span class="p">,</span>
+        <span class="n">hamiltonian</span><span class="o">=</span><span class="n">Hamiltonian</span><span class="o">.</span><span class="n">RPA</span><span class="p">,</span> <span class="n">spin</span><span class="o">=</span><span class="n">Spin</span><span class="o">.</span><span class="n">singlet</span><span class="p">,</span> <span class="n">program</span><span class="o">=</span><span class="n">Program</span><span class="o">.</span><span class="n">PySCF</span><span class="p">,</span> <span class="n">program_obj</span><span class="o">=</span><span class="n">mol</span>
     <span class="p">)</span>
     <span class="n">excitation_energies_rpa</span> <span class="o">=</span> <span class="n">driver_tdhf</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">eigvals</span><span class="p">[:</span><span class="n">nroots</span><span class="p">]</span><span class="o">.</span><span class="n">real</span>
 

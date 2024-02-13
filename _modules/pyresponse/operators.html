@@ -151,8 +151,7 @@
         <span class="c1"># pylint: disable=no-member</span>
         <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ao_integrals</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
             <span class="n">operator_component_ai_alph</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span>
-                <span class="n">C_alph</span><span class="p">[:,</span> <span class="n">nocc_alph</span><span class="p">:]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ao_integrals</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">C_alph</span><span class="p">[:,</span> <span class="p">:</span><span class="n">nocc_alph</span><span class="p">]),</span>
+                <span class="n">C_alph</span><span class="p">[:,</span> <span class="n">nocc_alph</span><span class="p">:]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ao_integrals</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">C_alph</span><span class="p">[:,</span> <span class="p">:</span><span class="n">nocc_alph</span><span class="p">])</span>
             <span class="p">)</span>
             <span class="c1"># If the operator is a triplet operator and doing singlet</span>
             <span class="c1"># response, remove inactive -&gt; secondary excitations.</span>
@@ -166,15 +165,13 @@
             <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;hsofac&quot;</span><span class="p">):</span>
                 <span class="n">operator_component_ai_alph</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hsofac</span>
             <span class="n">operator_component_ai_supervector_alph</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
-                <span class="p">(</span><span class="n">operator_component_ai_alph</span><span class="p">,</span> <span class="n">operator_component_ai_alph</span> <span class="o">*</span> <span class="n">b_prefactor</span><span class="p">),</span>
-                <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="p">(</span><span class="n">operator_component_ai_alph</span><span class="p">,</span> <span class="n">operator_component_ai_alph</span> <span class="o">*</span> <span class="n">b_prefactor</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span>
             <span class="p">)</span>
             <span class="n">operator_ai_alph</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">operator_component_ai_alph</span><span class="p">)</span>
             <span class="n">operator_ai_supervector_alph</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">operator_component_ai_supervector_alph</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">is_uhf</span><span class="p">:</span>
                 <span class="n">operator_component_ai_beta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span>
-                    <span class="n">C_beta</span><span class="p">[:,</span> <span class="n">nocc_beta</span><span class="p">:]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ao_integrals</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">C_beta</span><span class="p">[:,</span> <span class="p">:</span><span class="n">nocc_beta</span><span class="p">]),</span>
+                    <span class="n">C_beta</span><span class="p">[:,</span> <span class="n">nocc_beta</span><span class="p">:]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ao_integrals</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">C_beta</span><span class="p">[:,</span> <span class="p">:</span><span class="n">nocc_beta</span><span class="p">])</span>
                 <span class="p">)</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">triplet</span><span class="p">:</span>
                     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">a</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">indices_closed_secondary</span><span class="p">:</span>
@@ -185,11 +182,7 @@
                 <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;hsofac&quot;</span><span class="p">):</span>
                     <span class="n">operator_component_ai_beta</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hsofac</span>
                 <span class="n">operator_component_ai_supervector_beta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
-                    <span class="p">(</span>
-                        <span class="n">operator_component_ai_beta</span><span class="p">,</span>
-                        <span class="n">operator_component_ai_beta</span> <span class="o">*</span> <span class="n">b_prefactor</span><span class="p">,</span>
-                    <span class="p">),</span>
-                    <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                    <span class="p">(</span><span class="n">operator_component_ai_beta</span><span class="p">,</span> <span class="n">operator_component_ai_beta</span> <span class="o">*</span> <span class="n">b_prefactor</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span>
                 <span class="p">)</span>
                 <span class="n">operator_ai_beta</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">operator_component_ai_beta</span><span class="p">)</span>
                 <span class="n">operator_ai_supervector_beta</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">operator_component_ai_supervector_beta</span><span class="p">)</span>

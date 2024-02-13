@@ -514,12 +514,7 @@
             <span class="n">G_ba</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">block</span><span class="p">([[</span><span class="n">A_os_b</span><span class="p">,</span> <span class="n">B_os_b</span><span class="p">],</span> <span class="p">[</span><span class="n">B_os_b</span><span class="p">,</span> <span class="n">A_os_b</span><span class="p">]])</span>
             <span class="n">G_bb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">block</span><span class="p">([[</span><span class="n">A_ss_b</span><span class="p">,</span> <span class="n">B_ss_b</span><span class="p">],</span> <span class="p">[</span><span class="n">B_ss_b</span><span class="p">,</span> <span class="n">A_ss_b</span><span class="p">]])</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">explicit_hessian</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">G_aa</span> <span class="o">-</span> <span class="n">superoverlap_alph</span><span class="p">,</span>
-                <span class="n">G_ab</span><span class="p">,</span>
-                <span class="n">G_ba</span><span class="p">,</span>
-                <span class="n">G_bb</span> <span class="o">-</span> <span class="n">superoverlap_beta</span><span class="p">,</span>
-            <span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">explicit_hessian</span> <span class="o">=</span> <span class="p">(</span><span class="n">G_aa</span> <span class="o">-</span> <span class="n">superoverlap_alph</span><span class="p">,</span> <span class="n">G_ab</span><span class="p">,</span> <span class="n">G_ba</span><span class="p">,</span> <span class="n">G_bb</span> <span class="o">-</span> <span class="n">superoverlap_beta</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ExactLineqSolver.invert_explicit_hessian">
@@ -744,12 +739,7 @@
 
 
     <span class="k">def</span> <span class="nf">_run</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">hamiltonian</span><span class="p">:</span> <span class="n">Hamiltonian</span><span class="p">,</span>
-        <span class="n">spin</span><span class="p">:</span> <span class="n">Spin</span><span class="p">,</span>
-        <span class="n">omega</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-        <span class="n">maxiter</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-        <span class="n">conv</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">hamiltonian</span><span class="p">:</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">spin</span><span class="p">:</span> <span class="n">Spin</span><span class="p">,</span> <span class="n">omega</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">maxiter</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">conv</span><span class="p">:</span> <span class="nb">float</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">,</span> <span class="n">nvirt_beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">occupations</span>
         <span class="k">assert</span> <span class="p">(</span><span class="n">nocc_alph</span> <span class="o">+</span> <span class="n">nvirt_alph</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="n">nocc_beta</span> <span class="o">+</span> <span class="n">nvirt_beta</span><span class="p">)</span>

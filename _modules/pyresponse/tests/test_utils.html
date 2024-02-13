@@ -111,18 +111,7 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Does the splitter return even the empty fields when asked?&quot;&quot;&quot;</span>
         <span class="n">fixed_splitter</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">Splitter</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
         <span class="n">line</span> <span class="o">=</span> <span class="s2">&quot;   1  C 1   s       -0.00000  -0.00000   0.00000&quot;</span>
-        <span class="n">ref_not_truncated</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="s2">&quot;1&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;C&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;1&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;s&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;-0.00000&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;-0.00000&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;0.00000&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="p">]</span>
+        <span class="n">ref_not_truncated</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;s&quot;</span><span class="p">,</span> <span class="s2">&quot;-0.00000&quot;</span><span class="p">,</span> <span class="s2">&quot;-0.00000&quot;</span><span class="p">,</span> <span class="s2">&quot;0.00000&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">]</span>
         <span class="n">tokens_not_truncated</span> <span class="o">=</span> <span class="n">fixed_splitter</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">ref_not_truncated</span><span class="p">,</span> <span class="n">tokens_not_truncated</span><span class="p">)</span></div>
 </div>

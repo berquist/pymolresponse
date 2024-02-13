@@ -81,9 +81,7 @@
 
 <div class="viewcode-block" id="get_most_abundant_isotope">
 <a class="viewcode-back" href="../../pyresponse.html#pyresponse.helpers.get_most_abundant_isotope">[docs]</a>
-<span class="k">def</span> <span class="nf">get_most_abundant_isotope</span><span class="p">(</span>
-    <span class="n">element</span><span class="p">:</span> <span class="n">periodictable</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Element</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">periodictable</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Isotope</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">get_most_abundant_isotope</span><span class="p">(</span><span class="n">element</span><span class="p">:</span> <span class="n">periodictable</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">periodictable</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Isotope</span><span class="p">:</span>
     <span class="n">most_abundant_isotope</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">isotopes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">abundance</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">iso</span> <span class="ow">in</span> <span class="n">element</span><span class="p">:</span>
@@ -196,9 +194,7 @@
 <div class="viewcode-block" id="mat_uhf_to_packed_rohf">
 <a class="viewcode-back" href="../../pyresponse.html#pyresponse.helpers.mat_uhf_to_packed_rohf">[docs]</a>
 <span class="k">def</span> <span class="nf">mat_uhf_to_packed_rohf</span><span class="p">(</span>
-    <span class="n">mat_alpha</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
-    <span class="n">mat_beta</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
-    <span class="n">indices_display_rohf</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]],</span>
+    <span class="n">mat_alpha</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">mat_beta</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">indices_display_rohf</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="n">dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">indices_display_rohf</span><span class="p">)</span>
     <span class="n">mat_rohf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span>
