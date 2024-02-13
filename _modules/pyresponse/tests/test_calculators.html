@@ -1,20 +1,23 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pyresponse.tests.test_calculators &mdash; pyresponse  documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/jquery.js"></script>
-        <script src="../../../_static/underscore.js"></script>
-        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -25,11 +28,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../contents.html" class="icon icon-home"> pyresponse
+
+          
+          
+          <a href="../../../contents.html" class="icon icon-home">
+            pyresponse
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -52,9 +59,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../contents.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../index.html">Module code</a> &raquo;</li>
-      <li>pyresponse.tests.test_calculators</li>
+      <li><a href="../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pyresponse.tests.test_calculators</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -75,8 +82,8 @@
 
 <span class="kn">from</span> <span class="nn">pyresponse</span> <span class="kn">import</span> <span class="n">cphf</span><span class="p">,</span> <span class="n">operators</span><span class="p">,</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">utils</span>
 <span class="kn">from</span> <span class="nn">pyresponse.core</span> <span class="kn">import</span> <span class="n">AO2MOTransformationType</span><span class="p">,</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">Spin</span>
-<span class="kn">from</span> <span class="nn">pyresponse.dalton.utils</span> <span class="kn">import</span> <span class="n">dalton_label_to_operator</span>
-<span class="kn">from</span> <span class="nn">pyresponse.pyscf.ao2mo</span> <span class="kn">import</span> <span class="n">AO2MOpyscf</span>
+<span class="kn">from</span> <span class="nn">pyresponse.interfaces.dalton.utils</span> <span class="kn">import</span> <span class="n">dalton_label_to_operator</span>
+<span class="kn">from</span> <span class="nn">pyresponse.interfaces.pyscf.ao2mo</span> <span class="kn">import</span> <span class="n">AO2MOpyscf</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">daltools</span> <span class="kn">import</span> <span class="n">mol</span> <span class="k">as</span> <span class="n">dalmol</span>
@@ -85,7 +92,9 @@
     <span class="k">pass</span>
 
 
-<div class="viewcode-block" id="calculate_disk_rhf"><a class="viewcode-back" href="../../../pyresponse.tests.html#pyresponse.tests.test_calculators.calculate_disk_rhf">[docs]</a><span class="k">def</span> <span class="nf">calculate_disk_rhf</span><span class="p">(</span>
+<div class="viewcode-block" id="calculate_disk_rhf">
+<a class="viewcode-back" href="../../../pyresponse.tests.html#pyresponse.tests.test_calculators.calculate_disk_rhf">[docs]</a>
+<span class="k">def</span> <span class="nf">calculate_disk_rhf</span><span class="p">(</span>
     <span class="n">testcasedir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
     <span class="n">hamiltonian</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">spin</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -93,7 +102,6 @@
     <span class="n">label_1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">label_2</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-
     <span class="n">occupations</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">read_file_occupations</span><span class="p">(</span><span class="n">testcasedir</span> <span class="o">/</span> <span class="s2">&quot;occupations&quot;</span><span class="p">)</span>
     <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">,</span> <span class="n">nvirt_beta</span> <span class="o">=</span> <span class="n">occupations</span>
     <span class="k">assert</span> <span class="n">nocc_alph</span> <span class="o">==</span> <span class="n">nocc_beta</span>
@@ -165,7 +173,10 @@
     <span class="k">return</span> <span class="n">bl</span></div>
 
 
-<div class="viewcode-block" id="calculate_disk_uhf"><a class="viewcode-back" href="../../../pyresponse.tests.html#pyresponse.tests.test_calculators.calculate_disk_uhf">[docs]</a><span class="k">def</span> <span class="nf">calculate_disk_uhf</span><span class="p">(</span>
+
+<div class="viewcode-block" id="calculate_disk_uhf">
+<a class="viewcode-back" href="../../../pyresponse.tests.html#pyresponse.tests.test_calculators.calculate_disk_uhf">[docs]</a>
+<span class="k">def</span> <span class="nf">calculate_disk_uhf</span><span class="p">(</span>
     <span class="n">testcasedir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
     <span class="n">hamiltonian</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">spin</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -173,7 +184,6 @@
     <span class="n">label_1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">label_2</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-
     <span class="n">occupations</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">read_file_occupations</span><span class="p">(</span><span class="n">testcasedir</span> <span class="o">/</span> <span class="s2">&quot;occupations&quot;</span><span class="p">)</span>
     <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">,</span> <span class="n">nvirt_beta</span> <span class="o">=</span> <span class="n">occupations</span>
     <span class="n">norb</span> <span class="o">=</span> <span class="n">nocc_alph</span> <span class="o">+</span> <span class="n">nvirt_alph</span>
@@ -260,7 +270,10 @@
     <span class="k">return</span> <span class="n">bl</span></div>
 
 
-<div class="viewcode-block" id="calculate_rhf"><a class="viewcode-back" href="../../../pyresponse.tests.html#pyresponse.tests.test_calculators.calculate_rhf">[docs]</a><span class="k">def</span> <span class="nf">calculate_rhf</span><span class="p">(</span>
+
+<div class="viewcode-block" id="calculate_rhf">
+<a class="viewcode-back" href="../../../pyresponse.tests.html#pyresponse.tests.test_calculators.calculate_rhf">[docs]</a>
+<span class="k">def</span> <span class="nf">calculate_rhf</span><span class="p">(</span>
     <span class="n">dalton_tmpdir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
     <span class="n">hamiltonian</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">spin</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -270,7 +283,6 @@
     <span class="n">source_mocoeffs</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">source_operator</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
 <span class="p">):</span>
-
     <span class="k">if</span> <span class="n">operator_label</span><span class="p">:</span>
         <span class="c1"># TODO add dipvel</span>
         <span class="k">assert</span> <span class="n">operator_label</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;dipole&quot;</span><span class="p">,</span> <span class="s2">&quot;angmom&quot;</span><span class="p">,</span> <span class="s2">&quot;spinorb&quot;</span><span class="p">)</span>
@@ -375,7 +387,10 @@
     <span class="k">return</span> <span class="n">driver</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="calculate_uhf"><a class="viewcode-back" href="../../../pyresponse.tests.html#pyresponse.tests.test_calculators.calculate_uhf">[docs]</a><span class="k">def</span> <span class="nf">calculate_uhf</span><span class="p">(</span>
+
+<div class="viewcode-block" id="calculate_uhf">
+<a class="viewcode-back" href="../../../pyresponse.tests.html#pyresponse.tests.test_calculators.calculate_uhf">[docs]</a>
+<span class="k">def</span> <span class="nf">calculate_uhf</span><span class="p">(</span>
     <span class="n">dalton_tmpdir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span>
     <span class="n">hamiltonian</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">spin</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -385,7 +400,6 @@
     <span class="n">source_mocoeffs</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">source_operator</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
 <span class="p">):</span>
-
     <span class="k">if</span> <span class="n">operator_label</span><span class="p">:</span>
         <span class="c1"># TODO add dipvel</span>
         <span class="k">assert</span> <span class="n">operator_label</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;dipole&quot;</span><span class="p">,</span> <span class="s2">&quot;angmom&quot;</span><span class="p">,</span> <span class="s2">&quot;spinorb&quot;</span><span class="p">)</span>
@@ -492,6 +506,7 @@
     <span class="n">driver</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">hamiltonian</span><span class="o">=</span><span class="n">Hamiltonian</span><span class="p">[</span><span class="n">hamiltonian</span><span class="o">.</span><span class="n">upper</span><span class="p">()],</span> <span class="n">spin</span><span class="o">=</span><span class="n">Spin</span><span class="p">[</span><span class="n">spin</span><span class="p">])</span>
 
     <span class="k">return</span> <span class="n">driver</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
 </pre></div>
 
            </div>

@@ -1,21 +1,24 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pyresponse &mdash; pyresponse  documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=eafc0fe6" />
+
+  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/doctools.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -27,11 +30,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="contents.html" class="icon icon-home"> pyresponse
+
+          
+          
+          <a href="contents.html" class="icon icon-home">
+            pyresponse
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -66,8 +73,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="contents.html" class="icon icon-home"></a> &raquo;</li>
-      <li>pyresponse</li>
+      <li><a href="contents.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">pyresponse</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -78,7 +85,7 @@
            <div itemprop="articleBody">
              
   <section id="pyresponse">
-<h1>pyresponse<a class="headerlink" href="#pyresponse" title="Permalink to this headline"></a></h1>
+<h1>pyresponse<a class="headerlink" href="#pyresponse" title="Link to this heading"></a></h1>
 <p>Molecular frequency-dependent response properties for arbitrary operators.</p>
 <p>For documentation, go to <a class="reference external" href="https://berquist.github.io/pyresponse/">https://berquist.github.io/pyresponse/</a>.</p>
 <p>Currently, the goal is to provide:</p>
@@ -88,18 +95,18 @@
 <li><p>an example of testing and documenting scientific code using modern software development tools.</p></li>
 </ol>
 <section id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h2>
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
 <p>To set up a conda environment with all dependencies for running, testing, and building the documentation, look under <code class="docutils literal notranslate"><span class="pre">devtools</span></code>.</p>
 </section>
 <section id="requirements">
-<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline"></a></h2>
+<h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>Python 3.6 because of <a class="reference external" href="https://cito.github.io/blog/f-strings/">f-strings</a>.</p></li>
 <li><p><a class="reference external" href="https://github.com/sunqm/pyscf">pyscf</a> and its dependencies</p></li>
 <li><p><a class="reference external" href="https://psicode.org/">Psi4</a></p></li>
 </ul>
 <section id="other-python-dependencies">
-<h3>Other Python dependencies<a class="headerlink" href="#other-python-dependencies" title="Permalink to this headline"></a></h3>
+<h3>Other Python dependencies<a class="headerlink" href="#other-python-dependencies" title="Link to this heading"></a></h3>
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/pkienzle/periodictable">periodictable</a> (for calculating the center of mass)</p></li>
 <li><p><a class="reference external" href="http://doc.pytest.org/en/latest/">pytest</a> (for testing)</p></li>
@@ -109,13 +116,13 @@
 </section>
 </section>
 <section id="testing">
-<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this headline"></a></h2>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make pytest
+<h2>Testing<a class="headerlink" href="#testing" title="Link to this heading"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>pytest
 </pre></div>
 </div>
 </section>
 <section id="caveats">
-<h2>Caveats<a class="headerlink" href="#caveats" title="Permalink to this headline"></a></h2>
+<h2>Caveats<a class="headerlink" href="#caveats" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>RHF and UHF references only; no ROHF yet.</p></li>
 <li><p>Hartree-Fock and DFT only; no post-HF methods yet.</p></li>
@@ -127,7 +134,7 @@
 </ul>
 </section>
 <section id="desired-features-in-no-specific-order">
-<h2>Desired features (in no specific order)<a class="headerlink" href="#desired-features-in-no-specific-order" title="Permalink to this headline"></a></h2>
+<h2>Desired features (in no specific order)<a class="headerlink" href="#desired-features-in-no-specific-order" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>Non-orthogonal orbitals. Requires switch from using MO energies to full Fock matrices.</p></li>
 <li><p>ROHF reference (compare against DALTON). Requires equations for the ROHF orbital Hessian.</p></li>
@@ -138,7 +145,7 @@
 </ul>
 </section>
 <section id="desired-features-that-don-t-fix-the-caveats">
-<h2>Desired features that don’t fix the caveats<a class="headerlink" href="#desired-features-that-don-t-fix-the-caveats" title="Permalink to this headline"></a></h2>
+<h2>Desired features that don’t fix the caveats<a class="headerlink" href="#desired-features-that-don-t-fix-the-caveats" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>Open-ended response: see <a class="reference external" href="https://doi.org/10.1002/jcc.23533">Ringholm, Jonsson, and Ruud</a>.</p></li>
 <li><p>Finite-difference for testing and higher-order response.</p></li>
@@ -148,7 +155,7 @@
 </ul>
 </section>
 <section id="references">
-<h2>References<a class="headerlink" href="#references" title="Permalink to this headline"></a></h2>
+<h2>References<a class="headerlink" href="#references" title="Link to this heading"></a></h2>
 <p>Forthcoming…</p>
 </section>
 </section>

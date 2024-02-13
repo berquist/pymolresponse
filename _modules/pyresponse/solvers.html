@@ -1,20 +1,23 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pyresponse.solvers &mdash; pyresponse  documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -25,11 +28,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../contents.html" class="icon icon-home"> pyresponse
+
+          
+          
+          <a href="../../contents.html" class="icon icon-home">
+            pyresponse
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -52,9 +59,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../contents.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html">Module code</a> &raquo;</li>
-      <li>pyresponse.solvers</li>
+      <li><a href="../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pyresponse.solvers</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -98,8 +105,10 @@
 <span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">suppress</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="Solver"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.Solver">[docs]</a><span class="k">class</span> <span class="nc">Solver</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A Solver does all of the TODO</span>
+<div class="viewcode-block" id="Solver">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.Solver">[docs]</a>
+<span class="k">class</span> <span class="nc">Solver</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A Solver does all of the TODO</span>
 
 <span class="sd">    There are two principal algorithm classes for forming response vectors:</span>
 
@@ -113,7 +122,6 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">mocoeffs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">occupations</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-
         <span class="c1"># MO coefficients: the first axis is alpha/beta</span>
         <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">mocoeffs</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span>
         <span class="k">assert</span> <span class="p">(</span><span class="n">mocoeffs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">mocoeffs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
@@ -150,7 +158,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">explicit_hessian</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">explicit_hessian_inv</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="Solver.form_tei_mo"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.Solver.form_tei_mo">[docs]</a>    <span class="k">def</span> <span class="nf">form_tei_mo</span><span class="p">(</span>
+<div class="viewcode-block" id="Solver.form_tei_mo">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.Solver.form_tei_mo">[docs]</a>
+    <span class="k">def</span> <span class="nf">form_tei_mo</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">program</span><span class="p">:</span> <span class="n">Program</span><span class="p">,</span> <span class="n">program_obj</span><span class="p">,</span> <span class="n">tei_mo_type</span><span class="p">:</span> <span class="n">AO2MOTransformationType</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="n">Program</span><span class="p">)</span>
@@ -159,7 +169,7 @@
         <span class="n">nden</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mocoeffs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">assert</span> <span class="n">nden</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">program</span> <span class="o">==</span> <span class="n">Program</span><span class="o">.</span><span class="n">PySCF</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">pyresponse.pyscf.ao2mo</span> <span class="kn">import</span> <span class="n">AO2MOpyscf</span>
+            <span class="kn">from</span> <span class="nn">pyresponse.interfaces.pyscf.ao2mo</span> <span class="kn">import</span> <span class="n">AO2MOpyscf</span>
 
             <span class="n">ao2mo</span> <span class="o">=</span> <span class="n">AO2MOpyscf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mocoeffs</span><span class="p">,</span> <span class="n">program_obj</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span> <span class="n">program_obj</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">program</span> <span class="o">==</span> <span class="n">Program</span><span class="o">.</span><span class="n">Psi4</span><span class="p">:</span>
@@ -194,7 +204,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span> <span class="o">=</span> <span class="n">ao2mo</span><span class="o">.</span><span class="n">tei_mo</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo_type</span> <span class="o">=</span> <span class="n">tei_mo_type</span></div>
 
-<div class="viewcode-block" id="Solver.form_ranges_from_occupations"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.Solver.form_ranges_from_occupations">[docs]</a>    <span class="k">def</span> <span class="nf">form_ranges_from_occupations</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Solver.form_ranges_from_occupations">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.Solver.form_ranges_from_occupations">[docs]</a>
+    <span class="k">def</span> <span class="nf">form_ranges_from_occupations</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">occupations</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span>
         <span class="n">nocc_a</span><span class="p">,</span> <span class="n">nvirt_a</span><span class="p">,</span> <span class="n">nocc_b</span><span class="p">,</span> <span class="n">nvirt_b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">occupations</span>
         <span class="k">assert</span> <span class="p">(</span><span class="n">nocc_a</span> <span class="o">+</span> <span class="n">nvirt_a</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="n">nocc_b</span> <span class="o">+</span> <span class="n">nvirt_b</span><span class="p">)</span>
@@ -214,7 +227,10 @@
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">indices_display_rohf</span> <span class="o">=</span> <span class="p">[(</span><span class="n">p</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">q</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">indices_rohf</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="Solver.set_frequencies"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.Solver.set_frequencies">[docs]</a>    <span class="k">def</span> <span class="nf">set_frequencies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frequencies</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Solver.set_frequencies">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.Solver.set_frequencies">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_frequencies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frequencies</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">frequencies</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
@@ -223,7 +239,10 @@
             <span class="k">for</span> <span class="n">operator</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operators</span><span class="p">:</span>
                 <span class="n">operator</span><span class="o">.</span><span class="n">frequencies</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span></div>
 
-<div class="viewcode-block" id="Solver.add_operator"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.Solver.add_operator">[docs]</a>    <span class="k">def</span> <span class="nf">add_operator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operator</span><span class="p">:</span> <span class="n">Operator</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Solver.add_operator">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.Solver.add_operator">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_operator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operator</span><span class="p">:</span> <span class="n">Operator</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># First dimension is the number of Cartesian components, next</span>
         <span class="c1"># two are the number of AOs.</span>
         <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">operator</span><span class="p">,</span> <span class="s2">&quot;ao_integrals&quot;</span><span class="p">)</span>
@@ -238,13 +257,20 @@
         <span class="n">operator</span><span class="o">.</span><span class="n">form_rhs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mocoeffs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">occupations</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">operators</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">operator</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Solver.run"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.Solver.run">[docs]</a>    <span class="nd">@abstractmethod</span>
+
+<div class="viewcode-block" id="Solver.run">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.Solver.run">[docs]</a>
+    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hamiltonian</span><span class="p">:</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">spin</span><span class="p">:</span> <span class="n">Spin</span><span class="p">,</span> <span class="n">program</span><span class="p">:</span> <span class="n">Program</span><span class="p">,</span> <span class="n">program_obj</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Run the solver.&quot;&quot;&quot;</span></div></div>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Run the solver.&quot;&quot;&quot;</span></div>
+</div>
 
 
-<div class="viewcode-block" id="LineqSolver"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.LineqSolver">[docs]</a><span class="k">class</span> <span class="nc">LineqSolver</span><span class="p">(</span><span class="n">Solver</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Base class for all solvers of the type $AX = B$.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="LineqSolver">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.LineqSolver">[docs]</a>
+<span class="k">class</span> <span class="nc">LineqSolver</span><span class="p">(</span><span class="n">Solver</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for all solvers of the type $AX = B$.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">mocoeffs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">occupations</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
@@ -252,8 +278,11 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">mocoeffs</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">,</span> <span class="n">occupations</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="ExactLineqSolver"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactLineqSolver">[docs]</a><span class="k">class</span> <span class="nc">ExactLineqSolver</span><span class="p">(</span><span class="n">LineqSolver</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Base class for all solvers of the type $AX = B$, where $A$ is formed</span>
+
+<div class="viewcode-block" id="ExactLineqSolver">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactLineqSolver">[docs]</a>
+<span class="k">class</span> <span class="nc">ExactLineqSolver</span><span class="p">(</span><span class="n">LineqSolver</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for all solvers of the type $AX = B$, where $A$ is formed</span>
 <span class="sd">    explicitly.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -262,8 +291,9 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">mocoeffs</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">,</span> <span class="n">occupations</span><span class="p">)</span>
 
-<div class="viewcode-block" id="ExactLineqSolver.form_explicit_hessian"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactLineqSolver.form_explicit_hessian">[docs]</a>    <span class="k">def</span> <span class="nf">form_explicit_hessian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hamiltonian</span><span class="p">:</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">spin</span><span class="p">:</span> <span class="n">Spin</span><span class="p">,</span> <span class="n">frequency</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-
+<div class="viewcode-block" id="ExactLineqSolver.form_explicit_hessian">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactLineqSolver.form_explicit_hessian">[docs]</a>
+    <span class="k">def</span> <span class="nf">form_explicit_hessian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hamiltonian</span><span class="p">:</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">spin</span><span class="p">:</span> <span class="n">Spin</span><span class="p">,</span> <span class="n">frequency</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
         <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tei_mo_type</span><span class="p">,</span> <span class="n">AO2MOTransformationType</span><span class="p">)</span>
@@ -287,7 +317,6 @@
         <span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_uhf</span><span class="p">:</span>
-
             <span class="c1"># Set up &quot;function pointers&quot;.</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo_type</span> <span class="o">==</span> <span class="n">AO2MOTransformationType</span><span class="o">.</span><span class="n">full</span><span class="p">:</span>
                 <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
@@ -492,11 +521,17 @@
                 <span class="n">G_bb</span> <span class="o">-</span> <span class="n">superoverlap_beta</span><span class="p">,</span>
             <span class="p">)</span></div>
 
-<div class="viewcode-block" id="ExactLineqSolver.invert_explicit_hessian"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactLineqSolver.invert_explicit_hessian">[docs]</a>    <span class="nd">@abstractmethod</span>
-    <span class="k">def</span> <span class="nf">invert_explicit_hessian</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Invert the full explicitly-constructed electronic Hessian.&quot;&quot;&quot;</span></div>
 
-<div class="viewcode-block" id="ExactLineqSolver.form_response_vectors"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactLineqSolver.form_response_vectors">[docs]</a>    <span class="k">def</span> <span class="nf">form_response_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="ExactLineqSolver.invert_explicit_hessian">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactLineqSolver.invert_explicit_hessian">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">invert_explicit_hessian</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Invert the full explicitly-constructed electronic Hessian.&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="ExactLineqSolver.form_response_vectors">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactLineqSolver.form_response_vectors">[docs]</a>
+    <span class="k">def</span> <span class="nf">form_response_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_uhf</span><span class="p">:</span>
             <span class="n">G_aa</span><span class="p">,</span> <span class="n">G_ab</span><span class="p">,</span> <span class="n">G_ba</span><span class="p">,</span> <span class="n">G_bb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">explicit_hessian</span>
             <span class="n">G_aa_inv</span><span class="p">,</span> <span class="n">G_bb_inv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">explicit_hessian_inv</span>
@@ -568,7 +603,10 @@
                 <span class="n">operator</span><span class="o">.</span><span class="n">rspvecs_alph</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rspvecs_operator_alph</span><span class="p">)</span>
                 <span class="n">operator</span><span class="o">.</span><span class="n">rspvecs_beta</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rspvecs_operator_beta</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ExactLineqSolver.run"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactLineqSolver.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hamiltonian</span><span class="p">:</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">spin</span><span class="p">:</span> <span class="n">Spin</span><span class="p">,</span> <span class="n">program</span><span class="p">:</span> <span class="n">Program</span><span class="p">,</span> <span class="n">program_obj</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="ExactLineqSolver.run">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactLineqSolver.run">[docs]</a>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hamiltonian</span><span class="p">:</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">spin</span><span class="p">:</span> <span class="n">Spin</span><span class="p">,</span> <span class="n">program</span><span class="p">:</span> <span class="n">Program</span><span class="p">,</span> <span class="n">program_obj</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hamiltonian</span><span class="p">,</span> <span class="n">Hamiltonian</span><span class="p">)</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">spin</span><span class="p">,</span> <span class="n">Spin</span><span class="p">)</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="p">(</span><span class="n">Program</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
@@ -578,10 +616,14 @@
         <span class="k">for</span> <span class="n">frequency</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">form_explicit_hessian</span><span class="p">(</span><span class="n">hamiltonian</span><span class="p">,</span> <span class="n">spin</span><span class="p">,</span> <span class="n">frequency</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">invert_explicit_hessian</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">form_response_vectors</span><span class="p">()</span></div></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">form_response_vectors</span><span class="p">()</span></div>
+</div>
 
 
-<div class="viewcode-block" id="ExactInv"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactInv">[docs]</a><span class="k">class</span> <span class="nc">ExactInv</span><span class="p">(</span><span class="n">ExactLineqSolver</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ExactInv">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactInv">[docs]</a>
+<span class="k">class</span> <span class="nc">ExactInv</span><span class="p">(</span><span class="n">ExactLineqSolver</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">mocoeffs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
@@ -597,7 +639,9 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">inv_func</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span>
 
-<div class="viewcode-block" id="ExactInv.invert_explicit_hessian"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactInv.invert_explicit_hessian">[docs]</a>    <span class="k">def</span> <span class="nf">invert_explicit_hessian</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="ExactInv.invert_explicit_hessian">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactInv.invert_explicit_hessian">[docs]</a>
+    <span class="k">def</span> <span class="nf">invert_explicit_hessian</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;explicit_hessian&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_uhf</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">explicit_hessian_inv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inv_func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">explicit_hessian</span><span class="p">)</span>
@@ -614,16 +658,22 @@
             <span class="c1"># Form the operator-independent part of the response</span>
             <span class="c1"># vectors.</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">left_alph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inv_func</span><span class="p">(</span><span class="n">G_aa</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">G_ab</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">G_bb_inv</span><span class="p">,</span> <span class="n">G_ba</span><span class="p">)))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">left_beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inv_func</span><span class="p">(</span><span class="n">G_bb</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">G_ba</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">G_aa_inv</span><span class="p">,</span> <span class="n">G_ab</span><span class="p">)))</span></div></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">left_beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inv_func</span><span class="p">(</span><span class="n">G_bb</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">G_ba</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">G_aa_inv</span><span class="p">,</span> <span class="n">G_ab</span><span class="p">)))</span></div>
+</div>
 
 
-<div class="viewcode-block" id="ExactInvCholesky"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactInvCholesky">[docs]</a><span class="k">class</span> <span class="nc">ExactInvCholesky</span><span class="p">(</span><span class="n">ExactLineqSolver</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ExactInvCholesky">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactInvCholesky">[docs]</a>
+<span class="k">class</span> <span class="nc">ExactInvCholesky</span><span class="p">(</span><span class="n">ExactLineqSolver</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">mocoeffs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">occupations</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">mocoeffs</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">,</span> <span class="n">occupations</span><span class="p">)</span>
 
-<div class="viewcode-block" id="ExactInvCholesky.invert_explicit_hessian"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactInvCholesky.invert_explicit_hessian">[docs]</a>    <span class="k">def</span> <span class="nf">invert_explicit_hessian</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="ExactInvCholesky.invert_explicit_hessian">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactInvCholesky.invert_explicit_hessian">[docs]</a>
+    <span class="k">def</span> <span class="nf">invert_explicit_hessian</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;explicit_hessian&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_uhf</span><span class="p">:</span>
             <span class="n">fac</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cholesky</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">explicit_hessian</span><span class="p">)</span>
@@ -653,10 +703,14 @@
             <span class="n">left_alph_R_inv</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">left_alph_R</span><span class="p">)</span>
             <span class="n">left_beta_R_inv</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">left_beta_R</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">left_alph</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">left_alph_R_inv</span><span class="p">,</span> <span class="n">left_alph_R_inv</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">left_beta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">left_beta_R_inv</span><span class="p">,</span> <span class="n">left_beta_R_inv</span><span class="o">.</span><span class="n">T</span><span class="p">)</span></div></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">left_beta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">left_beta_R_inv</span><span class="p">,</span> <span class="n">left_beta_R_inv</span><span class="o">.</span><span class="n">T</span><span class="p">)</span></div>
+</div>
 
 
-<div class="viewcode-block" id="IterativeLinEqSolver"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.IterativeLinEqSolver">[docs]</a><span class="k">class</span> <span class="nc">IterativeLinEqSolver</span><span class="p">(</span><span class="n">LineqSolver</span><span class="p">):</span>
+
+<div class="viewcode-block" id="IterativeLinEqSolver">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.IterativeLinEqSolver">[docs]</a>
+<span class="k">class</span> <span class="nc">IterativeLinEqSolver</span><span class="p">(</span><span class="n">LineqSolver</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">mocoeffs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
@@ -677,7 +731,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">maxiter</span> <span class="o">=</span> <span class="n">maxiter</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">conv</span> <span class="o">=</span> <span class="n">conv</span>
 
-<div class="viewcode-block" id="IterativeLinEqSolver.run"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.IterativeLinEqSolver.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hamiltonian</span><span class="p">:</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">spin</span><span class="p">:</span> <span class="n">Spin</span><span class="p">,</span> <span class="n">program</span><span class="p">:</span> <span class="n">Program</span><span class="p">,</span> <span class="n">program_obj</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="IterativeLinEqSolver.run">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.IterativeLinEqSolver.run">[docs]</a>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hamiltonian</span><span class="p">:</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">spin</span><span class="p">:</span> <span class="n">Spin</span><span class="p">,</span> <span class="n">program</span><span class="p">:</span> <span class="n">Program</span><span class="p">,</span> <span class="n">program_obj</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hamiltonian</span><span class="p">,</span> <span class="n">Hamiltonian</span><span class="p">)</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">spin</span><span class="p">,</span> <span class="n">Spin</span><span class="p">)</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="p">(</span><span class="n">Program</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
@@ -685,6 +741,7 @@
         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span>
         <span class="k">for</span> <span class="n">frequency</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_run</span><span class="p">(</span><span class="n">hamiltonian</span><span class="p">,</span> <span class="n">spin</span><span class="p">,</span> <span class="n">frequency</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxiter</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv</span><span class="p">)</span></div>
+
 
     <span class="k">def</span> <span class="nf">_run</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -770,24 +827,33 @@
                     <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="EigSolver"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.EigSolver">[docs]</a><span class="k">class</span> <span class="nc">EigSolver</span><span class="p">(</span><span class="n">Solver</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Base class for all solvers of the type $AX = 0$ (eigensolvers).&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="EigSolver">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.EigSolver">[docs]</a>
+<span class="k">class</span> <span class="nc">EigSolver</span><span class="p">(</span><span class="n">Solver</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for all solvers of the type $AX = 0$ (eigensolvers).&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">mocoeffs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">occupations</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">mocoeffs</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">,</span> <span class="n">occupations</span><span class="p">)</span>
 
-<div class="viewcode-block" id="EigSolver.norm_xy"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.EigSolver.norm_xy">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="EigSolver.norm_xy">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.EigSolver.norm_xy">[docs]</a>
+    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">norm_xy</span><span class="p">(</span><span class="n">z</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">nocc</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">nvirt</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">nvirt</span><span class="p">,</span> <span class="n">nocc</span><span class="p">)</span>
         <span class="n">norm</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
         <span class="n">norm</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">norm</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">norm</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="p">(</span><span class="n">y</span> <span class="o">*</span> <span class="n">norm</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span></div></div>
+        <span class="k">return</span> <span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">norm</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="p">(</span><span class="n">y</span> <span class="o">*</span> <span class="n">norm</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span></div>
+</div>
 
 
-<div class="viewcode-block" id="EigSolverTDA"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.EigSolverTDA">[docs]</a><span class="k">class</span> <span class="nc">EigSolverTDA</span><span class="p">(</span><span class="n">EigSolver</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Base class for eigensolvers that use the Tamm-Dancoff approximation</span>
+
+<div class="viewcode-block" id="EigSolverTDA">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.EigSolverTDA">[docs]</a>
+<span class="k">class</span> <span class="nc">EigSolverTDA</span><span class="p">(</span><span class="n">EigSolver</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for eigensolvers that use the Tamm-Dancoff approximation</span>
 <span class="sd">    (TDA) rather than the random phase approximation (RPA).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -797,8 +863,11 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">mocoeffs</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">,</span> <span class="n">occupations</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="ExactDiagonalizationSolver"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactDiagonalizationSolver">[docs]</a><span class="k">class</span> <span class="nc">ExactDiagonalizationSolver</span><span class="p">(</span><span class="n">EigSolver</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Get the eigenvectors and eigenvalues of the RPA Hamiltonian by forming the</span>
+
+<div class="viewcode-block" id="ExactDiagonalizationSolver">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactDiagonalizationSolver">[docs]</a>
+<span class="k">class</span> <span class="nc">ExactDiagonalizationSolver</span><span class="p">(</span><span class="n">EigSolver</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the eigenvectors and eigenvalues of the RPA Hamiltonian by forming the</span>
 <span class="sd">    electronic Hessian explicitly and diagonalizing it exactly.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -807,8 +876,9 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">mocoeffs</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">,</span> <span class="n">occupations</span><span class="p">)</span>
 
-<div class="viewcode-block" id="ExactDiagonalizationSolver.form_explicit_hessian"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactDiagonalizationSolver.form_explicit_hessian">[docs]</a>    <span class="k">def</span> <span class="nf">form_explicit_hessian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hamiltonian</span><span class="p">:</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">spin</span><span class="p">:</span> <span class="n">Spin</span><span class="p">,</span> <span class="n">frequency</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-
+<div class="viewcode-block" id="ExactDiagonalizationSolver.form_explicit_hessian">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactDiagonalizationSolver.form_explicit_hessian">[docs]</a>
+    <span class="k">def</span> <span class="nf">form_explicit_hessian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hamiltonian</span><span class="p">:</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">spin</span><span class="p">:</span> <span class="n">Spin</span><span class="p">,</span> <span class="n">frequency</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;tei_mo&quot;</span><span class="p">)</span>
         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
         <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
@@ -823,7 +893,6 @@
         <span class="n">nov_beta</span> <span class="o">=</span> <span class="n">nocc_beta</span> <span class="o">*</span> <span class="n">nvirt_beta</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_uhf</span><span class="p">:</span>
-
             <span class="c1"># Set up &quot;function pointers&quot;.</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo_type</span> <span class="o">==</span> <span class="n">AO2MOTransformationType</span><span class="o">.</span><span class="n">full</span><span class="p">:</span>
                 <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
@@ -871,7 +940,10 @@
             <span class="c1"># TODO UHF</span>
             <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="ExactDiagonalizationSolver.diagonalize_explicit_hessian"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactDiagonalizationSolver.diagonalize_explicit_hessian">[docs]</a>    <span class="k">def</span> <span class="nf">diagonalize_explicit_hessian</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="ExactDiagonalizationSolver.diagonalize_explicit_hessian">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactDiagonalizationSolver.diagonalize_explicit_hessian">[docs]</a>
+    <span class="k">def</span> <span class="nf">diagonalize_explicit_hessian</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">,</span> <span class="n">nvirt_beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">occupations</span>
         <span class="n">nov_alph</span> <span class="o">=</span> <span class="n">nocc_alph</span> <span class="o">*</span> <span class="n">nvirt_alph</span>
         <span class="n">nov_beta</span> <span class="o">=</span> <span class="n">nocc_beta</span> <span class="o">*</span> <span class="n">nvirt_beta</span>
@@ -891,7 +963,10 @@
             <span class="c1"># TODO UHF</span>
             <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="ExactDiagonalizationSolver.run"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactDiagonalizationSolver.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hamiltonian</span><span class="p">:</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">spin</span><span class="p">:</span> <span class="n">Spin</span><span class="p">,</span> <span class="n">program</span><span class="p">:</span> <span class="n">Program</span><span class="p">,</span> <span class="n">program_obj</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="ExactDiagonalizationSolver.run">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactDiagonalizationSolver.run">[docs]</a>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hamiltonian</span><span class="p">:</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">spin</span><span class="p">:</span> <span class="n">Spin</span><span class="p">,</span> <span class="n">program</span><span class="p">:</span> <span class="n">Program</span><span class="p">,</span> <span class="n">program_obj</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hamiltonian</span><span class="p">,</span> <span class="n">Hamiltonian</span><span class="p">)</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">spin</span><span class="p">,</span> <span class="n">Spin</span><span class="p">)</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="n">Program</span><span class="p">)</span>
@@ -899,11 +974,15 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">form_tei_mo</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="n">program_obj</span><span class="p">,</span> <span class="n">AO2MOTransformationType</span><span class="o">.</span><span class="n">partial</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">form_explicit_hessian</span><span class="p">(</span><span class="n">hamiltonian</span><span class="p">,</span> <span class="n">spin</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">diagonalize_explicit_hessian</span><span class="p">()</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">diagonalize_explicit_hessian</span><span class="p">()</span></div>
+</div>
 
 
-<div class="viewcode-block" id="ExactDiagonalizationSolverTDA"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactDiagonalizationSolverTDA">[docs]</a><span class="k">class</span> <span class="nc">ExactDiagonalizationSolverTDA</span><span class="p">(</span><span class="n">ExactDiagonalizationSolver</span><span class="p">,</span> <span class="n">EigSolverTDA</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Get the eigenvectors and eigenvalues of the TDA Hamiltonian by forming the</span>
+
+<div class="viewcode-block" id="ExactDiagonalizationSolverTDA">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactDiagonalizationSolverTDA">[docs]</a>
+<span class="k">class</span> <span class="nc">ExactDiagonalizationSolverTDA</span><span class="p">(</span><span class="n">ExactDiagonalizationSolver</span><span class="p">,</span> <span class="n">EigSolverTDA</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the eigenvectors and eigenvalues of the TDA Hamiltonian by forming the</span>
 <span class="sd">    electronic Hessian explicitly and diagonalizing it exactly.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -912,8 +991,9 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">mocoeffs</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">,</span> <span class="n">occupations</span><span class="p">)</span>
 
-<div class="viewcode-block" id="ExactDiagonalizationSolverTDA.form_explicit_hessian"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactDiagonalizationSolverTDA.form_explicit_hessian">[docs]</a>    <span class="k">def</span> <span class="nf">form_explicit_hessian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hamiltonian</span><span class="p">:</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">spin</span><span class="p">:</span> <span class="n">Spin</span><span class="p">,</span> <span class="n">frequency</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-
+<div class="viewcode-block" id="ExactDiagonalizationSolverTDA.form_explicit_hessian">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactDiagonalizationSolverTDA.form_explicit_hessian">[docs]</a>
+    <span class="k">def</span> <span class="nf">form_explicit_hessian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hamiltonian</span><span class="p">:</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">spin</span><span class="p">:</span> <span class="n">Spin</span><span class="p">,</span> <span class="n">frequency</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;tei_mo&quot;</span><span class="p">)</span>
         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
         <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
@@ -928,7 +1008,6 @@
         <span class="n">nov_beta</span> <span class="o">=</span> <span class="n">nocc_beta</span> <span class="o">*</span> <span class="n">nvirt_beta</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_uhf</span><span class="p">:</span>
-
             <span class="c1"># Set up &quot;function pointers&quot;.</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo_type</span> <span class="o">==</span> <span class="n">AO2MOTransformationType</span><span class="o">.</span><span class="n">full</span><span class="p">:</span>
                 <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
@@ -957,7 +1036,10 @@
             <span class="c1"># TODO UHF</span>
             <span class="k">pass</span></div>
 
-<div class="viewcode-block" id="ExactDiagonalizationSolverTDA.diagonalize_explicit_hessian"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactDiagonalizationSolverTDA.diagonalize_explicit_hessian">[docs]</a>    <span class="k">def</span> <span class="nf">diagonalize_explicit_hessian</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<div class="viewcode-block" id="ExactDiagonalizationSolverTDA.diagonalize_explicit_hessian">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.solvers.ExactDiagonalizationSolverTDA.diagonalize_explicit_hessian">[docs]</a>
+    <span class="k">def</span> <span class="nf">diagonalize_explicit_hessian</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">,</span> <span class="n">nvirt_beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">occupations</span>
         <span class="n">nov_alph</span> <span class="o">=</span> <span class="n">nocc_alph</span> <span class="o">*</span> <span class="n">nvirt_alph</span>
         <span class="n">nov_beta</span> <span class="o">=</span> <span class="n">nocc_beta</span> <span class="o">*</span> <span class="n">nvirt_beta</span>
@@ -971,7 +1053,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">eigvecs</span> <span class="o">=</span> <span class="n">eigvecs</span><span class="p">[:,</span> <span class="n">idx</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># TODO UHF</span>
-            <span class="k">raise</span> <span class="ne">NotImplementedError</span></div></div>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+</div>
+
 </pre></div>
 
            </div>

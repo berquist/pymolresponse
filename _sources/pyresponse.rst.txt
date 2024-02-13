@@ -7,11 +7,11 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
-   pyresponse.dalton
+   pyresponse.interfaces.dalton
    pyresponse.data
    pyresponse.properties
-   pyresponse.psi4
-   pyresponse.pyscf
+   pyresponse.interfaces.psi4
+   pyresponse.interfaces.pyscf
    pyresponse.tests
 
 Submodules

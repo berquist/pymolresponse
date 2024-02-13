@@ -1,45 +1,45 @@
-pyresponse.pyscf package
+pyresponse.interfaces.pyscf package
 ========================
 
 Submodules
 ----------
 
-pyresponse.pyscf.ao2mo module
+pyresponse.interfaces.pyscf.ao2mo module
 -----------------------------
 
-.. automodule:: pyresponse.pyscf.ao2mo
+.. automodule:: pyresponse.interfaces.pyscf.ao2mo
    :members:
    :undoc-members:
    :show-inheritance:
 
-pyresponse.pyscf.helpers module
+pyresponse.interfaces.pyscf.helpers module
 -------------------------------
 
-.. automodule:: pyresponse.pyscf.helpers
+.. automodule:: pyresponse.interfaces.pyscf.helpers
    :members:
    :undoc-members:
    :show-inheritance:
 
-pyresponse.pyscf.integrals module
+pyresponse.interfaces.pyscf.integrals module
 ---------------------------------
 
-.. automodule:: pyresponse.pyscf.integrals
+.. automodule:: pyresponse.interfaces.pyscf.integrals
    :members:
    :undoc-members:
    :show-inheritance:
 
-pyresponse.pyscf.molecules module
+pyresponse.interfaces.pyscf.molecules module
 ---------------------------------
 
-.. automodule:: pyresponse.pyscf.molecules
+.. automodule:: pyresponse.interfaces.pyscf.molecules
    :members:
    :undoc-members:
    :show-inheritance:
 
-pyresponse.pyscf.utils module
+pyresponse.interfaces.pyscf.utils module
 -----------------------------
 
-.. automodule:: pyresponse.pyscf.utils
+.. automodule:: pyresponse.interfaces.pyscf.utils
    :members:
    :undoc-members:
    :show-inheritance:
@@ -47,7 +47,7 @@ pyresponse.pyscf.utils module
 Module contents
 ---------------
 
-.. automodule:: pyresponse.pyscf
+.. automodule:: pyresponse.interfaces.pyscf
    :members:
    :undoc-members:
    :show-inheritance:

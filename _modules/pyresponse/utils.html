@@ -1,20 +1,23 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pyresponse.utils &mdash; pyresponse  documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -25,11 +28,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../contents.html" class="icon icon-home"> pyresponse
+
+          
+          
+          <a href="../../contents.html" class="icon icon-home">
+            pyresponse
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -52,9 +59,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../contents.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html">Module code</a> &raquo;</li>
-      <li>pyresponse.utils</li>
+      <li><a href="../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pyresponse.utils</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -74,7 +81,9 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 
-<div class="viewcode-block" id="form_results"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.form_results">[docs]</a><span class="k">def</span> <span class="nf">form_results</span><span class="p">(</span><span class="n">vecs_property</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">vecs_response</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<div class="viewcode-block" id="form_results">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.form_results">[docs]</a>
+<span class="k">def</span> <span class="nf">form_results</span><span class="p">(</span><span class="n">vecs_property</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">vecs_response</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="k">assert</span> <span class="n">vecs_property</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">==</span> <span class="n">vecs_response</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">vecs_property</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span>
     <span class="k">assert</span> <span class="n">vecs_property</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
@@ -82,8 +91,11 @@
     <span class="k">return</span> <span class="n">results</span></div>
 
 
-<div class="viewcode-block" id="np_load"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.np_load">[docs]</a><span class="k">def</span> <span class="nf">np_load</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Read a file using NumPy.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="np_load">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.np_load">[docs]</a>
+<span class="k">def</span> <span class="nf">np_load</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read a file using NumPy.&quot;&quot;&quot;</span>
     <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">npyio</span><span class="o">.</span><span class="n">NpzFile</span><span class="p">):</span>
         <span class="c1"># Make the assumption that there&#39;s only a single array</span>
@@ -94,7 +106,10 @@
     <span class="k">return</span> <span class="n">arr</span></div>
 
 
-<div class="viewcode-block" id="parse_int_file_2"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.parse_int_file_2">[docs]</a><span class="k">def</span> <span class="nf">parse_int_file_2</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">],</span> <span class="n">dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+
+<div class="viewcode-block" id="parse_int_file_2">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.parse_int_file_2">[docs]</a>
+<span class="k">def</span> <span class="nf">parse_int_file_2</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">],</span> <span class="n">dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="n">mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="n">dim</span><span class="p">))</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
         <span class="n">contents</span> <span class="o">=</span> <span class="n">fh</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
@@ -105,15 +120,24 @@
     <span class="k">return</span> <span class="n">mat</span></div>
 
 
-<div class="viewcode-block" id="repack_matrix_to_vector"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.repack_matrix_to_vector">[docs]</a><span class="k">def</span> <span class="nf">repack_matrix_to_vector</span><span class="p">(</span><span class="n">mat</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+
+<div class="viewcode-block" id="repack_matrix_to_vector">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.repack_matrix_to_vector">[docs]</a>
+<span class="k">def</span> <span class="nf">repack_matrix_to_vector</span><span class="p">(</span><span class="n">mat</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;F&quot;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="repack_vector_to_matrix"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.repack_vector_to_matrix">[docs]</a><span class="k">def</span> <span class="nf">repack_vector_to_matrix</span><span class="p">(</span><span class="n">vec</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">shape</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+
+<div class="viewcode-block" id="repack_vector_to_matrix">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.repack_vector_to_matrix">[docs]</a>
+<span class="k">def</span> <span class="nf">repack_vector_to_matrix</span><span class="p">(</span><span class="n">vec</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">shape</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">vec</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;F&quot;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="get_reference_value_from_file"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.get_reference_value_from_file">[docs]</a><span class="k">def</span> <span class="nf">get_reference_value_from_file</span><span class="p">(</span>
+
+<div class="viewcode-block" id="get_reference_value_from_file">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.get_reference_value_from_file">[docs]</a>
+<span class="k">def</span> <span class="nf">get_reference_value_from_file</span><span class="p">(</span>
     <span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
     <span class="n">hamiltonian</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">spin</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -147,7 +171,10 @@
     <span class="k">return</span> <span class="n">ref</span></div>
 
 
-<div class="viewcode-block" id="read_file_occupations"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.read_file_occupations">[docs]</a><span class="k">def</span> <span class="nf">read_file_occupations</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+
+<div class="viewcode-block" id="read_file_occupations">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.read_file_occupations">[docs]</a>
+<span class="k">def</span> <span class="nf">read_file_occupations</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
         <span class="n">contents</span> <span class="o">=</span> <span class="n">fh</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
     <span class="n">tokens</span> <span class="o">=</span> <span class="n">contents</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
@@ -156,7 +183,10 @@
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">,</span> <span class="n">nvirt_beta</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="read_file_1"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.read_file_1">[docs]</a><span class="k">def</span> <span class="nf">read_file_1</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+
+<div class="viewcode-block" id="read_file_1">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.read_file_1">[docs]</a>
+<span class="k">def</span> <span class="nf">read_file_1</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="n">elements</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
         <span class="n">n_elem</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">fh</span><span class="p">))</span>
@@ -166,7 +196,10 @@
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">elements</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="read_file_2"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.read_file_2">[docs]</a><span class="k">def</span> <span class="nf">read_file_2</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+
+<div class="viewcode-block" id="read_file_2">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.read_file_2">[docs]</a>
+<span class="k">def</span> <span class="nf">read_file_2</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="n">elements</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
         <span class="n">n_rows</span><span class="p">,</span> <span class="n">n_cols</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">next</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span>
@@ -177,7 +210,10 @@
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">elements</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">),</span> <span class="p">(</span><span class="n">n_rows</span><span class="p">,</span> <span class="n">n_cols</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="read_file_3"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.read_file_3">[docs]</a><span class="k">def</span> <span class="nf">read_file_3</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+
+<div class="viewcode-block" id="read_file_3">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.read_file_3">[docs]</a>
+<span class="k">def</span> <span class="nf">read_file_3</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="n">elements</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
         <span class="n">n_slices</span><span class="p">,</span> <span class="n">n_rows</span><span class="p">,</span> <span class="n">n_cols</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">next</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span>
@@ -187,7 +223,10 @@
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">elements</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">),</span> <span class="p">(</span><span class="n">n_slices</span><span class="p">,</span> <span class="n">n_rows</span><span class="p">,</span> <span class="n">n_cols</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="read_file_4"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.read_file_4">[docs]</a><span class="k">def</span> <span class="nf">read_file_4</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+
+<div class="viewcode-block" id="read_file_4">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.read_file_4">[docs]</a>
+<span class="k">def</span> <span class="nf">read_file_4</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="n">elements</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
         <span class="n">n_d1</span><span class="p">,</span> <span class="n">n_d2</span><span class="p">,</span> <span class="n">n_d3</span><span class="p">,</span> <span class="n">n_d4</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">next</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()]</span>
@@ -197,15 +236,21 @@
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">elements</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">),</span> <span class="p">(</span><span class="n">n_d1</span><span class="p">,</span> <span class="n">n_d2</span><span class="p">,</span> <span class="n">n_d3</span><span class="p">,</span> <span class="n">n_d4</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="occupations_from_sirifc"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.occupations_from_sirifc">[docs]</a><span class="k">def</span> <span class="nf">occupations_from_sirifc</span><span class="p">(</span><span class="n">ifc</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+
+<div class="viewcode-block" id="occupations_from_sirifc">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.occupations_from_sirifc">[docs]</a>
+<span class="k">def</span> <span class="nf">occupations_from_sirifc</span><span class="p">(</span><span class="n">ifc</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="n">nocc_a</span><span class="p">,</span> <span class="n">nocc_b</span> <span class="o">=</span> <span class="n">ifc</span><span class="o">.</span><span class="n">nisht</span> <span class="o">+</span> <span class="n">ifc</span><span class="o">.</span><span class="n">nasht</span><span class="p">,</span> <span class="n">ifc</span><span class="o">.</span><span class="n">nisht</span>
     <span class="n">norb</span> <span class="o">=</span> <span class="n">ifc</span><span class="o">.</span><span class="n">norbt</span>
     <span class="n">nvirt_a</span><span class="p">,</span> <span class="n">nvirt_b</span> <span class="o">=</span> <span class="n">norb</span> <span class="o">-</span> <span class="n">nocc_a</span><span class="p">,</span> <span class="n">norb</span> <span class="o">-</span> <span class="n">nocc_b</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">nocc_a</span><span class="p">,</span> <span class="n">nvirt_a</span><span class="p">,</span> <span class="n">nocc_b</span><span class="p">,</span> <span class="n">nvirt_b</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="Splitter"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.Splitter">[docs]</a><span class="k">class</span> <span class="nc">Splitter</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Split a line based not on a character, but a given number of field</span>
+
+<div class="viewcode-block" id="Splitter">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.Splitter">[docs]</a>
+<span class="k">class</span> <span class="nc">Splitter</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Split a line based not on a character, but a given number of field</span>
 <span class="sd">    widths.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -213,8 +258,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">start_indices</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">accumulate</span><span class="p">(</span><span class="n">widths</span><span class="p">))[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">end_indices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">accumulate</span><span class="p">(</span><span class="n">widths</span><span class="p">))</span>
 
-<div class="viewcode-block" id="Splitter.split"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.Splitter.split">[docs]</a>    <span class="k">def</span> <span class="nf">split</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">truncate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Split the given line using the field widths passed in on class</span>
+<div class="viewcode-block" id="Splitter.split">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.Splitter.split">[docs]</a>
+    <span class="k">def</span> <span class="nf">split</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">truncate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Split the given line using the field widths passed in on class</span>
 <span class="sd">        initialization.</span>
 
 <span class="sd">        Handle lines that contain fewer fields than specified in the</span>
@@ -230,10 +277,14 @@
                     <span class="n">elements</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">break</span>
-        <span class="k">return</span> <span class="n">elements</span></div></div>
+        <span class="k">return</span> <span class="n">elements</span></div>
+</div>
 
 
-<div class="viewcode-block" id="fix_mocoeffs_shape"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.fix_mocoeffs_shape">[docs]</a><span class="k">def</span> <span class="nf">fix_mocoeffs_shape</span><span class="p">(</span><span class="n">mocoeffs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+
+<div class="viewcode-block" id="fix_mocoeffs_shape">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.fix_mocoeffs_shape">[docs]</a>
+<span class="k">def</span> <span class="nf">fix_mocoeffs_shape</span><span class="p">(</span><span class="n">mocoeffs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mocoeffs</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
         <span class="c1"># this will properly fall through to the else clause</span>
         <span class="n">mocoeffs_new</span> <span class="o">=</span> <span class="n">fix_mocoeffs_shape</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">mocoeffs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
@@ -248,7 +299,10 @@
     <span class="k">return</span> <span class="n">mocoeffs_new</span></div>
 
 
-<div class="viewcode-block" id="fix_moenergies_shape"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.fix_moenergies_shape">[docs]</a><span class="k">def</span> <span class="nf">fix_moenergies_shape</span><span class="p">(</span><span class="n">moenergies</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+
+<div class="viewcode-block" id="fix_moenergies_shape">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.fix_moenergies_shape">[docs]</a>
+<span class="k">def</span> <span class="nf">fix_moenergies_shape</span><span class="p">(</span><span class="n">moenergies</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">moenergies</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
         <span class="c1"># this will properly fall through to the else clause</span>
         <span class="n">moenergies_new</span> <span class="o">=</span> <span class="n">fix_moenergies_shape</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">moenergies</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
@@ -288,7 +342,10 @@
     <span class="k">return</span> <span class="n">moenergies_new</span></div>
 
 
-<div class="viewcode-block" id="read_dalton_propfile"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.read_dalton_propfile">[docs]</a><span class="k">def</span> <span class="nf">read_dalton_propfile</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">:</span> <span class="n">Path</span><span class="p">):</span>
+
+<div class="viewcode-block" id="read_dalton_propfile">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.read_dalton_propfile">[docs]</a>
+<span class="k">def</span> <span class="nf">read_dalton_propfile</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">:</span> <span class="n">Path</span><span class="p">):</span>
     <span class="n">proplist</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">tmpdir</span> <span class="o">/</span> <span class="s2">&quot;DALTON.PROP&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">propfile</span><span class="p">:</span>
         <span class="n">proplines</span> <span class="o">=</span> <span class="n">propfile</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
@@ -300,7 +357,10 @@
     <span class="k">return</span> <span class="n">proplist</span></div>
 
 
-<div class="viewcode-block" id="tensor_printer"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.tensor_printer">[docs]</a><span class="k">def</span> <span class="nf">tensor_printer</span><span class="p">(</span><span class="n">tensor</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+
+<div class="viewcode-block" id="tensor_printer">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.tensor_printer">[docs]</a>
+<span class="k">def</span> <span class="nf">tensor_printer</span><span class="p">(</span><span class="n">tensor</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
     <span class="n">eigvals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigvals</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
     <span class="c1"># or should this be the trace of the matrix?</span>
@@ -318,7 +378,10 @@
     <span class="k">return</span> <span class="p">(</span><span class="n">eigvals</span><span class="p">,</span> <span class="n">iso</span><span class="p">,</span> <span class="n">aniso</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="form_vec_energy_differences"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.form_vec_energy_differences">[docs]</a><span class="k">def</span> <span class="nf">form_vec_energy_differences</span><span class="p">(</span><span class="n">moene_occ</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">moene_virt</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+
+<div class="viewcode-block" id="form_vec_energy_differences">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.form_vec_energy_differences">[docs]</a>
+<span class="k">def</span> <span class="nf">form_vec_energy_differences</span><span class="p">(</span><span class="n">moene_occ</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">moene_virt</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="n">nocc</span> <span class="o">=</span> <span class="n">moene_occ</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">nvirt</span> <span class="o">=</span> <span class="n">moene_virt</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">nov</span> <span class="o">=</span> <span class="n">nocc</span> <span class="o">*</span> <span class="n">nvirt</span>
@@ -334,8 +397,11 @@
     <span class="k">return</span> <span class="n">ediff</span></div>
 
 
-<div class="viewcode-block" id="screen"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.screen">[docs]</a><span class="k">def</span> <span class="nf">screen</span><span class="p">(</span><span class="n">mat</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">thresh</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0e-16</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Set all values smaller than the given threshold to zero</span>
+
+<div class="viewcode-block" id="screen">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.screen">[docs]</a>
+<span class="k">def</span> <span class="nf">screen</span><span class="p">(</span><span class="n">mat</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">thresh</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0e-16</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Set all values smaller than the given threshold to zero</span>
 <span class="sd">    (considering them as numerical noise).</span>
 
 <span class="sd">    Parameters</span>
@@ -354,8 +420,11 @@
     <span class="k">return</span> <span class="n">mat_screened</span></div>
 
 
-<div class="viewcode-block" id="matsym"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.matsym">[docs]</a><span class="k">def</span> <span class="nf">matsym</span><span class="p">(</span><span class="n">amat</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">thrzer</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0e-14</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="matsym">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.matsym">[docs]</a>
+<span class="k">def</span> <span class="nf">matsym</span><span class="p">(</span><span class="n">amat</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">thrzer</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0e-14</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    - Copied from ``DALTON/gp/gphjj.F/MATSYM``.</span>
 <span class="sd">    - `thrzer` taken from ``DALTON/include/thrzer.h``.</span>
 
@@ -395,8 +464,11 @@
     <span class="k">return</span> <span class="n">isym</span> <span class="o">+</span> <span class="n">iasym</span></div>
 
 
-<div class="viewcode-block" id="flip_triangle_sign"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.flip_triangle_sign">[docs]</a><span class="k">def</span> <span class="nf">flip_triangle_sign</span><span class="p">(</span><span class="n">A</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">triangle</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;lower&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Flip the sign of either the lower or upper triangle of a sqare</span>
+
+<div class="viewcode-block" id="flip_triangle_sign">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.flip_triangle_sign">[docs]</a>
+<span class="k">def</span> <span class="nf">flip_triangle_sign</span><span class="p">(</span><span class="n">A</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">triangle</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;lower&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Flip the sign of either the lower or upper triangle of a sqare</span>
 <span class="sd">    matrix. Assume nothing about its symmetry.</span>
 
 <span class="sd">    Parameters</span>
@@ -422,7 +494,10 @@
     <span class="k">return</span> <span class="n">B</span></div>
 
 
-<div class="viewcode-block" id="form_first_hyperpolarizability_averages"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.form_first_hyperpolarizability_averages">[docs]</a><span class="k">def</span> <span class="nf">form_first_hyperpolarizability_averages</span><span class="p">(</span>
+
+<div class="viewcode-block" id="form_first_hyperpolarizability_averages">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.form_first_hyperpolarizability_averages">[docs]</a>
+<span class="k">def</span> <span class="nf">form_first_hyperpolarizability_averages</span><span class="p">(</span>
     <span class="n">beta</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
     <span class="k">assert</span> <span class="n">beta</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
@@ -433,13 +508,20 @@
     <span class="k">return</span> <span class="n">avgs</span><span class="p">,</span> <span class="n">avg</span></div>
 
 
-<div class="viewcode-block" id="form_indices_orbwin"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.form_indices_orbwin">[docs]</a><span class="k">def</span> <span class="nf">form_indices_orbwin</span><span class="p">(</span><span class="n">nocc</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">nvirt</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
+
+<div class="viewcode-block" id="form_indices_orbwin">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.form_indices_orbwin">[docs]</a>
+<span class="k">def</span> <span class="nf">form_indices_orbwin</span><span class="p">(</span><span class="n">nocc</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">nvirt</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
     <span class="n">norb</span> <span class="o">=</span> <span class="n">nocc</span> <span class="o">+</span> <span class="n">nvirt</span>
     <span class="k">return</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">nocc</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nocc</span><span class="p">,</span> <span class="n">norb</span><span class="p">)]</span></div>
 
 
-<div class="viewcode-block" id="form_indices_zero"><a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.form_indices_zero">[docs]</a><span class="k">def</span> <span class="nf">form_indices_zero</span><span class="p">(</span><span class="n">nocc</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">nvirt</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
+
+<div class="viewcode-block" id="form_indices_zero">
+<a class="viewcode-back" href="../../pyresponse.html#pyresponse.utils.form_indices_zero">[docs]</a>
+<span class="k">def</span> <span class="nf">form_indices_zero</span><span class="p">(</span><span class="n">nocc</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">nvirt</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
     <span class="k">return</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nocc</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nvirt</span><span class="p">)]</span></div>
+
 </pre></div>
 
            </div>
