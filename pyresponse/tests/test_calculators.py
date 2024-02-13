@@ -20,12 +20,7 @@ except:
 
 
 def calculate_disk_rhf(
-    testcasedir: Path,
-    hamiltonian: str,
-    spin: str,
-    frequency: str,
-    label_1: str,
-    label_2: str,
+    testcasedir: Path, hamiltonian: str, spin: str, frequency: str, label_1: str, label_2: str
 ) -> float:
     occupations = utils.read_file_occupations(testcasedir / "occupations")
     nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = occupations
@@ -99,12 +94,7 @@ def calculate_disk_rhf(
 
 
 def calculate_disk_uhf(
-    testcasedir: Path,
-    hamiltonian: str,
-    spin: str,
-    frequency: str,
-    label_1: str,
-    label_2: str,
+    testcasedir: Path, hamiltonian: str, spin: str, frequency: str, label_1: str, label_2: str
 ) -> float:
     occupations = utils.read_file_occupations(testcasedir / "occupations")
     nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = occupations

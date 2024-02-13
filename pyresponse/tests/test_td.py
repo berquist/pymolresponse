@@ -38,26 +38,17 @@ def test_HF_both_singlet_HF_STO3G():
 
     print("TDA using TDA()")
     driver_tda.run(
-        hamiltonian=Hamiltonian.TDA,
-        spin=Spin.singlet,
-        program=Program.PySCF,
-        program_obj=mol,
+        hamiltonian=Hamiltonian.TDA, spin=Spin.singlet, program=Program.PySCF, program_obj=mol
     )
     excitation_energies_tda_using_tda = driver_tda.solver.eigvals[:nroots].real
     print("TDA using TDHF()")
     driver_tdhf.run(
-        hamiltonian=Hamiltonian.TDA,
-        spin=Spin.singlet,
-        program=Program.PySCF,
-        program_obj=mol,
+        hamiltonian=Hamiltonian.TDA, spin=Spin.singlet, program=Program.PySCF, program_obj=mol
     )
     excitation_energies_tda_using_tdhf = driver_tdhf.solver.eigvals[:nroots].real
     print("RPA using TDHF()")
     driver_tdhf.run(
-        hamiltonian=Hamiltonian.RPA,
-        spin=Spin.singlet,
-        program=Program.PySCF,
-        program_obj=mol,
+        hamiltonian=Hamiltonian.RPA, spin=Spin.singlet, program=Program.PySCF, program_obj=mol
     )
     excitation_energies_rpa = driver_tdhf.solver.eigvals[:nroots].real
 

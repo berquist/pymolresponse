@@ -37,12 +37,7 @@ def test_geometric_hessian_rhf_outside_solver_psi4numpy():
 
     psi4.core.set_active_molecule(mol)
 
-    options = {
-        "BASIS": "STO-3G",
-        "SCF_TYPE": "PK",
-        "E_CONVERGENCE": 1e-10,
-        "D_CONVERGENCE": 1e-10,
-    }
+    options = {"BASIS": "STO-3G", "SCF_TYPE": "PK", "E_CONVERGENCE": 1e-10, "D_CONVERGENCE": 1e-10}
 
     psi4.set_options(options)
 
@@ -472,12 +467,7 @@ def test_geometric_hessian_rhf_outside_solver_chemists():
     mol.update_geometry()
     psi4.core.set_active_molecule(mol)
 
-    options = {
-        "BASIS": "STO-3G",
-        "SCF_TYPE": "PK",
-        "E_CONVERGENCE": 1e-10,
-        "D_CONVERGENCE": 1e-10,
-    }
+    options = {"BASIS": "STO-3G", "SCF_TYPE": "PK", "E_CONVERGENCE": 1e-10, "D_CONVERGENCE": 1e-10}
 
     psi4.set_options(options)
 
@@ -718,16 +708,10 @@ def test_geometric_hessian_rhf_outside_solver_chemists():
                     )
 
                     Hes["R"][r][c] += 4.0 * np.einsum(
-                        "ij,mn,ijmn->",
-                        deriv1[key1S][o, o],
-                        deriv1[key2S][o, o],
-                        MO[o, o, o, o],
+                        "ij,mn,ijmn->", deriv1[key1S][o, o], deriv1[key2S][o, o], MO[o, o, o, o]
                     )
                     Hes["R"][r][c] -= 2.0 * np.einsum(
-                        "ij,mn,inmj->",
-                        deriv1[key1S][o, o],
-                        deriv1[key2S][o, o],
-                        MO[o, o, o, o],
+                        "ij,mn,inmj->", deriv1[key1S][o, o], deriv1[key2S][o, o], MO[o, o, o, o]
                     )
 
                     Hes["R"][r][c] -= 4.0 * np.einsum("ia,ia->", U[key2], B[key1])
@@ -879,12 +863,7 @@ def test_geometric_hessian_rhf_right_hand_side():
     mol.update_geometry()
     psi4.core.set_active_molecule(mol)
 
-    options = {
-        "BASIS": "STO-3G",
-        "SCF_TYPE": "PK",
-        "E_CONVERGENCE": 1e-10,
-        "D_CONVERGENCE": 1e-10,
-    }
+    options = {"BASIS": "STO-3G", "SCF_TYPE": "PK", "E_CONVERGENCE": 1e-10, "D_CONVERGENCE": 1e-10}
 
     psi4.set_options(options)
 
@@ -987,12 +966,7 @@ def test_atomic_polar_tensor_rhf():
     mol.update_geometry()
     psi4.core.set_active_molecule(mol)
 
-    options = {
-        "BASIS": "STO-3G",
-        "SCF_TYPE": "PK",
-        "E_CONVERGENCE": 1e-10,
-        "D_CONVERGENCE": 1e-10,
-    }
+    options = {"BASIS": "STO-3G", "SCF_TYPE": "PK", "E_CONVERGENCE": 1e-10, "D_CONVERGENCE": 1e-10}
 
     psi4.set_options(options)
 
@@ -1035,10 +1009,7 @@ def test_atomic_polar_tensor_rhf():
     driver.solver.operators.append(operator_geometric)
 
     driver.run(
-        hamiltonian=Hamiltonian.RPA,
-        spin=Spin.singlet,
-        program=Program.Psi4,
-        program_obj=wfn,
+        hamiltonian=Hamiltonian.RPA, spin=Spin.singlet, program=Program.Psi4, program_obj=wfn
     )
     print(driver.results[0])
     print(driver.results[0].T)

@@ -204,8 +204,7 @@ class CPHF(Driver):
 
             # FIXME same comment about the dtype as above
             results = np.zeros(
-                shape=(dim_rows, dim_cols),
-                dtype=self.solver.operators[0].rspvecs_alph[f].dtype,
+                shape=(dim_rows, dim_cols), dtype=self.solver.operators[0].rspvecs_alph[f].dtype
             )
 
             # Form the result blocks between each pair of

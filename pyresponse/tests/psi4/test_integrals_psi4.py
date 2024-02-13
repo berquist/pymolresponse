@@ -3,10 +3,7 @@ import numpy as np
 import psi4
 
 from pyresponse.interfaces.psi4 import integrals, molecules
-from pyresponse.interfaces.psi4.utils import (
-    mocoeffs_from_psi4wfn,
-    occupations_from_psi4wfn,
-)
+from pyresponse.interfaces.psi4.utils import mocoeffs_from_psi4wfn, occupations_from_psi4wfn
 
 
 def test_integrals_psi4():
@@ -15,12 +12,7 @@ def test_integrals_psi4():
     mol.update_geometry()
     psi4.core.set_active_molecule(mol)
 
-    options = {
-        "BASIS": "STO-3G",
-        "SCF_TYPE": "PK",
-        "E_CONVERGENCE": 1e-10,
-        "D_CONVERGENCE": 1e-10,
-    }
+    options = {"BASIS": "STO-3G", "SCF_TYPE": "PK", "E_CONVERGENCE": 1e-10, "D_CONVERGENCE": 1e-10}
 
     psi4.set_options(options)
 
@@ -42,12 +34,7 @@ def test_jk_psi4():
     mol.update_geometry()
     psi4.core.set_active_molecule(mol)
 
-    options = {
-        "BASIS": "STO-3G",
-        "SCF_TYPE": "PK",
-        "E_CONVERGENCE": 1e-10,
-        "D_CONVERGENCE": 1e-10,
-    }
+    options = {"BASIS": "STO-3G", "SCF_TYPE": "PK", "E_CONVERGENCE": 1e-10, "D_CONVERGENCE": 1e-10}
 
     psi4.set_options(options)
 

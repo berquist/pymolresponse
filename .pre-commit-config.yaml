@@ -1,6 +1,10 @@
 ---
-fail_fast: true
+fail_fast: false
 repos:
+  - repo: meta
+    hooks:
+      - id: check-hooks-apply
+      - id: check-useless-excludes
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: "v4.4.0"
     hooks:
@@ -11,18 +15,23 @@ repos:
       - id: fix-byte-order-marker
         exclude: pyresponse/data
       - id: check-merge-conflict
-      - id: check-json
       - id: check-toml
       - id: check-yaml
       - id: check-added-large-files
+  - repo: https://github.com/Mateusz-Grzelinski/actionlint-py
+    rev: "v1.6.26.11"
+    hooks:
+      - id: actionlint
   - repo: https://github.com/PyCQA/isort
     rev: "5.12.0"
     hooks:
       - id: isort
-  - repo: https://github.com/psf/black
-    rev: "23.3.0"
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.1.13
     hooks:
-      - id: black
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
   - repo: https://github.com/asottile/blacken-docs
     rev: "1.13.0"
     hooks:
@@ -46,16 +55,6 @@ repos:
   #     - id: pydocstyle
   #       additional_dependencies:
   #         - toml
-  # - repo: https://github.com/PyCQA/flake8
-  #   rev: "6.0.0"
-  #   hooks:
-  #     - id: flake8
-  # - repo: https://github.com/PyCQA/pylint
-  #   rev: "v3.0.0a6"
-  #   hooks:
-  #     - id: pylint
-  #       additional_dependencies:
-  #         - numpy
   # - repo: https://github.com/pre-commit/mirrors-mypy
   #   rev: "v1.3.0"
   #   hooks:
@@ -69,7 +68,3 @@ repos:
     rev: "v1.32.0"
     hooks:
       - id: yamllint
-  - repo: https://github.com/sirosen/check-jsonschema
-    rev: "0.23.0"
-    hooks:
-      - id: check-github-workflows

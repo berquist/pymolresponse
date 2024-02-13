@@ -1,11 +1,10 @@
-[tool.black]
-line-length = 100
-target-version = ['py39']
+[tool.doc8]
+ignore = "D001"
 
 [tool.isort]
 profile = "black"
+line_length = 100
 # default is FUTURE,STDLIB,THIRDPARTY,FIRSTPARTY,LOCALFOLDER
-# Placing third-party imports at the end makes their inclusion more obvious
 sections = ["FUTURE", "STDLIB", "ATTRS", "THIRDPARTY", "CHEMISTRY", "FIRSTPARTY", "LOCALFOLDER"]
 known_attrs = ["attr"]
 known_chemistry = ["psi4", "pyscf"]
@@ -27,5 +26,19 @@ module = [
 ]
 ignore_missing_imports = true
 
-[tool.doc8]
-ignore = "D001"
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.format]
+skip-magic-trailing-comma = true
+
+[tool.ruff.lint]
+select = []
+
+[tool.ruff.lint.isort]
+lines-after-imports = 2
+section-order = ["future", "standard-library", "attrs", "third-party", "chemistry", "first-party", "local-folder"]
+
+[tool.ruff.lint.isort.sections]
+"attrs" = ["attr"]
+"chemistry" = ["psi4", "pyscf"]

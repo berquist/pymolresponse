@@ -416,12 +416,7 @@ class ExactLineqSolver(LineqSolver, ABC):
             G_ba = np.block([[A_os_b, B_os_b], [B_os_b, A_os_b]])
             G_bb = np.block([[A_ss_b, B_ss_b], [B_ss_b, A_ss_b]])
 
-            self.explicit_hessian = (
-                G_aa - superoverlap_alph,
-                G_ab,
-                G_ba,
-                G_bb - superoverlap_beta,
-            )
+            self.explicit_hessian = (G_aa - superoverlap_alph, G_ab, G_ba, G_bb - superoverlap_beta)
 
     @abstractmethod
     def invert_explicit_hessian(self) -> None:
@@ -618,12 +613,7 @@ class IterativeLinEqSolver(LineqSolver):
             self._run(hamiltonian, spin, frequency, self.maxiter, self.conv)
 
     def _run(
-        self,
-        hamiltonian: Hamiltonian,
-        spin: Spin,
-        omega: float,
-        maxiter: int,
-        conv: float,
+        self, hamiltonian: Hamiltonian, spin: Spin, omega: float, maxiter: int, conv: float
     ) -> None:
         nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
         assert (nocc_alph + nvirt_alph) == (nocc_beta + nvirt_beta)

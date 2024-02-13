@@ -6,9 +6,7 @@ import numpy as np
 import periodictable
 
 
-def get_most_abundant_isotope(
-    element: periodictable.core.Element,
-) -> periodictable.core.Isotope:
+def get_most_abundant_isotope(element: periodictable.core.Element) -> periodictable.core.Isotope:
     most_abundant_isotope = element.isotopes[0]
     abundance = 0
     for iso in element:
@@ -103,9 +101,7 @@ def get_uhf_values(
 
 
 def mat_uhf_to_packed_rohf(
-    mat_alpha: np.ndarray,
-    mat_beta: np.ndarray,
-    indices_display_rohf: List[Tuple[int, int]],
+    mat_alpha: np.ndarray, mat_beta: np.ndarray, indices_display_rohf: List[Tuple[int, int]]
 ) -> np.ndarray:
     dim = len(indices_display_rohf)
     mat_rohf = np.zeros(dim)
