@@ -6,9 +6,9 @@ import pyscf
 
 from pyresponse import cphf, solvers, utils
 from pyresponse.core import Hamiltonian, Program, Spin
-from pyresponse.properties import electric
 from pyresponse.interfaces.pyscf.molecules import molecule_water_sto3g_angstrom
 from pyresponse.interfaces.pyscf.utils import occupations_from_pyscf_mol
+from pyresponse.properties import electric
 
 
 def test_first_hyperpolarizability_static_rhf_wigner_explicit():

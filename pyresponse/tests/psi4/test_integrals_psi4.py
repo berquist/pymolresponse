@@ -3,7 +3,10 @@ import numpy as np
 import psi4
 
 from pyresponse.interfaces.psi4 import integrals, molecules
-from pyresponse.interfaces.psi4.utils import mocoeffs_from_psi4wfn, occupations_from_psi4wfn
+from pyresponse.interfaces.psi4.utils import (
+    mocoeffs_from_psi4wfn,
+    occupations_from_psi4wfn,
+)
 
 
 def test_integrals_psi4():

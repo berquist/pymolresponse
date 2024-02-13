@@ -3,8 +3,8 @@ import numpy as np
 from pyresponse import cphf, operators, solvers, utils
 from pyresponse.core import AO2MOTransformationType, Hamiltonian, Program, Spin
 from pyresponse.data import REFDIR
-from pyresponse.properties import electric
 from pyresponse.interfaces.pyscf import molecules
+from pyresponse.properties import electric
 from pyresponse.tests.test_runners import (
     run_as_many_tests_as_possible_rhf_disk,
     run_as_many_tests_as_possible_uhf_disk,

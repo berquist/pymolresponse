@@ -2,8 +2,8 @@ from pathlib import Path
 from typing import Union
 
 from pyresponse import utils
-from pyresponse.interfaces.dalton.utils import dalton_label_to_operator
 from pyresponse.data import REFDIR
+from pyresponse.interfaces.dalton.utils import dalton_label_to_operator
 from pyresponse.operators import Operator
 from pyresponse.tests.test_calculators import calculate_disk_rhf
 
