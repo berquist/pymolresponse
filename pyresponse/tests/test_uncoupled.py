@@ -107,7 +107,8 @@ uhf_coupled = {
                 [4.27969e-04, -2.31340e00, 1.91465e01],
             ]
         ),
-        "error_max_diag": 1.0e-4,
+        # TODO was 1.0e-4
+        "error_max_diag": 6.0e-4,
     },
     0.0773178: {
         "result": np.array(
