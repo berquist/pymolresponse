@@ -22,13 +22,7 @@ class ORD(ResponseProperty):
         do_dipvel: bool = False,
     ):
         super().__init__(
-            program,
-            program_obj,
-            driver,
-            mocoeffs,
-            moenergies,
-            occupations,
-            frequencies=frequencies,
+            program, program_obj, driver, mocoeffs, moenergies, occupations, frequencies=frequencies
         )
         self.do_dipvel = do_dipvel
 

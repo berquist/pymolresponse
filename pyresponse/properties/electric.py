@@ -25,13 +25,7 @@ class Polarizability(ResponseProperty):
         frequencies: Sequence[float] = [0.0],
     ) -> None:
         super().__init__(
-            program,
-            program_obj,
-            driver,
-            mocoeffs,
-            moenergies,
-            occupations,
-            frequencies=frequencies,
+            program, program_obj, driver, mocoeffs, moenergies, occupations, frequencies=frequencies
         )
         self.polarizabilities = []
 

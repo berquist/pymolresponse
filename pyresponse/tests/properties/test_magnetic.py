@@ -38,12 +38,7 @@ def test_magnetizability_rhf() -> None:
     occupations = occupations_from_pyscf_mol(mol, C)
 
     calculator_common = magnetic.Magnetizability(
-        Program.PySCF,
-        mol,
-        cphf.CPHF(solvers.ExactInv(C, E, occupations)),
-        C,
-        E,
-        occupations,
+        Program.PySCF, mol, cphf.CPHF(solvers.ExactInv(C, E, occupations)), C, E, occupations
     )
     calculator_common.form_operators()
     calculator_common.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)
@@ -76,12 +71,7 @@ def test_magnetizability_uhf() -> None:
     occupations = occupations_from_pyscf_mol(mol, C)
 
     calculator_common = magnetic.Magnetizability(
-        Program.PySCF,
-        mol,
-        cphf.CPHF(solvers.ExactInv(C, E, occupations)),
-        C,
-        E,
-        occupations,
+        Program.PySCF, mol, cphf.CPHF(solvers.ExactInv(C, E, occupations)), C, E, occupations
     )
     calculator_common.form_operators()
     calculator_common.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)
@@ -125,12 +115,7 @@ def test_electronicgtensor_tiny() -> None:
     occupations = occupations_from_pyscf_mol(mol, C)
 
     gtensor_calculator = magnetic.ElectronicGTensor(
-        Program.PySCF,
-        mol,
-        cphf.CPHF(solvers.ExactInv(C, E, occupations)),
-        C,
-        E,
-        occupations,
+        Program.PySCF, mol, cphf.CPHF(solvers.ExactInv(C, E, occupations)), C, E, occupations
     )
     gtensor_calculator.form_operators()
     gtensor_calculator.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)
@@ -159,12 +144,7 @@ def test_electronicgtensor_small() -> None:
     occupations = occupations_from_pyscf_mol(mol, C)
 
     gtensor_calculator = magnetic.ElectronicGTensor(
-        Program.PySCF,
-        mol,
-        cphf.CPHF(solvers.ExactInv(C, E, occupations)),
-        C,
-        E,
-        occupations,
+        Program.PySCF, mol, cphf.CPHF(solvers.ExactInv(C, E, occupations)), C, E, occupations
     )
     gtensor_calculator.form_operators()
     gtensor_calculator.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)

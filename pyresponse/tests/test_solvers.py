@@ -36,12 +36,7 @@ def test_inversion() -> None:
     occupations = occupations_from_pyscf_mol(mol, C)
 
     calculator_ref = magnetic.Magnetizability(
-        Program.PySCF,
-        mol,
-        cphf.CPHF(solvers.ExactInv(C, E, occupations)),
-        C,
-        E,
-        occupations,
+        Program.PySCF, mol, cphf.CPHF(solvers.ExactInv(C, E, occupations)), C, E, occupations
     )
     calculator_ref.form_operators()
     calculator_ref.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)
@@ -54,20 +49,14 @@ def test_inversion() -> None:
     # TODO actually test the different inversion functions...
     for _ in inv_funcs:
         calculator_res = magnetic.Magnetizability(
-            Program.PySCF,
-            mol,
-            cphf.CPHF(solvers.ExactInv(C, E, occupations)),
-            C,
-            E,
-            occupations,
+            Program.PySCF, mol, cphf.CPHF(solvers.ExactInv(C, E, occupations)), C, E, occupations
         )
         calculator_res.form_operators()
         calculator_res.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)
         calculator_res.form_results()
 
         np.testing.assert_equal(
-            np.sign(calculator_ref.magnetizability),
-            np.sign(calculator_res.magnetizability),
+            np.sign(calculator_ref.magnetizability), np.sign(calculator_res.magnetizability)
         )
         diff = calculator_ref.magnetizability - calculator_res.magnetizability
         abs_diff = np.abs(diff)

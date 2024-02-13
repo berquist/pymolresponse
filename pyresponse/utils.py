@@ -356,9 +356,7 @@ def flip_triangle_sign(A: np.ndarray, triangle: str = "lower") -> np.ndarray:
     return B
 
 
-def form_first_hyperpolarizability_averages(
-    beta: np.ndarray,
-) -> Tuple[np.ndarray, np.ndarray]:
+def form_first_hyperpolarizability_averages(beta: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
     assert beta.shape == (3, 3, 3)
     avgs = (-1 / 3) * (
         np.einsum("ijj->i", beta) + np.einsum("jij->i", beta) + np.einsum("jji->i", beta)

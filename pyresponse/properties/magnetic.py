@@ -74,13 +74,7 @@ class ElectronicGTensor(ResponseProperty):
         gauge_origin: Union[str, np.ndarray] = "ecc",
     ) -> None:
         super().__init__(
-            program,
-            program_obj,
-            driver,
-            mocoeffs,
-            moenergies,
-            occupations,
-            frequencies=[0.0],
+            program, program_obj, driver, mocoeffs, moenergies, occupations, frequencies=[0.0]
         )
 
         if program == Program.PySCF:

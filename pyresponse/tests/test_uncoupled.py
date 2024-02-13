@@ -10,11 +10,7 @@ from pyresponse.interfaces.pyscf.utils import occupations_from_pyscf_mol
 
 
 def mol_atom(
-    symbol: str = "He",
-    charge: int = 0,
-    spin: int = 0,
-    basis: str = "sto-3g",
-    verbose: int = 0,
+    symbol: str = "He", charge: int = 0, spin: int = 0, basis: str = "sto-3g", verbose: int = 0
 ) -> pyscf.gto.Mole:
     mol = pyscf.gto.Mole()
     mol.verbose = verbose
@@ -220,10 +216,7 @@ def test_uncoupled_rhf() -> None:
     driver.set_frequencies(frequencies)
 
     driver.run(
-        hamiltonian=Hamiltonian.RPA,
-        spin=Spin.singlet,
-        program=Program.PySCF,
-        program_obj=mol,
+        hamiltonian=Hamiltonian.RPA, spin=Spin.singlet, program=Program.PySCF, program_obj=mol
     )
 
     for idxf, frequency in enumerate(frequencies):
@@ -279,10 +272,7 @@ def test_uncoupled_uhf() -> None:
     driver.set_frequencies(frequencies)
 
     driver.run(
-        hamiltonian=Hamiltonian.RPA,
-        spin=Spin.singlet,
-        program=Program.PySCF,
-        program_obj=mol,
+        hamiltonian=Hamiltonian.RPA, spin=Spin.singlet, program=Program.PySCF, program_obj=mol
     )
 
     for idxf, frequency in enumerate(frequencies):

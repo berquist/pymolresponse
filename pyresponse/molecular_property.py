@@ -41,10 +41,7 @@ class MolecularProperty(ABC):
         assert isinstance(hamiltonian, Hamiltonian)
         assert isinstance(spin, Spin)
         self.driver.run(
-            hamiltonian=hamiltonian,
-            spin=spin,
-            program=self.program,
-            program_obj=self.program_obj,
+            hamiltonian=hamiltonian, spin=spin, program=self.program, program_obj=self.program_obj
         )
 
     @abstractmethod

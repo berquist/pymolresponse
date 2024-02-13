@@ -218,10 +218,7 @@ def test_explicit_uhf() -> None:
     driver.set_frequencies()
 
     driver.run(
-        hamiltonian=Hamiltonian.RPA,
-        spin=Spin.singlet,
-        program=Program.PySCF,
-        program_obj=mol,
+        hamiltonian=Hamiltonian.RPA, spin=Spin.singlet, program=Program.PySCF, program_obj=mol
     )
     assert len(driver.frequencies) == len(driver.results) == 1
     res = driver.results[0]
