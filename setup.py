@@ -53,6 +53,6 @@ if __name__ == "__main__":
         package_data={"pyresponse": tuple(str(f) for f in _get_package_data())},
         url="https://github.com/berquist/pyresponse",
         python_requires=">=3.6",
-        install_requires=["cclib", "periodictable"],
+        install_requires=["attrs", "cclib", "periodictable"],
         project_urls={"Documentation": "https://berquist.github.io/pyresponse_docs/"},
     )

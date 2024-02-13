@@ -6,12 +6,12 @@ import pyscf
 
 from pyresponse import cphf, solvers, utils
 from pyresponse.core import Hamiltonian, Program, Spin
-from pyresponse.properties import electric
 from pyresponse.interfaces.pyscf.molecules import (
     molecule_physicists_water_augccpvdz,
     molecule_physicists_water_sto3g,
 )
 from pyresponse.interfaces.pyscf.utils import occupations_from_pyscf_mol
+from pyresponse.properties import electric
 
 
 def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_small():

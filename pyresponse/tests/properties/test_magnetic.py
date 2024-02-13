@@ -4,9 +4,9 @@ import pyscf
 
 from pyresponse import cphf, solvers, utils
 from pyresponse.core import Hamiltonian, Program, Spin
-from pyresponse.properties import magnetic
 from pyresponse.interfaces.pyscf import molecules
 from pyresponse.interfaces.pyscf.utils import occupations_from_pyscf_mol
+from pyresponse.properties import magnetic
 
 # These were generated using DALTON.
 ref_magnetizability_rhf = np.array(
