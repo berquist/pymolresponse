@@ -1,8 +1,16 @@
 [project]
 name = "pyresponse"
 description = "Molecular frequency-dependent response properties for arbitrary operators"
+dynamic = ["version"]
 readme = "README.md"
+authors = [
+    { name = "Eric Berquist", email = "eric.berquist@gmail.com" }
+]
 license = {file = "LICENSE"}
+classifiers = [
+    "License :: OSI Approved :: BSD License",
+    "Programming Language :: Python :: 3",
+]
 requires-python = ">=3.6"
 dependencies = [
     "attrs",
@@ -15,12 +23,31 @@ dependencies = [
 Documentation = "https://berquist.github.io/pyresponse_docs/"
 Homepage = "https://github.com/berquist/pyresponse"
 
+[project.optional-dependencies]
+test = [
+  "pytest>=6.1.2",
+  "pytest-runner"
+]
+
 [build-system]
 requires = ["setuptools >= 61.0"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
 zip-safe = false
+# include-package-data = false
+
+# [tool.setuptools.packages.find]
+# namespaces = false
+# where = ["."]
+
+# [tool.setuptools.package-data]
+# pyresponse2 = [
+#     "py.typed"
+# ]
+
+[tool.setuptools.package-dir]
+pyresponse = "pyresponse"
 
 [tool.doc8]
 ignore = "D001"
@@ -66,3 +93,21 @@ section-order = ["future", "standard-library", "attrs", "third-party", "chemistr
 [tool.ruff.lint.isort.sections]
 "attrs" = ["attr"]
 "chemistry" = ["psi4", "pyscf"]
+
+[tool.versioningit]
+default-version = "1+unknown"
+
+[tool.versioningit.format]
+distance = "{base_version}+{distance}.{vcs}{rev}"
+dirty = "{base_version}+{distance}.{vcs}{rev}.dirty"
+distance-dirty = "{base_version}+{distance}.{vcs}{rev}.dirty"
+
+[tool.versioningit.vcs]
+# The method key:
+method = "git"  # <- The method name
+# Parameters to pass to the method:
+match = ["*"]
+default-tag = "1.0.0"
+
+[tool.versioningit.write]
+file = "pyresponse/_version.py"
