@@ -1,3 +1,27 @@
+[project]
+name = "pyresponse"
+description = "Molecular frequency-dependent response properties for arbitrary operators"
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.6"
+dependencies = [
+    "attrs",
+    "cclib",
+    "periodictable",
+]
+
+[project.urls]
+"Bug Tracker" = "https://github.com/berquist/pyresponse/issues"
+Documentation = "https://berquist.github.io/pyresponse_docs/"
+Homepage = "https://github.com/berquist/pyresponse"
+
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+zip-safe = false
+
 [tool.doc8]
 ignore = "D001"
 
