@@ -8,8 +8,7 @@ updates:
   - package-ecosystem: pip
     directory: "/"
     schedule:
-      interval: daily
-      time: "10:00"
+      interval: weekly
     allow:
       - dependency-type: direct
       - dependency-type: indirect
