@@ -103,11 +103,8 @@ dirty = "{base_version}+{distance}.{vcs}{rev}.dirty"
 distance-dirty = "{base_version}+{distance}.{vcs}{rev}.dirty"
 
 [tool.versioningit.vcs]
-# The method key:
-method = "git"  # <- The method name
-# Parameters to pass to the method:
-match = ["*"]
-default-tag = "1.0.0"
+method = "git"
+match = ["v*"]
 
 [tool.versioningit.write]
 file = "pyresponse/_version.py"
