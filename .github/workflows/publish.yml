@@ -4,6 +4,11 @@ name: Publish Python 🐍 distribution 📦 to PyPI and TestPyPI
 # yamllint disable-line rule:truthy
 on: push
 
+# For now always take the "reduced" form of the version, even for those
+# actions runs that do not push to a package index.
+env:
+  VERSIONINGIT_FOR_PACKAGE_INDEX: true
+
 jobs:
   build:
     name: Build distribution 📦
@@ -22,7 +27,7 @@ jobs:
       - name: Install pypa/build
         run: |
           python3 -m pip install -U pip setuptools
-          python3 -m pip install build --user
+          python3 -m pip install build
       - name: Build a binary wheel and a source tarball
         run: python3 -m build
       - name: Store the distribution packages
