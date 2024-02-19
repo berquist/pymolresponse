@@ -2,7 +2,13 @@
 name: Publish Python 🐍 distribution 📦 to PyPI and TestPyPI
 
 # yamllint disable-line rule:truthy
-on: push
+on:
+  push:
+    # Attempt to run on all pushes.
+    # branches:
+    #   - main
+    # tags:
+    #   - v*
 
 # For now always take the "reduced" form of the version, even for those
 # actions runs that do not push to a package index.
@@ -107,6 +113,9 @@ jobs:
     needs:
       - build
     runs-on: ubuntu-latest
+
+    # publish on merge to default branch or any tag
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')
 
     environment:
       name: testpypi
