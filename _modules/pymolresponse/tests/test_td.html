@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pymolresponse.tests.test_td &mdash; pymolresponse  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=eafc0fe6" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../contents.html" class="icon icon-home">
+            pymolresponse
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">pymolresponse</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../contents.html">pymolresponse</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pymolresponse.tests.test_td</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pymolresponse.tests.test_td</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">pyscf</span>
+
+<span class="kn">from</span> <span class="nn">pymolresponse</span> <span class="kn">import</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">td</span><span class="p">,</span> <span class="n">utils</span>
+<span class="kn">from</span> <span class="nn">pymolresponse.core</span> <span class="kn">import</span> <span class="n">AO2MOTransformationType</span><span class="p">,</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">Program</span><span class="p">,</span> <span class="n">Spin</span>
+<span class="kn">from</span> <span class="nn">pymolresponse.interfaces.pyscf.ao2mo</span> <span class="kn">import</span> <span class="n">AO2MOpyscf</span>
+<span class="kn">from</span> <span class="nn">pymolresponse.interfaces.pyscf.utils</span> <span class="kn">import</span> <span class="n">occupations_from_pyscf_mol</span>
+
+
+<div class="viewcode-block" id="test_HF_both_singlet_HF_STO3G">
+<a class="viewcode-back" href="../../../pyresponse.tests.html#pymolresponse.tests.test_td.test_HF_both_singlet_HF_STO3G">[docs]</a>
+<span class="k">def</span> <span class="nf">test_HF_both_singlet_HF_STO3G</span><span class="p">():</span>
+    <span class="n">mol</span> <span class="o">=</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">()</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># pylint: disable=bad-whitespace</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">atom</span> <span class="o">=</span> <span class="p">[[</span><span class="s2">&quot;H&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.917</span><span class="p">)],</span> <span class="p">[</span><span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)]]</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">basis</span> <span class="o">=</span> <span class="s2">&quot;sto-3g&quot;</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+
+    <span class="n">mf</span> <span class="o">=</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">scf</span><span class="o">.</span><span class="n">RHF</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
+    <span class="n">mf</span><span class="o">.</span><span class="n">scf</span><span class="p">()</span>
+
+    <span class="n">C</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">fix_mocoeffs_shape</span><span class="p">(</span><span class="n">mf</span><span class="o">.</span><span class="n">mo_coeff</span><span class="p">)</span>
+    <span class="n">E</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">fix_moenergies_shape</span><span class="p">(</span><span class="n">mf</span><span class="o">.</span><span class="n">mo_energy</span><span class="p">)</span>
+    <span class="n">occupations</span> <span class="o">=</span> <span class="n">occupations_from_pyscf_mol</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">C</span><span class="p">)</span>
+    <span class="n">solver_tda</span> <span class="o">=</span> <span class="n">solvers</span><span class="o">.</span><span class="n">ExactDiagonalizationSolverTDA</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">occupations</span><span class="p">)</span>
+    <span class="n">solver_tdhf</span> <span class="o">=</span> <span class="n">solvers</span><span class="o">.</span><span class="n">ExactDiagonalizationSolver</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">occupations</span><span class="p">)</span>
+    <span class="n">ao2mo</span> <span class="o">=</span> <span class="n">AO2MOpyscf</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span> <span class="n">mol</span><span class="p">)</span>
+    <span class="n">ao2mo</span><span class="o">.</span><span class="n">perform_rhf_partial</span><span class="p">()</span>
+    <span class="n">tei_mo</span> <span class="o">=</span> <span class="n">ao2mo</span><span class="o">.</span><span class="n">tei_mo</span>
+    <span class="n">solver_tda</span><span class="o">.</span><span class="n">tei_mo</span> <span class="o">=</span> <span class="n">tei_mo</span>
+    <span class="n">solver_tda</span><span class="o">.</span><span class="n">tei_mo_type</span> <span class="o">=</span> <span class="n">AO2MOTransformationType</span><span class="o">.</span><span class="n">partial</span>
+    <span class="n">solver_tdhf</span><span class="o">.</span><span class="n">tei_mo</span> <span class="o">=</span> <span class="n">tei_mo</span>
+    <span class="n">solver_tdhf</span><span class="o">.</span><span class="n">tei_mo_type</span> <span class="o">=</span> <span class="n">AO2MOTransformationType</span><span class="o">.</span><span class="n">partial</span>
+    <span class="n">driver_tda</span> <span class="o">=</span> <span class="n">td</span><span class="o">.</span><span class="n">TDA</span><span class="p">(</span><span class="n">solver_tda</span><span class="p">)</span>
+    <span class="n">driver_tdhf</span> <span class="o">=</span> <span class="n">td</span><span class="o">.</span><span class="n">TDHF</span><span class="p">(</span><span class="n">solver_tdhf</span><span class="p">)</span>
+
+    <span class="n">nroots</span> <span class="o">=</span> <span class="mi">5</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;TDA using TDA()&quot;</span><span class="p">)</span>
+    <span class="n">driver_tda</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+        <span class="n">hamiltonian</span><span class="o">=</span><span class="n">Hamiltonian</span><span class="o">.</span><span class="n">TDA</span><span class="p">,</span> <span class="n">spin</span><span class="o">=</span><span class="n">Spin</span><span class="o">.</span><span class="n">singlet</span><span class="p">,</span> <span class="n">program</span><span class="o">=</span><span class="n">Program</span><span class="o">.</span><span class="n">PySCF</span><span class="p">,</span> <span class="n">program_obj</span><span class="o">=</span><span class="n">mol</span>
+    <span class="p">)</span>
+    <span class="n">excitation_energies_tda_using_tda</span> <span class="o">=</span> <span class="n">driver_tda</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">eigvals</span><span class="p">[:</span><span class="n">nroots</span><span class="p">]</span><span class="o">.</span><span class="n">real</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;TDA using TDHF()&quot;</span><span class="p">)</span>
+    <span class="n">driver_tdhf</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+        <span class="n">hamiltonian</span><span class="o">=</span><span class="n">Hamiltonian</span><span class="o">.</span><span class="n">TDA</span><span class="p">,</span> <span class="n">spin</span><span class="o">=</span><span class="n">Spin</span><span class="o">.</span><span class="n">singlet</span><span class="p">,</span> <span class="n">program</span><span class="o">=</span><span class="n">Program</span><span class="o">.</span><span class="n">PySCF</span><span class="p">,</span> <span class="n">program_obj</span><span class="o">=</span><span class="n">mol</span>
+    <span class="p">)</span>
+    <span class="n">excitation_energies_tda_using_tdhf</span> <span class="o">=</span> <span class="n">driver_tdhf</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">eigvals</span><span class="p">[:</span><span class="n">nroots</span><span class="p">]</span><span class="o">.</span><span class="n">real</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;RPA using TDHF()&quot;</span><span class="p">)</span>
+    <span class="n">driver_tdhf</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+        <span class="n">hamiltonian</span><span class="o">=</span><span class="n">Hamiltonian</span><span class="o">.</span><span class="n">RPA</span><span class="p">,</span> <span class="n">spin</span><span class="o">=</span><span class="n">Spin</span><span class="o">.</span><span class="n">singlet</span><span class="p">,</span> <span class="n">program</span><span class="o">=</span><span class="n">Program</span><span class="o">.</span><span class="n">PySCF</span><span class="p">,</span> <span class="n">program_obj</span><span class="o">=</span><span class="n">mol</span>
+    <span class="p">)</span>
+    <span class="n">excitation_energies_rpa</span> <span class="o">=</span> <span class="n">driver_tdhf</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">eigvals</span><span class="p">[:</span><span class="n">nroots</span><span class="p">]</span><span class="o">.</span><span class="n">real</span>
+
+    <span class="k">assert</span> <span class="n">excitation_energies_tda_using_tda</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">excitation_energies_tda_using_tdhf</span><span class="o">.</span><span class="n">shape</span>
+    <span class="k">assert</span> <span class="n">excitation_energies_tda_using_tdhf</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">excitation_energies_rpa</span><span class="o">.</span><span class="n">shape</span>
+
+    <span class="c1"># There should be no difference in the TDA results regardless of</span>
+    <span class="c1"># which implementation used.</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">excitation_energies_tda_using_tda</span> <span class="o">-</span> <span class="n">excitation_energies_tda_using_tdhf</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span>
+
+    <span class="c1"># Now compare against reference_data</span>
+    <span class="n">ref_tda</span> <span class="o">=</span> <span class="n">HF_neutral_singlet_HF_STO3G_CIS_qchem</span>
+    <span class="n">ref_rpa</span> <span class="o">=</span> <span class="n">HF_neutral_singlet_HF_STO3G_RPA_qchem</span>
+
+    <span class="n">thresh</span> <span class="o">=</span> <span class="mf">1.0e-7</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nroots</span><span class="p">):</span>
+        <span class="n">abs_diff</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">ref_tda</span><span class="p">[</span><span class="s2">&quot;etenergies&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">excitation_energies_tda_using_tda</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="k">assert</span> <span class="n">abs_diff</span> <span class="o">&lt;</span> <span class="n">thresh</span>
+
+    <span class="n">thresh</span> <span class="o">=</span> <span class="mf">1.0e-7</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nroots</span><span class="p">):</span>
+        <span class="n">abs_diff</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">ref_rpa</span><span class="p">[</span><span class="s2">&quot;etenergies&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">excitation_energies_rpa</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="k">assert</span> <span class="n">abs_diff</span> <span class="o">&lt;</span> <span class="n">thresh</span></div>
+
+
+
+<span class="n">HF_neutral_singlet_HF_STO3G_qchem</span> <span class="o">=</span> <span class="o">-</span><span class="mf">98.5707799863</span>
+
+<span class="n">HF_neutral_singlet_HF_STO3G_CIS_qchem</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;etenergies&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="o">-</span><span class="mf">98.067181246814</span> <span class="o">-</span> <span class="n">HF_neutral_singlet_HF_STO3G_qchem</span><span class="p">,</span>
+        <span class="o">-</span><span class="mf">98.067181246768</span> <span class="o">-</span> <span class="n">HF_neutral_singlet_HF_STO3G_qchem</span><span class="p">,</span>
+        <span class="o">-</span><span class="mf">97.686596454655</span> <span class="o">-</span> <span class="n">HF_neutral_singlet_HF_STO3G_qchem</span><span class="p">,</span>
+        <span class="o">-</span><span class="mf">96.958042326818</span> <span class="o">-</span> <span class="n">HF_neutral_singlet_HF_STO3G_qchem</span><span class="p">,</span>
+        <span class="o">-</span><span class="mf">72.879307887356</span> <span class="o">-</span> <span class="n">HF_neutral_singlet_HF_STO3G_qchem</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="s2">&quot;etoscslen&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.0002003489</span><span class="p">,</span> <span class="mf">0.0002003489</span><span class="p">,</span> <span class="mf">0.9621809426</span><span class="p">,</span> <span class="mf">0.0531137481</span><span class="p">,</span> <span class="mf">0.0691994928</span><span class="p">],</span>
+<span class="p">}</span>
+
+
+<span class="n">HF_neutral_singlet_HF_STO3G_RPA_qchem</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;etenergies&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="o">-</span><span class="mf">98.068185050585</span> <span class="o">-</span> <span class="n">HF_neutral_singlet_HF_STO3G_qchem</span><span class="p">,</span>
+        <span class="o">-</span><span class="mf">98.068185050538</span> <span class="o">-</span> <span class="n">HF_neutral_singlet_HF_STO3G_qchem</span><span class="p">,</span>
+        <span class="o">-</span><span class="mf">97.703584999956</span> <span class="o">-</span> <span class="n">HF_neutral_singlet_HF_STO3G_qchem</span><span class="p">,</span>
+        <span class="o">-</span><span class="mf">96.962988495302</span> <span class="o">-</span> <span class="n">HF_neutral_singlet_HF_STO3G_qchem</span><span class="p">,</span>
+        <span class="o">-</span><span class="mf">72.879331844690</span> <span class="o">-</span> <span class="n">HF_neutral_singlet_HF_STO3G_qchem</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="s2">&quot;etoscslen&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.0001877054</span><span class="p">,</span> <span class="mf">0.0001877054</span><span class="p">,</span> <span class="mf">0.7777380206</span><span class="p">,</span> <span class="mf">0.0322221420</span><span class="p">,</span> <span class="mf">0.0686085799</span><span class="p">],</span>
+<span class="p">}</span>
+
+<span class="c1"># TODO</span>
+<span class="c1">#</span>
+<span class="c1"># def test_LiH_cation_TDA_singlet_HF_STO3G() -&gt; None:</span>
+<span class="c1">#     from pymolresponse.interfaces.pyscf.molecules import molecule_lih_cation_sto3g</span>
+
+<span class="c1">#     mol = molecule_lih_cation_sto3g()</span>
+<span class="c1">#     mf = pyscf.scf.UHF(mol)</span>
+<span class="c1">#     mf.scf()</span>
+<span class="c1">#     C = utils.fix_mocoeffs_shape(mf.mo_coeff)</span>
+<span class="c1">#     E = utils.fix_moenergies_shape(mf.mo_energy)</span>
+<span class="c1">#     occupations = occupations_from_pyscf_mol(mol, C)</span>
+<span class="c1">#     solver_tda = solvers.ExactDiagonalizationSolverTDA(C, E, occupations)</span>
+<span class="c1">#     # TODO i thought this was part of the solver interface</span>
+<span class="c1">#     ao2mo = AO2MOpyscf(C, mol.verbose, mol)</span>
+<span class="c1">#     ao2mo.perform_uhf_partial()</span>
+<span class="c1">#     tei_mo = ao2mo.tei_mo</span>
+<span class="c1">#     solver_tda.tei_mo = tei_mo</span>
+<span class="c1">#     driver_tda = td.TDA(solver_tda)</span>
+<span class="c1">#     print(&quot;TDA using TDA()&quot;)</span>
+<span class="c1">#     driver_tda.run(</span>
+<span class="c1">#         hamiltonian=Hamiltonian.TDA, spin=Spin.singlet, program=Program.PySCF, program_obj=mol</span>
+<span class="c1">#     )</span>
+<span class="c1">#     print(driver_tda.solver.eigvals.real)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">test_HF_both_singlet_HF_STO3G</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Eric Berquist.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pymolresponse.helpers &mdash; pymolresponse  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../contents.html" class="icon icon-home">
+            pymolresponse
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">pymolresponse</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../contents.html">pymolresponse</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pymolresponse.helpers</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pymolresponse.helpers</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Utility functions that are core to calculating physical values.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">periodictable</span>
+
+
+<div class="viewcode-block" id="get_most_abundant_isotope">
+<a class="viewcode-back" href="../../pyresponse.html#pymolresponse.helpers.get_most_abundant_isotope">[docs]</a>
+<span class="k">def</span> <span class="nf">get_most_abundant_isotope</span><span class="p">(</span><span class="n">element</span><span class="p">:</span> <span class="n">periodictable</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">periodictable</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Isotope</span><span class="p">:</span>
+    <span class="n">most_abundant_isotope</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">isotopes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">abundance</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">iso</span> <span class="ow">in</span> <span class="n">element</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">iso</span><span class="o">.</span><span class="n">abundance</span> <span class="o">&gt;</span> <span class="n">abundance</span><span class="p">:</span>
+            <span class="n">most_abundant_isotope</span> <span class="o">=</span> <span class="n">iso</span>
+            <span class="n">abundance</span> <span class="o">=</span> <span class="n">iso</span><span class="o">.</span><span class="n">abundance</span>
+    <span class="k">return</span> <span class="n">most_abundant_isotope</span></div>
+
+
+
+<div class="viewcode-block" id="get_isotopic_masses">
+<a class="viewcode-back" href="../../pyresponse.html#pymolresponse.helpers.get_isotopic_masses">[docs]</a>
+<span class="k">def</span> <span class="nf">get_isotopic_masses</span><span class="p">(</span><span class="n">charges</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="n">masses</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">charge</span> <span class="ow">in</span> <span class="n">charges</span><span class="p">:</span>
+        <span class="n">el</span> <span class="o">=</span> <span class="n">periodictable</span><span class="o">.</span><span class="n">elements</span><span class="p">[</span><span class="n">charge</span><span class="p">]</span>
+        <span class="n">isotope</span> <span class="o">=</span> <span class="n">get_most_abundant_isotope</span><span class="p">(</span><span class="n">el</span><span class="p">)</span>
+        <span class="n">mass</span> <span class="o">=</span> <span class="n">isotope</span><span class="o">.</span><span class="n">mass</span>
+        <span class="n">masses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mass</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">masses</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="calc_center_of_mass">
+<a class="viewcode-back" href="../../pyresponse.html#pymolresponse.helpers.calc_center_of_mass">[docs]</a>
+<span class="k">def</span> <span class="nf">calc_center_of_mass</span><span class="p">(</span><span class="n">coords</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">masses</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">masses</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="n">denominator</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">masses</span><span class="p">)</span>
+    <span class="n">numerator</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">coords</span> <span class="o">*</span> <span class="n">masses</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">numerator</span> <span class="o">/</span> <span class="n">denominator</span></div>
+
+
+
+<div class="viewcode-block" id="calc_center_of_nuclear_charge">
+<a class="viewcode-back" href="../../pyresponse.html#pymolresponse.helpers.calc_center_of_nuclear_charge">[docs]</a>
+<span class="k">def</span> <span class="nf">calc_center_of_nuclear_charge</span><span class="p">(</span><span class="n">coords</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">charges</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="n">dummy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">center</span> <span class="o">=</span> <span class="n">nuclear_dipole_contribution</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="n">charges</span><span class="p">,</span> <span class="n">dummy</span><span class="p">)</span>
+    <span class="n">total_charge</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">charges</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">center</span> <span class="o">/</span> <span class="n">total_charge</span></div>
+
+
+
+<div class="viewcode-block" id="nuclear_dipole_contribution">
+<a class="viewcode-back" href="../../pyresponse.html#pymolresponse.helpers.nuclear_dipole_contribution">[docs]</a>
+<span class="k">def</span> <span class="nf">nuclear_dipole_contribution</span><span class="p">(</span>
+    <span class="n">nuccoords</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">nuccharges</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">origin_in_bohrs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">nuccoords</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">nuccharges</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">origin_in_bohrs</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">nuccoords</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+    <span class="k">assert</span> <span class="n">nuccoords</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span>
+    <span class="k">assert</span> <span class="n">nuccoords</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">nuccharges</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="n">origin_in_bohrs</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">3</span><span class="p">,)</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">nuccharges</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">nuccharges</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">charges</span> <span class="o">=</span> <span class="n">nuccharges</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">nuccharges</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="n">charges</span> <span class="o">=</span> <span class="n">nuccharges</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">nuccoords</span> <span class="o">-</span> <span class="n">origin_in_bohrs</span><span class="p">)</span> <span class="o">*</span> <span class="n">charges</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_uhf_values">
+<a class="viewcode-back" href="../../pyresponse.html#pymolresponse.helpers.get_uhf_values">[docs]</a>
+<span class="k">def</span> <span class="nf">get_uhf_values</span><span class="p">(</span>
+    <span class="n">mat_uhf_a</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">mat_uhf_b</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">pair_rohf</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
+    <span class="n">nocc_a</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">nvirt_a</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">nocc_b</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">nvirt_b</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;For a pair ROHF 1-based indices, find the corresponing alpha- and</span>
+<span class="sd">    beta-spin UHF values.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># TODO there has to be a better way than including this here...</span>
+    <span class="n">range_uhf_a_closed</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">nocc_a</span><span class="p">))</span>
+    <span class="n">range_uhf_a_virt</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">nocc_a</span><span class="p">,</span> <span class="n">nocc_a</span> <span class="o">+</span> <span class="n">nvirt_a</span><span class="p">))</span>
+    <span class="n">range_uhf_b_closed</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">nocc_b</span><span class="p">))</span>
+    <span class="n">range_uhf_b_virt</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">nocc_b</span><span class="p">,</span> <span class="n">nocc_b</span> <span class="o">+</span> <span class="n">nvirt_b</span><span class="p">))</span>
+    <span class="n">indices_uhf_a</span> <span class="o">=</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nocc_a</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nvirt_a</span><span class="p">)]</span>
+    <span class="n">indices_uhf_b</span> <span class="o">=</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nocc_b</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nvirt_b</span><span class="p">)]</span>
+    <span class="c1"># These are the indices for unique pairs considering the full</span>
+    <span class="c1"># dimensionality of the system (correct orbital window), [norb,</span>
+    <span class="c1"># norb], starting from 1.</span>
+    <span class="n">indices_display_uhf_a</span> <span class="o">=</span> <span class="p">[(</span><span class="n">p</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">q</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">range_uhf_a_closed</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">range_uhf_a_virt</span><span class="p">]</span>
+    <span class="n">indices_display_uhf_b</span> <span class="o">=</span> <span class="p">[(</span><span class="n">p</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">q</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">range_uhf_b_closed</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">range_uhf_b_virt</span><span class="p">]</span>
+
+    <span class="n">values</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">pair_rohf</span> <span class="ow">in</span> <span class="n">indices_display_uhf_a</span><span class="p">:</span>
+        <span class="n">idx_uhf_a</span> <span class="o">=</span> <span class="n">indices_display_uhf_a</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">pair_rohf</span><span class="p">)</span>
+        <span class="n">p_a</span><span class="p">,</span> <span class="n">q_a</span> <span class="o">=</span> <span class="n">indices_uhf_a</span><span class="p">[</span><span class="n">idx_uhf_a</span><span class="p">]</span>
+        <span class="n">val_uhf_a</span> <span class="o">=</span> <span class="n">mat_uhf_a</span><span class="p">[</span><span class="n">p_a</span><span class="p">,</span> <span class="n">q_a</span><span class="p">]</span>
+        <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val_uhf_a</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">pair_rohf</span> <span class="ow">in</span> <span class="n">indices_display_uhf_b</span><span class="p">:</span>
+        <span class="n">idx_uhf_b</span> <span class="o">=</span> <span class="n">indices_display_uhf_b</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">pair_rohf</span><span class="p">)</span>
+        <span class="n">p_b</span><span class="p">,</span> <span class="n">q_b</span> <span class="o">=</span> <span class="n">indices_uhf_b</span><span class="p">[</span><span class="n">idx_uhf_b</span><span class="p">]</span>
+        <span class="n">val_uhf_b</span> <span class="o">=</span> <span class="n">mat_uhf_b</span><span class="p">[</span><span class="n">p_b</span><span class="p">,</span> <span class="n">q_b</span><span class="p">]</span>
+        <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val_uhf_b</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">values</span></div>
+
+
+
+<div class="viewcode-block" id="mat_uhf_to_packed_rohf">
+<a class="viewcode-back" href="../../pyresponse.html#pymolresponse.helpers.mat_uhf_to_packed_rohf">[docs]</a>
+<span class="k">def</span> <span class="nf">mat_uhf_to_packed_rohf</span><span class="p">(</span>
+    <span class="n">mat_alpha</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">mat_beta</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">indices_display_rohf</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="n">dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">indices_display_rohf</span><span class="p">)</span>
+    <span class="n">mat_rohf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">pair_rohf</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">indices_display_rohf</span><span class="p">):</span>
+        <span class="n">mat_rohf</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">get_uhf_values</span><span class="p">(</span><span class="n">mat_alpha</span><span class="p">,</span> <span class="n">mat_beta</span><span class="p">,</span> <span class="n">pair_rohf</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">mat_rohf</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Eric Berquist.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

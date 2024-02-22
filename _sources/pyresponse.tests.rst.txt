@@ -1,117 +1,117 @@
-pyresponse.tests package
+pymolresponse.tests package
 ========================
 
 Submodules
 ----------
 
-pyresponse.tests.test\_ao2mo module
+pymolresponse.tests.test\_ao2mo module
 -----------------------------------
 
-.. automodule:: pyresponse.tests.test_ao2mo
+.. automodule:: pymolresponse.tests.test_ao2mo
    :members:
    :undoc-members:
    :show-inheritance:
 
-pyresponse.tests.test\_calculators module
+pymolresponse.tests.test\_calculators module
 -----------------------------------------
 
-.. automodule:: pyresponse.tests.test_calculators
+.. automodule:: pymolresponse.tests.test_calculators
    :members:
    :undoc-members:
    :show-inheritance:
 
-pyresponse.tests.test\_final\_result module
+pymolresponse.tests.test\_final\_result module
 -------------------------------------------
 
-.. automodule:: pyresponse.tests.test_final_result
+.. automodule:: pymolresponse.tests.test_final_result
    :members:
    :undoc-members:
    :show-inheritance:
 
-pyresponse.tests.test\_hydrogen module
+pymolresponse.tests.test\_hydrogen module
 --------------------------------------
 
-.. automodule:: pyresponse.tests.test_hydrogen
+.. automodule:: pymolresponse.tests.test_hydrogen
    :members:
    :undoc-members:
    :show-inheritance:
 
-pyresponse.tests.test\_molecular\_property module
+pymolresponse.tests.test\_molecular\_property module
 -------------------------------------------------
 
-.. automodule:: pyresponse.tests.test_molecular_property
+.. automodule:: pymolresponse.tests.test_molecular_property
    :members:
    :undoc-members:
    :show-inheritance:
 
-pyresponse.tests.test\_operators module
+pymolresponse.tests.test\_operators module
 ---------------------------------------
 
-.. automodule:: pyresponse.tests.test_operators
+.. automodule:: pymolresponse.tests.test_operators
    :members:
    :undoc-members:
    :show-inheritance:
 
-pyresponse.tests.test\_rhf module
+pymolresponse.tests.test\_rhf module
 ---------------------------------
 
-.. automodule:: pyresponse.tests.test_rhf
+.. automodule:: pymolresponse.tests.test_rhf
    :members:
    :undoc-members:
    :show-inheritance:
 
-pyresponse.tests.test\_runners module
+pymolresponse.tests.test\_runners module
 -------------------------------------
 
-.. automodule:: pyresponse.tests.test_runners
+.. automodule:: pymolresponse.tests.test_runners
    :members:
    :undoc-members:
    :show-inheritance:
 
-pyresponse.tests.test\_solvers module
+pymolresponse.tests.test\_solvers module
 -------------------------------------
 
-.. automodule:: pyresponse.tests.test_solvers
+.. automodule:: pymolresponse.tests.test_solvers
    :members:
    :undoc-members:
    :show-inheritance:
 
-pyresponse.tests.test\_td module
+pymolresponse.tests.test\_td module
 --------------------------------
 
-.. automodule:: pyresponse.tests.test_td
+.. automodule:: pymolresponse.tests.test_td
    :members:
    :undoc-members:
    :show-inheritance:
 
-pyresponse.tests.test\_uhf module
+pymolresponse.tests.test\_uhf module
 ---------------------------------
 
-.. automodule:: pyresponse.tests.test_uhf
+.. automodule:: pymolresponse.tests.test_uhf
    :members:
    :undoc-members:
    :show-inheritance:
 
-pyresponse.tests.test\_uhf\_partial\_mo\_trafo module
+pymolresponse.tests.test\_uhf\_partial\_mo\_trafo module
 -----------------------------------------------------
 
-.. automodule:: pyresponse.tests.test_uhf_partial_mo_trafo
+.. automodule:: pymolresponse.tests.test_uhf_partial_mo_trafo
    :members:
    :undoc-members:
    :show-inheritance:
 
-pyresponse.tests.test\_uncoupled module
+pymolresponse.tests.test\_uncoupled module
 ---------------------------------------
 
-.. automodule:: pyresponse.tests.test_uncoupled
+.. automodule:: pymolresponse.tests.test_uncoupled
    :members:
    :undoc-members:
    :show-inheritance:
 
-pyresponse.tests.test\_utils module
+pymolresponse.tests.test\_utils module
 -----------------------------------
 
-.. automodule:: pyresponse.tests.test_utils
+.. automodule:: pymolresponse.tests.test_utils
    :members:
    :undoc-members:
    :show-inheritance:
@@ -119,7 +119,7 @@ pyresponse.tests.test\_utils module
 Module contents
 ---------------
 
-.. automodule:: pyresponse.tests
+.. automodule:: pymolresponse.tests
    :members:
    :undoc-members:
    :show-inheritance:

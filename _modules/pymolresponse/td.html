@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pymolresponse.td &mdash; pymolresponse  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=eafc0fe6" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../contents.html" class="icon icon-home">
+            pymolresponse
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">pymolresponse</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../contents.html">pymolresponse</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../contents.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pymolresponse.td</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pymolresponse.td</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Drivers for solving the time-dependent Hartree-Fock (TDHF)</span>
+<span class="sd">equations.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">pymolresponse.constants</span> <span class="kn">import</span> <span class="n">HARTREE_TO_EV</span><span class="p">,</span> <span class="n">HARTREE_TO_INVCM</span>
+<span class="kn">from</span> <span class="nn">pymolresponse.core</span> <span class="kn">import</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">Program</span><span class="p">,</span> <span class="n">Spin</span>
+<span class="kn">from</span> <span class="nn">pymolresponse.cphf</span> <span class="kn">import</span> <span class="n">CPHF</span>
+<span class="kn">from</span> <span class="nn">pymolresponse.solvers</span> <span class="kn">import</span> <span class="n">EigSolver</span><span class="p">,</span> <span class="n">EigSolverTDA</span><span class="p">,</span> <span class="n">Solver</span>
+<span class="kn">from</span> <span class="nn">pymolresponse.utils</span> <span class="kn">import</span> <span class="n">form_indices_orbwin</span><span class="p">,</span> <span class="n">form_vec_energy_differences</span>
+
+
+<div class="viewcode-block" id="TDHF">
+<a class="viewcode-back" href="../../pyresponse.html#pymolresponse.td.TDHF">[docs]</a>
+<span class="k">class</span> <span class="nc">TDHF</span><span class="p">(</span><span class="n">CPHF</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Driver for solving the time-dependent Hartree-Fock (TDHF)</span>
+<span class="sd">    equations, also called the random phase approximation (RPA)</span>
+<span class="sd">    equations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">solver</span><span class="p">:</span> <span class="n">Solver</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="n">EigSolver</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">solver</span><span class="p">)</span>
+
+<div class="viewcode-block" id="TDHF.run">
+<a class="viewcode-back" href="../../pyresponse.html#pymolresponse.td.TDHF.run">[docs]</a>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hamiltonian</span><span class="p">:</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">spin</span><span class="p">:</span> <span class="n">Spin</span><span class="p">,</span> <span class="n">program</span><span class="p">:</span> <span class="n">Program</span><span class="p">,</span> <span class="n">program_obj</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hamiltonian</span><span class="p">,</span> <span class="n">Hamiltonian</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">spin</span><span class="p">,</span> <span class="n">Spin</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="p">(</span><span class="n">Program</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
+        <span class="c1"># TODO program_obj</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">hamiltonian</span><span class="p">,</span> <span class="n">spin</span><span class="p">,</span> <span class="n">program</span><span class="p">,</span> <span class="n">program_obj</span><span class="p">)</span>
+        <span class="c1"># TODO Is there an equivalent to the uncoupled result? Just</span>
+        <span class="c1"># orbital energy differences?</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">form_results</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="TDHF.form_results">
+<a class="viewcode-back" href="../../pyresponse.html#pymolresponse.td.TDHF.form_results">[docs]</a>
+    <span class="k">def</span> <span class="nf">form_results</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">,</span> <span class="n">nvirt_beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">occupations</span>
+        <span class="n">nov_alph</span> <span class="o">=</span> <span class="n">nocc_alph</span> <span class="o">*</span> <span class="n">nvirt_alph</span>
+        <span class="c1"># nov_beta = nocc_beta * nvirt_beta</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">eigvecs_normed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">eigvecs</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="c1"># This is because we&#39;ve calculated all possible roots.</span>
+        <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nov_alph</span><span class="p">):</span>
+            <span class="n">eigvec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">eigvecs</span><span class="p">[:,</span> <span class="n">idx</span><span class="p">]</span>
+            <span class="n">x_normed</span><span class="p">,</span> <span class="n">y_normed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">norm_xy</span><span class="p">(</span><span class="n">eigvec</span><span class="p">,</span> <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">)</span>
+            <span class="n">eigvec_normed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">x_normed</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">y_normed</span><span class="o">.</span><span class="n">flatten</span><span class="p">()),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">eigvecs_normed</span><span class="p">[:,</span> <span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">eigvec_normed</span>
+            <span class="n">eigval</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">eigvals</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">real</span>
+            <span class="c1"># contract the components of every operator with every</span>
+            <span class="c1"># eigenvector</span>
+            <span class="k">for</span> <span class="n">operator</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">operators</span><span class="p">:</span>
+                <span class="n">integrals</span> <span class="o">=</span> <span class="n">operator</span><span class="o">.</span><span class="n">mo_integrals_ai_supervector_alph</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
+                <span class="c1"># TODO why the 2?</span>
+                <span class="n">res_normed</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">integrals</span><span class="p">,</span> <span class="n">eigvec_normed</span><span class="p">)</span>
+                <span class="n">transition_moment</span> <span class="o">=</span> <span class="n">res_normed</span>
+                <span class="n">oscillator_strength</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">/</span> <span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">eigval</span> <span class="o">*</span> <span class="n">transition_moment</span><span class="o">**</span><span class="mi">2</span>
+                <span class="n">total_oscillator_strength</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="p">(</span><span class="mi">2</span> <span class="o">/</span> <span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">eigval</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">transition_moment</span><span class="p">,</span> <span class="n">transition_moment</span><span class="p">)</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">operator</span><span class="p">,</span> <span class="s2">&quot;transition_moments&quot;</span><span class="p">):</span>
+                    <span class="n">operator</span><span class="o">.</span><span class="n">transition_moments</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">operator</span><span class="p">,</span> <span class="s2">&quot;oscillator_strengths&quot;</span><span class="p">):</span>
+                    <span class="n">operator</span><span class="o">.</span><span class="n">oscillator_strengths</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">operator</span><span class="p">,</span> <span class="s2">&quot;total_oscillator_strengths&quot;</span><span class="p">):</span>
+                    <span class="n">operator</span><span class="o">.</span><span class="n">total_oscillator_strengths</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">operator</span><span class="o">.</span><span class="n">transition_moments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">transition_moment</span><span class="p">)</span>
+                <span class="n">operator</span><span class="o">.</span><span class="n">oscillator_strengths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">oscillator_strength</span><span class="p">)</span>
+                <span class="n">operator</span><span class="o">.</span><span class="n">total_oscillator_strengths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">total_oscillator_strength</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">operator</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">operators</span><span class="p">:</span>
+            <span class="n">operator</span><span class="o">.</span><span class="n">transition_moments</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">operator</span><span class="o">.</span><span class="n">transition_moments</span><span class="p">)</span>
+            <span class="n">operator</span><span class="o">.</span><span class="n">oscillator_strengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">operator</span><span class="o">.</span><span class="n">oscillator_strengths</span><span class="p">)</span>
+            <span class="n">operator</span><span class="o">.</span><span class="n">total_oscillator_strengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">operator</span><span class="o">.</span><span class="n">total_oscillator_strengths</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TDHF.print_results">
+<a class="viewcode-back" href="../../pyresponse.html#pymolresponse.td.TDHF.print_results">[docs]</a>
+    <span class="k">def</span> <span class="nf">print_results</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">energies</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">eigvals</span><span class="o">.</span><span class="n">real</span>
+        <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">len</span><span class="p">(</span><span class="n">energies</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">78</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; State: </span><span class="si">{</span><span class="n">idx</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; Excitation energy [a.u.]: </span><span class="si">{</span><span class="n">energies</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; Excitation energy [eV]  : </span><span class="si">{</span><span class="n">energies</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">HARTREE_TO_EV</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">operator</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">operators</span><span class="p">:</span>
+                <span class="n">transition_moment</span> <span class="o">=</span> <span class="n">operator</span><span class="o">.</span><span class="n">transition_moments</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+                <span class="n">oscillator_strength</span> <span class="o">=</span> <span class="n">operator</span><span class="o">.</span><span class="n">oscillator_strengths</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+                <span class="n">total_oscillator_strength</span> <span class="o">=</span> <span class="n">operator</span><span class="o">.</span><span class="n">total_oscillator_strengths</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">78</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; Operator: </span><span class="si">{</span><span class="n">operator</span><span class="o">.</span><span class="n">label</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; Transition moment: </span><span class="si">{</span><span class="n">transition_moment</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; Oscillator strength: </span><span class="si">{</span><span class="n">oscillator_strength</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; Oscillator strength (total): </span><span class="si">{</span><span class="n">total_oscillator_strength</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TDHF.print_results_nwchem">
+<a class="viewcode-back" href="../../pyresponse.html#pymolresponse.td.TDHF.print_results_nwchem">[docs]</a>
+    <span class="k">def</span> <span class="nf">print_results_nwchem</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="c1"># TODO UHF</span>
+        <span class="n">nocc_tot</span><span class="p">,</span> <span class="n">nvirt_tot</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">occupations</span>
+        <span class="n">moene</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">moenergies</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">moene_occ</span> <span class="o">=</span> <span class="n">moene</span><span class="p">[:</span><span class="n">nocc_tot</span><span class="p">]</span>
+        <span class="n">moene_virt</span> <span class="o">=</span> <span class="n">moene</span><span class="p">[</span><span class="n">nocc_tot</span><span class="p">:]</span>
+        <span class="n">ediff</span> <span class="o">=</span> <span class="n">form_vec_energy_differences</span><span class="p">(</span><span class="n">moene_occ</span><span class="p">,</span> <span class="n">moene_virt</span><span class="p">)</span> <span class="o">*</span> <span class="n">HARTREE_TO_EV</span>
+        <span class="n">idxsort</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">ediff</span><span class="p">)</span>
+        <span class="n">ediff_sorted</span> <span class="o">=</span> <span class="n">ediff</span><span class="p">[</span><span class="n">idxsort</span><span class="p">]</span>
+        <span class="n">indices_unrestricted_orbwin</span> <span class="o">=</span> <span class="n">form_indices_orbwin</span><span class="p">(</span><span class="n">nocc_tot</span><span class="p">,</span> <span class="n">nvirt_tot</span><span class="p">)</span>
+        <span class="n">indices_sorted</span> <span class="o">=</span> <span class="p">[</span><span class="n">indices_unrestricted_orbwin</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">idxsort</span><span class="p">]</span>
+        <span class="n">ndiff</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;   </span><span class="si">{</span><span class="n">ndiff</span><span class="si">:</span><span class="s2">&gt;2d</span><span class="si">}</span><span class="s2"> smallest eigenvalue differences (eV) &quot;</span><span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;--------------------------------------------------------&quot;</span><span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;  No. Spin  Occ  Vir  Irrep   E(Occ)    E(Vir)   E(Diff)&quot;</span><span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;--------------------------------------------------------&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ndiff</span><span class="p">):</span>
+            <span class="n">iocc</span><span class="p">,</span> <span class="n">ivirt</span> <span class="o">=</span> <span class="n">indices_sorted</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">idx</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">:</span><span class="s2">&gt;5d</span><span class="si">}{</span><span class="mi">1</span><span class="si">:</span><span class="s2">&gt;5d</span><span class="si">}{</span><span class="n">iocc</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">:</span><span class="s2">&gt;5d</span><span class="si">}{</span><span class="n">ivirt</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">:</span><span class="s2">&gt;5d</span><span class="si">}</span><span class="s2"> &quot;</span>
+                <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="s2">&quot;X&quot;</span><span class="si">:</span><span class="s1">&lt;5</span><span class="si">}{</span><span class="n">moene</span><span class="p">[</span><span class="n">iocc</span><span class="p">]</span><span class="si">:</span><span class="s1">&gt;10.3f</span><span class="si">}{</span><span class="n">moene</span><span class="p">[</span><span class="n">ivirt</span><span class="p">]</span><span class="si">:</span><span class="s1">&gt;10.3f</span><span class="si">}{</span><span class="n">ediff_sorted</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="si">:</span><span class="s1">&gt;10.3f</span><span class="si">}</span><span class="s1">&#39;</span>
+            <span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;--------------------------------------------------------&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span></div>
+
+
+    <span class="n">_HAMILTONIAN_MAP_ORCA</span> <span class="o">=</span> <span class="p">{</span><span class="n">Hamiltonian</span><span class="o">.</span><span class="n">TDA</span><span class="p">:</span> <span class="s2">&quot;CIS-&quot;</span><span class="p">,</span> <span class="n">Hamiltonian</span><span class="o">.</span><span class="n">RPA</span><span class="p">:</span> <span class="s2">&quot;RPA &quot;</span><span class="p">}</span>
+
+    <span class="n">_SPIN_MAP_ORCA</span> <span class="o">=</span> <span class="p">{</span><span class="n">Spin</span><span class="o">.</span><span class="n">singlet</span><span class="p">:</span> <span class="s2">&quot;SINGLETS&quot;</span><span class="p">,</span> <span class="n">Spin</span><span class="o">.</span><span class="n">triplet</span><span class="p">:</span> <span class="s2">&quot;TRIPLETS&quot;</span><span class="p">}</span>
+
+<div class="viewcode-block" id="TDHF.print_results_orca">
+<a class="viewcode-back" href="../../pyresponse.html#pymolresponse.td.TDHF.print_results_orca">[docs]</a>
+    <span class="k">def</span> <span class="nf">print_results_orca</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cutoff</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
+        <span class="n">energies</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">eigvals</span><span class="o">.</span><span class="n">real</span>
+        <span class="n">energies_ev</span> <span class="o">=</span> <span class="n">energies</span> <span class="o">*</span> <span class="n">HARTREE_TO_EV</span>
+        <span class="n">energies_invcm</span> <span class="o">=</span> <span class="n">energies</span> <span class="o">*</span> <span class="n">HARTREE_TO_INVCM</span>
+        <span class="n">nocc_tot</span><span class="p">,</span> <span class="n">nvirt_tot</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">occupations</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="n">form_indices_orbwin</span><span class="p">(</span><span class="n">nocc_tot</span><span class="p">,</span> <span class="n">nvirt_tot</span><span class="p">)</span>
+        <span class="n">eigvecs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">eigvecs</span>
+        <span class="c1"># eigvecs_normed = self.solver.eigvecs_normed</span>
+        <span class="n">square_eigvecs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">eigvecs</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="c1"># square_eigvecs_normed = np.power(eigvecs_normed, 2)</span>
+        <span class="c1"># mask = square_eigvecs &gt; cutoff</span>
+        <span class="c1"># print(square_eigvecs.shape)</span>
+        <span class="c1"># print(mask.shape)</span>
+        <span class="c1"># mask_normed = square_eigvecs_normed &gt; cutoff</span>
+        <span class="c1"># print(eigvecs[mask].shape)</span>
+        <span class="c1"># print(eigvecs_normed[mask_normed])</span>
+        <span class="c1"># print(square_eigvecs[mask].shape)</span>
+        <span class="c1"># print(square_eigvecs_normed[mask_normed])</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;-----------------------------&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_HAMILTONIAN_MAP_ORCA</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">hamiltonian</span><span class="p">]</span><span class="si">}</span><span class="s2">EXCITED STATES (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_SPIN_MAP_ORCA</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">spin</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;-----------------------------&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;the weight of the individual excitations are printed if larger than </span><span class="si">{</span><span class="n">cutoff</span><span class="si">:</span><span class="s2">&gt;4.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="n">nstates</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">state</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nstates</span><span class="p">):</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;STATE</span><span class="si">{</span><span class="n">state</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">:</span><span class="s2">&gt;3d</span><span class="si">}</span><span class="s2">:  E=</span><span class="si">{</span><span class="n">energies</span><span class="p">[</span><span class="n">state</span><span class="p">]</span><span class="si">:</span><span class="s2">&gt;11.6f</span><span class="si">}</span><span class="s2"> &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;au</span><span class="si">{</span><span class="n">energies_ev</span><span class="p">[</span><span class="n">state</span><span class="p">]</span><span class="si">:</span><span class="s2">&gt;11.3f</span><span class="si">}</span><span class="s2"> eV</span><span class="si">{</span><span class="n">energies_invcm</span><span class="p">[</span><span class="n">state</span><span class="p">]</span><span class="si">:</span><span class="s2">&gt;11.1f</span><span class="si">}</span><span class="s2"> cm**-1&quot;</span>
+            <span class="p">)</span>
+            <span class="n">eigvec_state</span> <span class="o">=</span> <span class="n">eigvecs</span><span class="p">[:,</span> <span class="n">state</span><span class="p">]</span>
+            <span class="n">square_eigvec_state</span> <span class="o">=</span> <span class="n">square_eigvecs</span><span class="p">[:,</span> <span class="n">state</span><span class="p">]</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">square_eigvec_state</span> <span class="o">&gt;</span> <span class="n">cutoff</span>
+            <span class="n">coeffs_cutoff</span> <span class="o">=</span> <span class="n">eigvec_state</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+            <span class="n">weight_cutoff</span> <span class="o">=</span> <span class="n">square_eigvec_state</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+            <span class="n">mask_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">p</span> <span class="k">for</span> <span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span> <span class="k">if</span> <span class="n">b</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">coeffs_cutoff</span><span class="p">)):</span>
+                <span class="n">iocc</span><span class="p">,</span> <span class="n">ivirt</span> <span class="o">=</span> <span class="n">indices</span><span class="p">[</span><span class="n">mask_indices</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">iocc</span><span class="si">:</span><span class="s2">&gt;6d</span><span class="si">}</span><span class="s2">a -&gt;</span><span class="si">{</span><span class="n">ivirt</span><span class="si">:</span><span class="s2">&gt;4d</span><span class="si">}</span><span class="s2">a  :</span><span class="si">{</span><span class="n">weight_cutoff</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">&gt;13.6f</span><span class="si">}</span><span class="s2"> (c=</span><span class="si">{</span><span class="n">coeffs_cutoff</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">&gt;12.8f</span><span class="si">}</span><span class="s2">)&quot;</span>
+                <span class="p">)</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span></div>
+
+
+    <span class="n">_SPIN_MAP_QCHEM</span> <span class="o">=</span> <span class="p">{</span><span class="n">Spin</span><span class="o">.</span><span class="n">singlet</span><span class="p">:</span> <span class="s2">&quot;Singlet&quot;</span><span class="p">,</span> <span class="n">Spin</span><span class="o">.</span><span class="n">triplet</span><span class="p">:</span> <span class="s2">&quot;Triplet&quot;</span><span class="p">}</span></div>
+
+
+
+<div class="viewcode-block" id="TDA">
+<a class="viewcode-back" href="../../pyresponse.html#pymolresponse.td.TDA">[docs]</a>
+<span class="k">class</span> <span class="nc">TDA</span><span class="p">(</span><span class="n">TDHF</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Driver for solving the time-dependent Hartree-Fock equations with the</span>
+<span class="sd">    Tamm-Dancoff approximation (TDA), also called the configuration</span>
+<span class="sd">    interaction with single excitation (CIS) equations when no XC contribution</span>
+<span class="sd">    is present.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">solver</span><span class="p">:</span> <span class="n">EigSolverTDA</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="n">EigSolverTDA</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">solver</span><span class="p">)</span>
+
+<div class="viewcode-block" id="TDA.form_results">
+<a class="viewcode-back" href="../../pyresponse.html#pymolresponse.td.TDA.form_results">[docs]</a>
+    <span class="k">def</span> <span class="nf">form_results</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">,</span> <span class="n">nvirt_beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">occupations</span>
+        <span class="n">nov_alph</span> <span class="o">=</span> <span class="n">nocc_alph</span> <span class="o">*</span> <span class="n">nvirt_alph</span>
+        <span class="c1"># nov_beta = nocc_beta * nvirt_beta</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">eigvecs_normed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">eigvecs</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="c1"># This is because we&#39;ve calculated all possible roots.</span>
+
+        <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nov_alph</span><span class="p">):</span>
+            <span class="n">norm</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">eigvec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">eigvecs</span><span class="p">[:,</span> <span class="n">idx</span><span class="p">]</span>
+            <span class="n">eigvec_normed</span> <span class="o">=</span> <span class="n">eigvec</span> <span class="o">*</span> <span class="n">norm</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">eigvecs_normed</span><span class="p">[:,</span> <span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">eigvec_normed</span>
+            <span class="n">eigval</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">eigvals</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">real</span>
+            <span class="c1"># contract the components of every operator with every</span>
+            <span class="c1"># eigenvector</span>
+            <span class="k">for</span> <span class="n">operator</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">operators</span><span class="p">:</span>
+                <span class="n">integrals</span> <span class="o">=</span> <span class="n">operator</span><span class="o">.</span><span class="n">mo_integrals_ai_alph</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
+                <span class="c1"># TODO why the 2?</span>
+                <span class="n">res_normed</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">integrals</span><span class="p">,</span> <span class="n">eigvec_normed</span><span class="p">)</span>
+                <span class="n">transition_moment</span> <span class="o">=</span> <span class="n">res_normed</span>
+                <span class="n">oscillator_strength</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">/</span> <span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">eigval</span> <span class="o">*</span> <span class="n">transition_moment</span><span class="o">**</span><span class="mi">2</span>
+                <span class="n">total_oscillator_strength</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="p">(</span><span class="mi">2</span> <span class="o">/</span> <span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">eigval</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">transition_moment</span><span class="p">,</span> <span class="n">transition_moment</span><span class="p">)</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">operator</span><span class="p">,</span> <span class="s2">&quot;transition_moments&quot;</span><span class="p">):</span>
+                    <span class="n">operator</span><span class="o">.</span><span class="n">transition_moments</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">operator</span><span class="p">,</span> <span class="s2">&quot;oscillator_strengths&quot;</span><span class="p">):</span>
+                    <span class="n">operator</span><span class="o">.</span><span class="n">oscillator_strengths</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">operator</span><span class="p">,</span> <span class="s2">&quot;total_oscillator_strengths&quot;</span><span class="p">):</span>
+                    <span class="n">operator</span><span class="o">.</span><span class="n">total_oscillator_strengths</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">operator</span><span class="o">.</span><span class="n">transition_moments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">transition_moment</span><span class="p">)</span>
+                <span class="n">operator</span><span class="o">.</span><span class="n">oscillator_strengths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">oscillator_strength</span><span class="p">)</span>
+                <span class="n">operator</span><span class="o">.</span><span class="n">total_oscillator_strengths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">total_oscillator_strength</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">operator</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">operators</span><span class="p">:</span>
+            <span class="n">operator</span><span class="o">.</span><span class="n">transition_moments</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">operator</span><span class="o">.</span><span class="n">transition_moments</span><span class="p">)</span>
+            <span class="n">operator</span><span class="o">.</span><span class="n">oscillator_strengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">operator</span><span class="o">.</span><span class="n">oscillator_strengths</span><span class="p">)</span>
+            <span class="n">operator</span><span class="o">.</span><span class="n">total_oscillator_strengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">operator</span><span class="o">.</span><span class="n">total_oscillator_strengths</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Eric Berquist.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

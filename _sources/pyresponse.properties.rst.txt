@@ -1,37 +1,37 @@
-pyresponse.properties package
+pymolresponse.properties package
 =============================
 
 Submodules
 ----------
 
-pyresponse.properties.ecd module
+pymolresponse.properties.ecd module
 --------------------------------
 
-.. automodule:: pyresponse.properties.ecd
+.. automodule:: pymolresponse.properties.ecd
    :members:
    :undoc-members:
    :show-inheritance:
 
-pyresponse.properties.electric module
+pymolresponse.properties.electric module
 -------------------------------------
 
-.. automodule:: pyresponse.properties.electric
+.. automodule:: pymolresponse.properties.electric
    :members:
    :undoc-members:
    :show-inheritance:
 
-pyresponse.properties.magnetic module
+pymolresponse.properties.magnetic module
 -------------------------------------
 
-.. automodule:: pyresponse.properties.magnetic
+.. automodule:: pymolresponse.properties.magnetic
    :members:
    :undoc-members:
    :show-inheritance:
 
-pyresponse.properties.optrot module
+pymolresponse.properties.optrot module
 -----------------------------------
 
-.. automodule:: pyresponse.properties.optrot
+.. automodule:: pymolresponse.properties.optrot
    :members:
    :undoc-members:
    :show-inheritance:
@@ -39,7 +39,7 @@ pyresponse.properties.optrot module
 Module contents
 ---------------
 
-.. automodule:: pyresponse.properties
+.. automodule:: pymolresponse.properties
    :members:
    :undoc-members:
    :show-inheritance:
