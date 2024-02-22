@@ -1,10 +1,10 @@
-pyresponse.data package
+pymolresponse.data package
 =======================
 
 Module contents
 ---------------
 
-.. automodule:: pyresponse.data
+.. automodule:: pymolresponse.data
    :members:
    :undoc-members:
    :show-inheritance:

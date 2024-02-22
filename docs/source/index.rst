@@ -1,9 +1,9 @@
-pyresponse
+pymolresponse
 ==========
 
 Molecular frequency-dependent response properties for arbitrary operators.
 
-For documentation, go to https://berquist.github.io/pyresponse/.
+For documentation, go to https://berquist.github.io/pymolresponse/.
 
 Currently, the goal is to provide:
 

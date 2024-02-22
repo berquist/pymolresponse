@@ -1,6 +1,6 @@
 .PHONY: test
 test:
-	python -m pytest -v --cov=pyresponse
+	python -m pytest -v --cov=pymolresponse
 
 .PHONY: precommit
 precommit:
@@ -8,5 +8,5 @@ precommit:
 
 .PHONY: docs
 docs:
-	sphinx-apidoc -o docs/source pyresponse
+	sphinx-apidoc -o docs/source pymolresponse
 	cd docs && make html

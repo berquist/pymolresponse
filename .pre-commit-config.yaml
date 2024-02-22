@@ -9,11 +9,11 @@ repos:
     rev: "v4.5.0"
     hooks:
       - id: trailing-whitespace
-        exclude: pyresponse/data
+        exclude: pymolresponse/data
       - id: end-of-file-fixer
-        exclude: pyresponse/data
+        exclude: pymolresponse/data
       - id: fix-byte-order-marker
-        exclude: pyresponse/data
+        exclude: pymolresponse/data
       - id: check-merge-conflict
       - id: check-toml
       - id: check-yaml

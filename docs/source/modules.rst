@@ -1,7 +1,7 @@
-pyresponse
+pymolresponse
 ==========
 
 .. toctree::
    :maxdepth: 4
 
-   pyresponse
+   pymolresponse

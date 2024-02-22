@@ -9,7 +9,7 @@ if "%SPHINXBUILD%" == "" (
 )
 set SOURCEDIR=source
 set BUILDDIR=build
-set SPHINXPROJ=pyresponse
+set SPHINXPROJ=pymolresponse
 
 if "%1" == "" goto help
 

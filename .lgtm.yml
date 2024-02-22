@@ -11,4 +11,4 @@ path_classifiers:
     - versioneer.py
     - devtools/*
   generated:
-    - pyresponse/_version.py
+    - pymolresponse/_version.py
