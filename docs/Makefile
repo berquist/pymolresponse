@@ -4,7 +4,7 @@
 # You can set these variables from the command line.
 SPHINXOPTS    = -n
 SPHINXBUILD   = python -m sphinx
-SPHINXPROJ    = pyresponse
+SPHINXPROJ    = pymolresponse
 SOURCEDIR     = source
 BUILDDIR      = build
 

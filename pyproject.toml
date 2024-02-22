@@ -1,5 +1,5 @@
 [project]
-name = "pyresponse"
+name = "pymolresponse"
 description = "Molecular frequency-dependent response properties for arbitrary operators"
 dynamic = ["version"]
 readme = "README.md"
@@ -19,9 +19,9 @@ dependencies = [
 ]
 
 [project.urls]
-"Bug Tracker" = "https://github.com/berquist/pyresponse/issues"
-Documentation = "https://berquist.github.io/pyresponse_docs/"
-Homepage = "https://github.com/berquist/pyresponse"
+"Bug Tracker" = "https://github.com/berquist/pymolresponse/issues"
+Documentation = "https://berquist.github.io/pymolresponse_docs/"
+Homepage = "https://github.com/berquist/pymolresponse"
 
 [project.optional-dependencies]
 test = [
@@ -42,12 +42,12 @@ zip-safe = false
 # where = ["."]
 
 # [tool.setuptools.package-data]
-# pyresponse2 = [
+# pymolresponse2 = [
 #     "py.typed"
 # ]
 
 [tool.setuptools.package-dir]
-pyresponse = "pyresponse"
+pymolresponse = "pymolresponse"
 
 [tool.doc8]
 ignore = "D001"
@@ -95,7 +95,7 @@ section-order = ["future", "standard-library", "attrs", "third-party", "chemistr
 "chemistry" = ["psi4", "pyscf"]
 
 [tool.versioningit.format]
-method = { module = "versioningit_override", value = "my_format", module-dir = "pyresponse" }
+method = { module = "versioningit_override", value = "my_format", module-dir = "pymolresponse" }
 
 [tool.versioningit.template-fields.version-tuple]
 pep440 = true
@@ -105,4 +105,4 @@ method = "git"
 match = ["v*"]
 
 [tool.versioningit.write]
-file = "pyresponse/_version.py"
+file = "pymolresponse/_version.py"

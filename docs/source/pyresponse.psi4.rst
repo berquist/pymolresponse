@@ -1,29 +1,29 @@
-pyresponse.interfaces.psi4 package
+pymolresponse.interfaces.psi4 package
 =======================
 
 Submodules
 ----------
 
-pyresponse.interfaces.psi4.integrals module
+pymolresponse.interfaces.psi4.integrals module
 --------------------------------
 
-.. automodule:: pyresponse.interfaces.psi4.integrals
+.. automodule:: pymolresponse.interfaces.psi4.integrals
    :members:
    :undoc-members:
    :show-inheritance:
 
-pyresponse.interfaces.psi4.molecules module
+pymolresponse.interfaces.psi4.molecules module
 --------------------------------
 
-.. automodule:: pyresponse.interfaces.psi4.molecules
+.. automodule:: pymolresponse.interfaces.psi4.molecules
    :members:
    :undoc-members:
    :show-inheritance:
 
-pyresponse.interfaces.psi4.utils module
+pymolresponse.interfaces.psi4.utils module
 ----------------------------
 
-.. automodule:: pyresponse.interfaces.psi4.utils
+.. automodule:: pymolresponse.interfaces.psi4.utils
    :members:
    :undoc-members:
    :show-inheritance:
@@ -31,7 +31,7 @@ pyresponse.interfaces.psi4.utils module
 Module contents
 ---------------
 
-.. automodule:: pyresponse.interfaces.psi4
+.. automodule:: pymolresponse.interfaces.psi4
    :members:
    :undoc-members:
    :show-inheritance:

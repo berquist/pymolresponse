@@ -1,4 +1,4 @@
-pyresponse package
+pymolresponse package
 ==================
 
 Subpackages
@@ -7,116 +7,116 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
-   pyresponse.interfaces.dalton
-   pyresponse.data
-   pyresponse.properties
-   pyresponse.interfaces.psi4
-   pyresponse.interfaces.pyscf
-   pyresponse.tests
+   pymolresponse.interfaces.dalton
+   pymolresponse.data
+   pymolresponse.properties
+   pymolresponse.interfaces.psi4
+   pymolresponse.interfaces.pyscf
+   pymolresponse.tests
 
 Submodules
 ----------
 
-pyresponse.ao2mo module
+pymolresponse.ao2mo module
 -----------------------
 
-.. automodule:: pyresponse.ao2mo
+.. automodule:: pymolresponse.ao2mo
    :members:
    :undoc-members:
    :show-inheritance:
 
-pyresponse.constants module
+pymolresponse.constants module
 ---------------------------
 
-.. automodule:: pyresponse.constants
+.. automodule:: pymolresponse.constants
    :members:
    :undoc-members:
    :show-inheritance:
 
-pyresponse.core module
+pymolresponse.core module
 ----------------------
 
-.. automodule:: pyresponse.core
+.. automodule:: pymolresponse.core
    :members:
    :undoc-members:
    :show-inheritance:
 
-pyresponse.cphf module
+pymolresponse.cphf module
 ----------------------
 
-.. automodule:: pyresponse.cphf
+.. automodule:: pymolresponse.cphf
    :members:
    :undoc-members:
    :show-inheritance:
 
-pyresponse.explicit\_equations\_full module
+pymolresponse.explicit\_equations\_full module
 -------------------------------------------
 
-.. automodule:: pyresponse.explicit_equations_full
+.. automodule:: pymolresponse.explicit_equations_full
    :members:
    :undoc-members:
    :show-inheritance:
 
-pyresponse.explicit\_equations\_partial module
+pymolresponse.explicit\_equations\_partial module
 ----------------------------------------------
 
-.. automodule:: pyresponse.explicit_equations_partial
+.. automodule:: pymolresponse.explicit_equations_partial
    :members:
    :undoc-members:
    :show-inheritance:
 
-pyresponse.helpers module
+pymolresponse.helpers module
 -------------------------
 
-.. automodule:: pyresponse.helpers
+.. automodule:: pymolresponse.helpers
    :members:
    :undoc-members:
    :show-inheritance:
 
-pyresponse.integrals module
+pymolresponse.integrals module
 ---------------------------
 
-.. automodule:: pyresponse.integrals
+.. automodule:: pymolresponse.integrals
    :members:
    :undoc-members:
    :show-inheritance:
 
-pyresponse.molecular\_property module
+pymolresponse.molecular\_property module
 -------------------------------------
 
-.. automodule:: pyresponse.molecular_property
+.. automodule:: pymolresponse.molecular_property
    :members:
    :undoc-members:
    :show-inheritance:
 
-pyresponse.operators module
+pymolresponse.operators module
 ---------------------------
 
-.. automodule:: pyresponse.operators
+.. automodule:: pymolresponse.operators
    :members:
    :undoc-members:
    :show-inheritance:
 
-pyresponse.solvers module
+pymolresponse.solvers module
 -------------------------
 
-.. automodule:: pyresponse.solvers
+.. automodule:: pymolresponse.solvers
    :members:
    :undoc-members:
    :show-inheritance:
 
-pyresponse.td module
+pymolresponse.td module
 --------------------
 
-.. automodule:: pyresponse.td
+.. automodule:: pymolresponse.td
    :members:
    :undoc-members:
    :show-inheritance:
 
-pyresponse.utils module
+pymolresponse.utils module
 -----------------------
 
-.. automodule:: pyresponse.utils
+.. automodule:: pymolresponse.utils
    :members:
    :undoc-members:
    :show-inheritance:
@@ -124,7 +124,7 @@ pyresponse.utils module
 Module contents
 ---------------
 
-.. automodule:: pyresponse
+.. automodule:: pymolresponse
    :members:
    :undoc-members:
    :show-inheritance:

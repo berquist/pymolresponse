@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # pylint: skip-file
 #
-# pyresponse documentation build configuration file, created by
+# pymolresponse documentation build configuration file, created by
 # sphinx-quickstart on Sat Jul 15 15:04:03 2017.
 #
 # This file is execfile()d with the current directory set to its
@@ -61,7 +61,7 @@ source_suffix = ".rst"
 master_doc = "contents"
 
 # General information about the project.
-project = "pyresponse"
+project = "pymolresponse"
 copyright = "2021, Eric Berquist"
 author = "Eric Berquist"
 
@@ -130,7 +130,7 @@ html_sidebars = {
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "pyresponsedoc"
+htmlhelp_basename = "pymolresponsedoc"
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -154,7 +154,7 @@ latex_elements: Dict[str, str] = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, "pyresponse.tex", "pyresponse Documentation", "Eric Berquist", "manual")
+    (master_doc, "pymolresponse.tex", "pymolresponse Documentation", "Eric Berquist", "manual")
 ]
 
 
@@ -162,7 +162,7 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [(master_doc, "pyresponse", "pyresponse Documentation", [author], 1)]
+man_pages = [(master_doc, "pymolresponse", "pymolresponse Documentation", [author], 1)]
 
 
 # -- Options for Texinfo output -------------------------------------------
@@ -173,10 +173,10 @@ man_pages = [(master_doc, "pyresponse", "pyresponse Documentation", [author], 1)
 texinfo_documents = [
     (
         master_doc,
-        "pyresponse",
-        "pyresponse Documentation",
+        "pymolresponse",
+        "pymolresponse Documentation",
         author,
-        "pyresponse",
+        "pymolresponse",
         "One line description of project.",
         "Miscellaneous",
     )

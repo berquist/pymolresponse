@@ -1,13 +1,13 @@
-pyresponse.interfaces.dalton package
+pymolresponse.interfaces.dalton package
 =========================
 
 Submodules
 ----------
 
-pyresponse.interfaces.dalton.utils module
+pymolresponse.interfaces.dalton.utils module
 ------------------------------
 
-.. automodule:: pyresponse.interfaces.dalton.utils
+.. automodule:: pymolresponse.interfaces.dalton.utils
    :members:
    :undoc-members:
    :show-inheritance:
@@ -15,7 +15,7 @@ pyresponse.interfaces.dalton.utils module
 Module contents
 ---------------
 
-.. automodule:: pyresponse.interfaces.dalton
+.. automodule:: pymolresponse.interfaces.dalton
    :members:
    :undoc-members:
    :show-inheritance:

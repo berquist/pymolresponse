@@ -1,2 +1,1 @@
-include versioneer.py
-include pyresponse/_version.py
+include pymolresponse/_version.py
