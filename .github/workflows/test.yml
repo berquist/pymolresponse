@@ -6,7 +6,7 @@ on:
   push:
 
 jobs:
-  test:
+  run-tests:
     name: Test on Python ${{ matrix.python-version }}
     runs-on: ubuntu-latest
     strategy:
@@ -60,3 +60,51 @@ jobs:
           folder: docs/build/html
         # yamllint disable-line rule:line-length
         if: ${{ github.event_name == 'push' && matrix.python-version == '3.11' }}
+      - name: Install pypa/build and pypa/twine
+        run: |
+          python -m pip install build twine
+      - name: Build distribution packages (binary wheel and source tarball)
+        run: |
+          python -m build --outdir ./dist/${{ matrix.python-version }}
+      - name: Check packages with twine
+        run: |
+          python -m twine check ./dist/${{ matrix.python-version }}/*
+      - name: Store the distribution packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-package-distributions
+          path: ./dist/${{ matrix.python-version }}
+
+  check-installation:
+    name: Check installation of distribution 📦
+    needs:
+      - run-tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        install-method: [wheel, source]
+        python-version:
+          - 3.8
+          - 3.9
+          - "3.10"
+          - 3.11
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Download the distribution packages
+        uses: actions/download-artifact@v4
+        with:
+          name: python-package-distributions
+          path: ./dist/${{ matrix.python-version }}
+      - name: Update environment
+        run: |
+          python -m pip install -U setuptools pip
+      - name: Install from wheel
+        run: |
+          python -m pip install ./dist/${{ matrix.python-version }}/*.whl
+        if: matrix.install-method == 'wheel'
+      - name: Install from source
+        run: |
+          python -m pip install ./dist/${{ matrix.python-version }}/*.tar.gz
+        if: matrix.install-method == 'source'
