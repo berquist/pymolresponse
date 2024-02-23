@@ -83,7 +83,7 @@ jobs:
           path: ./dist/${{ github.sha }}/${{ matrix.python-version }}
 
   check-installation:
-    name: Check installation of ${{ matrix.python-version }}
+    name: Check ${{ matrix.install-method }} installation of ${{ matrix.python-version }}
     needs:
       - run-tests
     runs-on: ubuntu-latest
