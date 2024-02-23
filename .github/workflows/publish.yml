@@ -3,7 +3,11 @@ name: Publish Python 🐍 distribution 📦 to PyPI and TestPyPI
 
 # yamllint disable-line rule:truthy
 on:
-  push:
+  workflow_run:
+    workflows:
+      - Test and package distribution
+    types:
+      - completed
 
 # For now always take the "reduced" form of the version, even for those
 # actions runs that do not push to a package index.
@@ -12,36 +16,8 @@ env:
 
 jobs:
 
-  build:
-    name: Build distribution 📦
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          # so versioningit can figure out the version
-          fetch-depth: 0
-          fetch-tags: true
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.x"
-      - name: Install pypa/build
-        run: |
-          python3 -m pip install -U pip setuptools
-          python3 -m pip install build
-      - name: Build a binary wheel and a source tarball
-        run: python3 -m build
-      - name: Store the distribution packages
-        uses: actions/upload-artifact@v4
-        with:
-          name: python-package-distributions
-          path: dist/
-
   publish-to-testpypi:
     name: Publish Python 🐍 distribution 📦 to TestPyPI
-    needs:
-      - build
     runs-on: ubuntu-latest
 
     # publish on merge to default branch or any tag
@@ -68,8 +44,6 @@ jobs:
   publish-to-pypi:
     name: >-
       Publish Python 🐍 distribution 📦 to PyPI
-    needs:
-      - build
     runs-on: ubuntu-latest
 
     # only publish on versioned tag pushes
@@ -95,8 +69,6 @@ jobs:
     name: >-
       Sign the Python 🐍 distribution 📦 with Sigstore
       and upload them to GitHub Release
-    needs:
-      - build
     runs-on: ubuntu-latest
 
     # make (draft) release on any tag
