@@ -3,11 +3,12 @@ name: Publish Python 🐍 distribution 📦 to PyPI and TestPyPI
 
 # yamllint disable-line rule:truthy
 on:
-  workflow_run:
-    workflows:
-      - Test and package distribution
-    types:
-      - completed
+  workflow_dispatch:
+  workflow_call:
+
+concurrency:
+  group: ci-${{ github.ref }}-${{ github.event.pull_request.number || github.run_number }}
+  cancel-in-progress: true
 
 # For now always take the "reduced" form of the version, even for those
 # actions runs that do not push to a package index.

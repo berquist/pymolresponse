@@ -1,10 +1,14 @@
 ---
-# yamllint disable rule:line-length
 name: Test and package distribution
 
 # yamllint disable-line rule:truthy
 on:
-  push:
+  workflow_dispatch:
+  workflow_call:
+
+concurrency:
+  group: ci-${{ github.ref }}-${{ github.event.pull_request.number || github.run_number }}
+  cancel-in-progress: true
 
 # For now always take the "reduced" form of the version, even for those
 # actions runs that do not push to a package index.
@@ -65,7 +69,6 @@ jobs:
         with:
           branch: gh-pages
           folder: docs/build/html
-        # yamllint disable-line rule:line-length
         if: ${{ github.event_name == 'push' && matrix.python-version == '3.11' }}
       - name: Install pypa/build and pypa/twine
         run: |
