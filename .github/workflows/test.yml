@@ -7,7 +7,7 @@ on:
   workflow_call:
 
 concurrency:
-  group: ci-${{github.ref}}-${{github.event.pull_request.number || github.run_number}}
+  group: test-${{github.ref}}-${{github.event.pull_request.number || github.run_number}}
   cancel-in-progress: true
 
 # For now always take the "reduced" form of the version, even for those
