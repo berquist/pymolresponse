@@ -2,10 +2,10 @@
 
 Molecular frequency-dependent response properties for arbitrary operators.
 
-[![build status](https://github.com/berquist/pymolresponse/actions/workflows/test.yml/badge.svg)](https://github.com/berquist/pymolresponse/blob/master/.github/workflows/test.yml)
-[![codecov](https://codecov.io/gh/berquist/pymolresponse/branch/master/graph/badge.svg)](https://codecov.io/gh/berquist/pymolresponse)
-[![license](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg?style=flat)](https://github.com/berquist/pymolresponse/blob/master/LICENSE)
-[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/berquist/pymolresponse/master.svg)](https://results.pre-commit.ci/latest/github/berquist/pymolresponse/master)
+[![build status](https://github.com/berquist/pymolresponse/actions/workflows/test.yml/badge.svg)](https://github.com/berquist/pymolresponse/blob/main/.github/workflows/test.yml)
+[![codecov](https://codecov.io/gh/berquist/pymolresponse/branch/main/graph/badge.svg)](https://codecov.io/gh/berquist/pymolresponse)
+[![license](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg?style=flat)](https://github.com/berquist/pymolresponse/blob/main/LICENSE)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/berquist/pymolresponse/main.svg)](https://results.pre-commit.ci/latest/github/berquist/pymolresponse/main)
 
 For documentation, go to https://berquist.github.io/pymolresponse/.
 
