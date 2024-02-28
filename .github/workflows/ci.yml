@@ -23,7 +23,7 @@ jobs:
     needs: [prechecks]
     uses: ./.github/workflows/test.yml
   package:
-    needs: [prechecks]
+    needs: [unit-tests]
     uses: ./.github/workflows/publish.yml
   all:
     needs: [unit-tests, package]
