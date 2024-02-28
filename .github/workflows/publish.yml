@@ -10,10 +10,14 @@ concurrency:
   group: publish-${{github.ref}}-${{github.event.pull_request.number || github.run_number}}
   cancel-in-progress: true
 
-# For now always take the "reduced" form of the version, even for those
-# actions runs that do not push to a package index.
 env:
+  # For now always take the "reduced" form of the version, even for those
+  # actions runs that do not push to a package index.
   VERSIONINGIT_FOR_PACKAGE_INDEX: true
+  # Which Python version generated the artifacts we're downloading.  It
+  # doesn't matter as long as we're building platform- and version-independent
+  # wheels.
+  PYTHON_VERSION: '3.11'
 
 jobs:
 
@@ -35,7 +39,7 @@ jobs:
       - name: Download all the dists
         uses: actions/download-artifact@v4
         with:
-          name: python-package-distributions
+          name: python-package-distributions-${{ env.PYTHON_VERSION }}
           path: dist/
       - name: Publish distribution 📦 to TestPyPI
         uses: pypa/gh-action-pypi-publish@release/v1
@@ -61,7 +65,7 @@ jobs:
       - name: Download all the dists
         uses: actions/download-artifact@v4
         with:
-          name: python-package-distributions
+          name: python-package-distributions-${{ env.PYTHON_VERSION }}
           path: dist/
       - name: Publish distribution 📦 to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
@@ -83,7 +87,7 @@ jobs:
       - name: Download all the dists
         uses: actions/download-artifact@v4
         with:
-          name: python-package-distributions
+          name: python-package-distributions-${{ env.PYTHON_VERSION }}
           path: dist/
       - name: Sign the dists with Sigstore
         uses: sigstore/gh-action-sigstore-python@v1.2.3
