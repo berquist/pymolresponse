@@ -18,7 +18,7 @@ class AO2MO:
         C: np.ndarray,
         occupations: Sequence[int],
         verbose: int = 1,
-        I: Optional[np.ndarray] = None,
+        I: Optional[np.ndarray] = None,  # noqa: E741
     ) -> None:
         self.C = fix_mocoeffs_shape(C)
         self.occupations = occupations
@@ -31,7 +31,11 @@ class AO2MO:
 
     @staticmethod
     def transform(
-        I: np.ndarray, C1: np.ndarray, C2: np.ndarray, C3: np.ndarray, C4: np.ndarray
+        I: np.ndarray,  # noqa: E741
+        C1: np.ndarray,
+        C2: np.ndarray,
+        C3: np.ndarray,
+        C4: np.ndarray,  # noqa: E741
     ) -> np.ndarray:
         """
         Transforms the 4-index ERI I with the 4 transformation matrices C1 to C4.

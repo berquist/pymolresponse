@@ -740,7 +740,7 @@ class ExactDiagonalizationSolver(EigSolver):
 
         nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
         nov_alph = nocc_alph * nvirt_alph
-        nov_beta = nocc_beta * nvirt_beta
+        nov_beta = nocc_beta * nvirt_beta  # noqa: F841
 
         if not self.is_uhf:
             # Set up "function pointers".
@@ -793,7 +793,7 @@ class ExactDiagonalizationSolver(EigSolver):
     def diagonalize_explicit_hessian(self) -> None:
         nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
         nov_alph = nocc_alph * nvirt_alph
-        nov_beta = nocc_beta * nvirt_beta
+        nov_beta = nocc_beta * nvirt_beta  # noqa: F841
         if not self.is_uhf:
             eigvals, eigvecs = sp.linalg.eig(self.explicit_hessian)
             # Sort from lowest to highest eigenvalue (excitation
@@ -842,8 +842,8 @@ class ExactDiagonalizationSolverTDA(ExactDiagonalizationSolver, EigSolverTDA):
         assert isinstance(frequency, (float, type(None)))
 
         nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
-        nov_alph = nocc_alph * nvirt_alph
-        nov_beta = nocc_beta * nvirt_beta
+        nov_alph = nocc_alph * nvirt_alph  # noqa: F841
+        nov_beta = nocc_beta * nvirt_beta  # noqa: F841
 
         if not self.is_uhf:
             # Set up "function pointers".
@@ -876,8 +876,8 @@ class ExactDiagonalizationSolverTDA(ExactDiagonalizationSolver, EigSolverTDA):
 
     def diagonalize_explicit_hessian(self) -> None:
         nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
-        nov_alph = nocc_alph * nvirt_alph
-        nov_beta = nocc_beta * nvirt_beta
+        nov_alph = nocc_alph * nvirt_alph  # noqa: F841
+        nov_beta = nocc_beta * nvirt_beta  # noqa: F841
         if not self.is_uhf:
             eigvals, eigvecs = sp.linalg.eig(self.explicit_hessian)
             # Sort from lowest to highest eigenvalue (excitation

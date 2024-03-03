@@ -84,7 +84,6 @@ line-length = 100
 skip-magic-trailing-comma = true
 
 [tool.ruff.lint]
-select = []
 
 [tool.ruff.lint.isort]
 lines-after-imports = 2

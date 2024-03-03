@@ -675,8 +675,8 @@ def test_first_hyperpolarizability_eope_rhf_wigner_explicit():
             [-1.11067586, -3.00950655, 1.66112712],
         ]
     )
-    ref_avgs = np.array([6.34718216, -7.81453502, 4.39980948])
-    ref_avg = 10.98690140
+    ref_avgs = np.array([6.34718216, -7.81453502, 4.39980948])  # noqa: F841
+    ref_avg = 10.98690140  # noqa: F841
 
     # TODO was 4.0e-5
     thresh = 4.01e-5
@@ -879,8 +879,8 @@ def test_first_hyperpolarizability_or_rhf_wigner_explicit():
             [-1.10887175, -3.00950655, 1.65659586],
         ]
     )
-    ref_avgs = np.array([6.34331713, -7.81628395, 4.40251201])
-    ref_avg = 10.98699590
+    ref_avgs = np.array([6.34331713, -7.81628395, 4.40251201])  # noqa: F841
+    ref_avg = 10.98699590  # noqa: F841
 
     # TODO was 4.0e-5
     thresh = 4.01e-5

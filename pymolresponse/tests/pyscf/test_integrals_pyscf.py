@@ -19,6 +19,6 @@ def test_integrals_pyscf():
 def test_jk_pyscf():
     mol = molecules.molecule_water_sto3g()
     mol.build()
-    jk_generator = integrals.JKPyscf(mol)
+    jk_generator = integrals.JKPyscf(mol)  # noqa: F841
 
     # print(jk_generator.compute_from_mocoeffs())

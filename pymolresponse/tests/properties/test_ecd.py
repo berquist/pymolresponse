@@ -291,8 +291,8 @@ def test_ECD_RPA_singlet_BC2H4_cation_HF_STO3G() -> None:
 
     # TODO
     print("TODO dipole (velocity) oscillator strengths")
-    ref_etoscsvel = np.array(ref["etoscsvel"])
-    res_etoscsvel = ecd_dipvel_rpa.driver.solver.operators[2].total_oscillator_strengths[:nroots]
+    ref_etoscsvel = np.array(ref["etoscsvel"])  # noqa: F841
+    res_etoscsvel = ecd_dipvel_rpa.driver.solver.operators[2].total_oscillator_strengths[:nroots]  # noqa: F841
     # print('ref, res')
     # for refval, resval in zip(ref_etoscsvel, res_etoscsvel):
     #     print(refval, resval)
