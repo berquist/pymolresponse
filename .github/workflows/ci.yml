@@ -21,12 +21,12 @@ jobs:
         run: "true"
   unit-tests:
     needs: [prechecks]
-    uses: ./.github/workflows/test.yml
-  package:
+    uses: ./.github/workflows/test_and_package.yml
+  publish:
     needs: [unit-tests]
     uses: ./.github/workflows/publish.yml
   all:
-    needs: [unit-tests, package]
+    needs: [unit-tests, publish]
     runs-on: ubuntu-latest
     steps:
       - name: Success

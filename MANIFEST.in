@@ -1,1 +1,2 @@
-include pymolresponse/_version.py
+graft tools
+global-exclude *.py[cod]

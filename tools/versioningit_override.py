@@ -7,7 +7,7 @@ from versioningit.basics import DEFAULT_FORMATS
 _ENVVARNAME = "VERSIONINGIT_FOR_PACKAGE_INDEX"
 
 
-def my_format(
+def pymolresponse_format(
     *, description: VCSDescription, base_version: str, next_version: str, params: Dict[str, Any]
 ) -> str:
     state = description.state
