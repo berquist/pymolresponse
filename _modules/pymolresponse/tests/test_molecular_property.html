@@ -106,10 +106,10 @@
 <a class="viewcode-back" href="../../../pyresponse.tests.html#pymolresponse.tests.test_molecular_property.test_response_property">[docs]</a>
 <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">skip</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">test_response_property</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="n">pyscfmol</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">mocoeffs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-    <span class="n">moenergies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-    <span class="n">occupations</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)]</span></div>
+    <span class="n">pyscfmol</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># noqa: F841</span>
+    <span class="n">mocoeffs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>  <span class="c1"># noqa: F841</span>
+    <span class="n">moenergies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>  <span class="c1"># noqa: F841</span>
+    <span class="n">occupations</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)]</span>  <span class="c1"># noqa: F841</span></div>
 
     <span class="c1"># TODO Turns out invoking the solver does a lot automatically...</span>
     <span class="c1"># cls = molecular_property.ResponseProperty(pyscfmol, mocoeffs, moenergies, occupations)</span>
@@ -129,10 +129,10 @@
 <a class="viewcode-back" href="../../../pyresponse.tests.html#pymolresponse.tests.test_molecular_property.test_transition_property">[docs]</a>
 <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">skip</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">test_transition_property</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="n">pyscfmol</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">mocoeffs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-    <span class="n">moenergies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-    <span class="n">occupations</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)]</span></div>
+    <span class="n">pyscfmol</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># noqa: F841</span>
+    <span class="n">mocoeffs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>  <span class="c1"># noqa: F841</span>
+    <span class="n">moenergies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>  <span class="c1"># noqa: F841</span>
+    <span class="n">occupations</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)]</span>  <span class="c1"># noqa: F841</span></div>
 
     <span class="c1"># TODO Turns out invoking the solver does a lot automatically...</span>
     <span class="c1"># cls = molecular_property.TransitionProperty(pyscfmol, mocoeffs, moenergies, occupations)</span>

@@ -880,7 +880,7 @@
 
         <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">,</span> <span class="n">nvirt_beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">occupations</span>
         <span class="n">nov_alph</span> <span class="o">=</span> <span class="n">nocc_alph</span> <span class="o">*</span> <span class="n">nvirt_alph</span>
-        <span class="n">nov_beta</span> <span class="o">=</span> <span class="n">nocc_beta</span> <span class="o">*</span> <span class="n">nvirt_beta</span>
+        <span class="n">nov_beta</span> <span class="o">=</span> <span class="n">nocc_beta</span> <span class="o">*</span> <span class="n">nvirt_beta</span>  <span class="c1"># noqa: F841</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_uhf</span><span class="p">:</span>
             <span class="c1"># Set up &quot;function pointers&quot;.</span>
@@ -936,7 +936,7 @@
     <span class="k">def</span> <span class="nf">diagonalize_explicit_hessian</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">,</span> <span class="n">nvirt_beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">occupations</span>
         <span class="n">nov_alph</span> <span class="o">=</span> <span class="n">nocc_alph</span> <span class="o">*</span> <span class="n">nvirt_alph</span>
-        <span class="n">nov_beta</span> <span class="o">=</span> <span class="n">nocc_beta</span> <span class="o">*</span> <span class="n">nvirt_beta</span>
+        <span class="n">nov_beta</span> <span class="o">=</span> <span class="n">nocc_beta</span> <span class="o">*</span> <span class="n">nvirt_beta</span>  <span class="c1"># noqa: F841</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_uhf</span><span class="p">:</span>
             <span class="n">eigvals</span><span class="p">,</span> <span class="n">eigvecs</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">explicit_hessian</span><span class="p">)</span>
             <span class="c1"># Sort from lowest to highest eigenvalue (excitation</span>
@@ -994,8 +994,8 @@
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">frequency</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
 
         <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">,</span> <span class="n">nvirt_beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">occupations</span>
-        <span class="n">nov_alph</span> <span class="o">=</span> <span class="n">nocc_alph</span> <span class="o">*</span> <span class="n">nvirt_alph</span>
-        <span class="n">nov_beta</span> <span class="o">=</span> <span class="n">nocc_beta</span> <span class="o">*</span> <span class="n">nvirt_beta</span>
+        <span class="n">nov_alph</span> <span class="o">=</span> <span class="n">nocc_alph</span> <span class="o">*</span> <span class="n">nvirt_alph</span>  <span class="c1"># noqa: F841</span>
+        <span class="n">nov_beta</span> <span class="o">=</span> <span class="n">nocc_beta</span> <span class="o">*</span> <span class="n">nvirt_beta</span>  <span class="c1"># noqa: F841</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_uhf</span><span class="p">:</span>
             <span class="c1"># Set up &quot;function pointers&quot;.</span>
@@ -1031,8 +1031,8 @@
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.solvers.ExactDiagonalizationSolverTDA.diagonalize_explicit_hessian">[docs]</a>
     <span class="k">def</span> <span class="nf">diagonalize_explicit_hessian</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">,</span> <span class="n">nvirt_beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">occupations</span>
-        <span class="n">nov_alph</span> <span class="o">=</span> <span class="n">nocc_alph</span> <span class="o">*</span> <span class="n">nvirt_alph</span>
-        <span class="n">nov_beta</span> <span class="o">=</span> <span class="n">nocc_beta</span> <span class="o">*</span> <span class="n">nvirt_beta</span>
+        <span class="n">nov_alph</span> <span class="o">=</span> <span class="n">nocc_alph</span> <span class="o">*</span> <span class="n">nvirt_alph</span>  <span class="c1"># noqa: F841</span>
+        <span class="n">nov_beta</span> <span class="o">=</span> <span class="n">nocc_beta</span> <span class="o">*</span> <span class="n">nvirt_beta</span>  <span class="c1"># noqa: F841</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_uhf</span><span class="p">:</span>
             <span class="n">eigvals</span><span class="p">,</span> <span class="n">eigvecs</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">explicit_hessian</span><span class="p">)</span>
             <span class="c1"># Sort from lowest to highest eigenvalue (excitation</span>
