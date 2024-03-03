@@ -95,7 +95,7 @@ section-order = ["future", "standard-library", "attrs", "third-party", "chemistr
 "chemistry" = ["psi4", "pyscf"]
 
 [tool.versioningit.format]
-method = { module = "versioningit_override", value = "my_format", module-dir = "pymolresponse" }
+method = {module = "versioningit_override", value = "pymolresponse_format", module-dir = "tools"}
 
 [tool.versioningit.template-fields.version-tuple]
 pep440 = true
