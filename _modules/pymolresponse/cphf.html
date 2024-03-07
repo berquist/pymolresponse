@@ -214,9 +214,9 @@
             <span class="n">row_starts</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">col_starts</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">row_start</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="k">for</span> <span class="n">iop1</span><span class="p">,</span> <span class="n">op1</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">operators</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">op1</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">operators</span><span class="p">:</span>
                 <span class="n">col_start</span> <span class="o">=</span> <span class="mi">0</span>
-                <span class="k">for</span> <span class="n">iop2</span><span class="p">,</span> <span class="n">op2</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">operators</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">op2</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">operators</span><span class="p">:</span>
                     <span class="n">result_block</span> <span class="o">=</span> <span class="mf">0.0</span>
                     <span class="n">result_block_alph</span> <span class="o">=</span> <span class="n">form_results</span><span class="p">(</span>
                         <span class="n">op1</span><span class="o">.</span><span class="n">mo_integrals_ai_supervector_alph</span><span class="p">,</span>
@@ -309,9 +309,9 @@
             <span class="n">row_starts</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">col_starts</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">row_start</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="k">for</span> <span class="n">iop1</span><span class="p">,</span> <span class="n">op1</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">operators</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">op1</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">operators</span><span class="p">:</span>
                 <span class="n">col_start</span> <span class="o">=</span> <span class="mi">0</span>
-                <span class="k">for</span> <span class="n">iop2</span><span class="p">,</span> <span class="n">op2</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">operators</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">op2</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">operators</span><span class="p">:</span>
                     <span class="n">result_block</span> <span class="o">=</span> <span class="mf">0.0</span>
                     <span class="n">result_block_alph</span> <span class="o">=</span> <span class="n">form_results</span><span class="p">(</span>
                         <span class="n">op1</span><span class="o">.</span><span class="n">mo_integrals_ai_supervector_alph</span><span class="p">,</span> <span class="n">op2</span><span class="o">.</span><span class="n">rspvecs_alph</span><span class="p">[</span><span class="n">f</span><span class="p">]</span>
