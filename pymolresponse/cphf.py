@@ -1,7 +1,7 @@
 """Driver for solving the coupled perturbed Hartree-Fock (CPHF) equations."""
 
 from abc import ABC, abstractmethod
-from typing import Optional, Sequence
+from typing import List, Optional, Sequence
 
 import numpy as np
 
@@ -16,7 +16,7 @@ class Driver(ABC):
         assert isinstance(solver, Solver)
         self.solver = solver
 
-        self.results = []
+        self.results: List[np.ndarray] = []
 
     @abstractmethod
     def run(self, hamiltonian: Hamiltonian, spin: Spin, program: Program, program_obj) -> None:
@@ -122,9 +122,9 @@ class CPHF(Driver):
             row_starts = []
             col_starts = []
             row_start = 0
-            for iop1, op1 in enumerate(self.solver.operators):
+            for op1 in self.solver.operators:
                 col_start = 0
-                for iop2, op2 in enumerate(self.solver.operators):
+                for op2 in self.solver.operators:
                     result_block = 0.0
                     result_block_alph = form_results(
                         op1.mo_integrals_ai_supervector_alph,
@@ -214,9 +214,9 @@ class CPHF(Driver):
             row_starts = []
             col_starts = []
             row_start = 0
-            for iop1, op1 in enumerate(self.solver.operators):
+            for op1 in self.solver.operators:
                 col_start = 0
-                for iop2, op2 in enumerate(self.solver.operators):
+                for op2 in self.solver.operators:
                     result_block = 0.0
                     result_block_alph = form_results(
                         op1.mo_integrals_ai_supervector_alph, op2.rspvecs_alph[f]

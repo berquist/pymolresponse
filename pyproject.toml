@@ -70,10 +70,11 @@ warn_unused_configs = true
 
 [[tool.mypy.overrides]]
 module = [
+    "periodictable",
     "psi4",
     "pyscf",
-    "pytest",
     "scipy",
+    "scipy.constants"
 ]
 ignore_missing_imports = true
 
@@ -84,7 +85,6 @@ line-length = 100
 skip-magic-trailing-comma = true
 
 [tool.ruff.lint]
-select = []
 
 [tool.ruff.lint.isort]
 lines-after-imports = 2

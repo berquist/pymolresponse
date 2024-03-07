@@ -1,5 +1,4 @@
 from pathlib import Path
-from typing import Optional
 
 import numpy as np
 from cclib.io import ccopen
@@ -15,7 +14,7 @@ from pymolresponse.interfaces.pyscf.ao2mo import AO2MOpyscf
 try:
     from daltools import mol as dalmol
     from daltools import sirifc
-except:
+except ImportError:
     pass
 
 

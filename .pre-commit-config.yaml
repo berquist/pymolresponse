@@ -56,7 +56,7 @@ repos:
   #       additional_dependencies:
   #         - toml
   # - repo: https://github.com/pre-commit/mirrors-mypy
-  #   rev: "v1.3.0"
+  #   rev: "v1.8.0"
   #   hooks:
   #     - id: mypy
   #       args: []
@@ -64,6 +64,7 @@ repos:
   #         - attrs
   #         - numpy
   #         - types-pyyaml
+  #         - versioningit
   - repo: https://github.com/adrienverge/yamllint
     rev: "v1.35.1"
     hooks:

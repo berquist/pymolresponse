@@ -189,7 +189,7 @@ class ECD(TransitionProperty):
         tmom_angmom = op_angmom.transition_moments
         if self.do_dipvel:
             op_dipvel = self.driver.solver.operators[2]
-            rotstrvel = self.rotational_strengths_dipvel
+            rotstrvel = self.rotational_strengths_dipvel  # noqa: F841
             etoscsvel = op_dipvel.total_oscillator_strengths
             tmom_dipvel = op_dipvel.transition_moments
             t2_dipvel = np.asarray(

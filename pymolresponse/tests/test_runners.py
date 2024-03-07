@@ -1,7 +1,6 @@
 from pathlib import Path
 from typing import Union
 
-from pymolresponse import utils
 from pymolresponse.data import REFDIR
 from pymolresponse.interfaces.dalton.utils import dalton_label_to_operator
 from pymolresponse.operators import Operator

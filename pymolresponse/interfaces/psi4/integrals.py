@@ -1,4 +1,3 @@
-from enum import Enum, auto, unique
 from typing import Optional, Tuple
 
 import numpy as np

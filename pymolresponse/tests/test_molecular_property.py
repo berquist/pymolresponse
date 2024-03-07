@@ -28,10 +28,10 @@ def test_molecular_property() -> None:
 
 @pytest.mark.skip()
 def test_response_property() -> None:
-    pyscfmol = None
-    mocoeffs = np.zeros((1, 2, 2))
-    moenergies = np.zeros((1, 2, 2))
-    occupations = [0 for _ in range(4)]
+    pyscfmol = None  # noqa: F841
+    mocoeffs = np.zeros((1, 2, 2))  # noqa: F841
+    moenergies = np.zeros((1, 2, 2))  # noqa: F841
+    occupations = [0 for _ in range(4)]  # noqa: F841
     # TODO Turns out invoking the solver does a lot automatically...
     # cls = molecular_property.ResponseProperty(pyscfmol, mocoeffs, moenergies, occupations)
     # try:
@@ -48,10 +48,10 @@ def test_response_property() -> None:
 
 @pytest.mark.skip()
 def test_transition_property() -> None:
-    pyscfmol = None
-    mocoeffs = np.zeros((1, 2, 2))
-    moenergies = np.zeros((1, 2, 2))
-    occupations = [0 for _ in range(4)]
+    pyscfmol = None  # noqa: F841
+    mocoeffs = np.zeros((1, 2, 2))  # noqa: F841
+    moenergies = np.zeros((1, 2, 2))  # noqa: F841
+    occupations = [0 for _ in range(4)]  # noqa: F841
     # TODO Turns out invoking the solver does a lot automatically...
     # cls = molecular_property.TransitionProperty(pyscfmol, mocoeffs, moenergies, occupations)
     # try:

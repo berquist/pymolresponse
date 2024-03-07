@@ -70,7 +70,7 @@ class TDHF(CPHF):
 
     def print_results(self) -> None:
         energies = self.solver.eigvals.real
-        for idx in len(energies):
+        for idx in range(len(energies)):
             print("=" * 78)
             print(f" State: {idx + 1}")
             print(f" Excitation energy [a.u.]: {energies[idx]}")
