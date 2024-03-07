@@ -2,7 +2,6 @@
 
 from itertools import accumulate
 from pathlib import Path
-from sys import exit
 from typing import List, Tuple, Union
 
 import numpy as np
@@ -350,7 +349,7 @@ def flip_triangle_sign(A: np.ndarray, triangle: str = "lower") -> np.ndarray:
     elif triangle == "upper":
         indices = np.triu_indices(dim)
     else:
-        exit(1)
+        raise ValueError("argument to triangle must be 'upper' or 'lower'")
     B = A.copy()
     B[indices] *= -1.0
     return B

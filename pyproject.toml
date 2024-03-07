@@ -70,6 +70,7 @@ warn_unused_configs = true
 
 [[tool.mypy.overrides]]
 module = [
+    "periodictable",
     "psi4",
     "pyscf",
     "scipy",
