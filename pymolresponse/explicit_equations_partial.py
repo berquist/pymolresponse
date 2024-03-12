@@ -1,6 +1,5 @@
 r"""Explicit equations for orbital Hessian terms using partially-transformed MO-basis two-electron integrals, *e.g.*, :math:`(ia|jb), (ij|ab)`."""
 
-
 import numpy as np
 
 from pymolresponse.utils import form_vec_energy_differences
