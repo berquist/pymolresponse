@@ -1,9 +1,0 @@
-deepdiff
-h5py
-pint
-
-attrs
-cclib
-periodictable
-qcelemental
-scipy
