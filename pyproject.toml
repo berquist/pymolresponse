@@ -25,9 +25,16 @@ Homepage = "https://github.com/berquist/pymolresponse"
 
 [project.optional-dependencies]
 test = [
-  "pytest>=6.1.2",
-  "pytest-runner"
+    "pytest",
+    "coverage",
+    "pytest-cov",
 ]
+docs = [
+    "numpydoc",
+    "sphinx",
+    "sphinx_rtd_theme",
+]
+dev = ["pymolresponse[docs,test]"]
 
 [build-system]
 requires = ["setuptools>=61.0", "versioningit~=2.0"]
