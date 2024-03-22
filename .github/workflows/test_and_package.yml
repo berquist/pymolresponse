@@ -120,3 +120,6 @@ jobs:
         run: |
           python -m pip install ./dist/*.tar.gz
         if: matrix.install-method == 'source'
+      - name: Smoke test
+        run: |
+          python -c 'import pymolresponse; print(pymolresponse.__version__)'
