@@ -22,11 +22,14 @@ jobs:
   unit-tests:
     needs: [prechecks]
     uses: ./.github/workflows/test_and_package.yml
+  pixi:
+    needs: [prechecks]
+    uses: ./.github/workflows/pixi.yml
   publish:
-    needs: [unit-tests]
+    needs: [unit-tests, pixi]
     uses: ./.github/workflows/publish.yml
   all:
-    needs: [unit-tests, publish]
+    needs: [unit-tests, pixi, publish]
     runs-on: ubuntu-latest
     steps:
       - name: Success

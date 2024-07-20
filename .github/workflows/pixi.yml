@@ -1,0 +1,23 @@
+---
+name: test with pixi
+
+# yamllint disable-line rule:truthy
+on:
+  workflow_dispatch:
+  workflow_call:
+
+concurrency:
+  group: pixi-${{github.ref}}-${{github.event.pull_request.number || github.run_number}}
+  cancel-in-progress: true
+
+jobs:
+  pixi:
+    name: Test with pixi
+      runs-on: ${{ matrix.os }}
+      strategy:
+        matrix:
+          os:
+            - macos-latest
+            - ubuntu-latest
+      steps:
+        - uses: prefix-dev/setup-pixi@v0.6.0
