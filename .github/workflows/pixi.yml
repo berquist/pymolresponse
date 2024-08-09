@@ -13,11 +13,11 @@ concurrency:
 jobs:
   pixi:
     name: Test with pixi
-      runs-on: ${{ matrix.os }}
-      strategy:
-        matrix:
-          os:
-            - macos-latest
-            - ubuntu-latest
-      steps:
-        - uses: prefix-dev/setup-pixi@v0.6.0
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os:
+          - macos-latest
+          - ubuntu-latest
+    steps:
+      - uses: prefix-dev/setup-pixi@v0.6.0
