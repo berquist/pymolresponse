@@ -183,3 +183,7 @@ cython_debug/
 #.idea/
 
 _version.py
+# pixi environments
+.pixi
+*.egg-info
+psi.*.clean
