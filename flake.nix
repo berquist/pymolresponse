@@ -1,5 +1,5 @@
 {
-  description = "Example C++ development environment for Zero to Nix";
+  description = "Molecular frequency-dependent response properties for arbitrary operators";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
