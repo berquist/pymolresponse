@@ -47,7 +47,9 @@ jobs:
           repository-url: https://test.pypi.org/legacy/
           print-hash: true
           verbose: true
-
+          # Temporary workaround for
+          # https://github.com/pypa/gh-action-pypi-publish/issues/283
+          attestations: false
   publish-to-pypi:
     name: >-
       Publish Python 🐍 distribution 📦 to PyPI
@@ -74,6 +76,9 @@ jobs:
         with:
           print-hash: true
           verbose: true
+          # Temporary workaround for
+          # https://github.com/pypa/gh-action-pypi-publish/issues/283
+          attestations: false
 
   github-release:
     name: >-
