@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pymolresponse.interfaces.dalton.utils &mdash; pymolresponse  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
 
@@ -69,12 +69,12 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pymolresponse.interfaces.dalton.utils</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">pymolresponse.operators</span> <span class="kn">import</span> <span class="n">Operator</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.operators</span><span class="w"> </span><span class="kn">import</span> <span class="n">Operator</span>
 
 
 <div class="viewcode-block" id="clean_dalton_label">
 <a class="viewcode-back" href="../../../../pyresponse.dalton.html#pymolresponse.interfaces.dalton.utils.clean_dalton_label">[docs]</a>
-<span class="k">def</span> <span class="nf">clean_dalton_label</span><span class="p">(</span><span class="n">original_label</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">clean_dalton_label</span><span class="p">(</span><span class="n">original_label</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Operator/integral labels in DALTON are in uppercase and may have</span>
 <span class="sd">    spaces in them; replace spaces with underscores and make all</span>
 <span class="sd">    letters lowercase.</span>
@@ -88,7 +88,7 @@
 
 <div class="viewcode-block" id="dalton_label_to_operator">
 <a class="viewcode-back" href="../../../../pyresponse.dalton.html#pymolresponse.interfaces.dalton.utils.dalton_label_to_operator">[docs]</a>
-<span class="k">def</span> <span class="nf">dalton_label_to_operator</span><span class="p">(</span><span class="n">label</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Operator</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">dalton_label_to_operator</span><span class="p">(</span><span class="n">label</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Operator</span><span class="p">:</span>
     <span class="n">label</span> <span class="o">=</span> <span class="n">clean_dalton_label</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
 
     <span class="n">coord1_to_slice</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>

@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pymolresponse.td &mdash; pymolresponse  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
 
@@ -72,30 +72,30 @@
 <span></span><span class="sd">&quot;&quot;&quot;Drivers for solving the time-dependent Hartree-Fock (TDHF)</span>
 <span class="sd">equations.&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">pymolresponse.constants</span> <span class="kn">import</span> <span class="n">HARTREE_TO_EV</span><span class="p">,</span> <span class="n">HARTREE_TO_INVCM</span>
-<span class="kn">from</span> <span class="nn">pymolresponse.core</span> <span class="kn">import</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">Program</span><span class="p">,</span> <span class="n">Spin</span>
-<span class="kn">from</span> <span class="nn">pymolresponse.cphf</span> <span class="kn">import</span> <span class="n">CPHF</span>
-<span class="kn">from</span> <span class="nn">pymolresponse.solvers</span> <span class="kn">import</span> <span class="n">EigSolver</span><span class="p">,</span> <span class="n">EigSolverTDA</span><span class="p">,</span> <span class="n">Solver</span>
-<span class="kn">from</span> <span class="nn">pymolresponse.utils</span> <span class="kn">import</span> <span class="n">form_indices_orbwin</span><span class="p">,</span> <span class="n">form_vec_energy_differences</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">HARTREE_TO_EV</span><span class="p">,</span> <span class="n">HARTREE_TO_INVCM</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">Program</span><span class="p">,</span> <span class="n">Spin</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.cphf</span><span class="w"> </span><span class="kn">import</span> <span class="n">CPHF</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.solvers</span><span class="w"> </span><span class="kn">import</span> <span class="n">EigSolver</span><span class="p">,</span> <span class="n">EigSolverTDA</span><span class="p">,</span> <span class="n">Solver</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">form_indices_orbwin</span><span class="p">,</span> <span class="n">form_vec_energy_differences</span>
 
 
 <div class="viewcode-block" id="TDHF">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.td.TDHF">[docs]</a>
-<span class="k">class</span> <span class="nc">TDHF</span><span class="p">(</span><span class="n">CPHF</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TDHF</span><span class="p">(</span><span class="n">CPHF</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Driver for solving the time-dependent Hartree-Fock (TDHF)</span>
 <span class="sd">    equations, also called the random phase approximation (RPA)</span>
 <span class="sd">    equations.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">solver</span><span class="p">:</span> <span class="n">Solver</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">solver</span><span class="p">:</span> <span class="n">Solver</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="n">EigSolver</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">solver</span><span class="p">)</span>
 
 <div class="viewcode-block" id="TDHF.run">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.td.TDHF.run">[docs]</a>
-    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hamiltonian</span><span class="p">:</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">spin</span><span class="p">:</span> <span class="n">Spin</span><span class="p">,</span> <span class="n">program</span><span class="p">:</span> <span class="n">Program</span><span class="p">,</span> <span class="n">program_obj</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hamiltonian</span><span class="p">:</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">spin</span><span class="p">:</span> <span class="n">Spin</span><span class="p">,</span> <span class="n">program</span><span class="p">:</span> <span class="n">Program</span><span class="p">,</span> <span class="n">program_obj</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hamiltonian</span><span class="p">,</span> <span class="n">Hamiltonian</span><span class="p">)</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">spin</span><span class="p">,</span> <span class="n">Spin</span><span class="p">)</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="p">(</span><span class="n">Program</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
@@ -109,7 +109,7 @@
 
 <div class="viewcode-block" id="TDHF.form_results">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.td.TDHF.form_results">[docs]</a>
-    <span class="k">def</span> <span class="nf">form_results</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">form_results</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">,</span> <span class="n">nvirt_beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">occupations</span>
         <span class="n">nov_alph</span> <span class="o">=</span> <span class="n">nocc_alph</span> <span class="o">*</span> <span class="n">nvirt_alph</span>
         <span class="c1"># nov_beta = nocc_beta * nvirt_beta</span>
@@ -149,7 +149,7 @@
 
 <div class="viewcode-block" id="TDHF.print_results">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.td.TDHF.print_results">[docs]</a>
-    <span class="k">def</span> <span class="nf">print_results</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">print_results</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">energies</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">eigvals</span><span class="o">.</span><span class="n">real</span>
         <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">energies</span><span class="p">)):</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">78</span><span class="p">)</span>
@@ -169,7 +169,7 @@
 
 <div class="viewcode-block" id="TDHF.print_results_nwchem">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.td.TDHF.print_results_nwchem">[docs]</a>
-    <span class="k">def</span> <span class="nf">print_results_nwchem</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">print_results_nwchem</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="c1"># TODO UHF</span>
         <span class="n">nocc_tot</span><span class="p">,</span> <span class="n">nvirt_tot</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">occupations</span>
         <span class="n">moene</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">moenergies</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -202,7 +202,7 @@
 
 <div class="viewcode-block" id="TDHF.print_results_orca">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.td.TDHF.print_results_orca">[docs]</a>
-    <span class="k">def</span> <span class="nf">print_results_orca</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cutoff</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">print_results_orca</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cutoff</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
         <span class="n">energies</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">eigvals</span><span class="o">.</span><span class="n">real</span>
         <span class="n">energies_ev</span> <span class="o">=</span> <span class="n">energies</span> <span class="o">*</span> <span class="n">HARTREE_TO_EV</span>
         <span class="n">energies_invcm</span> <span class="o">=</span> <span class="n">energies</span> <span class="o">*</span> <span class="n">HARTREE_TO_INVCM</span>
@@ -255,20 +255,20 @@
 
 <div class="viewcode-block" id="TDA">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.td.TDA">[docs]</a>
-<span class="k">class</span> <span class="nc">TDA</span><span class="p">(</span><span class="n">TDHF</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TDA</span><span class="p">(</span><span class="n">TDHF</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Driver for solving the time-dependent Hartree-Fock equations with the</span>
 <span class="sd">    Tamm-Dancoff approximation (TDA), also called the configuration</span>
 <span class="sd">    interaction with single excitation (CIS) equations when no XC contribution</span>
 <span class="sd">    is present.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">solver</span><span class="p">:</span> <span class="n">EigSolverTDA</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">solver</span><span class="p">:</span> <span class="n">EigSolverTDA</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="n">EigSolverTDA</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">solver</span><span class="p">)</span>
 
 <div class="viewcode-block" id="TDA.form_results">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.td.TDA.form_results">[docs]</a>
-    <span class="k">def</span> <span class="nf">form_results</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">form_results</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">,</span> <span class="n">nvirt_beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">occupations</span>
         <span class="n">nov_alph</span> <span class="o">=</span> <span class="n">nocc_alph</span> <span class="o">*</span> <span class="n">nvirt_alph</span>
         <span class="c1"># nov_beta = nocc_beta * nvirt_beta</span>

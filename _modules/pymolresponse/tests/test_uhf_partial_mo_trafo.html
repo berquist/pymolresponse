@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pymolresponse.tests.test_uhf_partial_mo_trafo &mdash; pymolresponse  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
 
@@ -69,22 +69,22 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pymolresponse.tests.test_uhf_partial_mo_trafo</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">import</span> <span class="nn">pyscf</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyscf</span>
 
-<span class="kn">from</span> <span class="nn">pymolresponse</span> <span class="kn">import</span> <span class="n">cphf</span>
-<span class="kn">from</span> <span class="nn">pymolresponse</span> <span class="kn">import</span> <span class="n">explicit_equations_partial</span> <span class="k">as</span> <span class="n">eqns</span>
-<span class="kn">from</span> <span class="nn">pymolresponse</span> <span class="kn">import</span> <span class="n">operators</span><span class="p">,</span> <span class="n">solvers</span>
-<span class="kn">from</span> <span class="nn">pymolresponse.core</span> <span class="kn">import</span> <span class="n">AO2MOTransformationType</span><span class="p">,</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">Program</span><span class="p">,</span> <span class="n">Spin</span>
-<span class="kn">from</span> <span class="nn">pymolresponse.interfaces.pyscf</span> <span class="kn">import</span> <span class="n">molecules</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse</span><span class="w"> </span><span class="kn">import</span> <span class="n">cphf</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse</span><span class="w"> </span><span class="kn">import</span> <span class="n">explicit_equations_partial</span> <span class="k">as</span> <span class="n">eqns</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse</span><span class="w"> </span><span class="kn">import</span> <span class="n">operators</span><span class="p">,</span> <span class="n">solvers</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">AO2MOTransformationType</span><span class="p">,</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">Program</span><span class="p">,</span> <span class="n">Spin</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.interfaces.pyscf</span><span class="w"> </span><span class="kn">import</span> <span class="n">molecules</span>
 
-<span class="kn">from</span> <span class="nn">.test_uhf</span> <span class="kn">import</span> <span class="n">ref_water_cation_UHF_HF_STO3G</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.test_uhf</span><span class="w"> </span><span class="kn">import</span> <span class="n">ref_water_cation_UHF_HF_STO3G</span>
 
 
 <div class="viewcode-block" id="test_explicit_uhf_outside_solver">
 <a class="viewcode-back" href="../../../pyresponse.tests.html#pymolresponse.tests.test_uhf_partial_mo_trafo.test_explicit_uhf_outside_solver">[docs]</a>
-<span class="k">def</span> <span class="nf">test_explicit_uhf_outside_solver</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_explicit_uhf_outside_solver</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="n">mol</span> <span class="o">=</span> <span class="n">molecules</span><span class="o">.</span><span class="n">molecule_water_sto3g</span><span class="p">()</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">charge</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">spin</span> <span class="o">=</span> <span class="mi">1</span>
@@ -219,7 +219,7 @@
 
 <div class="viewcode-block" id="test_explicit_uhf">
 <a class="viewcode-back" href="../../../pyresponse.tests.html#pymolresponse.tests.test_uhf_partial_mo_trafo.test_explicit_uhf">[docs]</a>
-<span class="k">def</span> <span class="nf">test_explicit_uhf</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_explicit_uhf</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="n">mol</span> <span class="o">=</span> <span class="n">molecules</span><span class="o">.</span><span class="n">molecule_water_sto3g</span><span class="p">()</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">charge</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">spin</span> <span class="o">=</span> <span class="mi">1</span>

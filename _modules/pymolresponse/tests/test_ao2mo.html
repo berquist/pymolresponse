@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pymolresponse.tests.test_ao2mo &mdash; pymolresponse  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
 
@@ -69,20 +69,20 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pymolresponse.tests.test_ao2mo</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">import</span> <span class="nn">pyscf</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyscf</span>
 
-<span class="kn">from</span> <span class="nn">pymolresponse.ao2mo</span> <span class="kn">import</span> <span class="n">AO2MO</span>
-<span class="kn">from</span> <span class="nn">pymolresponse.interfaces.pyscf</span> <span class="kn">import</span> <span class="n">molecules</span> <span class="k">as</span> <span class="n">molecules_pyscf</span>
-<span class="kn">from</span> <span class="nn">pymolresponse.interfaces.pyscf.ao2mo</span> <span class="kn">import</span> <span class="n">AO2MOpyscf</span>
-<span class="kn">from</span> <span class="nn">pymolresponse.interfaces.pyscf.utils</span> <span class="kn">import</span> <span class="n">occupations_from_pyscf_mol</span>
-<span class="kn">from</span> <span class="nn">pymolresponse.utils</span> <span class="kn">import</span> <span class="n">fix_mocoeffs_shape</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.ao2mo</span><span class="w"> </span><span class="kn">import</span> <span class="n">AO2MO</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.interfaces.pyscf</span><span class="w"> </span><span class="kn">import</span> <span class="n">molecules</span> <span class="k">as</span> <span class="n">molecules_pyscf</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.interfaces.pyscf.ao2mo</span><span class="w"> </span><span class="kn">import</span> <span class="n">AO2MOpyscf</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.interfaces.pyscf.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">occupations_from_pyscf_mol</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">fix_mocoeffs_shape</span>
 
 
 <div class="viewcode-block" id="test_ao2mo_hand_against_pyscf_rhf_full">
 <a class="viewcode-back" href="../../../pyresponse.tests.html#pymolresponse.tests.test_ao2mo.test_ao2mo_hand_against_pyscf_rhf_full">[docs]</a>
-<span class="k">def</span> <span class="nf">test_ao2mo_hand_against_pyscf_rhf_full</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_ao2mo_hand_against_pyscf_rhf_full</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="n">mol</span> <span class="o">=</span> <span class="n">molecules_pyscf</span><span class="o">.</span><span class="n">molecule_physicists_water_sto3g</span><span class="p">()</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
 
@@ -122,7 +122,7 @@
 
 <div class="viewcode-block" id="test_ao2mo_hand_against_pyscf_rhf_partial">
 <a class="viewcode-back" href="../../../pyresponse.tests.html#pymolresponse.tests.test_ao2mo.test_ao2mo_hand_against_pyscf_rhf_partial">[docs]</a>
-<span class="k">def</span> <span class="nf">test_ao2mo_hand_against_pyscf_rhf_partial</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_ao2mo_hand_against_pyscf_rhf_partial</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="n">mol</span> <span class="o">=</span> <span class="n">molecules_pyscf</span><span class="o">.</span><span class="n">molecule_physicists_water_sto3g</span><span class="p">()</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
 

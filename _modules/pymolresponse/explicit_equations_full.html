@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pymolresponse.explicit_equations_full &mdash; pymolresponse  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
 
@@ -71,14 +71,14 @@
   <h1>Source code for pymolresponse.explicit_equations_full</h1><div class="highlight"><pre>
 <span></span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Explicit equations for orbital Hessian terms using fully-transformed MO-basis two-electron integrals, *e.g.*, :math:`(pq|rs)`.&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">pymolresponse.utils</span> <span class="kn">import</span> <span class="n">form_vec_energy_differences</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">form_vec_energy_differences</span>
 
 
 <div class="viewcode-block" id="form_rpa_a_matrix_mo_singlet_full">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.explicit_equations_full.form_rpa_a_matrix_mo_singlet_full">[docs]</a>
-<span class="k">def</span> <span class="nf">form_rpa_a_matrix_mo_singlet_full</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">form_rpa_a_matrix_mo_singlet_full</span><span class="p">(</span>
     <span class="n">E_MO</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">TEI_MO</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">nocc</span><span class="p">:</span> <span class="nb">int</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Form the A (CIS) matrix in the MO basis. [singlet]</span>
@@ -115,7 +115,7 @@
 
 <div class="viewcode-block" id="form_rpa_a_matrix_mo_triplet_full">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.explicit_equations_full.form_rpa_a_matrix_mo_triplet_full">[docs]</a>
-<span class="k">def</span> <span class="nf">form_rpa_a_matrix_mo_triplet_full</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">form_rpa_a_matrix_mo_triplet_full</span><span class="p">(</span>
     <span class="n">E_MO</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">TEI_MO</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">nocc</span><span class="p">:</span> <span class="nb">int</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Form the A (CIS) matrix in the MO basis. [triplet]</span>
@@ -149,7 +149,7 @@
 
 <div class="viewcode-block" id="form_rpa_b_matrix_mo_singlet_full">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.explicit_equations_full.form_rpa_b_matrix_mo_singlet_full">[docs]</a>
-<span class="k">def</span> <span class="nf">form_rpa_b_matrix_mo_singlet_full</span><span class="p">(</span><span class="n">TEI_MO</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">nocc</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">form_rpa_b_matrix_mo_singlet_full</span><span class="p">(</span><span class="n">TEI_MO</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">nocc</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Form the B matrix for RPA in the MO basis. [singlet]</span>
 
 <span class="sd">    The equation for element :math:`\{ia,jb\}` is</span>
@@ -179,7 +179,7 @@
 
 <div class="viewcode-block" id="form_rpa_b_matrix_mo_triplet_full">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.explicit_equations_full.form_rpa_b_matrix_mo_triplet_full">[docs]</a>
-<span class="k">def</span> <span class="nf">form_rpa_b_matrix_mo_triplet_full</span><span class="p">(</span><span class="n">TEI_MO</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">nocc</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">form_rpa_b_matrix_mo_triplet_full</span><span class="p">(</span><span class="n">TEI_MO</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">nocc</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Form the B matrix for RPA in the MO basis. [triplet]</span>
 
 <span class="sd">    The equation for element :math:`\{ia,jb\}` is :math:`????`.</span>
@@ -205,7 +205,7 @@
 
 <div class="viewcode-block" id="form_rpa_a_matrix_mo_singlet_ss_full">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.explicit_equations_full.form_rpa_a_matrix_mo_singlet_ss_full">[docs]</a>
-<span class="k">def</span> <span class="nf">form_rpa_a_matrix_mo_singlet_ss_full</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">form_rpa_a_matrix_mo_singlet_ss_full</span><span class="p">(</span>
     <span class="n">E_MO</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">TEI_MO</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">nocc</span><span class="p">:</span> <span class="nb">int</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Form the same-spin part of the A (CIS) matrix in the MO</span>
@@ -238,7 +238,7 @@
 
 <div class="viewcode-block" id="form_rpa_a_matrix_mo_singlet_os_full">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.explicit_equations_full.form_rpa_a_matrix_mo_singlet_os_full">[docs]</a>
-<span class="k">def</span> <span class="nf">form_rpa_a_matrix_mo_singlet_os_full</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">form_rpa_a_matrix_mo_singlet_os_full</span><span class="p">(</span>
     <span class="n">TEI_MO_xxyy</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">nocc_x</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">nocc_y</span><span class="p">:</span> <span class="nb">int</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Form the opposite-spin part of the A (CIS) matrix in the MO</span>
@@ -269,7 +269,7 @@
 
 <div class="viewcode-block" id="form_rpa_b_matrix_mo_singlet_ss_full">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.explicit_equations_full.form_rpa_b_matrix_mo_singlet_ss_full">[docs]</a>
-<span class="k">def</span> <span class="nf">form_rpa_b_matrix_mo_singlet_ss_full</span><span class="p">(</span><span class="n">TEI_MO</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">nocc</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">form_rpa_b_matrix_mo_singlet_ss_full</span><span class="p">(</span><span class="n">TEI_MO</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">nocc</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Form the same-spin part of the RPA B matrix in the MO</span>
 <span class="sd">    basis. [singlet]</span>
 
@@ -296,7 +296,7 @@
 
 <div class="viewcode-block" id="form_rpa_b_matrix_mo_singlet_os_full">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.explicit_equations_full.form_rpa_b_matrix_mo_singlet_os_full">[docs]</a>
-<span class="k">def</span> <span class="nf">form_rpa_b_matrix_mo_singlet_os_full</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">form_rpa_b_matrix_mo_singlet_os_full</span><span class="p">(</span>
     <span class="n">TEI_MO_xxyy</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">nocc_x</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">nocc_y</span><span class="p">:</span> <span class="nb">int</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Form the opposite-spin part of the RPA B matrix in the MO</span>

@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pymolresponse.interfaces.psi4.molecules &mdash; pymolresponse  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
 
@@ -69,16 +69,16 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pymolresponse.interfaces.psi4.molecules</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">psi4</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">psi4</span>
 
-<span class="kn">from</span> <span class="nn">pymolresponse.data</span> <span class="kn">import</span> <span class="n">COORDDIR</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">COORDDIR</span>
 
 <span class="c1"># TODO molecule_water_sto3g_angstrom</span>
 
 
 <div class="viewcode-block" id="molecule_water_sto3g">
 <a class="viewcode-back" href="../../../../pyresponse.psi4.html#pymolresponse.interfaces.psi4.molecules.molecule_water_sto3g">[docs]</a>
-<span class="k">def</span> <span class="nf">molecule_water_sto3g</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Molecule</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">molecule_water_sto3g</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Molecule</span><span class="p">:</span>
     <span class="c1"># TODO this isn&quot;t a proper xyz file. Why?</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">COORDDIR</span> <span class="o">/</span> <span class="s2">&quot;water.xyz&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
         <span class="n">mol</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fh</span><span class="o">.</span><span class="n">readlines</span><span class="p">()))</span>
@@ -101,7 +101,7 @@
 
 <div class="viewcode-block" id="molecule_physicists_water_sto3g">
 <a class="viewcode-back" href="../../../../pyresponse.psi4.html#pymolresponse.interfaces.psi4.molecules.molecule_physicists_water_sto3g">[docs]</a>
-<span class="k">def</span> <span class="nf">molecule_physicists_water_sto3g</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Molecule</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">molecule_physicists_water_sto3g</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Molecule</span><span class="p">:</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">COORDDIR</span> <span class="o">/</span> <span class="s2">&quot;water_psi4numpy.xyz&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
         <span class="n">mol</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fh</span><span class="o">.</span><span class="n">readlines</span><span class="p">()[</span><span class="mi">2</span><span class="p">:]))</span>
 
@@ -121,7 +121,7 @@
 
 <div class="viewcode-block" id="molecule_physicists_water_augccpvdz">
 <a class="viewcode-back" href="../../../../pyresponse.psi4.html#pymolresponse.interfaces.psi4.molecules.molecule_physicists_water_augccpvdz">[docs]</a>
-<span class="k">def</span> <span class="nf">molecule_physicists_water_augccpvdz</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Molecule</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">molecule_physicists_water_augccpvdz</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Molecule</span><span class="p">:</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">COORDDIR</span> <span class="o">/</span> <span class="s2">&quot;water_psi4numpy.xyz&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
         <span class="n">mol</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fh</span><span class="o">.</span><span class="n">readlines</span><span class="p">()[</span><span class="mi">2</span><span class="p">:]))</span>
 
@@ -141,7 +141,7 @@
 
 <div class="viewcode-block" id="molecule_glycine_sto3g">
 <a class="viewcode-back" href="../../../../pyresponse.psi4.html#pymolresponse.interfaces.psi4.molecules.molecule_glycine_sto3g">[docs]</a>
-<span class="k">def</span> <span class="nf">molecule_glycine_sto3g</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Molecule</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">molecule_glycine_sto3g</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Molecule</span><span class="p">:</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">COORDDIR</span> <span class="o">/</span> <span class="s2">&quot;glycine.xyz&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
         <span class="n">mol</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fh</span><span class="o">.</span><span class="n">readlines</span><span class="p">()[</span><span class="mi">2</span><span class="p">:]))</span>
 
@@ -161,7 +161,7 @@
 
 <div class="viewcode-block" id="molecule_trithiolane_sto3g">
 <a class="viewcode-back" href="../../../../pyresponse.psi4.html#pymolresponse.interfaces.psi4.molecules.molecule_trithiolane_sto3g">[docs]</a>
-<span class="k">def</span> <span class="nf">molecule_trithiolane_sto3g</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Molecule</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">molecule_trithiolane_sto3g</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Molecule</span><span class="p">:</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">COORDDIR</span> <span class="o">/</span> <span class="s2">&quot;trithiolane.xyz&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
         <span class="n">mol</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fh</span><span class="o">.</span><span class="n">readlines</span><span class="p">()[</span><span class="mi">2</span><span class="p">:]))</span>
 
@@ -181,7 +181,7 @@
 
 <div class="viewcode-block" id="hydrogen_atom_sto3g">
 <a class="viewcode-back" href="../../../../pyresponse.psi4.html#pymolresponse.interfaces.psi4.molecules.hydrogen_atom_sto3g">[docs]</a>
-<span class="k">def</span> <span class="nf">hydrogen_atom_sto3g</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Molecule</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">hydrogen_atom_sto3g</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Molecule</span><span class="p">:</span>
     <span class="n">mol</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">0 2</span>
@@ -203,7 +203,7 @@
 
 <div class="viewcode-block" id="molecule_bc2h4_cation_sto3g">
 <a class="viewcode-back" href="../../../../pyresponse.psi4.html#pymolresponse.interfaces.psi4.molecules.molecule_bc2h4_cation_sto3g">[docs]</a>
-<span class="k">def</span> <span class="nf">molecule_bc2h4_cation_sto3g</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Molecule</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">molecule_bc2h4_cation_sto3g</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Molecule</span><span class="p">:</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">COORDDIR</span> <span class="o">/</span> <span class="s2">&quot;BC2H4.xyz&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
         <span class="n">mol</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fh</span><span class="o">.</span><span class="n">readlines</span><span class="p">()[</span><span class="mi">2</span><span class="p">:]))</span>
 
@@ -235,7 +235,7 @@
 
 <div class="viewcode-block" id="molecule_lih_cation_sto3g">
 <a class="viewcode-back" href="../../../../pyresponse.psi4.html#pymolresponse.interfaces.psi4.molecules.molecule_lih_cation_sto3g">[docs]</a>
-<span class="k">def</span> <span class="nf">molecule_lih_cation_sto3g</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Molecule</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">molecule_lih_cation_sto3g</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Molecule</span><span class="p">:</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">COORDDIR</span> <span class="o">/</span> <span class="s2">&quot;LiH.xyz&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
         <span class="n">mol</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fh</span><span class="o">.</span><span class="n">readlines</span><span class="p">()[</span><span class="mi">2</span><span class="p">:]))</span>
 
@@ -255,7 +255,7 @@
 
 <div class="viewcode-block" id="molecule_0w4a_dication_321g">
 <a class="viewcode-back" href="../../../../pyresponse.psi4.html#pymolresponse.interfaces.psi4.molecules.molecule_0w4a_dication_321g">[docs]</a>
-<span class="k">def</span> <span class="nf">molecule_0w4a_dication_321g</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Molecule</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">molecule_0w4a_dication_321g</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Molecule</span><span class="p">:</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">COORDDIR</span> <span class="o">/</span> <span class="s2">&quot;0w4a.xyz&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
         <span class="n">mol</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fh</span><span class="o">.</span><span class="n">readlines</span><span class="p">()[</span><span class="mi">2</span><span class="p">:]))</span>
 
@@ -275,7 +275,7 @@
 
 <div class="viewcode-block" id="molecule_bh_cation_def2_svp">
 <a class="viewcode-back" href="../../../../pyresponse.psi4.html#pymolresponse.interfaces.psi4.molecules.molecule_bh_cation_def2_svp">[docs]</a>
-<span class="k">def</span> <span class="nf">molecule_bh_cation_def2_svp</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Molecule</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">molecule_bh_cation_def2_svp</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Molecule</span><span class="p">:</span>
     <span class="n">mol</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">1 2</span>

@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pymolresponse.interfaces.psi4.integrals &mdash; pymolresponse  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
 
@@ -69,13 +69,13 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pymolresponse.interfaces.psi4.integrals</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">import</span> <span class="nn">psi4</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">psi4</span>
 
-<span class="kn">from</span> <span class="nn">pymolresponse.integrals</span> <span class="kn">import</span> <span class="n">JK</span><span class="p">,</span> <span class="n">IntegralLabel</span><span class="p">,</span> <span class="n">Integrals</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.integrals</span><span class="w"> </span><span class="kn">import</span> <span class="n">JK</span><span class="p">,</span> <span class="n">IntegralLabel</span><span class="p">,</span> <span class="n">Integrals</span>
 
 <span class="n">DIPOLE</span> <span class="o">=</span> <span class="nb">object</span><span class="p">()</span>
 <span class="n">DIPVEL</span> <span class="o">=</span> <span class="nb">object</span><span class="p">()</span>
@@ -84,8 +84,8 @@
 
 <div class="viewcode-block" id="IntegralsPsi4">
 <a class="viewcode-back" href="../../../../pyresponse.psi4.html#pymolresponse.interfaces.psi4.integrals.IntegralsPsi4">[docs]</a>
-<span class="k">class</span> <span class="nc">IntegralsPsi4</span><span class="p">(</span><span class="n">Integrals</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wfn_or_mol</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">IntegralsPsi4</span><span class="p">(</span><span class="n">Integrals</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wfn_or_mol</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">wfn_or_mol</span><span class="p">,</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Molecule</span><span class="p">):</span>
@@ -96,7 +96,7 @@
             <span class="k">raise</span> <span class="ne">RuntimeError</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_mints</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">MintsHelper</span><span class="p">(</span><span class="n">wfn</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="n">IntegralLabel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="n">IntegralLabel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">label</span> <span class="o">==</span> <span class="n">DIPOLE</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">Mc</span><span class="p">)</span> <span class="k">for</span> <span class="n">Mc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mints</span><span class="o">.</span><span class="n">ao_dipole</span><span class="p">()])</span>
         <span class="k">elif</span> <span class="n">label</span> <span class="o">==</span> <span class="n">DIPVEL</span><span class="p">:</span>
@@ -111,7 +111,7 @@
 <span class="c1"># Taken from Psi4NumPy&#39;s helper_HF.py</span>
 <div class="viewcode-block" id="compute_jk">
 <a class="viewcode-back" href="../../../../pyresponse.psi4.html#pymolresponse.interfaces.psi4.integrals.compute_jk">[docs]</a>
-<span class="k">def</span> <span class="nf">compute_jk</span><span class="p">(</span><span class="n">jk</span><span class="p">,</span> <span class="n">C_left</span><span class="p">,</span> <span class="n">C_right</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_jk</span><span class="p">(</span><span class="n">jk</span><span class="p">,</span> <span class="n">C_left</span><span class="p">,</span> <span class="n">C_right</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A python wrapper for a Psi4 JK object to consume and produce NumPy arrays.</span>
 
@@ -207,8 +207,8 @@
 
 <div class="viewcode-block" id="JKPsi4">
 <a class="viewcode-back" href="../../../../pyresponse.psi4.html#pymolresponse.interfaces.psi4.integrals.JKPsi4">[docs]</a>
-<span class="k">class</span> <span class="nc">JKPsi4</span><span class="p">(</span><span class="n">JK</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wfn</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">JKPsi4</span><span class="p">(</span><span class="n">JK</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wfn</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_jk</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">JK</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">wfn</span><span class="o">.</span><span class="n">basisset</span><span class="p">())</span>
@@ -216,13 +216,13 @@
 
 <div class="viewcode-block" id="JKPsi4.compute_from_density">
 <a class="viewcode-back" href="../../../../pyresponse.psi4.html#pymolresponse.interfaces.psi4.integrals.JKPsi4.compute_from_density">[docs]</a>
-    <span class="k">def</span> <span class="nf">compute_from_density</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">D</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_from_density</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">D</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 
 <div class="viewcode-block" id="JKPsi4.compute_from_mocoeffs">
 <a class="viewcode-back" href="../../../../pyresponse.psi4.html#pymolresponse.interfaces.psi4.integrals.JKPsi4.compute_from_mocoeffs">[docs]</a>
-    <span class="k">def</span> <span class="nf">compute_from_mocoeffs</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_from_mocoeffs</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">C_left</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">C_right</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
         <span class="c1"># TODO is would be good to understand why this doesn&#39;t work.</span>

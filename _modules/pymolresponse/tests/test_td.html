@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pymolresponse.tests.test_td &mdash; pymolresponse  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
 
@@ -69,17 +69,17 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pymolresponse.tests.test_td</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">pyscf</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pyscf</span>
 
-<span class="kn">from</span> <span class="nn">pymolresponse</span> <span class="kn">import</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">td</span><span class="p">,</span> <span class="n">utils</span>
-<span class="kn">from</span> <span class="nn">pymolresponse.core</span> <span class="kn">import</span> <span class="n">AO2MOTransformationType</span><span class="p">,</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">Program</span><span class="p">,</span> <span class="n">Spin</span>
-<span class="kn">from</span> <span class="nn">pymolresponse.interfaces.pyscf.ao2mo</span> <span class="kn">import</span> <span class="n">AO2MOpyscf</span>
-<span class="kn">from</span> <span class="nn">pymolresponse.interfaces.pyscf.utils</span> <span class="kn">import</span> <span class="n">occupations_from_pyscf_mol</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse</span><span class="w"> </span><span class="kn">import</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">td</span><span class="p">,</span> <span class="n">utils</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">AO2MOTransformationType</span><span class="p">,</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">Program</span><span class="p">,</span> <span class="n">Spin</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.interfaces.pyscf.ao2mo</span><span class="w"> </span><span class="kn">import</span> <span class="n">AO2MOpyscf</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.interfaces.pyscf.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">occupations_from_pyscf_mol</span>
 
 
 <div class="viewcode-block" id="test_HF_both_singlet_HF_STO3G">
 <a class="viewcode-back" href="../../../pyresponse.tests.html#pymolresponse.tests.test_td.test_HF_both_singlet_HF_STO3G">[docs]</a>
-<span class="k">def</span> <span class="nf">test_HF_both_singlet_HF_STO3G</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_HF_both_singlet_HF_STO3G</span><span class="p">():</span>
     <span class="n">mol</span> <span class="o">=</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">()</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="kc">None</span>

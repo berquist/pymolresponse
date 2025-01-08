@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pymolresponse.tests.test_final_result &mdash; pymolresponse  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
 
@@ -69,14 +69,14 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pymolresponse.tests.test_final_result</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">pymolresponse</span> <span class="kn">import</span> <span class="n">cphf</span><span class="p">,</span> <span class="n">operators</span><span class="p">,</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">utils</span>
-<span class="kn">from</span> <span class="nn">pymolresponse.core</span> <span class="kn">import</span> <span class="n">AO2MOTransformationType</span><span class="p">,</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">Program</span><span class="p">,</span> <span class="n">Spin</span>
-<span class="kn">from</span> <span class="nn">pymolresponse.data</span> <span class="kn">import</span> <span class="n">REFDIR</span>
-<span class="kn">from</span> <span class="nn">pymolresponse.interfaces.pyscf</span> <span class="kn">import</span> <span class="n">molecules</span>
-<span class="kn">from</span> <span class="nn">pymolresponse.properties</span> <span class="kn">import</span> <span class="n">electric</span>
-<span class="kn">from</span> <span class="nn">pymolresponse.tests.test_runners</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse</span><span class="w"> </span><span class="kn">import</span> <span class="n">cphf</span><span class="p">,</span> <span class="n">operators</span><span class="p">,</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">utils</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">AO2MOTransformationType</span><span class="p">,</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">Program</span><span class="p">,</span> <span class="n">Spin</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">REFDIR</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.interfaces.pyscf</span><span class="w"> </span><span class="kn">import</span> <span class="n">molecules</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.properties</span><span class="w"> </span><span class="kn">import</span> <span class="n">electric</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.tests.test_runners</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">run_as_many_tests_as_possible_rhf_disk</span><span class="p">,</span>
     <span class="n">run_as_many_tests_as_possible_uhf_disk</span><span class="p">,</span>
 <span class="p">)</span>
@@ -84,7 +84,7 @@
 
 <div class="viewcode-block" id="test_final_result_rhf_h2o_sto3g_rpa_singlet">
 <a class="viewcode-back" href="../../../pyresponse.tests.html#pymolresponse.tests.test_final_result.test_final_result_rhf_h2o_sto3g_rpa_singlet">[docs]</a>
-<span class="k">def</span> <span class="nf">test_final_result_rhf_h2o_sto3g_rpa_singlet</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_final_result_rhf_h2o_sto3g_rpa_singlet</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Test correctness of the final result for water/STO-3G with full RPA for</span>
 <span class="sd">    singlet response induced by the dipole length operator (the electric</span>
 <span class="sd">    polarizability) computed with quantities from disk.</span>
@@ -172,7 +172,7 @@
 
 <div class="viewcode-block" id="test_final_result_rhf_h2o_sto3g_rpa_triplet">
 <a class="viewcode-back" href="../../../pyresponse.tests.html#pymolresponse.tests.test_final_result.test_final_result_rhf_h2o_sto3g_rpa_triplet">[docs]</a>
-<span class="k">def</span> <span class="nf">test_final_result_rhf_h2o_sto3g_rpa_triplet</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_final_result_rhf_h2o_sto3g_rpa_triplet</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Test correctness of the final result for water/STO-3G with full RPA for</span>
 <span class="sd">    triplet response induced by the dipole length operator computed with</span>
 <span class="sd">    quantities from disk.</span>
@@ -260,7 +260,7 @@
 
 <div class="viewcode-block" id="test_final_result_rhf_h2o_sto3g_tda_singlet">
 <a class="viewcode-back" href="../../../pyresponse.tests.html#pymolresponse.tests.test_final_result.test_final_result_rhf_h2o_sto3g_tda_singlet">[docs]</a>
-<span class="k">def</span> <span class="nf">test_final_result_rhf_h2o_sto3g_tda_singlet</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_final_result_rhf_h2o_sto3g_tda_singlet</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Test correctness of the final result for water/STO-3G with the TDA</span>
 <span class="sd">    approximation/CIS for singlet response induced by the dipole length</span>
 <span class="sd">    operator computed with quantities from disk.</span>
@@ -346,7 +346,7 @@
 
 <div class="viewcode-block" id="test_final_result_rhf_h2o_sto3g_tda_triplet">
 <a class="viewcode-back" href="../../../pyresponse.tests.html#pymolresponse.tests.test_final_result.test_final_result_rhf_h2o_sto3g_tda_triplet">[docs]</a>
-<span class="k">def</span> <span class="nf">test_final_result_rhf_h2o_sto3g_tda_triplet</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_final_result_rhf_h2o_sto3g_tda_triplet</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Test correctness of the final result for water/STO-3G with the TDA</span>
 <span class="sd">    approximation/CIS for triplet response induced by the dipole length</span>
 <span class="sd">    operator computed with quantities from disk.</span>
@@ -434,7 +434,7 @@
 
 <div class="viewcode-block" id="test_as_many_as_possible_rhf_disk">
 <a class="viewcode-back" href="../../../pyresponse.tests.html#pymolresponse.tests.test_final_result.test_as_many_as_possible_rhf_disk">[docs]</a>
-<span class="k">def</span> <span class="nf">test_as_many_as_possible_rhf_disk</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_as_many_as_possible_rhf_disk</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Test correctness of the final result for closed-shell molecules against</span>
 <span class="sd">    DALTON references.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -444,7 +444,7 @@
 
 <div class="viewcode-block" id="test_as_many_as_possible_uhf_disk">
 <a class="viewcode-back" href="../../../pyresponse.tests.html#pymolresponse.tests.test_final_result.test_as_many_as_possible_uhf_disk">[docs]</a>
-<span class="k">def</span> <span class="nf">test_as_many_as_possible_uhf_disk</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_as_many_as_possible_uhf_disk</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Test correctness of the final result for open-shell (UHF) molecules</span>
 <span class="sd">    against DALTON (ROHF) references.</span>
 <span class="sd">    &quot;&quot;&quot;</span>

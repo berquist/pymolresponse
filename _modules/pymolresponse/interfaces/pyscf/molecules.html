@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pymolresponse.interfaces.pyscf.molecules &mdash; pymolresponse  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
 
@@ -69,14 +69,14 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pymolresponse.interfaces.pyscf.molecules</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">pyscf</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pyscf</span>
 
-<span class="kn">from</span> <span class="nn">pymolresponse.data</span> <span class="kn">import</span> <span class="n">COORDDIR</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">COORDDIR</span>
 
 
 <div class="viewcode-block" id="molecule_water_sto3g_angstrom">
 <a class="viewcode-back" href="../../../../pyresponse.pyscf.html#pymolresponse.interfaces.pyscf.molecules.molecule_water_sto3g_angstrom">[docs]</a>
-<span class="k">def</span> <span class="nf">molecule_water_sto3g_angstrom</span><span class="p">(</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">molecule_water_sto3g_angstrom</span><span class="p">(</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">:</span>
     <span class="n">mol</span> <span class="o">=</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">()</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="kc">None</span>
@@ -96,7 +96,7 @@
 
 <div class="viewcode-block" id="molecule_water_sto3g">
 <a class="viewcode-back" href="../../../../pyresponse.pyscf.html#pymolresponse.interfaces.pyscf.molecules.molecule_water_sto3g">[docs]</a>
-<span class="k">def</span> <span class="nf">molecule_water_sto3g</span><span class="p">(</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">molecule_water_sto3g</span><span class="p">(</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">:</span>
     <span class="n">mol</span> <span class="o">=</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">()</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="kc">None</span>
@@ -115,7 +115,7 @@
 
 <div class="viewcode-block" id="molecule_physicists_water_sto3g">
 <a class="viewcode-back" href="../../../../pyresponse.pyscf.html#pymolresponse.interfaces.pyscf.molecules.molecule_physicists_water_sto3g">[docs]</a>
-<span class="k">def</span> <span class="nf">molecule_physicists_water_sto3g</span><span class="p">(</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">molecule_physicists_water_sto3g</span><span class="p">(</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">:</span>
     <span class="n">mol</span> <span class="o">=</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">()</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="kc">None</span>
@@ -134,7 +134,7 @@
 
 <div class="viewcode-block" id="molecule_physicists_water_augccpvdz">
 <a class="viewcode-back" href="../../../../pyresponse.pyscf.html#pymolresponse.interfaces.pyscf.molecules.molecule_physicists_water_augccpvdz">[docs]</a>
-<span class="k">def</span> <span class="nf">molecule_physicists_water_augccpvdz</span><span class="p">(</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">molecule_physicists_water_augccpvdz</span><span class="p">(</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">:</span>
     <span class="n">mol</span> <span class="o">=</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">()</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="kc">None</span>
@@ -153,7 +153,7 @@
 
 <div class="viewcode-block" id="molecule_glycine_sto3g">
 <a class="viewcode-back" href="../../../../pyresponse.pyscf.html#pymolresponse.interfaces.pyscf.molecules.molecule_glycine_sto3g">[docs]</a>
-<span class="k">def</span> <span class="nf">molecule_glycine_sto3g</span><span class="p">(</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">molecule_glycine_sto3g</span><span class="p">(</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">:</span>
     <span class="n">mol</span> <span class="o">=</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">()</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="kc">None</span>
@@ -172,7 +172,7 @@
 
 <div class="viewcode-block" id="molecule_trithiolane_sto3g">
 <a class="viewcode-back" href="../../../../pyresponse.pyscf.html#pymolresponse.interfaces.pyscf.molecules.molecule_trithiolane_sto3g">[docs]</a>
-<span class="k">def</span> <span class="nf">molecule_trithiolane_sto3g</span><span class="p">(</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">molecule_trithiolane_sto3g</span><span class="p">(</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">:</span>
     <span class="n">mol</span> <span class="o">=</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">()</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="kc">None</span>
@@ -191,7 +191,7 @@
 
 <div class="viewcode-block" id="hydrogen_atom_sto3g">
 <a class="viewcode-back" href="../../../../pyresponse.pyscf.html#pymolresponse.interfaces.pyscf.molecules.hydrogen_atom_sto3g">[docs]</a>
-<span class="k">def</span> <span class="nf">hydrogen_atom_sto3g</span><span class="p">(</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">hydrogen_atom_sto3g</span><span class="p">(</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">:</span>
     <span class="n">mol</span> <span class="o">=</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">()</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="kc">None</span>
@@ -207,7 +207,7 @@
 
 <div class="viewcode-block" id="molecule_bc2h4_cation_sto3g">
 <a class="viewcode-back" href="../../../../pyresponse.pyscf.html#pymolresponse.interfaces.pyscf.molecules.molecule_bc2h4_cation_sto3g">[docs]</a>
-<span class="k">def</span> <span class="nf">molecule_bc2h4_cation_sto3g</span><span class="p">(</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">molecule_bc2h4_cation_sto3g</span><span class="p">(</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">:</span>
     <span class="n">mol</span> <span class="o">=</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">()</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="kc">None</span>
@@ -226,7 +226,7 @@
 
 <div class="viewcode-block" id="molecule_bc2h4_neutral_radical_sto3g">
 <a class="viewcode-back" href="../../../../pyresponse.pyscf.html#pymolresponse.interfaces.pyscf.molecules.molecule_bc2h4_neutral_radical_sto3g">[docs]</a>
-<span class="k">def</span> <span class="nf">molecule_bc2h4_neutral_radical_sto3g</span><span class="p">(</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">molecule_bc2h4_neutral_radical_sto3g</span><span class="p">(</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">:</span>
     <span class="n">mol</span> <span class="o">=</span> <span class="n">molecule_bc2h4_cation_sto3g</span><span class="p">(</span><span class="n">verbose</span><span class="p">)</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">charge</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">spin</span> <span class="o">=</span> <span class="mi">1</span>
@@ -237,7 +237,7 @@
 
 <div class="viewcode-block" id="molecule_lih_cation_sto3g">
 <a class="viewcode-back" href="../../../../pyresponse.pyscf.html#pymolresponse.interfaces.pyscf.molecules.molecule_lih_cation_sto3g">[docs]</a>
-<span class="k">def</span> <span class="nf">molecule_lih_cation_sto3g</span><span class="p">(</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">molecule_lih_cation_sto3g</span><span class="p">(</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">:</span>
     <span class="n">mol</span> <span class="o">=</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">()</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="kc">None</span>
@@ -256,7 +256,7 @@
 
 <div class="viewcode-block" id="molecule_0w4a_dication_321g">
 <a class="viewcode-back" href="../../../../pyresponse.pyscf.html#pymolresponse.interfaces.pyscf.molecules.molecule_0w4a_dication_321g">[docs]</a>
-<span class="k">def</span> <span class="nf">molecule_0w4a_dication_321g</span><span class="p">(</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">molecule_0w4a_dication_321g</span><span class="p">(</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">:</span>
     <span class="n">mol</span> <span class="o">=</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">()</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="kc">None</span>
@@ -275,7 +275,7 @@
 
 <div class="viewcode-block" id="molecule_bh_cation_def2_svp">
 <a class="viewcode-back" href="../../../../pyresponse.pyscf.html#pymolresponse.interfaces.pyscf.molecules.molecule_bh_cation_def2_svp">[docs]</a>
-<span class="k">def</span> <span class="nf">molecule_bh_cation_def2_svp</span><span class="p">(</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">molecule_bh_cation_def2_svp</span><span class="p">(</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">:</span>
     <span class="n">mol</span> <span class="o">=</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">()</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="kc">None</span>

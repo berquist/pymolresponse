@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pymolresponse.interfaces.pyscf.helpers &mdash; pymolresponse  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
 
@@ -69,13 +69,13 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pymolresponse.interfaces.pyscf.helpers</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">numpy.linalg</span> <span class="k">as</span> <span class="nn">npl</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy.linalg</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">npl</span>
 
-<span class="kn">import</span> <span class="nn">pyscf</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyscf</span>
 
-<span class="kn">from</span> <span class="nn">pymolresponse.constants</span> <span class="kn">import</span> <span class="n">convfac_au_to_debye</span>
-<span class="kn">from</span> <span class="nn">pymolresponse.helpers</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">convfac_au_to_debye</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">calc_center_of_mass</span><span class="p">,</span>
     <span class="n">calc_center_of_nuclear_charge</span><span class="p">,</span>
     <span class="n">get_isotopic_masses</span><span class="p">,</span>
@@ -85,7 +85,7 @@
 
 <div class="viewcode-block" id="calc_center_of_mass_pyscf">
 <a class="viewcode-back" href="../../../../pyresponse.pyscf.html#pymolresponse.interfaces.pyscf.helpers.calc_center_of_mass_pyscf">[docs]</a>
-<span class="k">def</span> <span class="nf">calc_center_of_mass_pyscf</span><span class="p">(</span><span class="n">pyscfmol</span><span class="p">:</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">calc_center_of_mass_pyscf</span><span class="p">(</span><span class="n">pyscfmol</span><span class="p">:</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="n">charges</span> <span class="o">=</span> <span class="n">pyscfmol</span><span class="o">.</span><span class="n">atom_charges</span><span class="p">()</span>
     <span class="n">masses</span> <span class="o">=</span> <span class="n">get_isotopic_masses</span><span class="p">(</span><span class="n">charges</span><span class="p">)</span>
     <span class="n">coords</span> <span class="o">=</span> <span class="n">pyscfmol</span><span class="o">.</span><span class="n">atom_coords</span><span class="p">()</span>
@@ -95,7 +95,7 @@
 
 <div class="viewcode-block" id="calc_center_of_electronic_charge_pyscf">
 <a class="viewcode-back" href="../../../../pyresponse.pyscf.html#pymolresponse.interfaces.pyscf.helpers.calc_center_of_electronic_charge_pyscf">[docs]</a>
-<span class="k">def</span> <span class="nf">calc_center_of_electronic_charge_pyscf</span><span class="p">(</span><span class="n">D</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">pyscfmol</span><span class="p">:</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">calc_center_of_electronic_charge_pyscf</span><span class="p">(</span><span class="n">D</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">pyscfmol</span><span class="p">:</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">D</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
     <span class="c1"># no linear dependencies!</span>
     <span class="k">assert</span> <span class="n">D</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">D</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
@@ -108,7 +108,7 @@
 
 <div class="viewcode-block" id="electronic_dipole_contribution_pyscf">
 <a class="viewcode-back" href="../../../../pyresponse.pyscf.html#pymolresponse.interfaces.pyscf.helpers.electronic_dipole_contribution_pyscf">[docs]</a>
-<span class="k">def</span> <span class="nf">electronic_dipole_contribution_pyscf</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">electronic_dipole_contribution_pyscf</span><span class="p">(</span>
     <span class="n">D</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">pyscfmol</span><span class="p">:</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">,</span> <span class="n">origin_in_bohrs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span>
@@ -141,7 +141,7 @@
 
 <div class="viewcode-block" id="calculate_dipole_pyscf">
 <a class="viewcode-back" href="../../../../pyresponse.pyscf.html#pymolresponse.interfaces.pyscf.helpers.calculate_dipole_pyscf">[docs]</a>
-<span class="k">def</span> <span class="nf">calculate_dipole_pyscf</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_dipole_pyscf</span><span class="p">(</span>
     <span class="n">nuccoords</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">nuccharges</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">origin</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
@@ -184,7 +184,7 @@
 
 <div class="viewcode-block" id="calculate_origin_pyscf">
 <a class="viewcode-back" href="../../../../pyresponse.pyscf.html#pymolresponse.interfaces.pyscf.helpers.calculate_origin_pyscf">[docs]</a>
-<span class="k">def</span> <span class="nf">calculate_origin_pyscf</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_origin_pyscf</span><span class="p">(</span>
     <span class="n">origin_string</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">nuccoords</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">nuccharges</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>

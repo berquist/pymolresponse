@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pymolresponse.interfaces.psi4.utils &mdash; pymolresponse  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
 
@@ -69,16 +69,16 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pymolresponse.interfaces.psi4.utils</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">import</span> <span class="nn">psi4</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">psi4</span>
 
-<span class="kn">from</span> <span class="nn">pymolresponse.utils</span> <span class="kn">import</span> <span class="n">fix_mocoeffs_shape</span><span class="p">,</span> <span class="n">fix_moenergies_shape</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">fix_mocoeffs_shape</span><span class="p">,</span> <span class="n">fix_moenergies_shape</span>
 
 
 <div class="viewcode-block" id="occupations_from_psi4wfn">
 <a class="viewcode-back" href="../../../../pyresponse.psi4.html#pymolresponse.interfaces.psi4.utils.occupations_from_psi4wfn">[docs]</a>
-<span class="k">def</span> <span class="nf">occupations_from_psi4wfn</span><span class="p">(</span><span class="n">wfn</span><span class="p">:</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Wavefunction</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">occupations_from_psi4wfn</span><span class="p">(</span><span class="n">wfn</span><span class="p">:</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Wavefunction</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="c1"># Not needed.</span>
     <span class="c1"># occupations_a = wfn.occupation_a().to_array()</span>
     <span class="c1"># occupations_b = wfn.occupation_b().to_brray()</span>
@@ -94,7 +94,7 @@
 
 <div class="viewcode-block" id="mocoeffs_from_psi4wfn">
 <a class="viewcode-back" href="../../../../pyresponse.psi4.html#pymolresponse.interfaces.psi4.utils.mocoeffs_from_psi4wfn">[docs]</a>
-<span class="k">def</span> <span class="nf">mocoeffs_from_psi4wfn</span><span class="p">(</span><span class="n">wfn</span><span class="p">:</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Wavefunction</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">mocoeffs_from_psi4wfn</span><span class="p">(</span><span class="n">wfn</span><span class="p">:</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Wavefunction</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="n">is_uhf</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">wfn</span><span class="o">.</span><span class="n">same_a_b_orbs</span><span class="p">()</span>
     <span class="n">Ca</span> <span class="o">=</span> <span class="n">wfn</span><span class="o">.</span><span class="n">Ca</span><span class="p">()</span><span class="o">.</span><span class="n">to_array</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">is_uhf</span><span class="p">:</span>
@@ -109,7 +109,7 @@
 
 <div class="viewcode-block" id="moenergies_from_psi4wfn">
 <a class="viewcode-back" href="../../../../pyresponse.psi4.html#pymolresponse.interfaces.psi4.utils.moenergies_from_psi4wfn">[docs]</a>
-<span class="k">def</span> <span class="nf">moenergies_from_psi4wfn</span><span class="p">(</span><span class="n">wfn</span><span class="p">:</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Wavefunction</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">moenergies_from_psi4wfn</span><span class="p">(</span><span class="n">wfn</span><span class="p">:</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Wavefunction</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="n">is_uhf</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">wfn</span><span class="o">.</span><span class="n">same_a_b_orbs</span><span class="p">()</span>
     <span class="n">Ea</span> <span class="o">=</span> <span class="n">wfn</span><span class="o">.</span><span class="n">epsilon_a</span><span class="p">()</span><span class="o">.</span><span class="n">to_array</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">is_uhf</span><span class="p">:</span>

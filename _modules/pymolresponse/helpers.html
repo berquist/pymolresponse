@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pymolresponse.helpers &mdash; pymolresponse  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
 
@@ -71,15 +71,15 @@
   <h1>Source code for pymolresponse.helpers</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Utility functions that are core to calculating physical values.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">periodictable</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">periodictable</span>
 
 
 <div class="viewcode-block" id="get_most_abundant_isotope">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.helpers.get_most_abundant_isotope">[docs]</a>
-<span class="k">def</span> <span class="nf">get_most_abundant_isotope</span><span class="p">(</span><span class="n">element</span><span class="p">:</span> <span class="n">periodictable</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">periodictable</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Isotope</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_most_abundant_isotope</span><span class="p">(</span><span class="n">element</span><span class="p">:</span> <span class="n">periodictable</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">periodictable</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Isotope</span><span class="p">:</span>
     <span class="n">most_abundant_isotope</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">isotopes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">abundance</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">iso</span> <span class="ow">in</span> <span class="n">element</span><span class="p">:</span>
@@ -92,7 +92,7 @@
 
 <div class="viewcode-block" id="get_isotopic_masses">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.helpers.get_isotopic_masses">[docs]</a>
-<span class="k">def</span> <span class="nf">get_isotopic_masses</span><span class="p">(</span><span class="n">charges</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_isotopic_masses</span><span class="p">(</span><span class="n">charges</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="n">masses</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">charge</span> <span class="ow">in</span> <span class="n">charges</span><span class="p">:</span>
         <span class="n">el</span> <span class="o">=</span> <span class="n">periodictable</span><span class="o">.</span><span class="n">elements</span><span class="p">[</span><span class="n">charge</span><span class="p">]</span>
@@ -105,7 +105,7 @@
 
 <div class="viewcode-block" id="calc_center_of_mass">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.helpers.calc_center_of_mass">[docs]</a>
-<span class="k">def</span> <span class="nf">calc_center_of_mass</span><span class="p">(</span><span class="n">coords</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">masses</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">calc_center_of_mass</span><span class="p">(</span><span class="n">coords</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">masses</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">masses</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
     <span class="n">denominator</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">masses</span><span class="p">)</span>
     <span class="n">numerator</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">coords</span> <span class="o">*</span> <span class="n">masses</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -115,7 +115,7 @@
 
 <div class="viewcode-block" id="calc_center_of_nuclear_charge">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.helpers.calc_center_of_nuclear_charge">[docs]</a>
-<span class="k">def</span> <span class="nf">calc_center_of_nuclear_charge</span><span class="p">(</span><span class="n">coords</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">charges</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">calc_center_of_nuclear_charge</span><span class="p">(</span><span class="n">coords</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">charges</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="n">dummy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
     <span class="n">center</span> <span class="o">=</span> <span class="n">nuclear_dipole_contribution</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="n">charges</span><span class="p">,</span> <span class="n">dummy</span><span class="p">)</span>
     <span class="n">total_charge</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">charges</span><span class="p">)</span>
@@ -125,7 +125,7 @@
 
 <div class="viewcode-block" id="nuclear_dipole_contribution">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.helpers.nuclear_dipole_contribution">[docs]</a>
-<span class="k">def</span> <span class="nf">nuclear_dipole_contribution</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">nuclear_dipole_contribution</span><span class="p">(</span>
     <span class="n">nuccoords</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">nuccharges</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">origin_in_bohrs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">nuccoords</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span>
@@ -148,7 +148,7 @@
 
 <div class="viewcode-block" id="get_uhf_values">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.helpers.get_uhf_values">[docs]</a>
-<span class="k">def</span> <span class="nf">get_uhf_values</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_uhf_values</span><span class="p">(</span>
     <span class="n">mat_uhf_a</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">mat_uhf_b</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">pair_rohf</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
@@ -191,7 +191,7 @@
 
 <div class="viewcode-block" id="mat_uhf_to_packed_rohf">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.helpers.mat_uhf_to_packed_rohf">[docs]</a>
-<span class="k">def</span> <span class="nf">mat_uhf_to_packed_rohf</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">mat_uhf_to_packed_rohf</span><span class="p">(</span>
     <span class="n">mat_alpha</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">mat_beta</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">indices_display_rohf</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="n">dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">indices_display_rohf</span><span class="p">)</span>

@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pymolresponse.properties.optrot &mdash; pymolresponse  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
 
@@ -69,20 +69,20 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pymolresponse.properties.optrot</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Sequence</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sequence</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">pymolresponse.core</span> <span class="kn">import</span> <span class="n">Program</span>
-<span class="kn">from</span> <span class="nn">pymolresponse.cphf</span> <span class="kn">import</span> <span class="n">CPHF</span>
-<span class="kn">from</span> <span class="nn">pymolresponse.molecular_property</span> <span class="kn">import</span> <span class="n">ResponseProperty</span>
-<span class="kn">from</span> <span class="nn">pymolresponse.operators</span> <span class="kn">import</span> <span class="n">Operator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">Program</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.cphf</span><span class="w"> </span><span class="kn">import</span> <span class="n">CPHF</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.molecular_property</span><span class="w"> </span><span class="kn">import</span> <span class="n">ResponseProperty</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.operators</span><span class="w"> </span><span class="kn">import</span> <span class="n">Operator</span>
 
 
 <div class="viewcode-block" id="ORD">
 <a class="viewcode-back" href="../../../pyresponse.properties.html#pymolresponse.properties.optrot.ORD">[docs]</a>
-<span class="k">class</span> <span class="nc">ORD</span><span class="p">(</span><span class="n">ResponseProperty</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ORD</span><span class="p">(</span><span class="n">ResponseProperty</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">program</span><span class="p">:</span> <span class="n">Program</span><span class="p">,</span>
         <span class="n">program_obj</span><span class="p">,</span>
@@ -101,13 +101,13 @@
 
 <div class="viewcode-block" id="ORD.form_operators">
 <a class="viewcode-back" href="../../../pyresponse.properties.html#pymolresponse.properties.optrot.ORD.form_operators">[docs]</a>
-    <span class="k">def</span> <span class="nf">form_operators</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">form_operators</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">program</span> <span class="o">==</span> <span class="n">Program</span><span class="o">.</span><span class="n">PySCF</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">pymolresponse.interfaces.pyscf</span> <span class="kn">import</span> <span class="n">integrals</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.interfaces.pyscf</span><span class="w"> </span><span class="kn">import</span> <span class="n">integrals</span>
 
             <span class="n">integral_generator</span> <span class="o">=</span> <span class="n">integrals</span><span class="o">.</span><span class="n">IntegralsPyscf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">program_obj</span><span class="p">)</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">program</span> <span class="o">==</span> <span class="n">Program</span><span class="o">.</span><span class="n">Psi4</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">pymolresponse.interfaces.psi4</span> <span class="kn">import</span> <span class="n">integrals</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.interfaces.psi4</span><span class="w"> </span><span class="kn">import</span> <span class="n">integrals</span>
 
             <span class="n">integral_generator</span> <span class="o">=</span> <span class="n">integrals</span><span class="o">.</span><span class="n">IntegralsPsi4</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">program_obj</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -135,7 +135,7 @@
 
 <div class="viewcode-block" id="ORD.form_results">
 <a class="viewcode-back" href="../../../pyresponse.properties.html#pymolresponse.properties.optrot.ORD.form_results">[docs]</a>
-    <span class="k">def</span> <span class="nf">form_results</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">form_results</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">results</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">polarizabilities</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">polarizabilities_lenmag</span> <span class="o">=</span> <span class="p">[]</span>

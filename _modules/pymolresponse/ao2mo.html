@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pymolresponse.ao2mo &mdash; pymolresponse  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
 
@@ -71,22 +71,22 @@
   <h1>Source code for pymolresponse.ao2mo</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Tools for performing AO-to-MO transformations of two-electron integrals.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">pymolresponse.utils</span> <span class="kn">import</span> <span class="n">fix_mocoeffs_shape</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">fix_mocoeffs_shape</span>
 
 
 <div class="viewcode-block" id="AO2MO">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.ao2mo.AO2MO">[docs]</a>
-<span class="k">class</span> <span class="nc">AO2MO</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">AO2MO</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Interface for performing AO-to-MO tranformations of two-electron integrals.&quot;&quot;&quot;</span>
 
     <span class="c1"># TODO see</span>
     <span class="c1"># https://github.com/psi4/psi4numpy/blob/master/Tutorials/01_Psi4NumPy-Basics/1f_tensor-manipulation.ipynb</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">C</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
         <span class="n">occupations</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
@@ -105,7 +105,7 @@
 <div class="viewcode-block" id="AO2MO.transform">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.ao2mo.AO2MO.transform">[docs]</a>
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span>
         <span class="n">I</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>  <span class="c1"># noqa: E741</span>
         <span class="n">C1</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
         <span class="n">C2</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
@@ -126,7 +126,7 @@
 
 <div class="viewcode-block" id="AO2MO.perform_rhf_full">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.ao2mo.AO2MO.perform_rhf_full">[docs]</a>
-    <span class="k">def</span> <span class="nf">perform_rhf_full</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">perform_rhf_full</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Perform the transformation :math:`(\mu\nu|\lambda\sigma) \rightarrow (pq|rs)`.&quot;&quot;&quot;</span>
         <span class="n">tei_mo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">I</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">C</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">C</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">C</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">C</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span> <span class="o">=</span> <span class="p">(</span><span class="n">tei_mo</span><span class="p">,)</span></div>
@@ -134,7 +134,7 @@
 
 <div class="viewcode-block" id="AO2MO.perform_rhf_partial">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.ao2mo.AO2MO.perform_rhf_partial">[docs]</a>
-    <span class="k">def</span> <span class="nf">perform_rhf_partial</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">perform_rhf_partial</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Perform the transformation :math:`(\mu\nu|\lambda\sigma) \rightarrow (ia|jb), (ij|ab)`.&quot;&quot;&quot;</span>
         <span class="n">norb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nocc_alph</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">nvirt_alph</span>
         <span class="n">oa</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nocc_alph</span><span class="p">)</span>
@@ -150,13 +150,13 @@
 
 <div class="viewcode-block" id="AO2MO.perform_uhf_full">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.ao2mo.AO2MO.perform_uhf_full">[docs]</a>
-    <span class="k">def</span> <span class="nf">perform_uhf_full</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">perform_uhf_full</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Perform the transformation :math:`(\mu\nu|\lambda\sigma) \rightarrow (p^{\alpha}q^{\alpha}|r^{\alpha}s^{\alpha}), (p^{\alpha}q^{\alpha}|r^{\beta}s^{\beta}), (p^{\beta}q^{\beta}|r^{\alpha}s^{\alpha}), (p^{\beta}q^{\beta}|r^{\beta}s^{\beta})`.&quot;&quot;&quot;</span></div>
 
 
 <div class="viewcode-block" id="AO2MO.perform_uhf_partial">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.ao2mo.AO2MO.perform_uhf_partial">[docs]</a>
-    <span class="k">def</span> <span class="nf">perform_uhf_partial</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">perform_uhf_partial</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Perform the transformation :math:`(\mu\nu|\lambda\sigma) \rightarrow (i^{\alpha}a^{\alpha}|j^{\alpha}b^{\alpha}), (i^{\alpha}a^{\alpha}|j^{\beta}b^{\beta}), (i^{\beta}a^{\beta}|j^{\alpha}b^{\alpha}), (i^{\beta}a^{\beta}|j^{\beta}b^{\beta}), (i^{\alpha}j^{\alpha}|a^{\alpha}b^{\alpha}), (i^{\beta}j^{\beta}|a^{\beta}b^{\beta})`.&quot;&quot;&quot;</span></div>
 </div>
 

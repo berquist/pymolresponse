@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pymolresponse.tests.test_runners &mdash; pymolresponse  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
 
@@ -69,18 +69,18 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pymolresponse.tests.test_runners</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span>
 
-<span class="kn">from</span> <span class="nn">pymolresponse.data</span> <span class="kn">import</span> <span class="n">REFDIR</span>
-<span class="kn">from</span> <span class="nn">pymolresponse.interfaces.dalton.utils</span> <span class="kn">import</span> <span class="n">dalton_label_to_operator</span>
-<span class="kn">from</span> <span class="nn">pymolresponse.operators</span> <span class="kn">import</span> <span class="n">Operator</span>
-<span class="kn">from</span> <span class="nn">pymolresponse.tests.test_calculators</span> <span class="kn">import</span> <span class="n">calculate_disk_rhf</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">REFDIR</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.interfaces.dalton.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">dalton_label_to_operator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.operators</span><span class="w"> </span><span class="kn">import</span> <span class="n">Operator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.tests.test_calculators</span><span class="w"> </span><span class="kn">import</span> <span class="n">calculate_disk_rhf</span>
 
 
 <div class="viewcode-block" id="run_dalton_label_to_operator">
 <a class="viewcode-back" href="../../../pyresponse.tests.html#pymolresponse.tests.test_runners.run_dalton_label_to_operator">[docs]</a>
-<span class="k">def</span> <span class="nf">run_dalton_label_to_operator</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">run_dalton_label_to_operator</span><span class="p">(</span>
     <span class="n">dalton_label</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">operator_label</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">slice_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
@@ -101,7 +101,7 @@
 
 <div class="viewcode-block" id="run_as_many_tests_as_possible_rhf_disk">
 <a class="viewcode-back" href="../../../pyresponse.tests.html#pymolresponse.tests.test_runners.run_as_many_tests_as_possible_rhf_disk">[docs]</a>
-<span class="k">def</span> <span class="nf">run_as_many_tests_as_possible_rhf_disk</span><span class="p">(</span><span class="n">testcase</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">run_as_many_tests_as_possible_rhf_disk</span><span class="p">(</span><span class="n">testcase</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="n">testcasedir</span> <span class="o">=</span> <span class="n">REFDIR</span> <span class="o">/</span> <span class="n">testcase</span>
 
     <span class="n">thresh</span> <span class="o">=</span> <span class="mf">5.0e-3</span>
@@ -141,8 +141,8 @@
 
 <div class="viewcode-block" id="run_as_many_tests_as_possible_uhf_disk">
 <a class="viewcode-back" href="../../../pyresponse.tests.html#pymolresponse.tests.test_runners.run_as_many_tests_as_possible_uhf_disk">[docs]</a>
-<span class="k">def</span> <span class="nf">run_as_many_tests_as_possible_uhf_disk</span><span class="p">(</span><span class="n">testcase</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">.test_calculators</span> <span class="kn">import</span> <span class="n">calculate_disk_uhf</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">run_as_many_tests_as_possible_uhf_disk</span><span class="p">(</span><span class="n">testcase</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.test_calculators</span><span class="w"> </span><span class="kn">import</span> <span class="n">calculate_disk_uhf</span>
 
     <span class="n">testcasedir</span> <span class="o">=</span> <span class="n">REFDIR</span> <span class="o">/</span> <span class="n">testcase</span>
 

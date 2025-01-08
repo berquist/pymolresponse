@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pymolresponse.tests.test_utils &mdash; pymolresponse  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
 
@@ -69,17 +69,17 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pymolresponse.tests.test_utils</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">unittest</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">unittest</span>
 
-<span class="kn">from</span> <span class="nn">pymolresponse</span> <span class="kn">import</span> <span class="n">utils</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse</span><span class="w"> </span><span class="kn">import</span> <span class="n">utils</span>
 
 
 <div class="viewcode-block" id="SplitterTest">
 <a class="viewcode-back" href="../../../pyresponse.tests.html#pymolresponse.tests.test_utils.SplitterTest">[docs]</a>
-<span class="k">class</span> <span class="nc">SplitterTest</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SplitterTest</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
 <div class="viewcode-block" id="SplitterTest.test_default">
 <a class="viewcode-back" href="../../../pyresponse.tests.html#pymolresponse.tests.test_utils.SplitterTest.test_default">[docs]</a>
-    <span class="k">def</span> <span class="nf">test_default</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_default</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Does the splitter remove empty fields by default properly?&quot;&quot;&quot;</span>
         <span class="n">fixed_splitter</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">Splitter</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
         <span class="n">line_full</span> <span class="o">=</span> <span class="s2">&quot;  60  H 10  s        0.14639   0.00000   0.00000  -0.00000  -0.00000   0.00000&quot;</span>
@@ -105,7 +105,7 @@
 
 <div class="viewcode-block" id="SplitterTest.test_no_truncation">
 <a class="viewcode-back" href="../../../pyresponse.tests.html#pymolresponse.tests.test_utils.SplitterTest.test_no_truncation">[docs]</a>
-    <span class="k">def</span> <span class="nf">test_no_truncation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_no_truncation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Does the splitter return even the empty fields when asked?&quot;&quot;&quot;</span>
         <span class="n">fixed_splitter</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">Splitter</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
         <span class="n">line</span> <span class="o">=</span> <span class="s2">&quot;   1  C 1   s       -0.00000  -0.00000   0.00000&quot;</span>

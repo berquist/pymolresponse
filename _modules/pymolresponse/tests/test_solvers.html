@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pymolresponse.tests.test_solvers &mdash; pymolresponse  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
 
@@ -69,29 +69,29 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pymolresponse.tests.test_solvers</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">scipy</span> <span class="k">as</span> <span class="nn">sp</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sp</span>
 
-<span class="kn">import</span> <span class="nn">psi4</span>
-<span class="kn">import</span> <span class="nn">pyscf</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">psi4</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyscf</span>
 
-<span class="kn">from</span> <span class="nn">pymolresponse</span> <span class="kn">import</span> <span class="n">cphf</span><span class="p">,</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">utils</span>
-<span class="kn">from</span> <span class="nn">pymolresponse.core</span> <span class="kn">import</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">Program</span><span class="p">,</span> <span class="n">Spin</span>
-<span class="kn">from</span> <span class="nn">pymolresponse.interfaces.psi4</span> <span class="kn">import</span> <span class="n">integrals</span>
-<span class="kn">from</span> <span class="nn">pymolresponse.interfaces.psi4</span> <span class="kn">import</span> <span class="n">molecules</span> <span class="k">as</span> <span class="n">molecules_psi4</span>
-<span class="kn">from</span> <span class="nn">pymolresponse.interfaces.psi4.utils</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse</span><span class="w"> </span><span class="kn">import</span> <span class="n">cphf</span><span class="p">,</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">utils</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">Program</span><span class="p">,</span> <span class="n">Spin</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.interfaces.psi4</span><span class="w"> </span><span class="kn">import</span> <span class="n">integrals</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.interfaces.psi4</span><span class="w"> </span><span class="kn">import</span> <span class="n">molecules</span> <span class="k">as</span> <span class="n">molecules_psi4</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.interfaces.psi4.utils</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">mocoeffs_from_psi4wfn</span><span class="p">,</span>
     <span class="n">moenergies_from_psi4wfn</span><span class="p">,</span>
     <span class="n">occupations_from_psi4wfn</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">pymolresponse.interfaces.pyscf</span> <span class="kn">import</span> <span class="n">molecules</span> <span class="k">as</span> <span class="n">molecules_pyscf</span>
-<span class="kn">from</span> <span class="nn">pymolresponse.interfaces.pyscf.utils</span> <span class="kn">import</span> <span class="n">occupations_from_pyscf_mol</span>
-<span class="kn">from</span> <span class="nn">pymolresponse.properties</span> <span class="kn">import</span> <span class="n">electric</span><span class="p">,</span> <span class="n">magnetic</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.interfaces.pyscf</span><span class="w"> </span><span class="kn">import</span> <span class="n">molecules</span> <span class="k">as</span> <span class="n">molecules_pyscf</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.interfaces.pyscf.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">occupations_from_pyscf_mol</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.properties</span><span class="w"> </span><span class="kn">import</span> <span class="n">electric</span><span class="p">,</span> <span class="n">magnetic</span>
 
 
 <div class="viewcode-block" id="test_inversion">
 <a class="viewcode-back" href="../../../pyresponse.tests.html#pymolresponse.tests.test_solvers.test_inversion">[docs]</a>
-<span class="k">def</span> <span class="nf">test_inversion</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_inversion</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Test that each kind of inversion function gives identical results.&quot;&quot;&quot;</span>
 
     <span class="n">mol</span> <span class="o">=</span> <span class="n">molecules_pyscf</span><span class="o">.</span><span class="n">molecule_glycine_sto3g</span><span class="p">()</span>
@@ -140,7 +140,7 @@
 
 <div class="viewcode-block" id="test_final_result_rhf_h2o_sto3g_rpa_singlet_iter">
 <a class="viewcode-back" href="../../../pyresponse.tests.html#pymolresponse.tests.test_solvers.test_final_result_rhf_h2o_sto3g_rpa_singlet_iter">[docs]</a>
-<span class="k">def</span> <span class="nf">test_final_result_rhf_h2o_sto3g_rpa_singlet_iter</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_final_result_rhf_h2o_sto3g_rpa_singlet_iter</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="n">mol</span> <span class="o">=</span> <span class="n">molecules_psi4</span><span class="o">.</span><span class="n">molecule_physicists_water_sto3g</span><span class="p">()</span>
     <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">set_active_molecule</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
     <span class="n">psi4</span><span class="o">.</span><span class="n">set_options</span><span class="p">(</span>
