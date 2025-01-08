@@ -32,13 +32,13 @@ jobs:
       run:
         shell: "bash -l {0}"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
           # so versioningit can figure out the version
           fetch-depth: 0
           fetch-tags: true
       - name: Set up Python ${{ matrix.python-version }} with conda
-        uses: conda-incubator/setup-miniconda@v3
+        uses: conda-incubator/setup-miniconda@d2e6a045a86077fb6cad6f5adf368e9076ddaa8d # v3
         with:
           activate-environment: test
           auto-activate-base: false
@@ -66,7 +66,7 @@ jobs:
           cd docs
           make html
       - name: GitHub Pages deploy
-        uses: JamesIves/github-pages-deploy-action@v4.7.2
+        uses: JamesIves/github-pages-deploy-action@15de0f09300eea763baee31dff6c6184995c5f6a # v4.7.2
         with:
           branch: gh-pages
           folder: docs/build/html
@@ -81,7 +81,7 @@ jobs:
         run: |
           python -m twine check ./dist/*
       - name: Store the distribution packages
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@6f51ac03b9356f520e9adb1b1b7802705f340c2b # v4
         with:
           name: python-package-distributions-${{ matrix.python-version }}
           path: ./dist
@@ -101,11 +101,11 @@ jobs:
           - 3.11
           - 3.12
     steps:
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5
         with:
           python-version: ${{ matrix.python-version }}
       - name: Download the distribution packages
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
         with:
           name: python-package-distributions-${{ matrix.python-version }}
           path: ./dist
