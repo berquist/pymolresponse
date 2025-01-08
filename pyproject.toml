@@ -13,9 +13,9 @@ classifiers = [
 ]
 requires-python = ">=3.6"
 dependencies = [
-    "attrs",
-    "cclib",
-    "periodictable",
+    "attrs>=24.3.0,<25",
+    "cclib>=1.8.1,<2",
+    "periodictable>=2.0.2,<3",
 ]
 
 [project.urls]
@@ -38,7 +38,7 @@ docs = [
 dev = ["pymolresponse[docs,test]"]
 
 [build-system]
-requires = ["setuptools>=61.0", "versioningit~=3.1"]
+requires = ["setuptools>=61.0", "versioningit>=3.1"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
