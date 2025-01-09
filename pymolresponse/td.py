@@ -106,7 +106,7 @@ class TDHF(CPHF):
             iocc, ivirt = indices_sorted[idx]
             lines.append(
                 f"{idx + 1:>5d}{1:>5d}{iocc + 1:>5d}{ivirt + 1:>5d} "
-                f'{"X":<5}{moene[iocc]:>10.3f}{moene[ivirt]:>10.3f}{ediff_sorted[idx]:>10.3f}'
+                f"{'X':<5}{moene[iocc]:>10.3f}{moene[ivirt]:>10.3f}{ediff_sorted[idx]:>10.3f}"
             )
         lines.append("--------------------------------------------------------")
         return "\n".join(lines)
