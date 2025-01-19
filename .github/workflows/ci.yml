@@ -10,22 +10,22 @@ concurrency:
   group: ci-${{github.ref}}-${{github.event.pull_request.number || github.run_number}}
   cancel-in-progress: true
 
-permissions: {}
-
 jobs:
   prechecks:
     uses: ./.github/workflows/pre-commit.yml
+  separate-zizmor:
+    uses: ./.github/workflows/zizmor.yml
   all-prechecks:
-    needs: [prechecks]
+    needs: [prechecks, separate-zizmor]
     runs-on: ubuntu-latest
     steps:
       - name: Success
         run: "true"
   unit-tests:
-    needs: [prechecks]
+    needs: [all-prechecks]
     uses: ./.github/workflows/test_and_package.yml
   pixi:
-    needs: [prechecks]
+    needs: [all-prechecks]
     uses: ./.github/workflows/pixi.yml
   publish:
     needs: [unit-tests, pixi]
