@@ -10,6 +10,8 @@ concurrency:
   group: pixi-${{github.ref}}-${{github.event.pull_request.number || github.run_number}}
   cancel-in-progress: true
 
+permissions: {}
+
 jobs:
   pixi:
     name: Test with pixi

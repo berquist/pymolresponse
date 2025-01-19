@@ -9,6 +9,8 @@ concurrency:
   group: style-${{github.ref}}-${{github.event.pull_request.number || github.run_number}}
   cancel-in-progress: true
 
+permissions: {}
+
 jobs:
   pre-commit:
     runs-on: ubuntu-latest
