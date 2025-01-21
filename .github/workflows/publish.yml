@@ -17,7 +17,7 @@ env:
   # Which Python version generated the artifacts we're downloading.  It
   # doesn't matter as long as we're building platform- and version-independent
   # wheels.
-  PYTHON_VERSION: '3.11'
+  PYTHON_VERSION: '3.13'
 
 permissions: {}
 
