@@ -69,7 +69,7 @@ jobs:
           cd docs
           make html
       - name: GitHub Pages deploy
-        uses: JamesIves/github-pages-deploy-action@15de0f09300eea763baee31dff6c6184995c5f6a # v4.7.2
+        uses: JamesIves/github-pages-deploy-action@9d877eea73427180ae43cf98e8914934fe157a1a # v4.7.6
         with:
           branch: gh-pages
           folder: docs/build/html
