@@ -36,14 +36,14 @@ jobs:
     permissions:
       contents: write  # needed for github-pages-deploy-action
     steps:
-      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8  # v6
         with:
           persist-credentials: false
           # so versioningit can figure out the version
           fetch-depth: 0
           fetch-tags: true
       - name: Set up Python ${{ matrix.python-version }} with conda
-        uses: conda-incubator/setup-miniconda@835234971496cad1653abb28a638a281cf32541f # v3
+        uses: conda-incubator/setup-miniconda@835234971496cad1653abb28a638a281cf32541f  # v3
         with:
           activate-environment: test
           auto-activate-base: false
@@ -71,7 +71,7 @@ jobs:
           cd docs
           make html
       - name: GitHub Pages deploy
-        uses: JamesIves/github-pages-deploy-action@9d877eea73427180ae43cf98e8914934fe157a1a # v4.7.6
+        uses: JamesIves/github-pages-deploy-action@9d877eea73427180ae43cf98e8914934fe157a1a  # v4.7.6
         with:
           branch: gh-pages
           folder: docs/build/html
@@ -86,7 +86,7 @@ jobs:
         run: |
           python -m twine check ./dist/*
       - name: Store the distribution packages
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f  # v6
         with:
           name: python-package-distributions-${{ matrix.python-version }}
           path: ./dist
@@ -106,11 +106,11 @@ jobs:
           - 3.11
           - 3.12
     steps:
-      - uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6
+      - uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548  # v6
         with:
           python-version: ${{ matrix.python-version }}
       - name: Download the distribution packages
-        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131  # v7
         with:
           name: python-package-distributions-${{ matrix.python-version }}
           path: ./dist
@@ -126,5 +126,5 @@ jobs:
           python -m pip install ./dist/*.tar.gz
         if: matrix.install-method == 'source'
       - name: Smoke test
-        run: |
+        run: |-
           python -c 'import pymolresponse; print(pymolresponse.__version__)'
