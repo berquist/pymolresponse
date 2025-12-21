@@ -28,7 +28,7 @@ jobs:
           # so versioningit can figure out the version
           fetch-depth: 0
           fetch-tags: true
-      - uses: prefix-dev/setup-pixi@0f64e482e3d251f735019b1bc7fb0413ead75b2c # v0.8.2
+      - uses: prefix-dev/setup-pixi@82d477f15f3a381dbcc8adc1206ce643fe110fb7 # v0.9.3
         # with:
         #   cache: true
         #   cache-write: ${{ github.event_name == 'push' && github.ref_name == 'main' }}
