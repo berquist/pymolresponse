@@ -16,6 +16,7 @@ jobs:
   separate-zizmor:
     uses: ./.github/workflows/zizmor.yml
   all-prechecks:
+    name: CI precheck success
     needs: [prechecks, separate-zizmor]
     runs-on: ubuntu-latest
     steps:
@@ -31,6 +32,7 @@ jobs:
     needs: [unit-tests, pixi]
     uses: ./.github/workflows/publish.yml
   all:
+    name: CI success
     needs: [unit-tests, pixi, publish]
     runs-on: ubuntu-latest
     steps:
