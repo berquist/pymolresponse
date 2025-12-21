@@ -66,6 +66,10 @@ repos:
   #         - numpy
   #         - types-pyyaml
   #         - versioningit
+  - repo: https://github.com/google/yamlfmt
+    rev: v0.20.0
+    hooks:
+      - id: yamlfmt
   - repo: https://github.com/adrienverge/yamllint
     rev: "v1.37.1"
     hooks:
