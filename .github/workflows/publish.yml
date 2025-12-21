@@ -25,7 +25,7 @@ jobs:
 
   publish-to-testpypi:
     name: Publish Python 🐍 distribution 📦 to TestPyPI
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     # publish on merge to default branch or any tag
     if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')
@@ -55,7 +55,7 @@ jobs:
   publish-to-pypi:
     name: >-
       Publish Python 🐍 distribution 📦 to PyPI
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     # only publish on versioned tag pushes
     if: startsWith(github.ref, 'refs/tags/v')
@@ -85,7 +85,7 @@ jobs:
   github-release:
     name: >-
       Sign the Python 🐍 distribution 📦 with Sigstore and upload them to GitHub Release
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     # make (draft) release on any tag
     if: startsWith(github.ref, 'refs/tags/')
