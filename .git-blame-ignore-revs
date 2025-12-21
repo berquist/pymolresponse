@@ -1,12 +1,14 @@
-# pre-commit fixes
+# [pre-commit.ci] auto fixes from pre-commit.com hooks
 4fd7bca6396ff2b3e9677dbcc8c13a0302ab2239
+# [pre-commit.ci] auto fixes from pre-commit.com hooks
 a96c60e060dab7174c2d395e2c75af4c0b554475
+# apply pre-commit
 5538fe05a21384ab65d3ccb031df0e4f82f0f041
-# reformatting list syntax
+# .github/workflows/test.yml: list syntax
 4c250671387289c5257c8de0069a37bfa56bd4e7
 # chore: apply yamlfmt
 5e56bc47cf2c0ea24af74ee0732d3baedf323888
-chore: zizmor fixes
+# chore: zizmor fixes
 2f0ed5cfb769b1a6278171d4d0567e9d93bd67dd
 # chore(ci): zizmor fixes
 0dc408abd34c84ca2fbe671bb3d0e8709fd3c32b

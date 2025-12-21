@@ -19,4 +19,7 @@ jobs:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8  # v6
         with:
           persist-credentials: false
+          # so validate-git-blame-ignore-revs can view the entire commit
+          # history
+          fetch-depth: 0
       - uses: j178/prek-action@91fd7d7cf70ae1dee9f4f44e7dfa5d1073fe6623  # v1.0.11

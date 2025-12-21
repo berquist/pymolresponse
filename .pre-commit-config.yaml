@@ -79,3 +79,8 @@ repos:
     hooks:
       - id: zizmor
         args: [--no-progress, --persona=pedantic, --fix]
+  - repo: https://github.com/berquist/validate-git-blame-ignore-revs
+    rev: v0.1.0
+    hooks:
+      - id: validate-git-blame-ignore-revs
+        args: [--call-git, --strict-comments, --strict-comments-git]
