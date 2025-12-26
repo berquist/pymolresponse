@@ -202,7 +202,7 @@
 
 <div class="viewcode-block" id="TDHF.print_results_orca">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.td.TDHF.print_results_orca">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">print_results_orca</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cutoff</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">print_results_orca</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cutoff</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
         <span class="n">energies</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">eigvals</span><span class="o">.</span><span class="n">real</span>
         <span class="n">energies_ev</span> <span class="o">=</span> <span class="n">energies</span> <span class="o">*</span> <span class="n">HARTREE_TO_EV</span>
         <span class="n">energies_invcm</span> <span class="o">=</span> <span class="n">energies</span> <span class="o">*</span> <span class="n">HARTREE_TO_INVCM</span>
