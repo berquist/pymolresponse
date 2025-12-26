@@ -58,7 +58,6 @@ Desired features that don't fix the caveats
 - Finite-difference for testing and higher-order response.
 - Interface to `PyQuante <https://github.com/berquist/pyquante>`_ and/or `pyquante2 <https://github.com/rpmuller/pyquante2>`_.
 - Jupyter Notebook-based tutorials.
-- Argument type-checking using `mypy <http://mypy-lang.org/>`_.
 
 References
 ----------
