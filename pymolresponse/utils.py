@@ -166,7 +166,12 @@ class Splitter:
         return elements
 
 
-def fix_mocoeffs_shape(mocoeffs: Union[Tuple[np.ndarray, ...], np.ndarray]) -> np.ndarray:
+def fix_mocoeffs_shape(
+    mocoeffs: Union[
+        Tuple[np.ndarray[Union[Tuple[int, int], Tuple[int, int, int]], np.floating], ...],
+        np.ndarray[Union[Tuple[int, int], Tuple[int, int, int]], np.floating],
+    ],
+) -> np.ndarray[Tuple[int, int, int], np.floating]:
     if isinstance(mocoeffs, tuple):
         # this will properly fall through to the else clause
         mocoeffs_new = fix_mocoeffs_shape(np.stack(mocoeffs, axis=0))
@@ -181,7 +186,9 @@ def fix_mocoeffs_shape(mocoeffs: Union[Tuple[np.ndarray, ...], np.ndarray]) -> n
     return mocoeffs_new
 
 
-def fix_moenergies_shape(moenergies: Union[Tuple[np.ndarray, ...], np.ndarray]) -> np.ndarray:
+def fix_moenergies_shape(
+    moenergies: Union[Tuple[np.ndarray, ...], np.ndarray],
+) -> np.ndarray[Tuple[int, int, int], np.floating]:
     if isinstance(moenergies, tuple):
         # this will properly fall through to the else clause
         moenergies_new = fix_moenergies_shape(np.stack(moenergies, axis=0))
