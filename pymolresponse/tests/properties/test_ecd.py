@@ -351,7 +351,7 @@ def test_ECD_RPA_singlet_BC2H4_cation_HF_STO3G() -> None:
 
 
 # TODO once UHF is done
-# def test_ECD_RPA_singlet_BC2H4_neutral_radical_HF_STO3G():
+# def test_ECD_RPA_singlet_BC2H4_neutral_radical_HF_STO3G() -> None:
 #     mol = molecules.molecule_bc2h4_neutral_radical_sto3g()
 #     mol.build()
 

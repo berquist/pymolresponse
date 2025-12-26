@@ -20,7 +20,7 @@ class ORD(ResponseProperty):
         *,
         frequencies: Sequence[float] = [0.0],
         do_dipvel: bool = False,
-    ):
+    ) -> None:
         super().__init__(
             program, program_obj, driver, mocoeffs, moenergies, occupations, frequencies=frequencies
         )

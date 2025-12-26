@@ -1,4 +1,4 @@
-# def test_hydrogen_atom_electric():
+# def test_hydrogen_atom_electric() -> None:
 
 #     mol = molecules.hydrogen_atom_sto3g(5)
 #     mol.build()

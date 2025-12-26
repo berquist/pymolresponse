@@ -115,7 +115,7 @@ class TDHF(CPHF):
 
     _SPIN_MAP_ORCA = {Spin.singlet: "SINGLETS", Spin.triplet: "TRIPLETS"}
 
-    def print_results_orca(self, cutoff=0.01):
+    def print_results_orca(self, cutoff: float = 0.01) -> str:
         energies = self.solver.eigvals.real
         energies_ev = energies * HARTREE_TO_EV
         energies_invcm = energies * HARTREE_TO_INVCM
