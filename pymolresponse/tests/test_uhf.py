@@ -12,7 +12,7 @@ from pymolresponse.interfaces.pyscf import molecules, utils
 from pymolresponse.interfaces.pyscf.ao2mo import AO2MOpyscf
 
 
-def test_explicit_uhf_from_rhf_outside_solver():
+def test_explicit_uhf_from_rhf_outside_solver() -> None:
     mol = molecules.molecule_water_sto3g()
     mol.build()
 
@@ -143,7 +143,7 @@ ref_water_cation_UHF_HF_STO3G = np.array(
 )
 
 
-def test_explicit_uhf_outside_solver():
+def test_explicit_uhf_outside_solver() -> None:
     mol = molecules.molecule_water_sto3g()
     mol.charge = 1
     mol.spin = 1
@@ -249,7 +249,7 @@ def test_explicit_uhf_outside_solver():
     np.testing.assert_allclose(res_u, ref_water_cation_UHF_HF_STO3G, rtol=rtol, atol=atol)
 
 
-def test_explicit_uhf():
+def test_explicit_uhf() -> None:
     mol = molecules.molecule_water_sto3g()
     mol.charge = 1
     mol.spin = 1

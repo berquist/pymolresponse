@@ -78,13 +78,14 @@ warn_unused_configs = true
 
 [[tool.mypy.overrides]]
 module = [
-    "periodictable",
     "psi4",
     "pyscf",
-    "scipy",
-    "scipy.constants"
 ]
 ignore_missing_imports = true
+
+[tool.pyright]
+# not inherited for some reason
+pythonVersion = "3.6"
 
 [tool.ruff]
 line-length = 100

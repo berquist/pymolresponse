@@ -45,11 +45,11 @@ class MolecularProperty(ABC):
         )
 
     @abstractmethod
-    def form_operators(self):
+    def form_operators(self) -> None:
         pass
 
     @abstractmethod
-    def form_results(self):
+    def form_results(self) -> None:
         pass
 
 
@@ -68,17 +68,17 @@ class ResponseProperty(MolecularProperty, ABC):
         occupations: np.ndarray,
         *,
         frequencies: Sequence[float],
-    ):
+    ) -> None:
         driver.set_frequencies(frequencies)
         super().__init__(program, program_obj, driver, mocoeffs, moenergies, occupations)
         self.frequencies = self.driver.frequencies
 
     @abstractmethod
-    def form_operators(self):
+    def form_operators(self) -> None:
         pass
 
     @abstractmethod
-    def form_results(self):
+    def form_results(self) -> None:
         pass
 
 

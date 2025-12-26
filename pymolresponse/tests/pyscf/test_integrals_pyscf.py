@@ -3,7 +3,7 @@ import numpy as np
 from pymolresponse.interfaces.pyscf import integrals, molecules
 
 
-def test_integrals_pyscf():
+def test_integrals_pyscf() -> None:
     mol = molecules.molecule_water_sto3g()
     mol.build()
     integral_generator = integrals.IntegralsPyscf(mol)
@@ -16,7 +16,7 @@ def test_integrals_pyscf():
     )
 
 
-def test_jk_pyscf():
+def test_jk_pyscf() -> None:
     mol = molecules.molecule_water_sto3g()
     mol.build()
     jk_generator = integrals.JKPyscf(mol)  # noqa: F841

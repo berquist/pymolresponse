@@ -158,7 +158,7 @@ def test_electronicgtensor_small() -> None:
     )
 
 
-# def test_electronicgtensor_large():
+# def test_electronicgtensor_large() -> None:
 
 #     mol = molecules.molecule_0w4a_dication_321g()
 #     mol.build()
