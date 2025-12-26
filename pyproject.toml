@@ -69,8 +69,7 @@ known_attrs = ["attr"]
 known_chemistry = ["psi4", "pyscf"]
 
 [tool.mypy]
-warn_redundant_casts = true
-warn_return_any = true
+strict = true
 warn_unreachable = true
 
 scripts_are_modules = true
