@@ -1,4 +1,4 @@
-from typing import Optional, Tuple
+from typing import Optional, Tuple, Union
 
 import numpy as np
 
@@ -12,7 +12,7 @@ ANGMOM_COMMON_GAUGE = object()
 
 
 class IntegralsPsi4(Integrals):
-    def __init__(self, wfn_or_mol) -> None:
+    def __init__(self, wfn_or_mol: Union[psi4.core.Molecule, psi4.core.Wavefunction]) -> None:
         super().__init__()
 
         if isinstance(wfn_or_mol, psi4.core.Molecule):
@@ -35,7 +35,7 @@ class IntegralsPsi4(Integrals):
 
 
 # Taken from Psi4NumPy's helper_HF.py
-def compute_jk(jk, C_left, C_right=None):
+def compute_jk(jk: psi4.core.JK, C_left, C_right: Optional = None) -> Tuple[np.ndarray, np.ndarray]:
     """
     A python wrapper for a Psi4 JK object to consume and produce NumPy arrays.
 

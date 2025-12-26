@@ -6,7 +6,7 @@ from pymolresponse.interfaces.psi4 import integrals, molecules
 from pymolresponse.interfaces.psi4.utils import mocoeffs_from_psi4wfn, occupations_from_psi4wfn
 
 
-def test_integrals_psi4():
+def test_integrals_psi4() -> None:
     mol = molecules.molecule_water_sto3g()
     mol.reset_point_group("c1")
     mol.update_geometry()
@@ -28,7 +28,7 @@ def test_integrals_psi4():
     )
 
 
-def test_jk_psi4():
+def test_jk_psi4() -> None:
     mol = molecules.molecule_water_sto3g()
     mol.reset_point_group("c1")
     mol.update_geometry()

@@ -23,7 +23,7 @@ np.set_printoptions(precision=8, linewidth=200, suppress=True)
 datadir = REFDIR / "psi4numpy" / "water"
 
 
-def test_geometric_hessian_rhf_outside_solver_psi4numpy():
+def test_geometric_hessian_rhf_outside_solver_psi4numpy() -> None:
     psi4.core.set_output_file("output.dat", False)
 
     mol = psi4.geometry(
@@ -459,7 +459,7 @@ def test_geometric_hessian_rhf_outside_solver_psi4numpy():
     psi4.compare_matrices(H_psi4, H_python_mat, 10, "RHF-HESSIAN-TEST")  # TEST
 
 
-def test_geometric_hessian_rhf_outside_solver_chemists():
+def test_geometric_hessian_rhf_outside_solver_chemists() -> None:
     psi4.core.set_output_file("output2.dat", False)
 
     mol = molecules.molecule_physicists_water_sto3g()
@@ -857,7 +857,7 @@ def test_geometric_hessian_rhf_outside_solver_chemists():
     psi4.compare_matrices(H_psi4, H_python_mat, 10, "RHF-HESSIAN-TEST")  # TEST
 
 
-def test_geometric_hessian_rhf_right_hand_side():
+def test_geometric_hessian_rhf_right_hand_side() -> None:
     mol = molecules.molecule_physicists_water_sto3g()
     mol.reset_point_group("c1")
     mol.update_geometry()
@@ -960,7 +960,7 @@ def test_geometric_hessian_rhf_right_hand_side():
     return B_func
 
 
-def test_atomic_polar_tensor_rhf():
+def test_atomic_polar_tensor_rhf() -> None:
     mol = molecules.molecule_physicists_water_sto3g()
     mol.reset_point_group("c1")
     mol.update_geometry()

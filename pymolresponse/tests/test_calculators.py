@@ -190,7 +190,7 @@ def calculate_rhf(
     source_moenergies: str,
     source_mocoeffs: str,
     source_operator: str,
-):
+) -> float:
     if operator_label:
         # TODO add dipvel
         assert operator_label in ("dipole", "angmom", "spinorb")
@@ -304,7 +304,7 @@ def calculate_uhf(
     source_moenergies: str,
     source_mocoeffs: str,
     source_operator: str,
-):
+) -> float:
     if operator_label:
         # TODO add dipvel
         assert operator_label in ("dipole", "angmom", "spinorb")

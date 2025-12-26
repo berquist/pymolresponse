@@ -6,7 +6,7 @@ from pymolresponse.interfaces.pyscf.ao2mo import AO2MOpyscf
 from pymolresponse.interfaces.pyscf.utils import occupations_from_pyscf_mol
 
 
-def test_HF_both_singlet_HF_STO3G():
+def test_HF_both_singlet_HF_STO3G() -> None:
     mol = pyscf.gto.Mole()
     mol.verbose = 0
     mol.output = None

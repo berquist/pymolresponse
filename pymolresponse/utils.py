@@ -27,7 +27,9 @@ def np_load(filename: Union[str, Path]) -> np.ndarray:
     return arr
 
 
-def parse_int_file_2(filename: Union[str, Path], dim: int) -> np.ndarray:
+def parse_int_file_2(
+    filename: Union[str, Path], dim: int
+) -> np.ndarray[Tuple[int, int], np.dtype[float]]:
     mat = np.zeros(shape=(dim, dim))
     with open(filename) as fh:
         contents = fh.readlines()
@@ -166,7 +168,12 @@ class Splitter:
         return elements
 
 
-def fix_mocoeffs_shape(mocoeffs: Union[Tuple[np.ndarray, ...], np.ndarray]) -> np.ndarray:
+def fix_mocoeffs_shape(
+    mocoeffs: Union[
+        Tuple[np.ndarray[Tuple[int, ...], np.dtype[np.floating]], ...],
+        np.ndarray[Union[Tuple[int, int], Tuple[int, int, int]], np.dtype[np.floating]],
+    ],
+) -> np.ndarray[Tuple[int, int, int], np.dtype[np.floating]]:
     if isinstance(mocoeffs, tuple):
         # this will properly fall through to the else clause
         mocoeffs_new = fix_mocoeffs_shape(np.stack(mocoeffs, axis=0))
@@ -181,7 +188,12 @@ def fix_mocoeffs_shape(mocoeffs: Union[Tuple[np.ndarray, ...], np.ndarray]) -> n
     return mocoeffs_new
 
 
-def fix_moenergies_shape(moenergies: Union[Tuple[np.ndarray, ...], np.ndarray]) -> np.ndarray:
+def fix_moenergies_shape(
+    moenergies: Union[
+        Tuple[np.ndarray[Tuple[int, ...], np.dtype[np.floating]], ...],
+        np.ndarray[Union[Tuple[int], Tuple[int, int], Tuple[int, int, int]], np.dtype[np.floating]],
+    ],
+) -> np.ndarray[Tuple[int, int, int], np.dtype[np.floating]]:
     if isinstance(moenergies, tuple):
         # this will properly fall through to the else clause
         moenergies_new = fix_moenergies_shape(np.stack(moenergies, axis=0))
