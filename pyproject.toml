@@ -154,3 +154,6 @@ lint = { cmd = [
 test = { cmd = [
     "python", "-m", "pytest", "-v", "--cov=pymolresponse"
 ] }
+
+[tool.ty.environment]
+python = ".pixi/envs/dev/bin/python"
