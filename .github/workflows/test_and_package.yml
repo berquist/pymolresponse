@@ -25,7 +25,6 @@ jobs:
     strategy:
       matrix:
         python-version:
-          - 3.8
           - 3.9
           - "3.10"
           - 3.11
@@ -101,11 +100,11 @@ jobs:
       matrix:
         install-method: [wheel, source]
         python-version:
-          - 3.8
           - 3.9
           - "3.10"
           - 3.11
           - 3.12
+          - 3.13
     steps:
       - uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548  # v6
         with:

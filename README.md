@@ -21,16 +21,9 @@ To set up a conda environment with all dependencies for running, testing, and bu
 
 ## Requirements
 
-* Python >= ~~3.2 because of pyscf~~3.6 because of [f-strings](https://cito.github.io/blog/f-strings/).
-* [pyscf](https://github.com/sunqm/pyscf) and its dependencies: CMake, NumPy, SciPy, HDF5 + h5py
+* Python >= 3.9 (because of type annotations)
+* [pyscf](https://github.com/pyscf/pyscf)
 * [Psi4](https://psicode.org/)
-
-### Other Python dependencies
-
-* [periodictable](https://github.com/pkienzle/periodictable) (for calculating the center of mass)
-* [pytest](http://doc.pytest.org/en/latest/) (for testing)
-* [daltools](https://github.com/vahtras/daltools) (for testing?)
-* [cclib](https://github.com/cclib/cclib) (for testing)
 
 ## Testing
 
