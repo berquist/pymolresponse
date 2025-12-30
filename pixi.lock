@@ -2667,8 +2667,8 @@ packages:
   requires_python: '>=3.8'
 - pypi: ./
   name: pymolresponse
-  version: 0.2.1rc1.post221+51a14df
-  sha256: 1a18cc7091b3002e196282a21b1738778a05660502bfd42bef35cdba4017d4c0
+  version: 0.2.1rc1.post224+3cbb6d4
+  sha256: cbf05743a91f888b1e80ae6bd2a49ab45baa101c93d36f4886dc77c9dbb11037
   requires_dist:
   - attrs>=24.3.0,<25
   - cclib>=1.8.1,<2
@@ -2681,7 +2681,7 @@ packages:
   - sphinx ; extra == 'docs'
   - sphinx-rtd-theme ; extra == 'docs'
   - pymolresponse[docs,test] ; extra == 'dev'
-  requires_python: '>=3.6'
+  requires_python: '>=3.9'
 - pypi: https://files.pythonhosted.org/packages/8b/40/2614036cdd416452f5bf98ec037f38a1afb17f327cb8e6b652d4729e0af8/pyparsing-3.3.1-py3-none-any.whl
   name: pyparsing
   version: 3.3.1
