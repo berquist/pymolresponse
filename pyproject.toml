@@ -83,8 +83,14 @@ module = [
 ignore_missing_imports = true
 
 [tool.pyright]
+# apparently respecting .gitignore is overrated
+ignore = [
+    "build"
+]
 # not inherited for some reason
 pythonVersion = "3.6"
+# TODO
+typeCheckingMode = "off"
 
 [tool.ruff]
 line-length = 100
