@@ -60,6 +60,7 @@ repos:
   #       additional_dependencies:
   #         - attrs
   #         - cclib
+  #         - daltools
   #         - numpy
   #         # - pyscf
   #         - scipy-stubs

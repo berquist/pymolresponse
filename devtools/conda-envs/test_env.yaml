@@ -10,6 +10,8 @@ dependencies:
   - pytest-cov
   - pip:
       # out-of-date on conda-forge
+      - daltools
+      # out-of-date on conda-forge
       - pyscf
   # documentation
   - sphinx

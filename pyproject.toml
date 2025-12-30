@@ -25,6 +25,7 @@ Homepage = "https://github.com/berquist/pymolresponse"
 
 [project.optional-dependencies]
 test = [
+    "daltools",
     "pytest",
     "coverage",
     "pytest-cov",
