@@ -123,14 +123,14 @@
 <div class="viewcode-block" id="MolecularProperty.form_operators">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.molecular_property.MolecularProperty.form_operators">[docs]</a>
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">form_operators</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">form_operators</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">pass</span></div>
 
 
 <div class="viewcode-block" id="MolecularProperty.form_results">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.molecular_property.MolecularProperty.form_results">[docs]</a>
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">form_results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">form_results</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">pass</span></div>
 </div>
 
@@ -153,7 +153,7 @@
         <span class="n">occupations</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
         <span class="n">frequencies</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
-    <span class="p">):</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">driver</span><span class="o">.</span><span class="n">set_frequencies</span><span class="p">(</span><span class="n">frequencies</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="n">program_obj</span><span class="p">,</span> <span class="n">driver</span><span class="p">,</span> <span class="n">mocoeffs</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">,</span> <span class="n">occupations</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">frequencies</span>
@@ -161,14 +161,14 @@
 <div class="viewcode-block" id="ResponseProperty.form_operators">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.molecular_property.ResponseProperty.form_operators">[docs]</a>
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">form_operators</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">form_operators</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">pass</span></div>
 
 
 <div class="viewcode-block" id="ResponseProperty.form_results">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.molecular_property.ResponseProperty.form_results">[docs]</a>
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">form_results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">form_results</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">pass</span></div>
 </div>
 
