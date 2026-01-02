@@ -91,9 +91,3 @@ def test_ao2mo_hand_against_pyscf_rhf_partial() -> None:
     assert tei_mo_oovv_pyscf.shape == tei_mo_oovv_method.shape == (nocc, nocc, nvirt, nvirt)
     np.testing.assert_allclose(tei_mo_ovov_method, tei_mo_ovov_pyscf, rtol=0, atol=1.0e-15)
     np.testing.assert_allclose(tei_mo_oovv_method, tei_mo_oovv_pyscf, rtol=0, atol=1.0e-15)
-
-
-if __name__ == "__main__":
-    # test_ao2mo_hand_against_psi4()
-    test_ao2mo_hand_against_pyscf_rhf_full()
-    test_ao2mo_hand_against_pyscf_rhf_partial()

@@ -228,8 +228,3 @@ def test_explicit_uhf() -> None:
     rtol = 0.0
 
     np.testing.assert_allclose(res, ref_water_cation_UHF_HF_STO3G, rtol=rtol, atol=atol)
-
-
-if __name__ == "__main__":
-    test_explicit_uhf_outside_solver()
-    test_explicit_uhf()

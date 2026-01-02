@@ -365,9 +365,3 @@ def test_ORD_RPA_singlet_trithiolane_HF_STO3G() -> None:
     #         print(res_beta)
     #         print(abs_diff)
     #         assert (abs_diff < thresh).all()
-
-
-if __name__ == "__main__":
-    test_ORD_RPA_singlet_BC2H4_cation_HF_STO3G()
-    test_ORD_RPA_singlet_BC2H4_HF_STO3G()
-    test_ORD_RPA_singlet_trithiolane_HF_STO3G()

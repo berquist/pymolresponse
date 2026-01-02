@@ -1070,11 +1070,3 @@ def test_first_hyperpolarizability_or_rhf_wigner_explicit() -> None:
 #     print(hyperpolarizability)
 
 #     return
-
-
-if __name__ == "__main__":
-    test_first_hyperpolarizability_static_rhf_wigner_explicit()
-    test_first_hyperpolarizability_shg_rhf_wigner_explicit()
-    test_first_hyperpolarizability_eope_rhf_wigner_explicit()
-    test_first_hyperpolarizability_or_rhf_wigner_explicit()
-    # test_first_hyperpolarizability_general_rhf_wigner_explicit()

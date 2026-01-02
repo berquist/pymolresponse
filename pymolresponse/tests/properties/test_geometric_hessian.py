@@ -1029,10 +1029,3 @@ def test_atomic_polar_tensor_rhf() -> None:
     print(nuclear_contrib)
 
     return locals()
-
-
-if __name__ == "__main__":
-    test_geometric_hessian_rhf_outside_solver_psi4numpy()
-    test_geometric_hessian_rhf_outside_solver_chemists()
-    test_geometric_hessian_rhf_right_hand_side()
-    var = test_atomic_polar_tensor_rhf()

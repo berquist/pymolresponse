@@ -117,8 +117,3 @@ def test_final_result_rhf_h2o_sto3g_rpa_singlet_iter() -> None:
         rtol=0.0,
         atol=1.0e-6,
     )
-
-
-if __name__ == "__main__":
-    test_inversion()
-    test_final_result_rhf_h2o_sto3g_rpa_singlet_iter()

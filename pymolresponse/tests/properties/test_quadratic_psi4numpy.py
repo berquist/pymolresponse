@@ -835,12 +835,3 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_large
 #     print(avg)
 
 #     return
-
-
-if __name__ == "__main__":
-    np.set_printoptions(precision=5, linewidth=200, suppress=True)
-    # TODO automatically execute every test function found in the file when run
-    # as main
-    test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_small()
-    test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_large()
-    # test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_psi4_small()

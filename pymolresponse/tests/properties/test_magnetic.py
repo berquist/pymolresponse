@@ -182,10 +182,3 @@ def test_electronicgtensor_small() -> None:
 #                            np.sign(gtensor_calculator.g_oz_soc_1)))
 
 #     return
-
-if __name__ == "__main__":
-    test_magnetizability_rhf()
-    test_magnetizability_uhf()
-    test_electronicgtensor_tiny()
-    test_electronicgtensor_small()
-    # test_electronicgtensor_large()

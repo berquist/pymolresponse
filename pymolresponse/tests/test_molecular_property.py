@@ -64,9 +64,3 @@ def test_transition_property() -> None:
     # except NotImplementedError as e:
     #     message = e.args[0]
     #     assert message == "This must be implemented in a child class."
-
-
-if __name__ == "__main__":
-    test_molecular_property()
-    # test_response_property()
-    # test_transition_property()

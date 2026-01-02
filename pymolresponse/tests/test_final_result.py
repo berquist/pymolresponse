@@ -361,12 +361,3 @@ def test_as_many_as_possible_uhf_disk() -> None:
     against DALTON (ROHF) references.
     """
     run_as_many_tests_as_possible_uhf_disk("u_lih_cation_hf_sto-3g")
-
-
-if __name__ == "__main__":
-    test_final_result_rhf_h2o_sto3g_rpa_singlet()
-    test_final_result_rhf_h2o_sto3g_rpa_triplet()
-    test_final_result_rhf_h2o_sto3g_tda_singlet()
-    test_final_result_rhf_h2o_sto3g_tda_triplet()
-    test_as_many_as_possible_rhf_disk()
-    test_as_many_as_possible_uhf_disk()
