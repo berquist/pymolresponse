@@ -92,7 +92,8 @@
     <span class="n">moenergies</span> <span class="o">=</span> <span class="n">mf</span><span class="o">.</span><span class="n">mo_energy</span>
     <span class="n">ao2mo</span> <span class="o">=</span> <span class="n">AO2MOpyscf</span><span class="p">(</span><span class="n">mocoeffs</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span> <span class="n">mol</span><span class="p">)</span>
     <span class="n">ao2mo</span><span class="o">.</span><span class="n">perform_rhf_full</span><span class="p">()</span>
-    <span class="n">tei_mo</span> <span class="o">=</span> <span class="n">ao2mo</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">ao2mo</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="n">tei_mo</span> <span class="o">=</span> <span class="n">ao2mo</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># ty: ignore[index-out-of-bounds]</span>
 
     <span class="n">C</span> <span class="o">=</span> <span class="n">mocoeffs</span>
     <span class="n">E</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">moenergies</span><span class="p">)</span>

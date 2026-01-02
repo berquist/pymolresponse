@@ -95,7 +95,8 @@
     <span class="n">moenergies</span> <span class="o">=</span> <span class="n">mf</span><span class="o">.</span><span class="n">mo_energy</span>
     <span class="n">ao2mo</span> <span class="o">=</span> <span class="n">AO2MOpyscf</span><span class="p">(</span><span class="n">mocoeffs</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span> <span class="n">mol</span><span class="p">)</span>
     <span class="n">ao2mo</span><span class="o">.</span><span class="n">perform_rhf_full</span><span class="p">()</span>
-    <span class="n">tei_mo</span> <span class="o">=</span> <span class="n">ao2mo</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">ao2mo</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="n">tei_mo</span> <span class="o">=</span> <span class="n">ao2mo</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># ty: ignore[index-out-of-bounds]</span>
 
     <span class="n">C_a</span> <span class="o">=</span> <span class="n">mocoeffs</span>
     <span class="n">C_b</span> <span class="o">=</span> <span class="n">C_a</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -236,7 +237,8 @@
 
     <span class="n">ao2mo</span> <span class="o">=</span> <span class="n">AO2MOpyscf</span><span class="p">(</span><span class="n">mf</span><span class="o">.</span><span class="n">mo_coeff</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">mol</span><span class="p">)</span>
     <span class="n">ao2mo</span><span class="o">.</span><span class="n">perform_uhf_full</span><span class="p">()</span>
-    <span class="n">tei_mo_aaaa</span><span class="p">,</span> <span class="n">tei_mo_aabb</span><span class="p">,</span> <span class="n">tei_mo_bbaa</span><span class="p">,</span> <span class="n">tei_mo_bbbb</span> <span class="o">=</span> <span class="n">ao2mo</span><span class="o">.</span><span class="n">tei_mo</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">ao2mo</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span>
+    <span class="n">tei_mo_aaaa</span><span class="p">,</span> <span class="n">tei_mo_aabb</span><span class="p">,</span> <span class="n">tei_mo_bbaa</span><span class="p">,</span> <span class="n">tei_mo_bbbb</span> <span class="o">=</span> <span class="n">ao2mo</span><span class="o">.</span><span class="n">tei_mo</span>  <span class="c1"># ty: ignore[invalid-assignment]</span>
 
     <span class="n">occupations</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">occupations_from_pyscf_mol</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">mf</span><span class="o">.</span><span class="n">mo_coeff</span><span class="p">)</span>
     <span class="n">nocc_a</span><span class="p">,</span> <span class="n">nvirt_a</span><span class="p">,</span> <span class="n">nocc_b</span><span class="p">,</span> <span class="n">nvirt_b</span> <span class="o">=</span> <span class="n">occupations</span>
@@ -373,12 +375,6 @@
 
     <span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_allclose</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">ref_water_cation_UHF_HF_STO3G</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="n">rtol</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">atol</span><span class="p">)</span></div>
 
-
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">test_explicit_uhf_from_rhf_outside_solver</span><span class="p">()</span>
-    <span class="n">test_explicit_uhf_outside_solver</span><span class="p">()</span>
-    <span class="n">test_explicit_uhf</span><span class="p">()</span>
 </pre></div>
 
            </div>

@@ -28,7 +28,7 @@ Testing
 
 .. code-block:: bash
 
-    make pytest
+    just test
 
 Caveats
 -------
