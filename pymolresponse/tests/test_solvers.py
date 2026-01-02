@@ -30,6 +30,7 @@ def test_inversion() -> None:
     mf.scf()
 
     assert isinstance(mf.mo_coeff, np.ndarray)
+    assert isinstance(mf.mo_energy, np.ndarray)
     assert len(mf.mo_coeff) == 2
     C = utils.fix_mocoeffs_shape(mf.mo_coeff)
     E = utils.fix_moenergies_shape(mf.mo_energy)
