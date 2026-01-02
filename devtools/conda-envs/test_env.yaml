@@ -5,6 +5,7 @@ channels:
 dependencies:
   - attrs
   - cclib
+  - coverage
   - pip
   - psi4
   - pytest-cov
@@ -13,6 +14,8 @@ dependencies:
       - daltools
       # out-of-date on conda-forge
       - pyscf
+      # doesn't exist on conda-forge
+      - pytest-ruff
   # documentation
   - sphinx
   - sphinx_rtd_theme
