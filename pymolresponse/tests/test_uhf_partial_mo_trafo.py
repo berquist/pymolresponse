@@ -7,8 +7,7 @@ from pymolresponse import explicit_equations_partial as eqns
 from pymolresponse import operators, solvers
 from pymolresponse.core import AO2MOTransformationType, Hamiltonian, Program, Spin
 from pymolresponse.interfaces.pyscf import molecules
-
-from .test_uhf import ref_water_cation_UHF_HF_STO3G
+from pymolresponse.tests.test_uhf import ref_water_cation_UHF_HF_STO3G
 
 
 def test_explicit_uhf_outside_solver() -> None:
