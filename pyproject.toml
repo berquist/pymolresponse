@@ -71,6 +71,7 @@ known_attrs = ["attr"]
 known_chemistry = ["psi4", "pyscf"]
 
 [tool.mypy]
+cache_dir = "build/.mypy_cache"
 strict = true
 warn_unreachable = true
 
@@ -96,8 +97,10 @@ typeCheckingMode = "off"
 
 [tool.pytest.ini_options]
 addopts = "--ruff --ruff-format"
+cache_dir = "build/.pytest_cache"
 
 [tool.ruff]
+cache-dir = "build/.ruff_cache"
 line-length = 100
 
 [tool.ruff.format]
