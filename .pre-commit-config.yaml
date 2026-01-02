@@ -67,7 +67,8 @@ repos:
   #         - cclib
   #         - daltools
   #         - numpy
-  #         # - pyscf
+  #         - periodictable
+  #         - pyscf
   #         - scipy-stubs
   #         - types-pyyaml
   #         - versioningit

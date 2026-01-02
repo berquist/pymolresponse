@@ -91,7 +91,6 @@ warn_unused_configs = true
 [[tool.mypy.overrides]]
 module = [
     "psi4",
-    "pyscf",
 ]
 ignore_missing_imports = true
 

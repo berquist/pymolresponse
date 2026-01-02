@@ -2,9 +2,12 @@
 
 from itertools import accumulate
 from pathlib import Path
-from typing import List, Tuple, Union
+from typing import TYPE_CHECKING, List, Tuple, Union
 
 import numpy as np
+
+if TYPE_CHECKING:
+    from daltools.sirifc import sirifc
 
 
 def form_results(vecs_property: np.ndarray, vecs_response: np.ndarray) -> np.ndarray:
@@ -132,7 +135,7 @@ def read_file_4(filename: Union[Path, str]) -> np.ndarray:
     return np.reshape(np.array(elements, dtype=float), (n_d1, n_d2, n_d3, n_d4))
 
 
-def occupations_from_sirifc(ifc) -> np.ndarray:
+def occupations_from_sirifc(ifc: "sirifc") -> np.ndarray:
     nocc_a, nocc_b = ifc.nisht + ifc.nasht, ifc.nisht
     norb = ifc.norbt
     nvirt_a, nvirt_b = norb - nocc_a, norb - nocc_b
