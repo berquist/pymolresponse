@@ -175,3 +175,6 @@ test = { cmd = [
 
 [tool.ty.environment]
 python = ".pixi/envs/dev/bin/python"
+
+[tool.ty.rules]
+unused-ignore-comment = "error"
