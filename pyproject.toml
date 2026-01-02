@@ -59,6 +59,16 @@ zip-safe = false
 [tool.setuptools.package-dir]
 pymolresponse = "pymolresponse"
 
+[tool.coverage.html]
+directory = "build/coverage/htmlcov"
+
+[tool.coverage.run]
+branch = true
+data_file = "build/coverage/.coverage"
+
+[tool.coverage.xml]
+output = "build/coverage/coverage.xml"
+
 [tool.doc8]
 ignore = "D001"
 
@@ -160,7 +170,7 @@ lint = { cmd = [
     "python", "-m", "mypy", "."
 ] }
 test = { cmd = [
-    "python", "-m", "pytest", "-v", "--cov=pymolresponse"
+    "python", "-m", "pytest", "-v", "--cov", "--cov-report=term-missing", "--cov-report=html", "--cov-report=xml"
 ] }
 
 [tool.ty.environment]
