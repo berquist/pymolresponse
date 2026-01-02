@@ -160,7 +160,7 @@ class Splitter:
             line[start:end].strip() for (start, end) in zip(self.start_indices, self.end_indices)
         ]
         if truncate:
-            for i in range(1, len(elements)):
+            for _ in range(1, len(elements)):
                 if elements[-1] == "":
                     elements.pop()
                 else:
@@ -185,7 +185,8 @@ def fix_mocoeffs_shape(
             mocoeffs_new = mocoeffs[np.newaxis]
         else:
             mocoeffs_new = mocoeffs
-    return mocoeffs_new
+    assert len(mocoeffs_new.shape) == 3
+    return mocoeffs_new  # ty: ignore[invalid-return-type]
 
 
 def fix_moenergies_shape(
@@ -197,7 +198,6 @@ def fix_moenergies_shape(
     if isinstance(moenergies, tuple):
         # this will properly fall through to the else clause
         moenergies_new = fix_moenergies_shape(np.stack(moenergies, axis=0))
-    # assume np.ndarray
     else:
         shape = moenergies.shape
         ls = len(shape)
@@ -211,7 +211,7 @@ def fix_moenergies_shape(
             # one for each spin case.  TODO check that all off-diagonal
             # elements are zero?  Not true for Fock matrix in non-orthogonal
             # basis.
-            if shape[0] == shape[1]:
+            if shape[0] == shape[1]:  # ty: ignore[index-out-of-bounds]
                 moenergies_new = moenergies[np.newaxis]
             else:
                 assert shape[0] in (1, 2)
@@ -228,12 +228,15 @@ def fix_moenergies_shape(
             assert shape[0] in (1, 2)
             # You might think at first glance there's an assumption that nbsf
             # == nmo here, but the (Fock) matrix is entirely in the MO basis.
-            assert shape[1] == shape[2]
+            assert shape[1] == shape[2]  # ty: ignore[index-out-of-bounds]
             moenergies_new = moenergies
-    return moenergies_new
+    assert len(moenergies_new.shape) == 3
+    assert moenergies_new.shape[0] in (1, 2)
+    assert moenergies_new.shape[1] == moenergies_new.shape[2]  # ty: ignore[index-out-of-bounds]
+    return moenergies_new  # ty: ignore[invalid-return-type]
 
 
-def read_dalton_propfile(tmpdir: Path):
+def read_dalton_propfile(tmpdir: Path) -> List[str]:
     proplist = []
     with open(tmpdir / "DALTON.PROP") as propfile:
         proplines = propfile.readlines()
@@ -260,7 +263,7 @@ def tensor_printer(tensor: np.ndarray) -> Tuple[np.ndarray, float, float]:
     print(iso)
     # print(np.trace(tensor) / tensor.shape[0])
     # print(aniso)
-    return (eigvals, iso, aniso)
+    return eigvals, iso, aniso
 
 
 def form_vec_energy_differences(moene_occ: np.ndarray, moene_virt: np.ndarray) -> np.ndarray:

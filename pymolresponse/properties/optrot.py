@@ -41,20 +41,20 @@ class ORD(ResponseProperty):
         operator_angmom = Operator(
             label="angmom", is_imaginary=True, is_spin_dependent=False, triplet=False
         )
-        operator_angmom.ao_integrals = integral_generator.integrals(integrals.ANGMOM_COMMON_GAUGE)
+        operator_angmom.ao_integrals = integral_generator.integrals(integrals.ANGMOM_COMMON_GAUGE)  # ty: ignore[invalid-argument-type]
         self.driver.add_operator(operator_angmom)
 
         operator_diplen = Operator(
             label="dipole", is_imaginary=False, is_spin_dependent=False, triplet=False
         )
-        operator_diplen.ao_integrals = integral_generator.integrals(integrals.DIPOLE)
+        operator_diplen.ao_integrals = integral_generator.integrals(integrals.DIPOLE)  # ty: ignore[invalid-argument-type]
         self.driver.add_operator(operator_diplen)
 
         if self.do_dipvel:
             operator_dipvel = Operator(
                 label="dipvel", is_imaginary=True, is_spin_dependent=False, triplet=False
             )
-            operator_dipvel.ao_integrals = integral_generator.integrals(integrals.DIPVEL)
+            operator_dipvel.ao_integrals = integral_generator.integrals(integrals.DIPVEL)  # ty: ignore[invalid-argument-type]
             self.driver.add_operator(operator_dipvel)
 
     def form_results(self) -> None:
