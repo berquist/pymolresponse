@@ -28,7 +28,7 @@ To set up a conda environment with all dependencies for running, testing, and bu
 ## Testing
 
 ```bash
-make pytest
+just test
 ```
 
 ## Caveats

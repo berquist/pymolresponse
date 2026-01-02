@@ -1,0 +1,6 @@
+{
+    "Exclude": [
+        "pymolresponse/data/coords",
+        "pymolresponse/data/reference"
+    ]
+}

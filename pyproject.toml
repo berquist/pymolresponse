@@ -106,7 +106,7 @@ pythonVersion = "3.6"
 typeCheckingMode = "off"
 
 [tool.pytest.ini_options]
-addopts = "--ruff --ruff-format"
+addopts = "--cov --cov-report=term-missing --cov-report=html --cov-report=xml --ruff --ruff-format"
 cache_dir = "build/.pytest_cache"
 
 [tool.ruff]
@@ -170,7 +170,7 @@ lint = { cmd = [
     "python", "-m", "mypy", "."
 ] }
 test = { cmd = [
-    "python", "-m", "pytest", "-v", "--cov", "--cov-report=term-missing", "--cov-report=html", "--cov-report=xml"
+    "python", "-m", "pytest"
 ] }
 
 [tool.ty.environment]
