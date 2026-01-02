@@ -1,3 +1,5 @@
+from typing import List, TypedDict
+
 import numpy as np
 
 import pyscf
@@ -8,7 +10,18 @@ from pymolresponse.interfaces.pyscf import molecules
 from pymolresponse.interfaces.pyscf.utils import occupations_from_pyscf_mol
 from pymolresponse.properties import ecd
 
-BC2H4_cation_HF_STO3G_RPA_singlet_nwchem = {
+
+class ECDReference(TypedDict):
+    etenergies: List[float]
+    etoscslen: List[float]
+    etoscsmix: List[float]
+    etoscsvel: List[float]
+    etrotstrlen: List[float]
+    etrotstrvel: List[float]
+    nroots: int
+
+
+BC2H4_cation_HF_STO3G_RPA_singlet_nwchem: ECDReference = {
     "etenergies": [
         0.116938283,
         0.153688860,
@@ -85,7 +98,7 @@ BC2H4_cation_HF_STO3G_RPA_singlet_nwchem = {
 }
 
 
-BC2H4_neutral_radical_HF_STO3G_RPA_singlet_nwchem = {
+BC2H4_neutral_radical_HF_STO3G_RPA_singlet_nwchem: ECDReference = {
     "etenergies": [],
     "etoscslen": [],
     "etoscsmix": [],
@@ -96,7 +109,7 @@ BC2H4_neutral_radical_HF_STO3G_RPA_singlet_nwchem = {
 }
 
 
-BC2H4_cation_HF_STO3G_TDA_singlet_orca = {
+BC2H4_cation_HF_STO3G_TDA_singlet_orca: ECDReference = {
     "etenergies": [
         0.125219,
         0.160132,
