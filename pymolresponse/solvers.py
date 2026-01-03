@@ -197,14 +197,16 @@ class ExactLineqSolver(LineqSolver, ABC):
     ) -> None:
         super().__init__(mocoeffs, moenergies, occupations)
 
-    def form_explicit_hessian(self, hamiltonian: Hamiltonian, spin: Spin, frequency: float) -> None:
+    def form_explicit_hessian(
+        self, hamiltonian: Hamiltonian, spin: Spin, frequency: Optional[float]
+    ) -> None:
         assert self.tei_mo is not None
         assert len(self.tei_mo) in (1, 2, 4, 6)
         assert isinstance(self.tei_mo_type, AO2MOTransformationType)
 
         assert isinstance(hamiltonian, Hamiltonian)
         assert isinstance(spin, Spin)
-        assert isinstance(frequency, (float, type(None)))
+        assert isinstance(frequency, float)
 
         nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
         nov_alph = nocc_alph * nvirt_alph
@@ -748,7 +750,9 @@ class ExactDiagonalizationSolver(EigSolver):
     ) -> None:
         super().__init__(mocoeffs, moenergies, occupations)
 
-    def form_explicit_hessian(self, hamiltonian: Hamiltonian, spin: Spin, frequency: float) -> None:
+    def form_explicit_hessian(
+        self, hamiltonian: Hamiltonian, spin: Spin, frequency: Optional[float]
+    ) -> None:
         assert hasattr(self, "tei_mo")
         assert self.tei_mo is not None
         assert len(self.tei_mo) in (1, 2, 4, 6)
