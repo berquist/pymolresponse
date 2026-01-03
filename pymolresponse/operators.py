@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Tuple
 
 import numpy as np
 import scipy.constants as spc
@@ -18,7 +18,7 @@ class Operator:
         is_spin_dependent: bool = False,
         triplet: bool = False,
         slice_idx: int = -1,
-        ao_integrals: Optional[np.ndarray] = None,
+        ao_integrals: Optional[np.ndarray[Tuple[int, int], np.dtype[np.floating]]] = None,
     ) -> None:
         self.label = label
         self.is_imaginary = is_imaginary
@@ -116,7 +116,7 @@ class Operator:
         self,
         C: np.ndarray,
         occupations: np.ndarray,
-        natoms,
+        natoms: int,
         MO_full,
         mints,
         return_dict: bool = False,

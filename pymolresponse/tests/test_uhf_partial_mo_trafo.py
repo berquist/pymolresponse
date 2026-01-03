@@ -194,7 +194,7 @@ def test_explicit_uhf() -> None:
 
     integrals_dipole_ao = mol.intor("cint1e_r_sph", comp=3)
 
-    solver = solvers.ExactInv(C, E, occupations)
+    solver = solvers.ExactInv(C, E, np.asarray(occupations))
 
     solver.tei_mo = (
         tei_mo_ovov_aaaa,

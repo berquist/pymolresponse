@@ -1,6 +1,8 @@
 """Wrapper for performing an electronic circular dichroism (ECD)
 calculation."""
 
+from typing import Any
+
 import numpy as np
 
 from pymolresponse.constants import HARTREE_TO_EV, HARTREE_TO_INVCM, alpha, esuecd
@@ -19,7 +21,7 @@ class ECD(TransitionProperty):
     def __init__(
         self,
         program: Program,
-        program_obj,
+        program_obj: Any,
         driver: TDHF,
         mocoeffs: np.ndarray,
         moenergies: np.ndarray,

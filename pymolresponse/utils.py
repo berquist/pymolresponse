@@ -1,13 +1,21 @@
 """Utility functions that are not core to calculating physical values."""
 
+from collections.abc import Iterable
 from itertools import accumulate
 from pathlib import Path
-from typing import List, Tuple, Union
+from typing import TYPE_CHECKING, List, Tuple, Union
 
 import numpy as np
 
+if TYPE_CHECKING:
+    from daltools.sirifc import sirifc
 
-def form_results(vecs_property: np.ndarray, vecs_response: np.ndarray) -> np.ndarray:
+
+def form_results(
+    vecs_property: np.ndarray[Tuple[int, int, int], np.dtype[np.floating]],
+    vecs_response: np.ndarray[Tuple[int, int, int], np.dtype[np.floating]],
+) -> np.ndarray[Tuple[int, int], np.dtype[np.floating]]:
+    # TODO document what the assertions mean
     assert vecs_property.shape[1:] == vecs_response.shape[1:]
     assert len(vecs_property.shape) == 3
     assert vecs_property.shape[2] == 1
@@ -15,7 +23,7 @@ def form_results(vecs_property: np.ndarray, vecs_response: np.ndarray) -> np.nda
     return results
 
 
-def np_load(filename: Union[str, Path]) -> np.ndarray:
+def np_load(filename: Union[str, Path]) -> np.ndarray[Tuple[int, ...], np.dtype[np.number]]:
     """Read a file using NumPy."""
     arr = np.load(filename)
     if isinstance(arr, np.lib.npyio.NpzFile):
@@ -29,7 +37,7 @@ def np_load(filename: Union[str, Path]) -> np.ndarray:
 
 def parse_int_file_2(
     filename: Union[str, Path], dim: int
-) -> np.ndarray[Tuple[int, int], np.dtype[float]]:
+) -> np.ndarray[Tuple[int, int], np.dtype[np.floating]]:
     mat = np.zeros(shape=(dim, dim))
     with open(filename) as fh:
         contents = fh.readlines()
@@ -82,7 +90,9 @@ def get_reference_value_from_file(
     return ref
 
 
-def read_file_occupations(filename: Union[Path, str]) -> np.ndarray:
+def read_file_occupations(
+    filename: Union[Path, str],
+) -> np.ndarray[Tuple[int], np.dtype[np.integer]]:
     with open(filename) as fh:
         contents = fh.read().strip()
     tokens = contents.split()
@@ -91,7 +101,7 @@ def read_file_occupations(filename: Union[Path, str]) -> np.ndarray:
     return np.asarray([nocc_alph, nvirt_alph, nocc_beta, nvirt_beta], dtype=int)
 
 
-def read_file_1(filename: Union[Path, str]) -> np.ndarray:
+def read_file_1(filename: Union[Path, str]) -> np.ndarray[Tuple[int], np.dtype[np.floating]]:
     elements = []
     with open(filename) as fh:
         n_elem = int(next(fh))
@@ -101,7 +111,7 @@ def read_file_1(filename: Union[Path, str]) -> np.ndarray:
     return np.array(elements, dtype=float)
 
 
-def read_file_2(filename: Union[Path, str]) -> np.ndarray:
+def read_file_2(filename: Union[Path, str]) -> np.ndarray[Tuple[int, int], np.dtype[np.floating]]:
     elements = []
     with open(filename) as fh:
         n_rows, n_cols = [int(x) for x in next(fh).split()]
@@ -112,7 +122,9 @@ def read_file_2(filename: Union[Path, str]) -> np.ndarray:
     return np.reshape(np.array(elements, dtype=float), (n_rows, n_cols))
 
 
-def read_file_3(filename: Union[Path, str]) -> np.ndarray:
+def read_file_3(
+    filename: Union[Path, str],
+) -> np.ndarray[Tuple[int, int, int], np.dtype[np.floating]]:
     elements = []
     with open(filename) as fh:
         n_slices, n_rows, n_cols = [int(x) for x in next(fh).split()]
@@ -122,7 +134,9 @@ def read_file_3(filename: Union[Path, str]) -> np.ndarray:
     return np.reshape(np.array(elements, dtype=float), (n_slices, n_rows, n_cols))
 
 
-def read_file_4(filename: Union[Path, str]) -> np.ndarray:
+def read_file_4(
+    filename: Union[Path, str],
+) -> np.ndarray[Tuple[int, int, int, int], np.dtype[np.floating]]:
     elements = []
     with open(filename) as fh:
         n_d1, n_d2, n_d3, n_d4 = [int(x) for x in next(fh).split()]
@@ -132,7 +146,7 @@ def read_file_4(filename: Union[Path, str]) -> np.ndarray:
     return np.reshape(np.array(elements, dtype=float), (n_d1, n_d2, n_d3, n_d4))
 
 
-def occupations_from_sirifc(ifc) -> np.ndarray:
+def occupations_from_sirifc(ifc: "sirifc") -> np.ndarray[Tuple[int], np.dtype[np.integer]]:
     nocc_a, nocc_b = ifc.nisht + ifc.nasht, ifc.nisht
     norb = ifc.norbt
     nvirt_a, nvirt_b = norb - nocc_a, norb - nocc_b
@@ -144,7 +158,7 @@ class Splitter:
     widths.
     """
 
-    def __init__(self, widths) -> None:
+    def __init__(self, widths: Iterable[int]) -> None:
         self.start_indices = [0] + list(accumulate(widths))[:-1]
         self.end_indices = list(accumulate(widths))
 
@@ -248,7 +262,9 @@ def read_dalton_propfile(tmpdir: Path) -> List[str]:
     return proplist
 
 
-def tensor_printer(tensor: np.ndarray) -> Tuple[np.ndarray, float, float]:
+def tensor_printer(
+    tensor: np.ndarray[Tuple[int, int], np.dtype[np.floating]],
+) -> Tuple[np.ndarray[Tuple[int], np.dtype[np.floating]], np.floating, float]:
     print(tensor)
     eigvals = np.linalg.eigvals(tensor)
     # or should this be the trace of the matrix?
@@ -282,7 +298,9 @@ def form_vec_energy_differences(moene_occ: np.ndarray, moene_virt: np.ndarray) -
     return ediff
 
 
-def screen(mat: np.ndarray, thresh: float = 1.0e-16) -> np.ndarray:
+def screen(
+    mat: np.ndarray[Tuple[int, ...], np.dtype[np.number]], thresh: float = 1.0e-16
+) -> np.ndarray[Tuple[int, ...], np.dtype[np.number]]:
     """Set all values smaller than the given threshold to zero
     (considering them as numerical noise).
 
@@ -302,7 +320,7 @@ def screen(mat: np.ndarray, thresh: float = 1.0e-16) -> np.ndarray:
     return mat_screened
 
 
-def matsym(amat: np.ndarray, thrzer: float = 1.0e-14) -> int:
+def matsym(amat: np.ndarray[Tuple[int, int], np.dtype[np.number]], thrzer: float = 1.0e-14) -> int:
     """
     - Copied from ``DALTON/gp/gphjj.F/MATSYM``.
     - `thrzer` taken from ``DALTON/include/thrzer.h``.
@@ -343,8 +361,10 @@ def matsym(amat: np.ndarray, thrzer: float = 1.0e-14) -> int:
     return isym + iasym
 
 
-def flip_triangle_sign(A: np.ndarray, triangle: str = "lower") -> np.ndarray:
-    """Flip the sign of either the lower or upper triangle of a sqare
+def flip_triangle_sign(
+    A: np.ndarray[Tuple[int, int], np.dtype[np.number]], triangle: str = "lower"
+) -> np.ndarray[Tuple[int, int], np.dtype[np.number]]:
+    """Flip the sign of either the lower or upper triangle of a square
     matrix. Assume nothing about its symmetry.
 
     Parameters
@@ -370,7 +390,9 @@ def flip_triangle_sign(A: np.ndarray, triangle: str = "lower") -> np.ndarray:
     return B
 
 
-def form_first_hyperpolarizability_averages(beta: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+def form_first_hyperpolarizability_averages(
+    beta: np.ndarray[Tuple[int, int, int], np.dtype[np.floating]],
+) -> Tuple[np.ndarray[Tuple[int], np.dtype[np.floating]], np.floating]:
     assert beta.shape == (3, 3, 3)
     avgs = (-1 / 3) * (
         np.einsum("ijj->i", beta) + np.einsum("jij->i", beta) + np.einsum("jji->i", beta)

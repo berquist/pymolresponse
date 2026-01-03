@@ -91,9 +91,14 @@ warn_unused_configs = true
 [[tool.mypy.overrides]]
 module = [
     "psi4",
-    "pyscf",
 ]
 ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = [
+    "periodictable",
+]
+follow_untyped_imports = true
 
 [tool.pyright]
 # apparently respecting .gitignore is overrated

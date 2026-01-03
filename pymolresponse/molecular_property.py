@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Sequence
+from typing import Any, Sequence
 
 import numpy as np
 
@@ -11,13 +11,13 @@ from pymolresponse.td import TDHF
 class MolecularProperty(ABC):
     """A molecular property that is calculated from one or more operators.
 
-    The
+    The TODO
     """
 
     def __init__(
         self,
         program: Program,
-        program_obj,
+        program_obj: Any,
         driver: Driver,
         mocoeffs: np.ndarray,
         moenergies: np.ndarray,
@@ -61,7 +61,7 @@ class ResponseProperty(MolecularProperty, ABC):
     def __init__(
         self,
         program: Program,
-        program_obj,
+        program_obj: Any,
         driver: CPHF,
         mocoeffs: np.ndarray,
         moenergies: np.ndarray,
@@ -86,7 +86,7 @@ class TransitionProperty(MolecularProperty, ABC):
     def __init__(
         self,
         program: Program,
-        program_obj,
+        program_obj: Any,
         driver: TDHF,
         mocoeffs: np.ndarray,
         moenergies: np.ndarray,

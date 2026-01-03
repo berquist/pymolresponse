@@ -290,7 +290,12 @@ def calculate_rhf(
 
     driver.set_frequencies()
 
-    driver.run(hamiltonian=Hamiltonian[hamiltonian.upper()], spin=Spin[spin])
+    driver.run(
+        hamiltonian=Hamiltonian[hamiltonian.upper()],
+        spin=Spin[spin],
+        program=None,
+        program_obj=None,
+    )
 
     return driver.results[0]
 
@@ -408,6 +413,11 @@ def calculate_uhf(
 
     driver.set_frequencies()
 
-    driver.run(hamiltonian=Hamiltonian[hamiltonian.upper()], spin=Spin[spin])
+    driver.run(
+        hamiltonian=Hamiltonian[hamiltonian.upper()],
+        spin=Spin[spin],
+        program=None,
+        program_obj=None,
+    )
 
     return driver.results[0]

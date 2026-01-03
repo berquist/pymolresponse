@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Callable, Optional, Sequence, Tuple
+from typing import Any, Callable, Optional, Sequence, Tuple
 
 import numpy as np
 import scipy as sp
@@ -84,7 +84,7 @@ class Solver(ABC):
         self.explicit_hessian_inv = None
 
     def form_tei_mo(
-        self, program: Program, program_obj, tei_mo_type: AO2MOTransformationType
+        self, program: Program, program_obj: Any, tei_mo_type: AO2MOTransformationType
     ) -> None:
         assert isinstance(program, Program)
         # TODO program_obj
@@ -172,7 +172,9 @@ class Solver(ABC):
         self.operators.append(operator)
 
     @abstractmethod
-    def run(self, hamiltonian: Hamiltonian, spin: Spin, program: Program, program_obj) -> None:
+    def run(
+        self, hamiltonian: Hamiltonian, spin: Spin, program: Optional[Program], program_obj: Any
+    ) -> None:
         """Run the solver."""
 
 
@@ -192,17 +194,19 @@ class ExactLineqSolver(LineqSolver, ABC):
 
     def __init__(
         self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: np.ndarray
-    ) -> np.ndarray:
+    ) -> None:
         super().__init__(mocoeffs, moenergies, occupations)
 
-    def form_explicit_hessian(self, hamiltonian: Hamiltonian, spin: Spin, frequency: float) -> None:
+    def form_explicit_hessian(
+        self, hamiltonian: Hamiltonian, spin: Spin, frequency: Optional[float]
+    ) -> None:
         assert self.tei_mo is not None
         assert len(self.tei_mo) in (1, 2, 4, 6)
         assert isinstance(self.tei_mo_type, AO2MOTransformationType)
 
         assert isinstance(hamiltonian, Hamiltonian)
         assert isinstance(spin, Spin)
-        assert isinstance(frequency, (float, type(None)))
+        assert isinstance(frequency, float)
 
         nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
         nov_alph = nocc_alph * nvirt_alph
@@ -499,12 +503,18 @@ class ExactLineqSolver(LineqSolver, ABC):
                 operator.rspvecs_alph.append(rspvecs_operator_alph)
                 operator.rspvecs_beta.append(rspvecs_operator_beta)
 
-    def run(self, hamiltonian: Hamiltonian, spin: Spin, program: Program, program_obj) -> None:
+    def run(
+        self, hamiltonian: Hamiltonian, spin: Spin, program: Optional[Program], program_obj: Any
+    ) -> None:
         assert isinstance(hamiltonian, Hamiltonian)
         assert isinstance(spin, Spin)
         assert isinstance(program, (Program, type(None)))
         # TODO program_obj
         if not self.tei_mo:
+            if program is None:
+                raise RuntimeError(
+                    "Program must be specified for computing 2-electron integrals in MO basis"
+                )
             self.form_tei_mo(program, program_obj, AO2MOTransformationType.partial)
         for frequency in self.frequencies:
             self.form_explicit_hessian(hamiltonian, spin, frequency)
@@ -613,7 +623,9 @@ class IterativeLinEqSolver(LineqSolver):
         self.maxiter = maxiter
         self.conv = conv
 
-    def run(self, hamiltonian: Hamiltonian, spin: Spin, program: Program, program_obj) -> None:
+    def run(
+        self, hamiltonian: Hamiltonian, spin: Spin, program: Optional[Program], program_obj: Any
+    ) -> None:
         assert isinstance(hamiltonian, Hamiltonian)
         assert isinstance(spin, Spin)
         assert isinstance(program, (Program, type(None)))
@@ -738,7 +750,9 @@ class ExactDiagonalizationSolver(EigSolver):
     ) -> None:
         super().__init__(mocoeffs, moenergies, occupations)
 
-    def form_explicit_hessian(self, hamiltonian: Hamiltonian, spin: Spin, frequency: float) -> None:
+    def form_explicit_hessian(
+        self, hamiltonian: Hamiltonian, spin: Spin, frequency: Optional[float]
+    ) -> None:
         assert hasattr(self, "tei_mo")
         assert self.tei_mo is not None
         assert len(self.tei_mo) in (1, 2, 4, 6)
@@ -820,12 +834,18 @@ class ExactDiagonalizationSolver(EigSolver):
             # TODO UHF
             pass
 
-    def run(self, hamiltonian: Hamiltonian, spin: Spin, program: Program, program_obj) -> None:
+    def run(
+        self, hamiltonian: Hamiltonian, spin: Spin, program: Optional[Program], program_obj: Any
+    ) -> None:
         assert isinstance(hamiltonian, Hamiltonian)
         assert isinstance(spin, Spin)
         assert isinstance(program, Program)
         # TODO program_obj
         if not self.tei_mo:
+            if program is None:
+                raise RuntimeError(
+                    "Program must be specified for computing 2-electron integrals in MO basis"
+                )
             self.form_tei_mo(program, program_obj, AO2MOTransformationType.partial)
         self.form_explicit_hessian(hamiltonian, spin, None)
         self.diagonalize_explicit_hessian()

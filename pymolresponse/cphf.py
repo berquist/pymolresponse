@@ -1,7 +1,7 @@
 """Driver for solving the coupled perturbed Hartree-Fock (CPHF) equations."""
 
 from abc import ABC, abstractmethod
-from typing import List, Optional, Sequence
+from typing import Any, List, Optional, Sequence
 
 import numpy as np
 
@@ -19,7 +19,9 @@ class Driver(ABC):
         self.results: List[np.ndarray] = []
 
     @abstractmethod
-    def run(self, hamiltonian: Hamiltonian, spin: Spin, program: Program, program_obj) -> None:
+    def run(
+        self, hamiltonian: Hamiltonian, spin: Spin, program: Optional[Program], program_obj: Any
+    ) -> None:
         pass
 
 
@@ -34,6 +36,7 @@ class CPHF(Driver):
         r"""Set the frequencies :math:`\omega_f` for which frequency-dependent
         CPHF is performed."""
 
+        # TODO
         # :type frequencies float or list
         # :param frequencies one or more frequencies in atomic units;
         # if None, do the static case (0.0)
@@ -48,7 +51,9 @@ class CPHF(Driver):
         assert self.solver is not None
         self.solver.add_operator(operator)
 
-    def run(self, hamiltonian: Hamiltonian, spin: Spin, program: Program, program_obj) -> None:
+    def run(
+        self, hamiltonian: Hamiltonian, spin: Spin, program: Optional[Program], program_obj: Any
+    ) -> None:
         assert isinstance(hamiltonian, Hamiltonian)
         assert isinstance(spin, Spin)
         assert isinstance(program, (Program, type(None)))

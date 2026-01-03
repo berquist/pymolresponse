@@ -1,4 +1,4 @@
-from typing import Sequence
+from typing import Any, Sequence
 
 import numpy as np
 
@@ -12,7 +12,7 @@ class ORD(ResponseProperty):
     def __init__(
         self,
         program: Program,
-        program_obj,
+        program_obj: Any,
         driver: CPHF,
         mocoeffs: np.ndarray,
         moenergies: np.ndarray,
