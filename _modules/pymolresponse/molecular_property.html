@@ -70,7 +70,7 @@
              
   <h1>Source code for pymolresponse.molecular_property</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sequence</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Sequence</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
@@ -84,13 +84,13 @@
 <span class="k">class</span><span class="w"> </span><span class="nc">MolecularProperty</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A molecular property that is calculated from one or more operators.</span>
 
-<span class="sd">    The</span>
+<span class="sd">    The TODO</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">program</span><span class="p">:</span> <span class="n">Program</span><span class="p">,</span>
-        <span class="n">program_obj</span><span class="p">,</span>
+        <span class="n">program_obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
         <span class="n">driver</span><span class="p">:</span> <span class="n">Driver</span><span class="p">,</span>
         <span class="n">mocoeffs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
         <span class="n">moenergies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
@@ -146,7 +146,7 @@
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">program</span><span class="p">:</span> <span class="n">Program</span><span class="p">,</span>
-        <span class="n">program_obj</span><span class="p">,</span>
+        <span class="n">program_obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
         <span class="n">driver</span><span class="p">:</span> <span class="n">CPHF</span><span class="p">,</span>
         <span class="n">mocoeffs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
         <span class="n">moenergies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
@@ -180,7 +180,7 @@
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">program</span><span class="p">:</span> <span class="n">Program</span><span class="p">,</span>
-        <span class="n">program_obj</span><span class="p">,</span>
+        <span class="n">program_obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
         <span class="n">driver</span><span class="p">:</span> <span class="n">TDHF</span><span class="p">,</span>
         <span class="n">mocoeffs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
         <span class="n">moenergies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>

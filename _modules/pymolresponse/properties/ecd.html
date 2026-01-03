@@ -72,6 +72,8 @@
 <span></span><span class="sd">&quot;&quot;&quot;Wrapper for performing an electronic circular dichroism (ECD)</span>
 <span class="sd">calculation.&quot;&quot;&quot;</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
+
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">HARTREE_TO_EV</span><span class="p">,</span> <span class="n">HARTREE_TO_INVCM</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">esuecd</span>
@@ -92,7 +94,7 @@
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">program</span><span class="p">:</span> <span class="n">Program</span><span class="p">,</span>
-        <span class="n">program_obj</span><span class="p">,</span>
+        <span class="n">program_obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
         <span class="n">driver</span><span class="p">:</span> <span class="n">TDHF</span><span class="p">,</span>
         <span class="n">mocoeffs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
         <span class="n">moenergies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
