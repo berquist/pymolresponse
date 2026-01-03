@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Any, Union
 
 import numpy as np
 
@@ -13,7 +13,7 @@ class Magnetizability(ResponseProperty):
     def __init__(
         self,
         program: Program,
-        program_obj,
+        program_obj: Any,
         driver: CPHF,
         mocoeffs: np.ndarray,
         moenergies: np.ndarray,
@@ -65,7 +65,7 @@ class ElectronicGTensor(ResponseProperty):
     def __init__(
         self,
         program: Program,
-        program_obj,
+        program_obj: Any,
         driver: CPHF,
         mocoeffs: np.ndarray,
         moenergies: np.ndarray,
