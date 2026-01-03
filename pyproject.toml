@@ -13,7 +13,7 @@ classifiers = [
 ]
 requires-python = ">=3.9"
 dependencies = [
-    "attrs>=24.3.0,<25",
+    "attrs>=25.4,<26",
     "cclib>=1.8.1,<2",
     "periodictable>=2.0.2,<3",
 ]
