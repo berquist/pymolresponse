@@ -1,6 +1,6 @@
 """Tools for performing AO-to-MO transformations of two-electron integrals."""
 
-from typing import Optional, Sequence
+from typing import Optional, Sequence, Tuple
 
 import numpy as np
 
@@ -15,10 +15,10 @@ class AO2MO:
 
     def __init__(
         self,
-        C: np.ndarray,
+        C: np.ndarray[Tuple[int, int], np.dtype[np.floating]],
         occupations: Sequence[int],
         verbose: int = 1,
-        I: Optional[np.ndarray] = None,  # noqa: E741
+        I: Optional[np.ndarray[Tuple[int, int, int, int], np.dtype[np.floating]]] = None,  # noqa: E741
     ) -> None:
         self.C = fix_mocoeffs_shape(C)
         self.occupations = occupations
@@ -31,12 +31,12 @@ class AO2MO:
 
     @staticmethod
     def transform(
-        I: np.ndarray,  # noqa: E741
-        C1: np.ndarray,
-        C2: np.ndarray,
-        C3: np.ndarray,
-        C4: np.ndarray,  # noqa: E741
-    ) -> np.ndarray:
+        I: np.ndarray[Tuple[int, int, int, int], np.dtype[np.floating]],  # noqa: E741
+        C1: np.ndarray[Tuple[int, int], np.dtype[np.floating]],
+        C2: np.ndarray[Tuple[int, int], np.dtype[np.floating]],
+        C3: np.ndarray[Tuple[int, int], np.dtype[np.floating]],
+        C4: np.ndarray[Tuple[int, int], np.dtype[np.floating]],  # noqa: E741
+    ) -> np.ndarray[Tuple[int, int, int, int], np.dtype[np.floating]]:
         """
         Transforms the 4-index ERI I with the 4 transformation matrices C1 to C4.
         """
@@ -50,6 +50,7 @@ class AO2MO:
 
     def perform_rhf_full(self) -> None:
         r"""Perform the transformation :math:`(\mu\nu|\lambda\sigma) \rightarrow (pq|rs)`."""
+        assert self.I is not None
         tei_mo = self.transform(self.I, self.C[0], self.C[0], self.C[0], self.C[0])
         self.tei_mo = (tei_mo,)
 
@@ -58,6 +59,7 @@ class AO2MO:
         norb = self.nocc_alph + self.nvirt_alph
         oa = slice(0, self.nocc_alph)
         va = slice(self.nocc_alph, norb)
+        assert self.I is not None
         tei_mo_ovov = self.transform(
             self.I, self.C[0, :, oa], self.C[0, :, va], self.C[0, :, oa], self.C[0, :, va]
         )
