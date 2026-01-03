@@ -6,7 +6,7 @@ from pymolresponse.interfaces.pyscf.ao2mo import AO2MOpyscf
 from pymolresponse.interfaces.pyscf.utils import occupations_from_pyscf_mol
 
 
-def test_HF_both_singlet_HF_STO3G():
+def test_HF_both_singlet_HF_STO3G() -> None:
     mol = pyscf.gto.Mole()
     mol.verbose = 0
     mol.output = None
@@ -122,7 +122,3 @@ HF_neutral_singlet_HF_STO3G_RPA_qchem = {
 #         hamiltonian=Hamiltonian.TDA, spin=Spin.singlet, program=Program.PySCF, program_obj=mol
 #     )
 #     print(driver_tda.solver.eigvals.real)
-
-
-if __name__ == "__main__":
-    test_HF_both_singlet_HF_STO3G()

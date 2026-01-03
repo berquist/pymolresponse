@@ -28,7 +28,7 @@ To set up a conda environment with all dependencies for running, testing, and bu
 ## Testing
 
 ```bash
-make pytest
+just test
 ```
 
 ## Caveats
@@ -56,7 +56,6 @@ make pytest
 * Finite-difference for testing and higher-order response.
 * Interface to [PyQuante](https://github.com/berquist/pyquante) and/or [pyquante2](https://github.com/rpmuller/pyquante2).
 * Jupyter Notebook-based tutorials.
-* Argument type-checking using [mypy](http://mypy-lang.org/).
 
 ## References
 

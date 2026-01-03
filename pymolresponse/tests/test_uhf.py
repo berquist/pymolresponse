@@ -12,7 +12,7 @@ from pymolresponse.interfaces.pyscf import molecules, utils
 from pymolresponse.interfaces.pyscf.ao2mo import AO2MOpyscf
 
 
-def test_explicit_uhf_from_rhf_outside_solver():
+def test_explicit_uhf_from_rhf_outside_solver() -> None:
     mol = molecules.molecule_water_sto3g()
     mol.build()
 
@@ -22,7 +22,8 @@ def test_explicit_uhf_from_rhf_outside_solver():
     moenergies = mf.mo_energy
     ao2mo = AO2MOpyscf(mocoeffs, mol.verbose, mol)
     ao2mo.perform_rhf_full()
-    tei_mo = ao2mo.tei_mo[0]
+    assert len(ao2mo.tei_mo) == 1
+    tei_mo = ao2mo.tei_mo[0]  # ty: ignore[index-out-of-bounds]
 
     C_a = mocoeffs
     C_b = C_a.copy()
@@ -143,7 +144,7 @@ ref_water_cation_UHF_HF_STO3G = np.array(
 )
 
 
-def test_explicit_uhf_outside_solver():
+def test_explicit_uhf_outside_solver() -> None:
     mol = molecules.molecule_water_sto3g()
     mol.charge = 1
     mol.spin = 1
@@ -160,7 +161,8 @@ def test_explicit_uhf_outside_solver():
 
     ao2mo = AO2MOpyscf(mf.mo_coeff, 5, mol)
     ao2mo.perform_uhf_full()
-    tei_mo_aaaa, tei_mo_aabb, tei_mo_bbaa, tei_mo_bbbb = ao2mo.tei_mo
+    assert len(ao2mo.tei_mo) == 4
+    tei_mo_aaaa, tei_mo_aabb, tei_mo_bbaa, tei_mo_bbbb = ao2mo.tei_mo  # ty: ignore[invalid-assignment]
 
     occupations = utils.occupations_from_pyscf_mol(mol, mf.mo_coeff)
     nocc_a, nvirt_a, nocc_b, nvirt_b = occupations
@@ -249,7 +251,7 @@ def test_explicit_uhf_outside_solver():
     np.testing.assert_allclose(res_u, ref_water_cation_UHF_HF_STO3G, rtol=rtol, atol=atol)
 
 
-def test_explicit_uhf():
+def test_explicit_uhf() -> None:
     mol = molecules.molecule_water_sto3g()
     mol.charge = 1
     mol.spin = 1
@@ -293,9 +295,3 @@ def test_explicit_uhf():
     rtol = 0.0
 
     np.testing.assert_allclose(res, ref_water_cation_UHF_HF_STO3G, rtol=rtol, atol=atol)
-
-
-if __name__ == "__main__":
-    test_explicit_uhf_from_rhf_outside_solver()
-    test_explicit_uhf_outside_solver()
-    test_explicit_uhf()

@@ -19,6 +19,11 @@ repos:
       - id: check-toml
       - id: check-yaml
       - id: check-added-large-files
+  # Doesn't play well with Python docstrings
+  # - repo: https://github.com/editorconfig-checker/editorconfig-checker
+  #   rev: "v3.6.0"
+  #   hooks:
+  #     - id: editorconfig-checker
   - repo: https://github.com/PyCQA/isort
     rev: "7.0.0"
     hooks:
@@ -53,13 +58,17 @@ repos:
   #       additional_dependencies:
   #         - toml
   # - repo: https://github.com/pre-commit/mirrors-mypy
-  #   rev: "v1.8.0"
+  #   rev: v1.19.1
   #   hooks:
   #     - id: mypy
   #       args: []
   #       additional_dependencies:
   #         - attrs
+  #         - cclib
+  #         - daltools
   #         - numpy
+  #         # - pyscf
+  #         - scipy-stubs
   #         - types-pyyaml
   #         - versioningit
   - repo: https://github.com/google/yamlfmt

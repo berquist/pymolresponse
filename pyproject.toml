@@ -25,10 +25,12 @@ Homepage = "https://github.com/berquist/pymolresponse"
 
 [project.optional-dependencies]
 test = [
-    "pytest",
     "coverage",
-    "pytest-cov",
+    "daltools",
     "pyscf",
+    "pytest",
+    "pytest-cov",
+    "pytest-ruff",
 ]
 docs = [
     "numpydoc",
@@ -57,6 +59,16 @@ zip-safe = false
 [tool.setuptools.package-dir]
 pymolresponse = "pymolresponse"
 
+[tool.coverage.html]
+directory = "build/coverage/htmlcov"
+
+[tool.coverage.run]
+branch = true
+data_file = "build/coverage/.coverage"
+
+[tool.coverage.xml]
+output = "build/coverage/coverage.xml"
+
 [tool.doc8]
 ignore = "D001"
 
@@ -69,8 +81,8 @@ known_attrs = ["attr"]
 known_chemistry = ["psi4", "pyscf"]
 
 [tool.mypy]
-warn_redundant_casts = true
-warn_return_any = true
+cache_dir = "build/.mypy_cache"
+strict = true
 warn_unreachable = true
 
 scripts_are_modules = true
@@ -78,15 +90,27 @@ warn_unused_configs = true
 
 [[tool.mypy.overrides]]
 module = [
-    "periodictable",
     "psi4",
     "pyscf",
-    "scipy",
-    "scipy.constants"
 ]
 ignore_missing_imports = true
 
+[tool.pyright]
+# apparently respecting .gitignore is overrated
+ignore = [
+    "build"
+]
+# not inherited for some reason
+pythonVersion = "3.6"
+# TODO
+typeCheckingMode = "off"
+
+[tool.pytest.ini_options]
+addopts = "--cov --cov-report=term-missing --cov-report=html --cov-report=xml --ruff --ruff-format"
+cache_dir = "build/.pytest_cache"
+
 [tool.ruff]
+cache-dir = "build/.ruff_cache"
 line-length = 100
 
 [tool.ruff.format]
@@ -131,11 +155,26 @@ test = { features = ["test"], solve-group = "default" }
 [tool.pixi.tasks]
 
 [tool.pixi.feature.test.dependencies]
+mypy = "==1.19.1"
 psi4 = ">=1.9.1,<2"
 # already handled via PyPI to get support across all platforms
 # pyscf = ">=2.6.2,<3"
+# these are all for mypy
+ruamel_yaml = "*"
+scipy-stubs = "*"
+types-PyYAML = "*"
+versioningit = "*"
 
 [tool.pixi.feature.test.tasks]
-test = { cmd = [
- "python", "-m", "pytest", "-v", "--cov=pymolresponse"
+lint = { cmd = [
+    "python", "-m", "mypy", "."
 ] }
+test = { cmd = [
+    "python", "-m", "pytest"
+] }
+
+[tool.ty.environment]
+python = ".pixi/envs/dev/bin/python"
+
+[tool.ty.rules]
+unused-ignore-comment = "error"

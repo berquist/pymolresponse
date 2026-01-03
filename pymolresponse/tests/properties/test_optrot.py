@@ -175,7 +175,7 @@ trithiolane_HF_STO3G_RPA_singlet = {
 }
 
 
-def test_ORD_RPA_singlet_BC2H4_cation_HF_STO3G():
+def test_ORD_RPA_singlet_BC2H4_cation_HF_STO3G() -> None:
     ref = BC2H4_cation_HF_STO3G_RPA_singlet_nwchem
 
     pyscfmol = molecules.molecule_bc2h4_cation_sto3g()
@@ -242,7 +242,7 @@ def test_ORD_RPA_singlet_BC2H4_cation_HF_STO3G():
     #     print(sum(prefac * ecd.rotational_strengths_diplen / ((frequency ** 2) * (ecd.solver.eigvals.real ** 2))))
 
 
-def test_ORD_RPA_singlet_BC2H4_HF_STO3G():
+def test_ORD_RPA_singlet_BC2H4_HF_STO3G() -> None:
     ref = BC2H4_HF_STO3G_RPA_singlet_nwchem
 
     pyscfmol = molecules.molecule_bc2h4_neutral_radical_sto3g()
@@ -300,7 +300,7 @@ def test_ORD_RPA_singlet_BC2H4_HF_STO3G():
             assert (abs_diff < thresh).all()
 
 
-def test_ORD_RPA_singlet_trithiolane_HF_STO3G():
+def test_ORD_RPA_singlet_trithiolane_HF_STO3G() -> None:
     ref = trithiolane_HF_STO3G_RPA_singlet
 
     pyscfmol = molecules.molecule_trithiolane_sto3g()
@@ -365,9 +365,3 @@ def test_ORD_RPA_singlet_trithiolane_HF_STO3G():
     #         print(res_beta)
     #         print(abs_diff)
     #         assert (abs_diff < thresh).all()
-
-
-if __name__ == "__main__":
-    test_ORD_RPA_singlet_BC2H4_cation_HF_STO3G()
-    test_ORD_RPA_singlet_BC2H4_HF_STO3G()
-    test_ORD_RPA_singlet_trithiolane_HF_STO3G()

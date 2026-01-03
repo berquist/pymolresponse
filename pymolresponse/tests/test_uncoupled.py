@@ -248,6 +248,8 @@ def test_uncoupled_uhf() -> None:
     mf = pyscf.scf.uhf.UHF(mol)
     mf.scf()
 
+    assert mf.mo_coeff is not None
+    assert mf.mo_energy is not None
     C = utils.fix_mocoeffs_shape(mf.mo_coeff)
     E = utils.fix_moenergies_shape(mf.mo_energy)
     occupations = occupations_from_pyscf_mol(mol, C)
@@ -296,8 +298,3 @@ def test_uncoupled_uhf() -> None:
         print(diag_ref)
         print(diff)
         assert np.max(np.abs(diff)) < uhf_coupled[frequency]["error_max_diag"]
-
-
-if __name__ == "__main__":
-    test_uncoupled_rhf()
-    test_uncoupled_uhf()

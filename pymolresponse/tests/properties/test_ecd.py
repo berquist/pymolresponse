@@ -1,3 +1,5 @@
+from typing import List, TypedDict
+
 import numpy as np
 
 import pyscf
@@ -8,7 +10,18 @@ from pymolresponse.interfaces.pyscf import molecules
 from pymolresponse.interfaces.pyscf.utils import occupations_from_pyscf_mol
 from pymolresponse.properties import ecd
 
-BC2H4_cation_HF_STO3G_RPA_singlet_nwchem = {
+
+class ECDReference(TypedDict):
+    etenergies: List[float]
+    etoscslen: List[float]
+    etoscsmix: List[float]
+    etoscsvel: List[float]
+    etrotstrlen: List[float]
+    etrotstrvel: List[float]
+    nroots: int
+
+
+BC2H4_cation_HF_STO3G_RPA_singlet_nwchem: ECDReference = {
     "etenergies": [
         0.116938283,
         0.153688860,
@@ -85,7 +98,7 @@ BC2H4_cation_HF_STO3G_RPA_singlet_nwchem = {
 }
 
 
-BC2H4_neutral_radical_HF_STO3G_RPA_singlet_nwchem = {
+BC2H4_neutral_radical_HF_STO3G_RPA_singlet_nwchem: ECDReference = {
     "etenergies": [],
     "etoscslen": [],
     "etoscsmix": [],
@@ -96,7 +109,7 @@ BC2H4_neutral_radical_HF_STO3G_RPA_singlet_nwchem = {
 }
 
 
-BC2H4_cation_HF_STO3G_TDA_singlet_orca = {
+BC2H4_cation_HF_STO3G_TDA_singlet_orca: ECDReference = {
     "etenergies": [
         0.125219,
         0.160132,
@@ -351,7 +364,7 @@ def test_ECD_RPA_singlet_BC2H4_cation_HF_STO3G() -> None:
 
 
 # TODO once UHF is done
-# def test_ECD_RPA_singlet_BC2H4_neutral_radical_HF_STO3G():
+# def test_ECD_RPA_singlet_BC2H4_neutral_radical_HF_STO3G() -> None:
 #     mol = molecules.molecule_bc2h4_neutral_radical_sto3g()
 #     mol.build()
 
@@ -359,8 +372,3 @@ def test_ECD_RPA_singlet_BC2H4_cation_HF_STO3G() -> None:
 #     mf.scf()
 
 #     C = utils.fix_mocoeffs_shape(mf.mo_coeff)
-
-
-if __name__ == "__main__":
-    test_ECD_TDA_singlet_BC2H4_cation_HF_STO3G()
-    test_ECD_RPA_singlet_BC2H4_cation_HF_STO3G()

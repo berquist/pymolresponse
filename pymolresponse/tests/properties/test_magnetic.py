@@ -66,6 +66,8 @@ def test_magnetizability_uhf() -> None:
     mf = pyscf.scf.uhf.UHF(mol)
     mf.scf()
 
+    assert isinstance(mf.mo_coeff, np.ndarray)
+    assert isinstance(mf.mo_energy, np.ndarray)
     C = utils.fix_mocoeffs_shape(mf.mo_coeff)
     E = utils.fix_moenergies_shape(mf.mo_energy)
     occupations = occupations_from_pyscf_mol(mol, C)
@@ -110,6 +112,8 @@ def test_electronicgtensor_tiny() -> None:
     mf = pyscf.scf.uhf.UHF(mol)
     mf.scf()
 
+    assert isinstance(mf.mo_coeff, np.ndarray)
+    assert isinstance(mf.mo_energy, np.ndarray)
     C = utils.fix_mocoeffs_shape(mf.mo_coeff)
     E = utils.fix_moenergies_shape(mf.mo_energy)
     occupations = occupations_from_pyscf_mol(mol, C)
@@ -139,6 +143,8 @@ def test_electronicgtensor_small() -> None:
     mf = pyscf.scf.uhf.UHF(mol)
     mf.scf()
 
+    assert isinstance(mf.mo_coeff, np.ndarray)
+    assert isinstance(mf.mo_energy, np.ndarray)
     C = utils.fix_mocoeffs_shape(mf.mo_coeff)
     E = utils.fix_moenergies_shape(mf.mo_energy)
     occupations = occupations_from_pyscf_mol(mol, C)
@@ -158,7 +164,7 @@ def test_electronicgtensor_small() -> None:
     )
 
 
-# def test_electronicgtensor_large():
+# def test_electronicgtensor_large() -> None:
 
 #     mol = molecules.molecule_0w4a_dication_321g()
 #     mol.build()
@@ -166,6 +172,8 @@ def test_electronicgtensor_small() -> None:
 #     mf = pyscf.scf.uhf.UHF(mol)
 #     mf.scf()
 
+#     assert isinstance(mf.mo_coeff, np.ndarray)
+#     assert isinstance(mf.mo_energy, np.ndarray)
 #     C = utils.fix_mocoeffs_shape(mf.mo_coeff)
 #     E = utils.fix_moenergies_shape(mf.mo_energy)
 #     occupations = occupations_from_pyscf_mol(mol, C)
@@ -182,10 +190,3 @@ def test_electronicgtensor_small() -> None:
 #                            np.sign(gtensor_calculator.g_oz_soc_1)))
 
 #     return
-
-if __name__ == "__main__":
-    test_magnetizability_rhf()
-    test_magnetizability_uhf()
-    test_electronicgtensor_tiny()
-    test_electronicgtensor_small()
-    # test_electronicgtensor_large()

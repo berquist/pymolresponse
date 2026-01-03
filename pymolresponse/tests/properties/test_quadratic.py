@@ -11,7 +11,7 @@ from pymolresponse.interfaces.pyscf.utils import occupations_from_pyscf_mol
 from pymolresponse.properties import electric
 
 
-def test_first_hyperpolarizability_static_rhf_wigner_explicit():
+def test_first_hyperpolarizability_static_rhf_wigner_explicit() -> None:
     mol = molecule_water_sto3g_angstrom()
     mol.build()
 
@@ -208,7 +208,7 @@ def test_first_hyperpolarizability_static_rhf_wigner_explicit():
     return
 
 
-def test_first_hyperpolarizability_shg_rhf_wigner_explicit():
+def test_first_hyperpolarizability_shg_rhf_wigner_explicit() -> None:
     mol = molecule_water_sto3g_angstrom()
     mol.build()
 
@@ -484,7 +484,7 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit():
     return
 
 
-def test_first_hyperpolarizability_eope_rhf_wigner_explicit():
+def test_first_hyperpolarizability_eope_rhf_wigner_explicit() -> None:
     mol = molecule_water_sto3g_angstrom()
     mol.build()
 
@@ -688,7 +688,7 @@ def test_first_hyperpolarizability_eope_rhf_wigner_explicit():
     return
 
 
-def test_first_hyperpolarizability_or_rhf_wigner_explicit():
+def test_first_hyperpolarizability_or_rhf_wigner_explicit() -> None:
     mol = molecule_water_sto3g_angstrom()
     mol.build()
 
@@ -892,7 +892,7 @@ def test_first_hyperpolarizability_or_rhf_wigner_explicit():
     return
 
 
-# def test_first_hyperpolarizability_general_rhf_wigner_explicit():
+# def test_first_hyperpolarizability_general_rhf_wigner_explicit() -> None:
 #     mol = molecule_water_sto3g_angstrom()
 #     mol.build()
 
@@ -1070,11 +1070,3 @@ def test_first_hyperpolarizability_or_rhf_wigner_explicit():
 #     print(hyperpolarizability)
 
 #     return
-
-
-if __name__ == "__main__":
-    test_first_hyperpolarizability_static_rhf_wigner_explicit()
-    test_first_hyperpolarizability_shg_rhf_wigner_explicit()
-    test_first_hyperpolarizability_eope_rhf_wigner_explicit()
-    test_first_hyperpolarizability_or_rhf_wigner_explicit()
-    # test_first_hyperpolarizability_general_rhf_wigner_explicit()

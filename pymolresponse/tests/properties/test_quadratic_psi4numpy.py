@@ -14,7 +14,7 @@ from pymolresponse.interfaces.pyscf.utils import occupations_from_pyscf_mol
 from pymolresponse.properties import electric
 
 
-def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_small():
+def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_small() -> None:
     mol = molecule_physicists_water_sto3g()
     mol.build()
 
@@ -299,7 +299,7 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_small
     return
 
 
-def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_large():
+def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_large() -> None:
     mol = molecule_physicists_water_augccpvdz()
     mol.build()
 
@@ -579,7 +579,7 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_large
     return
 
 
-# def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_psi4_small():
+# def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_psi4_small() -> None:
 #     mol = molecule_physicists_water_sto3g_psi4()
 
 #     _, wfn = psi4.energy('hf', return_wfn=True)
@@ -835,12 +835,3 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_large
 #     print(avg)
 
 #     return
-
-
-if __name__ == "__main__":
-    np.set_printoptions(precision=5, linewidth=200, suppress=True)
-    # TODO automatically execute every test function found in the file when run
-    # as main
-    test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_small()
-    test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_large()
-    # test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_psi4_small()

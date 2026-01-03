@@ -222,11 +222,11 @@ class ExactLineqSolver(LineqSolver, ABC):
             # Set up "function pointers".
             if self.tei_mo_type == AO2MOTransformationType.full:
                 assert len(self.tei_mo) == 1
-                tei_mo = self.tei_mo[0]
+                tei_mo = self.tei_mo[0]  # ty: ignore[index-out-of-bounds]
             elif self.tei_mo_type == AO2MOTransformationType.partial:
                 assert len(self.tei_mo) == 2
-                tei_mo_ovov = self.tei_mo[0]
-                tei_mo_oovv = self.tei_mo[1]
+                tei_mo_ovov = self.tei_mo[0]  # ty: ignore[index-out-of-bounds]
+                tei_mo_oovv = self.tei_mo[1]  # ty: ignore[index-out-of-bounds]
 
             if self.tei_mo_type == AO2MOTransformationType.full:
                 if hamiltonian == Hamiltonian.RPA and spin == Spin.singlet:
@@ -274,18 +274,18 @@ class ExactLineqSolver(LineqSolver, ABC):
             # Set up "function pointers".
             if self.tei_mo_type == AO2MOTransformationType.full:
                 assert len(self.tei_mo) == 4
-                tei_mo_aaaa = self.tei_mo[0]
-                tei_mo_aabb = self.tei_mo[1]
-                tei_mo_bbaa = self.tei_mo[2]
-                tei_mo_bbbb = self.tei_mo[3]
+                tei_mo_aaaa = self.tei_mo[0]  # ty: ignore[index-out-of-bounds]
+                tei_mo_aabb = self.tei_mo[1]  # ty: ignore[index-out-of-bounds]
+                tei_mo_bbaa = self.tei_mo[2]  # ty: ignore[index-out-of-bounds]
+                tei_mo_bbbb = self.tei_mo[3]  # ty: ignore[index-out-of-bounds]
             elif self.tei_mo_type == AO2MOTransformationType.partial:
                 assert len(self.tei_mo) == 6
-                tei_mo_ovov_aaaa = self.tei_mo[0]
-                tei_mo_ovov_aabb = self.tei_mo[1]
-                tei_mo_ovov_bbaa = self.tei_mo[2]
-                tei_mo_ovov_bbbb = self.tei_mo[3]
-                tei_mo_oovv_aaaa = self.tei_mo[4]
-                tei_mo_oovv_bbbb = self.tei_mo[5]
+                tei_mo_ovov_aaaa = self.tei_mo[0]  # ty: ignore[index-out-of-bounds]
+                tei_mo_ovov_aabb = self.tei_mo[1]  # ty: ignore[index-out-of-bounds]
+                tei_mo_ovov_bbaa = self.tei_mo[2]  # ty: ignore[index-out-of-bounds]
+                tei_mo_ovov_bbbb = self.tei_mo[3]  # ty: ignore[index-out-of-bounds]
+                tei_mo_oovv_aaaa = self.tei_mo[4]  # ty: ignore[index-out-of-bounds]
+                tei_mo_oovv_bbbb = self.tei_mo[5]  # ty: ignore[index-out-of-bounds]
             else:
                 pass
 
@@ -424,8 +424,13 @@ class ExactLineqSolver(LineqSolver, ABC):
 
     def form_response_vectors(self) -> None:
         if self.is_uhf:
+            assert isinstance(self.explicit_hessian, tuple)
+            assert len(self.explicit_hessian) == 4
+            # TODO
+            # assert isinstance(self.explicit_hessian_inv, tuple)
+            # assert len(self.explicit_hessian_inv) == 2
             G_aa, G_ab, G_ba, G_bb = self.explicit_hessian
-            G_aa_inv, G_bb_inv = self.explicit_hessian_inv
+            G_aa_inv, G_bb_inv = self.explicit_hessian_inv  # ty: ignore[not-iterable]
         for operator in self.operators:
             if not self.is_uhf:
                 rspvecs_operator = []
@@ -526,8 +531,12 @@ class ExactInv(ExactLineqSolver):
     def invert_explicit_hessian(self) -> None:
         assert hasattr(self, "explicit_hessian")
         if not self.is_uhf:
+            assert isinstance(self.explicit_hessian, np.ndarray)
+            assert len(self.explicit_hessian.shape) == 2  # ty: ignore[invalid-argument-type]
+            assert self.explicit_hessian.shape[0] == self.explicit_hessian.shape[1]  # ty: ignore[not-subscriptable]
             self.explicit_hessian_inv = self.inv_func(self.explicit_hessian)
         else:
+            assert isinstance(self.explicit_hessian, tuple)
             assert len(self.explicit_hessian) == 4
             self.explicit_hessian_inv = []
             G_aa, G_ab, G_ba, G_bb = self.explicit_hessian
@@ -557,6 +566,7 @@ class ExactInvCholesky(ExactLineqSolver):
             inv = np.dot(fac_inv, fac_inv.T)
             self.explicit_hessian_inv = inv
         else:
+            assert isinstance(self.explicit_hessian, tuple)
             assert len(self.explicit_hessian) == 4
             self.explicit_hessian_inv = []
             G_aa, G_ab, G_ba, G_bb = self.explicit_hessian
@@ -746,11 +756,11 @@ class ExactDiagonalizationSolver(EigSolver):
             # Set up "function pointers".
             if self.tei_mo_type == AO2MOTransformationType.full:
                 assert len(self.tei_mo) == 1
-                tei_mo = self.tei_mo[0]
+                tei_mo = self.tei_mo[0]  # ty: ignore[index-out-of-bounds]
             elif self.tei_mo_type == AO2MOTransformationType.partial:
                 assert len(self.tei_mo) == 2
-                tei_mo_ovov = self.tei_mo[0]
-                tei_mo_oovv = self.tei_mo[1]
+                tei_mo_ovov = self.tei_mo[0]  # ty: ignore[index-out-of-bounds]
+                tei_mo_oovv = self.tei_mo[1]  # ty: ignore[index-out-of-bounds]
 
             if self.tei_mo_type == AO2MOTransformationType.full:
                 if hamiltonian == Hamiltonian.RPA and spin == Spin.singlet:
@@ -849,11 +859,11 @@ class ExactDiagonalizationSolverTDA(ExactDiagonalizationSolver, EigSolverTDA):
             # Set up "function pointers".
             if self.tei_mo_type == AO2MOTransformationType.full:
                 assert len(self.tei_mo) == 1
-                tei_mo = self.tei_mo[0]
+                tei_mo = self.tei_mo[0]  # ty: ignore[index-out-of-bounds]
             elif self.tei_mo_type == AO2MOTransformationType.partial:
                 assert len(self.tei_mo) == 2
-                tei_mo_ovov = self.tei_mo[0]
-                tei_mo_oovv = self.tei_mo[1]
+                tei_mo_ovov = self.tei_mo[0]  # ty: ignore[index-out-of-bounds]
+                tei_mo_oovv = self.tei_mo[1]  # ty: ignore[index-out-of-bounds]
 
             if self.tei_mo_type == AO2MOTransformationType.full:
                 if spin == Spin.singlet:

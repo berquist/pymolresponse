@@ -9,7 +9,7 @@ from pymolresponse.interfaces.pyscf import molecules, utils
 from pymolresponse.interfaces.pyscf.ao2mo import AO2MOpyscf
 
 
-def test_explicit_rhf_outside_solver_off_diagonal_blocks():
+def test_explicit_rhf_outside_solver_off_diagonal_blocks() -> None:
     mol = molecules.molecule_water_sto3g()
     mol.build()
 
@@ -19,7 +19,8 @@ def test_explicit_rhf_outside_solver_off_diagonal_blocks():
     moenergies = mf.mo_energy
     ao2mo = AO2MOpyscf(mocoeffs, mol.verbose, mol)
     ao2mo.perform_rhf_full()
-    tei_mo = ao2mo.tei_mo[0]
+    assert len(ao2mo.tei_mo) == 1
+    tei_mo = ao2mo.tei_mo[0]  # ty: ignore[index-out-of-bounds]
 
     C = mocoeffs
     E = np.diag(moenergies)
@@ -66,7 +67,7 @@ def test_explicit_rhf_outside_solver_off_diagonal_blocks():
     np.testing.assert_allclose(polarizability, result__0_00, rtol=rtol, atol=atol)
 
 
-# def test_explicit_rhf_outside_solver_all_blocks():
+# def test_explicit_rhf_outside_solver_all_blocks() -> None:
 #     mol = molecules.molecule_water_sto3g()
 #     mol.build()
 
