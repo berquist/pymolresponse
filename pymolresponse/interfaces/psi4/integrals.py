@@ -1,4 +1,4 @@
-from typing import Optional, Tuple, Union
+from typing import Optional, Union
 
 import numpy as np
 
@@ -35,7 +35,7 @@ class IntegralsPsi4(Integrals):
 
 
 # Taken from Psi4NumPy's helper_HF.py
-def compute_jk(jk: psi4.core.JK, C_left, C_right: Optional = None) -> Tuple[np.ndarray, np.ndarray]:
+def compute_jk(jk: psi4.core.JK, C_left, C_right: Optional = None) -> tuple[np.ndarray, np.ndarray]:
     """
     A python wrapper for a Psi4 JK object to consume and produce NumPy arrays.
 
@@ -135,12 +135,12 @@ class JKPsi4(JK):
         self._jk = psi4.core.JK.build(wfn.basisset())
         self._jk.initialize()
 
-    def compute_from_density(self, D: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+    def compute_from_density(self, D: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
         raise NotImplementedError
 
     def compute_from_mocoeffs(
         self, C_left: np.ndarray, C_right: Optional[np.ndarray] = None
-    ) -> Tuple[np.ndarray, np.ndarray]:
+    ) -> tuple[np.ndarray, np.ndarray]:
         # TODO is would be good to understand why this doesn't work.
         #
         # self._jk.finalize()

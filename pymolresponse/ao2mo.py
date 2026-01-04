@@ -1,6 +1,7 @@
 """Tools for performing AO-to-MO transformations of two-electron integrals."""
 
-from typing import Optional, Sequence, Tuple
+from collections.abc import Sequence
+from typing import Optional
 
 import numpy as np
 
@@ -15,10 +16,10 @@ class AO2MO:
 
     def __init__(
         self,
-        C: np.ndarray[Tuple[int, int], np.dtype[np.floating]],
+        C: np.ndarray[tuple[int, int], np.dtype[np.floating]],
         occupations: Sequence[int],
         verbose: int = 1,
-        I: Optional[np.ndarray[Tuple[int, int, int, int], np.dtype[np.floating]]] = None,  # noqa: E741
+        I: Optional[np.ndarray[tuple[int, int, int, int], np.dtype[np.floating]]] = None,  # noqa: E741
     ) -> None:
         self.C = fix_mocoeffs_shape(C)
         self.occupations = occupations
@@ -31,12 +32,12 @@ class AO2MO:
 
     @staticmethod
     def transform(
-        I: np.ndarray[Tuple[int, int, int, int], np.dtype[np.floating]],  # noqa: E741
-        C1: np.ndarray[Tuple[int, int], np.dtype[np.floating]],
-        C2: np.ndarray[Tuple[int, int], np.dtype[np.floating]],
-        C3: np.ndarray[Tuple[int, int], np.dtype[np.floating]],
-        C4: np.ndarray[Tuple[int, int], np.dtype[np.floating]],  # noqa: E741
-    ) -> np.ndarray[Tuple[int, int, int, int], np.dtype[np.floating]]:
+        I: np.ndarray[tuple[int, int, int, int], np.dtype[np.floating]],  # noqa: E741
+        C1: np.ndarray[tuple[int, int], np.dtype[np.floating]],
+        C2: np.ndarray[tuple[int, int], np.dtype[np.floating]],
+        C3: np.ndarray[tuple[int, int], np.dtype[np.floating]],
+        C4: np.ndarray[tuple[int, int], np.dtype[np.floating]],  # noqa: E741
+    ) -> np.ndarray[tuple[int, int, int, int], np.dtype[np.floating]]:
         """
         Transforms the 4-index ERI I with the 4 transformation matrices C1 to C4.
         """

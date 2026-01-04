@@ -1,4 +1,4 @@
-from typing import Optional, Tuple
+from typing import Optional
 
 import numpy as np
 
@@ -36,10 +36,10 @@ class JKPyscf(JK):
 
         self.mol = pyscfmol
 
-    def compute_from_density(self, D: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+    def compute_from_density(self, D: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
         raise NotImplementedError
 
     def compute_from_mocoeffs(
         self, C_left: np.ndarray, C_right: Optional[np.ndarray] = None
-    ) -> Tuple[np.ndarray, np.ndarray]:
+    ) -> tuple[np.ndarray, np.ndarray]:
         raise NotImplementedError

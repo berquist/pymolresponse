@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
+from collections.abc import Mapping
 from enum import Enum, auto, unique
-from typing import Any, Mapping, Optional, Tuple
+from typing import Any, Optional
 
 from attr import attrib, attrs
 from attr.validators import instance_of, optional
@@ -48,13 +49,13 @@ class JK(ABC):
         pass
 
     @abstractmethod
-    def compute_from_density(self, D: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+    def compute_from_density(self, D: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
         """Compute J and K from some density."""
 
     @abstractmethod
     def compute_from_mocoeffs(
         self, C_left: np.ndarray, C_right: Optional[np.ndarray] = None
-    ) -> Tuple[np.ndarray, np.ndarray]:
+    ) -> tuple[np.ndarray, np.ndarray]:
         """Compute J and K from MO coefficients."""
 
 

@@ -1,6 +1,7 @@
 """Wrapper for performing a dipole polarizability calculation."""
 
-from typing import Any, Sequence
+from collections.abc import Sequence
+from typing import Any
 
 import numpy as np
 

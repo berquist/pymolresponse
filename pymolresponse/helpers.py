@@ -1,6 +1,6 @@
 """Utility functions that are core to calculating physical values."""
 
-from typing import List, Sequence, Tuple
+from collections.abc import Sequence
 
 import numpy as np
 import periodictable
@@ -63,12 +63,12 @@ def nuclear_dipole_contribution(
 def get_uhf_values(
     mat_uhf_a: np.ndarray,
     mat_uhf_b: np.ndarray,
-    pair_rohf: Tuple[int, int],
+    pair_rohf: tuple[int, int],
     nocc_a: int,
     nvirt_a: int,
     nocc_b: int,
     nvirt_b: int,
-) -> List[float]:
+) -> list[float]:
     """For a pair ROHF 1-based indices, find the corresponing alpha- and
     beta-spin UHF values.
     """
@@ -101,7 +101,7 @@ def get_uhf_values(
 
 
 def mat_uhf_to_packed_rohf(
-    mat_alpha: np.ndarray, mat_beta: np.ndarray, indices_display_rohf: List[Tuple[int, int]]
+    mat_alpha: np.ndarray, mat_beta: np.ndarray, indices_display_rohf: list[tuple[int, int]]
 ) -> np.ndarray:
     dim = len(indices_display_rohf)
     mat_rohf = np.zeros(dim)

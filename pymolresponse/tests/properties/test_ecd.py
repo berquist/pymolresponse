@@ -1,4 +1,4 @@
-from typing import List, TypedDict
+from typing import TypedDict
 
 import numpy as np
 
@@ -12,12 +12,12 @@ from pymolresponse.properties import ecd
 
 
 class ECDReference(TypedDict):
-    etenergies: List[float]
-    etoscslen: List[float]
-    etoscsmix: List[float]
-    etoscsvel: List[float]
-    etrotstrlen: List[float]
-    etrotstrvel: List[float]
+    etenergies: list[float]
+    etoscslen: list[float]
+    etoscsmix: list[float]
+    etoscsvel: list[float]
+    etrotstrlen: list[float]
+    etrotstrvel: list[float]
     nroots: int
 
 

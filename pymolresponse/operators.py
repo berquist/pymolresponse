@@ -1,4 +1,4 @@
-from typing import Optional, Tuple
+from typing import Optional
 
 import numpy as np
 import scipy.constants as spc
@@ -18,7 +18,7 @@ class Operator:
         is_spin_dependent: bool = False,
         triplet: bool = False,
         slice_idx: int = -1,
-        ao_integrals: Optional[np.ndarray[Tuple[int, int], np.dtype[np.floating]]] = None,
+        ao_integrals: Optional[np.ndarray[tuple[int, int], np.dtype[np.floating]]] = None,
     ) -> None:
         self.label = label
         self.is_imaginary = is_imaginary

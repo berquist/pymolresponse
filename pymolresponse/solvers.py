@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
-from typing import Any, Callable, Optional, Sequence, Tuple
+from collections.abc import Sequence
+from typing import Any, Callable, Optional
 
 import numpy as np
 import scipy as sp
@@ -722,7 +723,7 @@ class EigSolver(Solver, ABC):
         super().__init__(mocoeffs, moenergies, occupations)
 
     @staticmethod
-    def norm_xy(z: np.ndarray, nocc: int, nvirt: int) -> Tuple[np.ndarray, np.ndarray]:
+    def norm_xy(z: np.ndarray, nocc: int, nvirt: int) -> tuple[np.ndarray, np.ndarray]:
         x, y = z.reshape(2, nvirt, nocc)
         norm = 2 * (np.linalg.norm(x) ** 2 - np.linalg.norm(y) ** 2)
         norm = 1 / np.sqrt(norm)
