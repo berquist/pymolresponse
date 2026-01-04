@@ -202,8 +202,8 @@ def calculate_rhf(
     for atom in dalton_molecule:
         label = atom["label"][0]
         center = atom["center"][0]
-        center_str = " ".join(["{:f}".format(pos) for pos in center])
-        line = "{:3} {}".format(label, center_str)
+        center_str = " ".join([f"{pos:f}" for pos in center])
+        line = f"{label:3} {center_str}"
         lines.append(line)
     lines = "\n".join(lines)
 
@@ -321,8 +321,8 @@ def calculate_uhf(
     for atom in dalton_molecule:
         label = atom["label"][0]
         center = atom["center"][0]
-        center_str = " ".join(["{:f}".format(pos) for pos in center])
-        line = "{:3} {}".format(label, center_str)
+        center_str = " ".join([f"{pos:f}" for pos in center])
+        line = f"{label:3} {center_str}"
         lines.append(line)
     lines = "\n".join(lines)
 

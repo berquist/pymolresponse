@@ -1,5 +1,5 @@
 from os import getenv
-from typing import Any, Dict
+from typing import Any
 
 from versioningit import VCSDescription
 from versioningit.basics import DEFAULT_FORMATS
@@ -8,7 +8,7 @@ _ENVVARNAME = "VERSIONINGIT_FOR_PACKAGE_INDEX"
 
 
 def pymolresponse_format(
-    *, description: VCSDescription, base_version: str, next_version: str, params: Dict[str, Any]
+    *, description: VCSDescription, base_version: str, next_version: str, params: dict[str, Any]
 ) -> str:
     state = description.state
     assert state in {"distance", "dirty", "distance-dirty"}

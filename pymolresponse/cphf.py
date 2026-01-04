@@ -1,7 +1,8 @@
 """Driver for solving the coupled perturbed Hartree-Fock (CPHF) equations."""
 
 from abc import ABC, abstractmethod
-from typing import Any, List, Optional, Sequence
+from collections.abc import Sequence
+from typing import Any, Optional
 
 import numpy as np
 
@@ -16,7 +17,7 @@ class Driver(ABC):
         assert isinstance(solver, Solver)
         self.solver = solver
 
-        self.results: List[np.ndarray] = []
+        self.results: list[np.ndarray] = []
 
     @abstractmethod
     def run(

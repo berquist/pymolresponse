@@ -240,9 +240,9 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit() -> None:
 
     polarizability_1 = calculator.polarizabilities[0]
     polarizability_2 = calculator.polarizabilities[1]
-    print("polarizability: {} a.u.".format(f1))
+    print(f"polarizability: {f1} a.u.")
     print(polarizability_1)
-    print("polarizability: {} a.u. (frequency doubled)".format(f2))
+    print(f"polarizability: {f2} a.u. (frequency doubled)")
     print(polarizability_2)
 
     # each operator contains multiple sets of response vectors, one
@@ -397,7 +397,7 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit() -> None:
     thresh = 2.5e-5
     assert np.all(np.abs(ref - hyperpolarizability) < thresh)
 
-    print("hyperpolarizability: SHG, (-{}; {}, {}), symmetry-unique components".format(f2, f1, f1))
+    print(f"hyperpolarizability: SHG, (-{f2}; {f1}, {f1}), symmetry-unique components")
     print(hyperpolarizability)
 
     # Transpose all frequency-doubled quantities (+2w) to get -2w.
@@ -459,7 +459,7 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit() -> None:
             tre = np.trace(trp[:nocc_alph, :nocc_alph])
             tr.append(tre)
         hyperpolarizability_full[a, b, c] = -2 * (sum(tl) - sum(tr))
-    print("hyperpolarizability: SHG, (-{}; {}, {}), full tensor".format(f2, f1, f1))
+    print(f"hyperpolarizability: SHG, (-{f2}; {f1}, {f1}), full tensor")
     print(hyperpolarizability_full)
 
     # Check that the elements of the reduced and full tensors are
@@ -518,7 +518,7 @@ def test_first_hyperpolarizability_eope_rhf_wigner_explicit() -> None:
     polarizability_2 = calculator.polarizabilities[1]
     print("polarizability (static)")
     print(polarizability_1)
-    print("polarizability: {} a.u.".format(f2))
+    print(f"polarizability: {f2} a.u.")
     print(polarizability_2)
 
     # each operator contains multiple sets of response vectors, one
@@ -682,7 +682,7 @@ def test_first_hyperpolarizability_eope_rhf_wigner_explicit() -> None:
     thresh = 4.01e-5
     assert np.all(np.abs(ref - hyperpolarizability) < thresh)
 
-    print("hyperpolarizability: EOPE, (-{}; {}, {}), symmetry-unique components".format(f2, f1, f2))
+    print(f"hyperpolarizability: EOPE, (-{f2}; {f1}, {f2}), symmetry-unique components")
     print(hyperpolarizability)
 
     return
@@ -722,7 +722,7 @@ def test_first_hyperpolarizability_or_rhf_wigner_explicit() -> None:
     polarizability_2 = calculator.polarizabilities[1]
     print("polarizability (static)")
     print(polarizability_1)
-    print("polarizability: {} a.u.".format(f2))
+    print(f"polarizability: {f2} a.u.")
     print(polarizability_2)
 
     # each operator contains multiple sets of response vectors, one
@@ -886,7 +886,7 @@ def test_first_hyperpolarizability_or_rhf_wigner_explicit() -> None:
     thresh = 4.01e-5
     assert np.all(np.abs(ref - hyperpolarizability) < thresh)
 
-    print("hyperpolarizability: OR, (0; {}, -{}), symmetry-unique components".format(f2, f2))
+    print(f"hyperpolarizability: OR, (0; {f2}, -{f2}), symmetry-unique components")
     print(hyperpolarizability)
 
     return

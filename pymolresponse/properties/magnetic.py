@@ -163,7 +163,7 @@ class ElectronicGTensor(ResponseProperty):
         operator_spinorb = self.driver.solver.operators[1]  # noqa: F841
         operator_spinorb_eff = self.driver.solver.operators[2]  # noqa: F841
 
-        np_formatter = {"float_kind": lambda x: "{:14.8f}".format(x)}  # noqa: F841
+        np_formatter = {"float_kind": lambda x: f"{x:14.8f}"}  # noqa: F841
         # np.set_printoptions(linewidth=200, formatter=np_formatter)
         assert len(self.driver.results) == 1
         results = self.driver.results[0]

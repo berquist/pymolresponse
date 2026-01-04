@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 # pylint: skip-file
 #
 # pymolresponse documentation build configuration file, created by
@@ -20,7 +19,6 @@
 #
 import os
 import sys
-from typing import Dict, List
 
 sys.path.insert(0, os.path.abspath("../.."))
 
@@ -84,7 +82,7 @@ language = "en"
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This patterns also effect to html_static_path and html_extra_path
-exclude_patterns: List[str] = []
+exclude_patterns: list[str] = []
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = "sphinx"
@@ -135,7 +133,7 @@ htmlhelp_basename = "pymolresponsedoc"
 
 # -- Options for LaTeX output ---------------------------------------------
 
-latex_elements: Dict[str, str] = {
+latex_elements: dict[str, str] = {
     # The paper size ('letterpaper' or 'a4paper').
     #
     # 'papersize': 'letterpaper',
