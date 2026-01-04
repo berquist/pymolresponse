@@ -35,6 +35,14 @@ def np_load(filename: Union[str, Path]) -> np.ndarray[tuple[int, ...], np.dtype[
     return arr
 
 
+def np_load_2(filename: Union[str, Path]) -> np.ndarray[tuple[int, int], np.dtype[np.floating]]:
+    """Read a file with a floating-point matrix using NumPy."""
+    mat = np_load(filename)
+    assert len(mat.shape) == 2
+    # TODO assert dtype
+    return mat  # ty: ignore[invalid-return-type]
+
+
 def parse_int_file_2(
     filename: Union[str, Path], dim: int
 ) -> np.ndarray[tuple[int, int], np.dtype[np.floating]]:
