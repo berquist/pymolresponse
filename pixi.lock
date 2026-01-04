@@ -2832,8 +2832,8 @@ packages:
   requires_python: '>=3.8'
 - pypi: ./
   name: pymolresponse
-  version: 0.3.2.post16+b3a3b2b.d20260109
-  sha256: 0c78252b0deaf2f0316bf542016108068d92c477f0e953ac2940ac1a10aa4871
+  version: 0.3.2.post21+b61386d
+  sha256: 53254d578bd1eeaabc0abd9a93a642e0eb785dbb2fdfd8d19f3dcc38c19d7832
   requires_dist:
   - attrs>=25.4,<26
   - cclib>=1.8.1,<2
