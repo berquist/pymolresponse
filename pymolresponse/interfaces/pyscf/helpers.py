@@ -85,17 +85,17 @@ def calculate_dipole_pyscf(
         print(" dipole components, electronic [a.u.]: {} {} {}".format(*electronic_components_au))
         print(" dipole components, nuclear    [a.u.]: {} {} {}".format(*nuclear_components_au))
         print(" dipole components, total      [a.u.]: {} {} {}".format(*total_components_au))
-        print(" dipole moment, electronic     [a.u.]: {}".format(electronic_norm_au))
-        print(" dipole moment, nuclear        [a.u.]: {}".format(nuclear_norm_au))
-        print(" dipole moment, total          [a.u.]: {}".format(total_norm_au))
+        print(f" dipole moment, electronic     [a.u.]: {electronic_norm_au}")
+        print(f" dipole moment, nuclear        [a.u.]: {nuclear_norm_au}")
+        print(f" dipole moment, total          [a.u.]: {total_norm_au}")
         print(
             " dipole components, electronic [D]   : {} {} {}".format(*electronic_components_debye)
         )
         print(" dipole components, nuclear    [D]   : {} {} {}".format(*nuclear_components_debye))
         print(" dipole components, total      [D]   : {} {} {}".format(*total_components_debye))
-        print(" dipole moment, electronic     [D]   : {}".format(electronic_norm_debye))
-        print(" dipole moment, nuclear        [D]   : {}".format(nuclear_norm_debye))
-        print(" dipole moment, total          [D]   : {}".format(total_norm_debye))
+        print(f" dipole moment, electronic     [D]   : {electronic_norm_debye}")
+        print(f" dipole moment, nuclear        [D]   : {nuclear_norm_debye}")
+        print(f" dipole moment, total          [D]   : {total_norm_debye}")
     return total_components_au
 
 

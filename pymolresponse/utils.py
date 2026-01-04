@@ -42,7 +42,7 @@ def parse_int_file_2(
     with open(filename) as fh:
         contents = fh.readlines()
     for line in contents:
-        mu, nu, intval = [float(x) for x in line.split()]
+        mu, nu, intval = (float(x) for x in line.split())
         mu, nu = int(mu - 1), int(nu - 1)
         mat[mu, nu] = mat[nu, mu] = intval
     return mat
@@ -97,7 +97,7 @@ def read_file_occupations(
         contents = fh.read().strip()
     tokens = contents.split()
     assert len(tokens) == 4
-    nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = [int(x) for x in tokens]
+    nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = (int(x) for x in tokens)
     return np.asarray([nocc_alph, nvirt_alph, nocc_beta, nvirt_beta], dtype=int)
 
 
@@ -114,7 +114,7 @@ def read_file_1(filename: Union[Path, str]) -> np.ndarray[Tuple[int], np.dtype[n
 def read_file_2(filename: Union[Path, str]) -> np.ndarray[Tuple[int, int], np.dtype[np.floating]]:
     elements = []
     with open(filename) as fh:
-        n_rows, n_cols = [int(x) for x in next(fh).split()]
+        n_rows, n_cols = (int(x) for x in next(fh).split())
         for line in fh:
             elements.append(float(line))
     assert len(elements) == (n_rows * n_cols)
@@ -127,7 +127,7 @@ def read_file_3(
 ) -> np.ndarray[Tuple[int, int, int], np.dtype[np.floating]]:
     elements = []
     with open(filename) as fh:
-        n_slices, n_rows, n_cols = [int(x) for x in next(fh).split()]
+        n_slices, n_rows, n_cols = (int(x) for x in next(fh).split())
         for line in fh:
             elements.append(float(line))
     assert len(elements) == (n_rows * n_cols * n_slices)
@@ -139,7 +139,7 @@ def read_file_4(
 ) -> np.ndarray[Tuple[int, int, int, int], np.dtype[np.floating]]:
     elements = []
     with open(filename) as fh:
-        n_d1, n_d2, n_d3, n_d4 = [int(x) for x in next(fh).split()]
+        n_d1, n_d2, n_d3, n_d4 = (int(x) for x in next(fh).split())
         for line in fh:
             elements.append(float(line))
     assert len(elements) == (n_d1 * n_d2 * n_d3 * n_d4)
