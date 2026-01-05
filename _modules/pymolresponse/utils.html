@@ -112,17 +112,6 @@
 
 
 
-<div class="viewcode-block" id="np_load_2">
-<a class="viewcode-back" href="../../pyresponse.html#pymolresponse.utils.np_load_2">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">np_load_2</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read a file with a floating-point matrix using NumPy.&quot;&quot;&quot;</span>
-    <span class="n">mat</span> <span class="o">=</span> <span class="n">np_load</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">mat</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
-    <span class="c1"># TODO assert dtype</span>
-    <span class="k">return</span> <span class="n">mat</span>  <span class="c1"># ty: ignore[invalid-return-type]</span></div>
-
-
-
 <div class="viewcode-block" id="parse_int_file_2">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.utils.parse_int_file_2">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_int_file_2</span><span class="p">(</span>
