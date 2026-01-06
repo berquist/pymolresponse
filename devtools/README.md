@@ -25,13 +25,6 @@ This directory contains the files to setup the Conda environment for testing pur
 * `conda-envs`: directory containing the YAML file(s) which fully describe Conda Environments, their dependencies, and those dependency provenance's
   * `test_env.yaml`: Simple test environment file with base dependencies. Channels are not specified here and therefore respect global Conda configuration
 
-### Additional Scripts:
-
-This directory contains OS agnostic helper scripts which don't fall in any of the previous categories
-* `scripts`
-  * `create_conda_env.py`: Helper program for spinning up new conda environments based on a starter file with Python Version and Env. Name command-line options
-
-
 ## How to contribute changes
 - Clone the repository if you have write access to the main repo, fork the repository if you are a collaborator.
 - Make a new branch with `git checkout -b {your branch name}`
