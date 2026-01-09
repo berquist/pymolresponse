@@ -56,7 +56,6 @@ def test_explicit_rhf_outside_solver_off_diagonal_blocks() -> None:
 
     polarizability = 4 * np.dot(rhsvecs.T, rspvecs) / 2
 
-    # pylint: disable=bad-whitespace
     result__0_00 = np.array(
         [[7.93556221, 0.0, 0.0], [0.0, 3.06821077, 0.0], [0.0, 0.0, 0.05038621]]
     )
@@ -122,7 +121,6 @@ def test_explicit_rhf_outside_solver_off_diagonal_blocks() -> None:
 
 #     # polarizability = 4 * np.dot(rhsvecs.T, rspvecs) / 2
 
-#     # # pylint: disable=bad-whitespace
 #     # result__0_00 = np.array([[ 7.93556221,  0.,          0.        ],
 #     #                          [ 0.,          3.06821077,  0.        ],
 #     #                          [ 0.,          0.,          0.05038621]])
