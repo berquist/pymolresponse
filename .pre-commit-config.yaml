@@ -75,7 +75,6 @@ repos:
   #         - periodictable
   #         - pyscf
   #         - scipy-stubs
-  #         - types-pyyaml
   #         - versioningit
   - repo: https://github.com/google/yamlfmt
     rev: v0.21.0

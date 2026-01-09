@@ -165,9 +165,7 @@ psi4 = ">=1.9.1,<2"
 # already handled via PyPI to get support across all platforms
 # pyscf = ">=2.6.2,<3"
 # these are all for mypy
-ruamel_yaml = "*"
 scipy-stubs = "*"
-types-PyYAML = "*"
 versioningit = "*"
 
 [tool.pixi.feature.test.tasks]
