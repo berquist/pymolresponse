@@ -11,7 +11,6 @@ def test_HF_both_singlet_HF_STO3G() -> None:
     mol.verbose = 0
     mol.output = None
 
-    # pylint: disable=bad-whitespace
     mol.atom = [["H", (0.0, 0.0, 0.917)], ["F", (0.0, 0.0, 0.0)]]
     mol.basis = "sto-3g"
     mol.build()

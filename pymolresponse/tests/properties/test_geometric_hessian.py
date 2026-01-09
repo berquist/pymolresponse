@@ -351,7 +351,6 @@ def test_geometric_hessian_rhf_outside_solver_psi4numpy() -> None:
     Mat.name = " TOTAL HESSIAN"
     Mat.print_out()
 
-    # pylint: disable=bad-whitespace
     H_psi4 = psi4.core.Matrix.from_list(
         [
             [
@@ -748,7 +747,6 @@ def test_geometric_hessian_rhf_outside_solver_chemists() -> None:
     Mat.name = " TOTAL HESSIAN"
     Mat.print_out()
 
-    # pylint: disable=bad-whitespace
     H_psi4 = psi4.core.Matrix.from_list(
         [
             [

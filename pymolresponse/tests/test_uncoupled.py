@@ -23,7 +23,6 @@ def mol_atom(
     return mol
 
 
-# pylint: disable=bad-whitespace
 rhf_coupled = {
     0.0: {
         "result": np.array(
@@ -58,7 +57,6 @@ rhf_coupled = {
 }
 
 
-# pylint: disable=bad-whitespace
 rhf_uncoupled = {
     0.0: {
         "result": np.array(
@@ -93,7 +91,6 @@ rhf_uncoupled = {
 }
 
 
-# pylint: disable=bad-whitespace
 uhf_coupled = {
     0.0: {
         "result": np.array(
@@ -140,7 +137,6 @@ uhf_coupled = {
 }
 
 
-# pylint: disable=bad-whitespace
 uhf_uncoupled = {
     0.0: {
         "result": np.array(
