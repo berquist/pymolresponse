@@ -31,8 +31,6 @@ class Integrals(ABC):
         pass
 
     def integrals(self, label: IntegralLabel) -> np.ndarray:
-        if label is None:
-            raise RuntimeError
         return self._compute(label)
 
     @abstractmethod
