@@ -146,7 +146,6 @@
         <span class="n">operator_ai_supervector_beta</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="c1"># Loop over the operator components (usually multiple</span>
         <span class="c1"># Cartesian directions).</span>
-        <span class="c1"># pylint: disable=no-member</span>
         <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ao_integrals</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
             <span class="n">operator_component_ai_alph</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span>
                 <span class="n">C_alph</span><span class="p">[:,</span> <span class="n">nocc_alph</span><span class="p">:]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ao_integrals</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">C_alph</span><span class="p">[:,</span> <span class="p">:</span><span class="n">nocc_alph</span><span class="p">])</span>
@@ -213,7 +212,6 @@
         <span class="n">B_vectors</span> <span class="o">=</span> <span class="p">[</span><span class="n">repack_matrix_to_vector</span><span class="p">(</span><span class="n">B</span><span class="p">)[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="k">for</span> <span class="n">B</span> <span class="ow">in</span> <span class="n">B_matrices</span><span class="p">]</span>
         <span class="n">mo_integrals_ai_alph</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">B_vectors</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mo_integrals_ai_alph</span> <span class="o">=</span> <span class="n">mo_integrals_ai_alph</span>
-        <span class="c1"># pylint: disable=invalid-unary-operand-type</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mo_integrals_ai_supervector_alph</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
             <span class="p">(</span><span class="n">mo_integrals_ai_alph</span><span class="p">,</span> <span class="o">-</span><span class="n">mo_integrals_ai_alph</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
         <span class="p">)</span></div>
