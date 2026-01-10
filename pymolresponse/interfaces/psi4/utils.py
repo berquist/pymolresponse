@@ -5,7 +5,9 @@ import psi4
 from pymolresponse.utils import fix_mocoeffs_shape, fix_moenergies_shape
 
 
-def occupations_from_psi4wfn(wfn: psi4.core.Wavefunction) -> np.ndarray:
+def occupations_from_psi4wfn(
+    wfn: psi4.core.Wavefunction,
+) -> np.ndarray[tuple[int], np.dtype[np.integer]]:
     # Not needed.
     # occupations_a = wfn.occupation_a().to_array()
     # occupations_b = wfn.occupation_b().to_brray()
@@ -18,7 +20,9 @@ def occupations_from_psi4wfn(wfn: psi4.core.Wavefunction) -> np.ndarray:
     return np.asarray([nocc_a, nvirt_a, nocc_b, nvirt_b], dtype=int)
 
 
-def mocoeffs_from_psi4wfn(wfn: psi4.core.Wavefunction) -> np.ndarray:
+def mocoeffs_from_psi4wfn(
+    wfn: psi4.core.Wavefunction,
+) -> np.ndarray[tuple[int, int, int], np.dtype[np.floating]]:
     is_uhf = not wfn.same_a_b_orbs()
     Ca = wfn.Ca().to_array()
     if is_uhf:
@@ -30,7 +34,9 @@ def mocoeffs_from_psi4wfn(wfn: psi4.core.Wavefunction) -> np.ndarray:
     return fix_mocoeffs_shape(C)
 
 
-def moenergies_from_psi4wfn(wfn: psi4.core.Wavefunction) -> np.ndarray:
+def moenergies_from_psi4wfn(
+    wfn: psi4.core.Wavefunction,
+) -> np.ndarray[tuple[int, int, int], np.dtype[np.floating]]:
     is_uhf = not wfn.same_a_b_orbs()
     Ea = wfn.epsilon_a().to_array()
     if is_uhf:

@@ -190,11 +190,14 @@ class Splitter:
         return elements
 
 
+DirtyMocoeffs = Union[
+    tuple[np.ndarray[tuple[int, ...], np.dtype[np.floating]], ...],
+    np.ndarray[Union[tuple[int, int], tuple[int, int, int]], np.dtype[np.floating]],
+]
+
+
 def fix_mocoeffs_shape(
-    mocoeffs: Union[
-        tuple[np.ndarray[tuple[int, ...], np.dtype[np.floating]], ...],
-        np.ndarray[Union[tuple[int, int], tuple[int, int, int]], np.dtype[np.floating]],
-    ],
+    mocoeffs: DirtyMocoeffs,
 ) -> np.ndarray[tuple[int, int, int], np.dtype[np.floating]]:
     if isinstance(mocoeffs, tuple):
         # this will properly fall through to the else clause

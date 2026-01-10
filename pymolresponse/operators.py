@@ -3,7 +3,7 @@ from typing import Optional
 import numpy as np
 import scipy.constants as spc
 
-from pymolresponse.utils import fix_mocoeffs_shape, repack_matrix_to_vector
+from pymolresponse.utils import DirtyMocoeffs, fix_mocoeffs_shape, repack_matrix_to_vector
 
 
 class Operator:
@@ -46,7 +46,9 @@ class Operator:
     def calculate_ao_integrals(self) -> None:
         pass
 
-    def form_rhs(self, C: np.ndarray, occupations: np.ndarray) -> None:
+    def form_rhs(
+        self, C: np.ndarray[tuple[int, int, int], np.dtype[np.floating]], occupations: np.ndarray
+    ) -> None:
         """Form the right-hand side for CPHF."""
         assert isinstance(self.ao_integrals, np.ndarray)
         if len(C.shape) == 2:
@@ -113,7 +115,7 @@ class Operator:
 
     def form_rhs_geometric(
         self,
-        C: np.ndarray,
+        C: DirtyMocoeffs,
         occupations: np.ndarray,
         natoms: int,
         MO_full,
