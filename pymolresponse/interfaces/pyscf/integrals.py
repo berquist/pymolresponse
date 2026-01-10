@@ -1,8 +1,11 @@
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
 
 import numpy as np
 
 from pymolresponse.integrals import JK, IntegralLabel, Integrals, IntegralSymmetry
+
+if TYPE_CHECKING:
+    from pyscf.gto.mole import Mole
 
 ANGMOM_COMMON_GAUGE = IntegralLabel("cint1e_cg_irxp_sph", 3)
 ANGMOM_GIAO = IntegralLabel("cint1e_giao_irjxp_sph", 3)
@@ -19,27 +22,39 @@ SO_SPHER_1e = IntegralLabel("cint1e_prinvxp_sph", 3)
 
 
 class IntegralsPyscf(Integrals):
-    def __init__(self, pyscfmol) -> None:
+    def __init__(self, pyscfmol: "Mole") -> None:
         super().__init__()
 
         self.mol = pyscfmol
 
-    def _compute(self, label: IntegralLabel) -> np.ndarray:
+    def _compute(
+        self, label: IntegralLabel
+    ) -> np.ndarray[tuple[int, int, int], np.dtype[np.floating]]:
         if label.symmetry == IntegralSymmetry.ANTISYMMETRIC:
-            return self.mol.intor_asymmetric(label.label, comp=label.comp)
+            return self.mol.intor_asymmetric(label.label, comp=label.comp)  # ty: ignore[invalid-return-type]
         return self.mol.intor(label.label, comp=label.comp)
 
 
 class JKPyscf(JK):
-    def __init__(self, pyscfmol) -> None:
+    def __init__(self, pyscfmol: "Mole") -> None:
         super().__init__()
 
         self.mol = pyscfmol
 
-    def compute_from_density(self, D: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    def compute_from_density(
+        self, D: np.ndarray
+    ) -> tuple[
+        np.ndarray[tuple[int, int], np.dtype[np.floating]],
+        np.ndarray[tuple[int, int], np.dtype[np.floating]],
+    ]:
         raise NotImplementedError
 
     def compute_from_mocoeffs(
-        self, C_left: np.ndarray, C_right: Optional[np.ndarray] = None
-    ) -> tuple[np.ndarray, np.ndarray]:
+        self,
+        C_left: np.ndarray[tuple[int, int], np.dtype[np.floating]],
+        C_right: Optional[np.ndarray[tuple[int, int], np.dtype[np.floating]]] = None,
+    ) -> tuple[
+        np.ndarray[tuple[int, int], np.dtype[np.floating]],
+        np.ndarray[tuple[int, int], np.dtype[np.floating]],
+    ]:
         raise NotImplementedError

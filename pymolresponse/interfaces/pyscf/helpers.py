@@ -52,7 +52,6 @@ def electronic_dipole_contribution_pyscf(
     M010_MO = D * M010_AO
     M001_MO = D * M001_AO
 
-    # pylint: disable=invalid-unary-operand-type
     dipole_electronic_atomic_units = -np.asarray(
         [np.sum(M100_MO), np.sum(M010_MO), np.sum(M001_MO)]
     )

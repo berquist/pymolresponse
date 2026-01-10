@@ -1,6 +1,7 @@
 """Utility functions that are core to calculating physical values."""
 
 from collections.abc import Sequence
+from typing import Any
 
 import numpy as np
 import periodictable
@@ -101,8 +102,10 @@ def get_uhf_values(
 
 
 def mat_uhf_to_packed_rohf(
-    mat_alpha: np.ndarray, mat_beta: np.ndarray, indices_display_rohf: list[tuple[int, int]]
-) -> np.ndarray:
+    mat_alpha: np.ndarray[tuple[int, int], np.dtype[Any]],
+    mat_beta: np.ndarray[tuple[int, int], np.dtype[Any]],
+    indices_display_rohf: list[tuple[int, int]],
+) -> np.ndarray[tuple[int], np.dtype[Any]]:
     dim = len(indices_display_rohf)
     mat_rohf = np.zeros(dim)
     for idx, pair_rohf in enumerate(indices_display_rohf):

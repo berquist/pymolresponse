@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# pylint: skip-file
 #
 # pymolresponse documentation build configuration file, created by
 # sphinx-quickstart on Sat Jul 15 15:04:03 2017.

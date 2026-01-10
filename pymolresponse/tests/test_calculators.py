@@ -236,7 +236,6 @@ def calculate_rhf(
     elif source_moenergies == "dalton":
         job = ccopen(dalton_tmpdir / "DALTON.OUT")
         data = job.parse()
-        # pylint: disable=no-member
         E = np.diag([convertor(x, "eV", "hartree") for x in data.moenergies[0]])[np.newaxis, ...]
     else:
         pass
@@ -357,7 +356,6 @@ def calculate_uhf(
     elif source_moenergies == "dalton":
         job = ccopen(dalton_tmpdir / "DALTON.OUT")
         data = job.parse()
-        # pylint: disable=no-member
         E = np.diag([convertor(x, "eV", "hartree") for x in data.moenergies[0]])[np.newaxis, ...]
         E = np.concatenate((E, E), axis=0)
     else:

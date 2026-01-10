@@ -23,7 +23,9 @@ class IntegralsPsi4(Integrals):
             raise RuntimeError
         self._mints = psi4.core.MintsHelper(wfn)
 
-    def _compute(self, label: IntegralLabel) -> np.ndarray:
+    def _compute(
+        self, label: IntegralLabel
+    ) -> np.ndarray[tuple[int, int, int], np.dtype[np.floating]]:
         if label == DIPOLE:
             return np.stack([np.asarray(Mc) for Mc in self._mints.ao_dipole()])
         elif label == DIPVEL:
@@ -35,7 +37,14 @@ class IntegralsPsi4(Integrals):
 
 
 # Taken from Psi4NumPy's helper_HF.py
-def compute_jk(jk: psi4.core.JK, C_left, C_right: Optional = None) -> tuple[np.ndarray, np.ndarray]:
+def compute_jk(
+    jk: psi4.core.JK,
+    C_left: np.ndarray[tuple[int, int], np.dtype[np.floating]],
+    C_right: Optional[np.ndarray[tuple[int, int], np.dtype[np.floating]]] = None,
+) -> tuple[
+    np.ndarray[tuple[int, int], np.dtype[np.floating]],
+    np.ndarray[tuple[int, int], np.dtype[np.floating]],
+]:
     """
     A python wrapper for a Psi4 JK object to consume and produce NumPy arrays.
 
@@ -135,12 +144,22 @@ class JKPsi4(JK):
         self._jk = psi4.core.JK.build(wfn.basisset())
         self._jk.initialize()
 
-    def compute_from_density(self, D: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    def compute_from_density(
+        self, D: np.ndarray
+    ) -> tuple[
+        np.ndarray[tuple[int, int], np.dtype[np.floating]],
+        np.ndarray[tuple[int, int], np.dtype[np.floating]],
+    ]:
         raise NotImplementedError
 
     def compute_from_mocoeffs(
-        self, C_left: np.ndarray, C_right: Optional[np.ndarray] = None
-    ) -> tuple[np.ndarray, np.ndarray]:
+        self,
+        C_left: np.ndarray[tuple[int, int], np.dtype[np.floating]],
+        C_right: Optional[np.ndarray[tuple[int, int], np.dtype[np.floating]]] = None,
+    ) -> tuple[
+        np.ndarray[tuple[int, int], np.dtype[np.floating]],
+        np.ndarray[tuple[int, int], np.dtype[np.floating]],
+    ]:
         # TODO is would be good to understand why this doesn't work.
         #
         # self._jk.finalize()
