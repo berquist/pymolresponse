@@ -30,11 +30,15 @@ class Integrals(ABC):
     def __init__(self) -> None:
         pass
 
-    def integrals(self, label: IntegralLabel) -> np.ndarray:
+    def integrals(
+        self, label: IntegralLabel
+    ) -> np.ndarray[tuple[int, int, int], np.dtype[np.floating]]:
         return self._compute(label)
 
     @abstractmethod
-    def _compute(self, label: IntegralLabel) -> np.ndarray:
+    def _compute(
+        self, label: IntegralLabel
+    ) -> np.ndarray[tuple[int, int, int], np.dtype[np.floating]]:
         """Compute the integrals of some operator using some implementation."""
 
 
@@ -47,13 +51,23 @@ class JK(ABC):
         pass
 
     @abstractmethod
-    def compute_from_density(self, D: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    def compute_from_density(
+        self, D: np.ndarray
+    ) -> tuple[
+        np.ndarray[tuple[int, int], np.dtype[np.floating]],
+        np.ndarray[tuple[int, int], np.dtype[np.floating]],
+    ]:
         """Compute J and K from some density."""
 
     @abstractmethod
     def compute_from_mocoeffs(
-        self, C_left: np.ndarray, C_right: Optional[np.ndarray] = None
-    ) -> tuple[np.ndarray, np.ndarray]:
+        self,
+        C_left: np.ndarray[tuple[int, int], np.dtype[np.floating]],
+        C_right: Optional[np.ndarray[tuple[int, int], np.dtype[np.floating]]] = None,
+    ) -> tuple[
+        np.ndarray[tuple[int, int], np.dtype[np.floating]],
+        np.ndarray[tuple[int, int], np.dtype[np.floating]],
+    ]:
         """Compute J and K from MO coefficients."""
 
 
