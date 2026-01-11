@@ -1,17 +1,19 @@
 """Wrapper for performing an electronic circular dichroism (ECD)
 calculation."""
 
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 
 from pymolresponse.constants import HARTREE_TO_EV, HARTREE_TO_INVCM, alpha, esuecd
 from pymolresponse.core import Program
-from pymolresponse.indices import Occupations
 from pymolresponse.molecular_property import TransitionProperty
 from pymolresponse.operators import Operator
 from pymolresponse.td import TDHF
 from pymolresponse.utils import form_indices_zero
+
+if TYPE_CHECKING:
+    from pymolresponse.indices import Occupations
 
 
 class ECD(TransitionProperty):
@@ -26,7 +28,7 @@ class ECD(TransitionProperty):
         driver: TDHF,
         mocoeffs: np.ndarray,
         moenergies: np.ndarray,
-        occupations: Occupations,
+        occupations: "Occupations",
         *,
         do_tda: bool = False,
         do_dipvel: bool = False,

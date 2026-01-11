@@ -1,11 +1,13 @@
 """Tools for performing AO-to-MO transformations of two-electron integrals."""
 
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
 
 import numpy as np
 
-from pymolresponse.indices import Occupations
 from pymolresponse.utils import fix_mocoeffs_shape
+
+if TYPE_CHECKING:
+    from pymolresponse.indices import Occupations
 
 
 class AO2MO:
@@ -17,7 +19,7 @@ class AO2MO:
     def __init__(
         self,
         C: np.ndarray[tuple[int, int, int], np.dtype[np.floating]],
-        occupations: Occupations,
+        occupations: "Occupations",
         verbose: int = 1,
         I: Optional[np.ndarray[tuple[int, int, int, int], np.dtype[np.floating]]] = None,  # noqa: E741
     ) -> None:

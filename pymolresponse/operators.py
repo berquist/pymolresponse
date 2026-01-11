@@ -3,11 +3,10 @@ from typing import TYPE_CHECKING, Optional
 import numpy as np
 import scipy.constants as spc
 
-from pymolresponse.indices import Occupations
 from pymolresponse.utils import DirtyMocoeffs, fix_mocoeffs_shape, repack_matrix_to_vector
 
 if TYPE_CHECKING:
-    from pymolresponse.indices import Indices
+    from pymolresponse.indices import Indices, Occupations
 
 
 class Operator:
@@ -53,7 +52,7 @@ class Operator:
     def form_rhs(
         self,
         C: np.ndarray[tuple[int, int, int], np.dtype[np.floating]],
-        occupations: Occupations,
+        occupations: "Occupations",
         indices: "Indices",
     ) -> None:
         """Form the right-hand side for CPHF."""
@@ -123,7 +122,7 @@ class Operator:
     def form_rhs_geometric(
         self,
         C: DirtyMocoeffs,
-        occupations: Occupations,
+        occupations: "Occupations",
         natoms: int,
         MO_full,
         mints,

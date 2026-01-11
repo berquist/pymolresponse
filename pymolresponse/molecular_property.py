@@ -1,13 +1,15 @@
 from abc import ABC, abstractmethod
 from collections.abc import Sequence
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 
 from pymolresponse.core import Hamiltonian, Program, Spin
 from pymolresponse.cphf import CPHF, Driver
-from pymolresponse.indices import Occupations
 from pymolresponse.td import TDHF
+
+if TYPE_CHECKING:
+    from pymolresponse.indices import Occupations
 
 
 class MolecularProperty(ABC):
@@ -23,7 +25,7 @@ class MolecularProperty(ABC):
         driver: Driver,
         mocoeffs: np.ndarray,
         moenergies: np.ndarray,
-        occupations: Occupations,
+        occupations: "Occupations",
     ) -> None:
         assert isinstance(program, Program)
         # TODO isinstance(program_obj, ...)
@@ -67,7 +69,7 @@ class ResponseProperty(MolecularProperty, ABC):
         driver: CPHF,
         mocoeffs: np.ndarray,
         moenergies: np.ndarray,
-        occupations: Occupations,
+        occupations: "Occupations",
         *,
         frequencies: Sequence[float],
     ) -> None:
@@ -92,7 +94,7 @@ class TransitionProperty(MolecularProperty, ABC):
         driver: TDHF,
         mocoeffs: np.ndarray,
         moenergies: np.ndarray,
-        occupations: Occupations,
+        occupations: "Occupations",
         *,
         do_tda: bool = False,
     ):

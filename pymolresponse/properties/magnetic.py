@@ -1,13 +1,15 @@
-from typing import Any, Union
+from typing import TYPE_CHECKING, Any, Union
 
 import numpy as np
 
 from pymolresponse.core import Program
 from pymolresponse.cphf import CPHF
-from pymolresponse.indices import Occupations
 from pymolresponse.interfaces.pyscf.helpers import calculate_origin_pyscf
 from pymolresponse.molecular_property import ResponseProperty
 from pymolresponse.operators import Operator
+
+if TYPE_CHECKING:
+    from pymolresponse.indices import Occupations
 
 
 class Magnetizability(ResponseProperty):
@@ -18,7 +20,7 @@ class Magnetizability(ResponseProperty):
         driver: CPHF,
         mocoeffs: np.ndarray,
         moenergies: np.ndarray,
-        occupations: Occupations,
+        occupations: "Occupations",
         use_giao: bool = False,
     ) -> None:
         super().__init__(
@@ -70,7 +72,7 @@ class ElectronicGTensor(ResponseProperty):
         driver: CPHF,
         mocoeffs: np.ndarray,
         moenergies: np.ndarray,
-        occupations: Occupations,
+        occupations: "Occupations",
         *,
         gauge_origin: Union[str, np.ndarray] = "ecc",
     ) -> None:

@@ -1,12 +1,16 @@
+from typing import TYPE_CHECKING
+
 import numpy as np
 
 import psi4
 
-from pymolresponse.indices import Occupations
 from pymolresponse.utils import fix_mocoeffs_shape, fix_moenergies_shape
 
+if TYPE_CHECKING:
+    from pymolresponse.indices import Occupations
 
-def occupations_from_psi4wfn(wfn: psi4.core.Wavefunction) -> Occupations:
+
+def occupations_from_psi4wfn(wfn: psi4.core.Wavefunction) -> "Occupations":
     # Not needed.
     # occupations_a = wfn.occupation_a().to_array()
     # occupations_b = wfn.occupation_b().to_brray()

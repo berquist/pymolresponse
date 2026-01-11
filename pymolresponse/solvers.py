@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from collections.abc import Sequence
-from typing import Any, Callable, Optional
+from typing import TYPE_CHECKING, Any, Callable, Optional
 
 import numpy as np
 import scipy as sp
@@ -26,10 +26,13 @@ from pymolresponse.explicit_equations_partial import (
     form_rpa_b_matrix_mo_singlet_ss_partial,
     form_rpa_b_matrix_mo_triplet_partial,
 )
-from pymolresponse.indices import Occupations, form_indices_from_occupations
+from pymolresponse.indices import form_indices_from_occupations
 from pymolresponse.integrals import JK
 from pymolresponse.operators import Operator
 from pymolresponse.utils import repack_matrix_to_vector
+
+if TYPE_CHECKING:
+    from pymolresponse.indices import Occupations
 
 np.set_printoptions(precision=5, linewidth=200, suppress=True)
 
@@ -47,7 +50,7 @@ class Solver(ABC):
     """
 
     def __init__(
-        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: Occupations
+        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: "Occupations"
     ) -> None:
         # MO coefficients: the first axis is alpha/beta
         assert len(mocoeffs.shape) == 3
@@ -155,7 +158,7 @@ class LineqSolver(Solver, ABC):
     """Base class for all solvers of the type $AX = B$."""
 
     def __init__(
-        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: Occupations
+        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: "Occupations"
     ) -> None:
         super().__init__(mocoeffs, moenergies, occupations)
 
@@ -166,7 +169,7 @@ class ExactLineqSolver(LineqSolver, ABC):
     """
 
     def __init__(
-        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: Occupations
+        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: "Occupations"
     ) -> None:
         super().__init__(mocoeffs, moenergies, occupations)
 
@@ -500,7 +503,7 @@ class ExactInv(ExactLineqSolver):
         self,
         mocoeffs: np.ndarray,
         moenergies: np.ndarray,
-        occupations: Occupations,
+        occupations: "Occupations",
         *,
         inv_func: Optional[Callable[[np.ndarray], np.ndarray]] = None,
     ) -> None:
@@ -537,7 +540,7 @@ class ExactInv(ExactLineqSolver):
 
 class ExactInvCholesky(ExactLineqSolver):
     def __init__(
-        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: Occupations
+        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: "Occupations"
     ) -> None:
         super().__init__(mocoeffs, moenergies, occupations)
 
@@ -580,7 +583,7 @@ class IterativeLinEqSolver(LineqSolver):
         self,
         mocoeffs: np.ndarray,
         moenergies: np.ndarray,
-        occupations: Occupations,
+        occupations: "Occupations",
         jk_generator: JK,
         *,
         maxiter: int = 40,
@@ -690,7 +693,7 @@ class EigSolver(Solver, ABC):
     """Base class for all solvers of the type $AX = 0$ (eigensolvers)."""
 
     def __init__(
-        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: Occupations
+        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: "Occupations"
     ) -> None:
         super().__init__(mocoeffs, moenergies, occupations)
 
@@ -708,7 +711,7 @@ class EigSolverTDA(EigSolver, ABC):
     """
 
     def __init__(
-        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: Occupations
+        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: "Occupations"
     ) -> None:
         super().__init__(mocoeffs, moenergies, occupations)
 
@@ -719,7 +722,7 @@ class ExactDiagonalizationSolver(EigSolver):
     """
 
     def __init__(
-        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: Occupations
+        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: "Occupations"
     ) -> None:
         super().__init__(mocoeffs, moenergies, occupations)
 
@@ -830,7 +833,7 @@ class ExactDiagonalizationSolverTDA(ExactDiagonalizationSolver, EigSolverTDA):
     """
 
     def __init__(
-        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: Occupations
+        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: "Occupations"
     ) -> None:
         super().__init__(mocoeffs, moenergies, occupations)
 
