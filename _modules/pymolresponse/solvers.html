@@ -71,7 +71,7 @@
   <h1>Source code for pymolresponse.solvers</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sequence</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sp</span>
@@ -97,9 +97,13 @@
     <span class="n">form_rpa_b_matrix_mo_singlet_ss_partial</span><span class="p">,</span>
     <span class="n">form_rpa_b_matrix_mo_triplet_partial</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.indices</span><span class="w"> </span><span class="kn">import</span> <span class="n">form_indices_from_occupations</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.integrals</span><span class="w"> </span><span class="kn">import</span> <span class="n">JK</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.operators</span><span class="w"> </span><span class="kn">import</span> <span class="n">Operator</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">repack_matrix_to_vector</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.indices</span><span class="w"> </span><span class="kn">import</span> <span class="n">Occupations</span>
 
 <span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">suppress</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
@@ -119,7 +123,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">mocoeffs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">occupations</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">mocoeffs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">occupations</span><span class="p">:</span> <span class="s2">&quot;Occupations&quot;</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># MO coefficients: the first axis is alpha/beta</span>
         <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">mocoeffs</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span>
@@ -140,16 +144,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">mocoeffs</span> <span class="o">=</span> <span class="n">mocoeffs</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">moenergies</span> <span class="o">=</span> <span class="n">moenergies</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">occupations</span> <span class="o">=</span> <span class="n">occupations</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">form_ranges_from_occupations</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">indices</span> <span class="o">=</span> <span class="n">form_indices_from_occupations</span><span class="p">(</span><span class="n">occupations</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">operators</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span> <span class="o">=</span> <span class="p">[]</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">indices_closed_act</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">indices_closed_secondary</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">indices_act_secondary</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">indices_rohf</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">indices_display_rohf</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="c1"># These are needed for MO-based solvers.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span> <span class="o">=</span> <span class="kc">None</span>
@@ -204,29 +202,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo_type</span> <span class="o">=</span> <span class="n">tei_mo_type</span></div>
 
 
-<div class="viewcode-block" id="Solver.form_ranges_from_occupations">
-<a class="viewcode-back" href="../../pyresponse.html#pymolresponse.solvers.Solver.form_ranges_from_occupations">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">form_ranges_from_occupations</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">occupations</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span>
-        <span class="n">nocc_a</span><span class="p">,</span> <span class="n">nvirt_a</span><span class="p">,</span> <span class="n">nocc_b</span><span class="p">,</span> <span class="n">nvirt_b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">occupations</span>
-        <span class="k">assert</span> <span class="p">(</span><span class="n">nocc_a</span> <span class="o">+</span> <span class="n">nvirt_a</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="n">nocc_b</span> <span class="o">+</span> <span class="n">nvirt_b</span><span class="p">)</span>
-        <span class="n">norb</span> <span class="o">=</span> <span class="n">nocc_a</span> <span class="o">+</span> <span class="n">nvirt_a</span>
-        <span class="n">nelec</span> <span class="o">=</span> <span class="n">nocc_a</span> <span class="o">+</span> <span class="n">nocc_b</span>
-        <span class="n">nact</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">nocc_a</span> <span class="o">-</span> <span class="n">nocc_b</span><span class="p">))</span>
-        <span class="n">nclosed</span> <span class="o">=</span> <span class="p">(</span><span class="n">nelec</span> <span class="o">-</span> <span class="n">nact</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
-        <span class="n">nsecondary</span> <span class="o">=</span> <span class="n">norb</span> <span class="o">-</span> <span class="p">(</span><span class="n">nclosed</span> <span class="o">+</span> <span class="n">nact</span><span class="p">)</span>
-        <span class="n">range_closed</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">nclosed</span><span class="p">))</span>
-        <span class="n">range_act</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">nclosed</span><span class="p">,</span> <span class="n">nclosed</span> <span class="o">+</span> <span class="n">nact</span><span class="p">))</span>
-        <span class="n">range_secondary</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">nclosed</span> <span class="o">+</span> <span class="n">nact</span><span class="p">,</span> <span class="n">nclosed</span> <span class="o">+</span> <span class="n">nact</span> <span class="o">+</span> <span class="n">nsecondary</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">indices_closed_act</span> <span class="o">=</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">range_closed</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">range_act</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">indices_closed_secondary</span> <span class="o">=</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">range_closed</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">range_secondary</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">indices_act_secondary</span> <span class="o">=</span> <span class="p">[(</span><span class="n">t</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">range_act</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">range_secondary</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">indices_rohf</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">indices_closed_act</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">indices_closed_secondary</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">indices_act_secondary</span>
-        <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">indices_display_rohf</span> <span class="o">=</span> <span class="p">[(</span><span class="n">p</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">q</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">indices_rohf</span><span class="p">]</span></div>
-
-
 <div class="viewcode-block" id="Solver.set_frequencies">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.solvers.Solver.set_frequencies">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_frequencies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frequencies</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -249,11 +224,8 @@
         <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span>
         <span class="k">assert</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">1</span>
         <span class="k">assert</span> <span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-        <span class="n">operator</span><span class="o">.</span><span class="n">indices_closed_act</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">indices_closed_act</span>
-        <span class="n">operator</span><span class="o">.</span><span class="n">indices_closed_secondary</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">indices_closed_secondary</span>
-        <span class="n">operator</span><span class="o">.</span><span class="n">indices_act_secondary</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">indices_act_secondary</span>
         <span class="c1"># Form the property gradient.</span>
-        <span class="n">operator</span><span class="o">.</span><span class="n">form_rhs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mocoeffs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">occupations</span><span class="p">)</span>
+        <span class="n">operator</span><span class="o">.</span><span class="n">form_rhs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mocoeffs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">occupations</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">indices</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">operators</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">operator</span><span class="p">)</span></div>
 
 
@@ -274,7 +246,7 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for all solvers of the type $AX = B$.&quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">mocoeffs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">occupations</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">mocoeffs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">occupations</span><span class="p">:</span> <span class="s2">&quot;Occupations&quot;</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">mocoeffs</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">,</span> <span class="n">occupations</span><span class="p">)</span></div>
 
@@ -288,7 +260,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">mocoeffs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">occupations</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">mocoeffs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">occupations</span><span class="p">:</span> <span class="s2">&quot;Occupations&quot;</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">mocoeffs</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">,</span> <span class="n">occupations</span><span class="p">)</span>
 
@@ -637,7 +609,7 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">mocoeffs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
         <span class="n">moenergies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
-        <span class="n">occupations</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">occupations</span><span class="p">:</span> <span class="s2">&quot;Occupations&quot;</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
         <span class="n">inv_func</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -680,7 +652,7 @@
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.solvers.ExactInvCholesky">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ExactInvCholesky</span><span class="p">(</span><span class="n">ExactLineqSolver</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">mocoeffs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">occupations</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">mocoeffs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">occupations</span><span class="p">:</span> <span class="s2">&quot;Occupations&quot;</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">mocoeffs</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">,</span> <span class="n">occupations</span><span class="p">)</span>
 
@@ -729,7 +701,7 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">mocoeffs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
         <span class="n">moenergies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
-        <span class="n">occupations</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">occupations</span><span class="p">:</span> <span class="s2">&quot;Occupations&quot;</span><span class="p">,</span>
         <span class="n">jk_generator</span><span class="p">:</span> <span class="n">JK</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
         <span class="n">maxiter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span>
@@ -845,7 +817,7 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for all solvers of the type $AX = 0$ (eigensolvers).&quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">mocoeffs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">occupations</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">mocoeffs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">occupations</span><span class="p">:</span> <span class="s2">&quot;Occupations&quot;</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">mocoeffs</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">,</span> <span class="n">occupations</span><span class="p">)</span>
 
@@ -869,7 +841,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">mocoeffs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">occupations</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">mocoeffs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">occupations</span><span class="p">:</span> <span class="s2">&quot;Occupations&quot;</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">mocoeffs</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">,</span> <span class="n">occupations</span><span class="p">)</span></div>
 
@@ -883,7 +855,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">mocoeffs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">occupations</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">mocoeffs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">occupations</span><span class="p">:</span> <span class="s2">&quot;Occupations&quot;</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">mocoeffs</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">,</span> <span class="n">occupations</span><span class="p">)</span>
 
@@ -1006,7 +978,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">mocoeffs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">occupations</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">mocoeffs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">occupations</span><span class="p">:</span> <span class="s2">&quot;Occupations&quot;</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">mocoeffs</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">,</span> <span class="n">occupations</span><span class="p">)</span>
 
