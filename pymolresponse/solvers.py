@@ -837,7 +837,9 @@ class ExactDiagonalizationSolverTDA(ExactDiagonalizationSolver, EigSolverTDA):
     ) -> None:
         super().__init__(mocoeffs, moenergies, occupations)
 
-    def form_explicit_hessian(self, hamiltonian: Hamiltonian, spin: Spin, frequency: float) -> None:
+    def form_explicit_hessian(
+        self, hamiltonian: Hamiltonian, spin: Spin, frequency: Optional[float]
+    ) -> None:
         assert hasattr(self, "tei_mo")
         assert self.tei_mo is not None
         assert len(self.tei_mo) in (1, 2, 4, 6)

@@ -16,3 +16,7 @@ a96c60e060dab7174c2d395e2c75af4c0b554475
 7acc80536bfd2e8f63794cdb8489a89cf622fce5
 # chore: run pyupgrade for 3.9+
 1d3f0283478c82b62200e7670255f805e71b3dc1
+# chore: fix type annotation for form_explicit_hessian
+25da5e33e0bcf88b44fdd38dced132cb70112c68
+# chore: remove unused ty ignore
+9a34b3c363d4d1abef9ca3ae765e8126926a20b9
