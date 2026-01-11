@@ -1,5 +1,5 @@
 from collections.abc import Sequence
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 
@@ -7,6 +7,9 @@ from pymolresponse.core import Program
 from pymolresponse.cphf import CPHF
 from pymolresponse.molecular_property import ResponseProperty
 from pymolresponse.operators import Operator
+
+if TYPE_CHECKING:
+    from pymolresponse.indices import Occupations
 
 
 class ORD(ResponseProperty):
@@ -17,7 +20,7 @@ class ORD(ResponseProperty):
         driver: CPHF,
         mocoeffs: np.ndarray,
         moenergies: np.ndarray,
-        occupations: np.ndarray,
+        occupations: "Occupations",
         *,
         frequencies: Sequence[float] = [0.0],
         do_dipvel: bool = False,

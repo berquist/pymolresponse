@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from collections.abc import Sequence
-from typing import Any, Callable, Optional
+from typing import TYPE_CHECKING, Any, Callable, Optional
 
 import numpy as np
 import scipy as sp
@@ -26,9 +26,13 @@ from pymolresponse.explicit_equations_partial import (
     form_rpa_b_matrix_mo_singlet_ss_partial,
     form_rpa_b_matrix_mo_triplet_partial,
 )
+from pymolresponse.indices import form_indices_from_occupations
 from pymolresponse.integrals import JK
 from pymolresponse.operators import Operator
 from pymolresponse.utils import repack_matrix_to_vector
+
+if TYPE_CHECKING:
+    from pymolresponse.indices import Occupations
 
 np.set_printoptions(precision=5, linewidth=200, suppress=True)
 
@@ -46,7 +50,7 @@ class Solver(ABC):
     """
 
     def __init__(
-        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: np.ndarray
+        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: "Occupations"
     ) -> None:
         # MO coefficients: the first axis is alpha/beta
         assert len(mocoeffs.shape) == 3
@@ -67,16 +71,10 @@ class Solver(ABC):
         self.mocoeffs = mocoeffs
         self.moenergies = moenergies
         self.occupations = occupations
-        self.form_ranges_from_occupations()
+        self.indices = form_indices_from_occupations(occupations)
 
         self.operators = []
         self.frequencies = []
-
-        self.indices_closed_act = None
-        self.indices_closed_secondary = None
-        self.indices_act_secondary = None
-        self.indices_rohf = None
-        self.indices_display_rohf = None
 
         # These are needed for MO-based solvers.
         self.tei_mo = None
@@ -128,26 +126,6 @@ class Solver(ABC):
         self.tei_mo = ao2mo.tei_mo
         self.tei_mo_type = tei_mo_type
 
-    def form_ranges_from_occupations(self) -> None:
-        assert len(self.occupations) == 4
-        nocc_a, nvirt_a, nocc_b, nvirt_b = self.occupations
-        assert (nocc_a + nvirt_a) == (nocc_b + nvirt_b)
-        norb = nocc_a + nvirt_a
-        nelec = nocc_a + nocc_b
-        nact = abs(int(nocc_a - nocc_b))
-        nclosed = (nelec - nact) // 2
-        nsecondary = norb - (nclosed + nact)
-        range_closed = list(range(0, nclosed))
-        range_act = list(range(nclosed, nclosed + nact))
-        range_secondary = list(range(nclosed + nact, nclosed + nact + nsecondary))
-        self.indices_closed_act = [(i, t) for i in range_closed for t in range_act]
-        self.indices_closed_secondary = [(i, a) for i in range_closed for a in range_secondary]
-        self.indices_act_secondary = [(t, a) for t in range_act for a in range_secondary]
-        self.indices_rohf = (
-            self.indices_closed_act + self.indices_closed_secondary + self.indices_act_secondary
-        )
-        self.indices_display_rohf = [(p + 1, q + 1) for (p, q) in self.indices_rohf]
-
     def set_frequencies(self, frequencies: Optional[Sequence[float]] = None) -> None:
         if frequencies is None:
             self.frequencies = [0.0]
@@ -165,11 +143,8 @@ class Solver(ABC):
         assert len(shape) == 3
         assert shape[0] >= 1
         assert shape[1] == shape[2]
-        operator.indices_closed_act = self.indices_closed_act
-        operator.indices_closed_secondary = self.indices_closed_secondary
-        operator.indices_act_secondary = self.indices_act_secondary
         # Form the property gradient.
-        operator.form_rhs(self.mocoeffs, self.occupations)
+        operator.form_rhs(self.mocoeffs, self.occupations, self.indices)
         self.operators.append(operator)
 
     @abstractmethod
@@ -183,7 +158,7 @@ class LineqSolver(Solver, ABC):
     """Base class for all solvers of the type $AX = B$."""
 
     def __init__(
-        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: np.ndarray
+        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: "Occupations"
     ) -> None:
         super().__init__(mocoeffs, moenergies, occupations)
 
@@ -194,7 +169,7 @@ class ExactLineqSolver(LineqSolver, ABC):
     """
 
     def __init__(
-        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: np.ndarray
+        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: "Occupations"
     ) -> None:
         super().__init__(mocoeffs, moenergies, occupations)
 
@@ -528,7 +503,7 @@ class ExactInv(ExactLineqSolver):
         self,
         mocoeffs: np.ndarray,
         moenergies: np.ndarray,
-        occupations: np.ndarray,
+        occupations: "Occupations",
         *,
         inv_func: Optional[Callable[[np.ndarray], np.ndarray]] = None,
     ) -> None:
@@ -565,7 +540,7 @@ class ExactInv(ExactLineqSolver):
 
 class ExactInvCholesky(ExactLineqSolver):
     def __init__(
-        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: np.ndarray
+        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: "Occupations"
     ) -> None:
         super().__init__(mocoeffs, moenergies, occupations)
 
@@ -608,7 +583,7 @@ class IterativeLinEqSolver(LineqSolver):
         self,
         mocoeffs: np.ndarray,
         moenergies: np.ndarray,
-        occupations: np.ndarray,
+        occupations: "Occupations",
         jk_generator: JK,
         *,
         maxiter: int = 40,
@@ -718,7 +693,7 @@ class EigSolver(Solver, ABC):
     """Base class for all solvers of the type $AX = 0$ (eigensolvers)."""
 
     def __init__(
-        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: np.ndarray
+        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: "Occupations"
     ) -> None:
         super().__init__(mocoeffs, moenergies, occupations)
 
@@ -736,7 +711,7 @@ class EigSolverTDA(EigSolver, ABC):
     """
 
     def __init__(
-        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: np.ndarray
+        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: "Occupations"
     ) -> None:
         super().__init__(mocoeffs, moenergies, occupations)
 
@@ -747,7 +722,7 @@ class ExactDiagonalizationSolver(EigSolver):
     """
 
     def __init__(
-        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: np.ndarray
+        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: "Occupations"
     ) -> None:
         super().__init__(mocoeffs, moenergies, occupations)
 
@@ -858,7 +833,7 @@ class ExactDiagonalizationSolverTDA(ExactDiagonalizationSolver, EigSolverTDA):
     """
 
     def __init__(
-        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: np.ndarray
+        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: "Occupations"
     ) -> None:
         super().__init__(mocoeffs, moenergies, occupations)
 

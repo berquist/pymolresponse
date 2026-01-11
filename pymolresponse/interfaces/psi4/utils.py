@@ -1,13 +1,16 @@
+from typing import TYPE_CHECKING
+
 import numpy as np
 
 import psi4
 
 from pymolresponse.utils import fix_mocoeffs_shape, fix_moenergies_shape
 
+if TYPE_CHECKING:
+    from pymolresponse.indices import Occupations
 
-def occupations_from_psi4wfn(
-    wfn: psi4.core.Wavefunction,
-) -> np.ndarray[tuple[int], np.dtype[np.integer]]:
+
+def occupations_from_psi4wfn(wfn: psi4.core.Wavefunction) -> "Occupations":
     # Not needed.
     # occupations_a = wfn.occupation_a().to_array()
     # occupations_b = wfn.occupation_b().to_brray()
@@ -17,7 +20,7 @@ def occupations_from_psi4wfn(
     nocc_b = wfn.nbeta()
     nvirt_a = norb - nocc_a
     nvirt_b = norb - nocc_b
-    return np.asarray([nocc_a, nvirt_a, nocc_b, nvirt_b], dtype=int)
+    return nocc_a, nvirt_a, nocc_b, nvirt_b
 
 
 def mocoeffs_from_psi4wfn(
