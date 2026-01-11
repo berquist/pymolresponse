@@ -68,8 +68,7 @@ class Solver(ABC):
         self.mocoeffs = mocoeffs
         self.moenergies = moenergies
         self.occupations = occupations
-        indices = form_indices_from_occupations(occupations)
-        self.indices_closed_secondary = indices.indices_closed_secondary
+        self.indices = form_indices_from_occupations(occupations)
 
         self.operators = []
         self.frequencies = []
@@ -141,9 +140,8 @@ class Solver(ABC):
         assert len(shape) == 3
         assert shape[0] >= 1
         assert shape[1] == shape[2]
-        operator.indices_closed_secondary = self.indices_closed_secondary
         # Form the property gradient.
-        operator.form_rhs(self.mocoeffs, self.occupations)
+        operator.form_rhs(self.mocoeffs, self.occupations, self.indices)
         self.operators.append(operator)
 
     @abstractmethod

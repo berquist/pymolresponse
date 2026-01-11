@@ -1,10 +1,13 @@
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
 
 import numpy as np
 import scipy.constants as spc
 
 from pymolresponse.indices import Occupations
 from pymolresponse.utils import DirtyMocoeffs, fix_mocoeffs_shape, repack_matrix_to_vector
+
+if TYPE_CHECKING:
+    from pymolresponse.indices import Indices
 
 
 class Operator:
@@ -48,7 +51,10 @@ class Operator:
         pass
 
     def form_rhs(
-        self, C: np.ndarray[tuple[int, int, int], np.dtype[np.floating]], occupations: Occupations
+        self,
+        C: np.ndarray[tuple[int, int, int], np.dtype[np.floating]],
+        occupations: Occupations,
+        indices: "Indices",
     ) -> None:
         """Form the right-hand side for CPHF."""
         assert isinstance(self.ao_integrals, np.ndarray)
@@ -79,7 +85,7 @@ class Operator:
             # response, remove inactive -> secondary excitations.
             # Is this only true for spin-orbit operators?
             if self.triplet:
-                for i, a in self.indices_closed_secondary:
+                for i, a in indices.indices_closed_secondary:
                     operator_component_ai_alph[a - nocc_alph, i] = 0.0
             operator_component_ai_alph = repack_matrix_to_vector(operator_component_ai_alph)[
                 :, np.newaxis
@@ -96,7 +102,7 @@ class Operator:
                     C_beta[:, nocc_beta:].T, np.dot(self.ao_integrals[idx], C_beta[:, :nocc_beta])
                 )
                 if self.triplet:
-                    for i, a in self.indices_closed_secondary:
+                    for i, a in indices.indices_closed_secondary:
                         operator_component_ai_beta[a - nocc_beta, i] = 0.0
                 operator_component_ai_beta = repack_matrix_to_vector(operator_component_ai_beta)[
                     :, np.newaxis
