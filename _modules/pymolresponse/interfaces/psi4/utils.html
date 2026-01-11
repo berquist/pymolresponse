@@ -69,17 +69,21 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pymolresponse.interfaces.psi4.utils</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">psi4</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.indices</span><span class="w"> </span><span class="kn">import</span> <span class="n">Occupations</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">fix_mocoeffs_shape</span><span class="p">,</span> <span class="n">fix_moenergies_shape</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.indices</span><span class="w"> </span><span class="kn">import</span> <span class="n">Occupations</span>
 
 
 <div class="viewcode-block" id="occupations_from_psi4wfn">
 <a class="viewcode-back" href="../../../../pyresponse.psi4.html#pymolresponse.interfaces.psi4.utils.occupations_from_psi4wfn">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">occupations_from_psi4wfn</span><span class="p">(</span><span class="n">wfn</span><span class="p">:</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Wavefunction</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Occupations</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">occupations_from_psi4wfn</span><span class="p">(</span><span class="n">wfn</span><span class="p">:</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Wavefunction</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Occupations&quot;</span><span class="p">:</span>
     <span class="c1"># Not needed.</span>
     <span class="c1"># occupations_a = wfn.occupation_a().to_array()</span>
     <span class="c1"># occupations_b = wfn.occupation_b().to_brray()</span>
