@@ -26,9 +26,9 @@ from pymolresponse.explicit_equations_partial import (
     form_rpa_b_matrix_mo_singlet_ss_partial,
     form_rpa_b_matrix_mo_triplet_partial,
 )
+from pymolresponse.indices import Occupations, form_indices_from_occupations
 from pymolresponse.integrals import JK
 from pymolresponse.operators import Operator
-from pymolresponse.ranges import Occupations, form_indices_from_occupations
 from pymolresponse.utils import repack_matrix_to_vector
 
 np.set_printoptions(precision=5, linewidth=200, suppress=True)

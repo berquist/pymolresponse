@@ -4,7 +4,7 @@ from typing import Optional
 
 import numpy as np
 
-from pymolresponse.ranges import Occupations
+from pymolresponse.indices import Occupations
 from pymolresponse.utils import fix_mocoeffs_shape
 
 

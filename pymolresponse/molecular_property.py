@@ -6,7 +6,7 @@ import numpy as np
 
 from pymolresponse.core import Hamiltonian, Program, Spin
 from pymolresponse.cphf import CPHF, Driver
-from pymolresponse.ranges import Occupations
+from pymolresponse.indices import Occupations
 from pymolresponse.td import TDHF
 
 

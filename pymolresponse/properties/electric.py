@@ -7,9 +7,9 @@ import numpy as np
 
 from pymolresponse.core import Program
 from pymolresponse.cphf import CPHF
+from pymolresponse.indices import Occupations
 from pymolresponse.molecular_property import ResponseProperty
 from pymolresponse.operators import Operator
-from pymolresponse.ranges import Occupations
 
 
 class Polarizability(ResponseProperty):

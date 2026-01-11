@@ -1,6 +1,6 @@
 import pyscf
 
-from pymolresponse.ranges import Occupations
+from pymolresponse.indices import Occupations
 from pymolresponse.utils import DirtyMocoeffs, fix_mocoeffs_shape
 
 

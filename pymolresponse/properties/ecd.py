@@ -7,9 +7,9 @@ import numpy as np
 
 from pymolresponse.constants import HARTREE_TO_EV, HARTREE_TO_INVCM, alpha, esuecd
 from pymolresponse.core import Program
+from pymolresponse.indices import Occupations
 from pymolresponse.molecular_property import TransitionProperty
 from pymolresponse.operators import Operator
-from pymolresponse.ranges import Occupations
 from pymolresponse.td import TDHF
 from pymolresponse.utils import form_indices_zero
 

@@ -4,10 +4,10 @@ import numpy as np
 
 from pymolresponse.core import Program
 from pymolresponse.cphf import CPHF
+from pymolresponse.indices import Occupations
 from pymolresponse.interfaces.pyscf.helpers import calculate_origin_pyscf
 from pymolresponse.molecular_property import ResponseProperty
 from pymolresponse.operators import Operator
-from pymolresponse.ranges import Occupations
 
 
 class Magnetizability(ResponseProperty):

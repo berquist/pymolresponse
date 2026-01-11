@@ -3,7 +3,7 @@ from typing import Optional
 import numpy as np
 import scipy.constants as spc
 
-from pymolresponse.ranges import Occupations
+from pymolresponse.indices import Occupations
 from pymolresponse.utils import DirtyMocoeffs, fix_mocoeffs_shape, repack_matrix_to_vector
 
 

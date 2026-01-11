@@ -2,7 +2,7 @@ import numpy as np
 
 import psi4
 
-from pymolresponse.ranges import Occupations
+from pymolresponse.indices import Occupations
 from pymolresponse.utils import fix_mocoeffs_shape, fix_moenergies_shape
 
 
