@@ -3,7 +3,6 @@ name: test
 channels:
   - conda-forge
 dependencies:
-  - attrs
   - cclib
   - coverage
   - pip
