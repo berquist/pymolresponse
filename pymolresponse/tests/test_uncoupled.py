@@ -1,5 +1,4 @@
 import numpy as np
-
 import pyscf
 
 from pymolresponse import cphf, operators, solvers, utils
@@ -194,7 +193,7 @@ def test_uncoupled_rhf() -> None:
 
     solver = solvers.ExactInv(C, E, occupations)
 
-    ao2mo = AO2MOpyscf(C, mol.verbose, mol)
+    ao2mo = AO2MOpyscf(C, mol)
     ao2mo.perform_rhf_partial()
     solver.tei_mo = ao2mo.tei_mo
     solver.tei_mo_type = AO2MOTransformationType.partial
@@ -252,7 +251,7 @@ def test_uncoupled_uhf() -> None:
 
     solver = solvers.ExactInv(C, E, occupations)
 
-    ao2mo = AO2MOpyscf(C, mol.verbose, mol)
+    ao2mo = AO2MOpyscf(C, mol)
     ao2mo.perform_uhf_partial()
     solver.tei_mo = ao2mo.tei_mo
     solver.tei_mo_type = AO2MOTransformationType.partial

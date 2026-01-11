@@ -93,7 +93,7 @@ class Solver(ABC):
         if program == Program.PySCF:
             from pymolresponse.interfaces.pyscf.ao2mo import AO2MOpyscf
 
-            ao2mo = AO2MOpyscf(self.mocoeffs, program_obj.verbose, program_obj)
+            ao2mo = AO2MOpyscf(self.mocoeffs, program_obj)
         elif program == Program.Psi4:
             import psi4
 

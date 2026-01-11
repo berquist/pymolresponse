@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, Optional
 
 import numpy as np
 
-from pymolresponse.utils import fix_mocoeffs_shape
+from pymolresponse.utils import DirtyMocoeffs, fix_mocoeffs_shape
 
 if TYPE_CHECKING:
     from pymolresponse.indices import Occupations
@@ -18,14 +18,12 @@ class AO2MO:
 
     def __init__(
         self,
-        C: np.ndarray[tuple[int, int, int], np.dtype[np.floating]],
+        C: DirtyMocoeffs,
         occupations: "Occupations",
-        verbose: int = 1,
         I: Optional[np.ndarray[tuple[int, int, int, int], np.dtype[np.floating]]] = None,  # noqa: E741
     ) -> None:
         self.C = fix_mocoeffs_shape(C)
         self.occupations = occupations
-        self.verbose = verbose
         self.I = I
 
         self.nocc_alph, self.nvirt_alph, self.nocc_beta, self.nvirt_beta = occupations
@@ -73,6 +71,8 @@ class AO2MO:
 
     def perform_uhf_full(self) -> None:
         r"""Perform the transformation :math:`(\mu\nu|\lambda\sigma) \rightarrow (p^{\alpha}q^{\alpha}|r^{\alpha}s^{\alpha}), (p^{\alpha}q^{\alpha}|r^{\beta}s^{\beta}), (p^{\beta}q^{\beta}|r^{\alpha}s^{\alpha}), (p^{\beta}q^{\beta}|r^{\beta}s^{\beta})`."""
+        raise NotImplementedError
 
     def perform_uhf_partial(self) -> None:
         r"""Perform the transformation :math:`(\mu\nu|\lambda\sigma) \rightarrow (i^{\alpha}a^{\alpha}|j^{\alpha}b^{\alpha}), (i^{\alpha}a^{\alpha}|j^{\beta}b^{\beta}), (i^{\beta}a^{\beta}|j^{\alpha}b^{\alpha}), (i^{\beta}a^{\beta}|j^{\beta}b^{\beta}), (i^{\alpha}j^{\alpha}|a^{\alpha}b^{\alpha}), (i^{\beta}j^{\beta}|a^{\beta}b^{\beta})`."""
+        raise NotImplementedError

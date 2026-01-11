@@ -1,5 +1,4 @@
 import numpy as np
-
 import pyscf
 
 from pymolresponse.ao2mo import AO2MO
@@ -21,7 +20,7 @@ def test_ao2mo_hand_against_pyscf_rhf_full() -> None:
     nmo = nocc + nvirt
     ntransforms = 1
 
-    ao2mo = AO2MOpyscf(C, verbose=mol.verbose, pyscfmol=mol)
+    ao2mo = AO2MOpyscf(C, pyscfmol=mol)
     ao2mo.perform_rhf_full()
     assert len(ao2mo.tei_mo) == ntransforms
     tei_mo_pyscf = ao2mo.tei_mo[0]  # ty: ignore[index-out-of-bounds]
@@ -37,7 +36,7 @@ def test_ao2mo_hand_against_pyscf_rhf_full() -> None:
 
     print("2. Use the class method normally.")
 
-    ao2mo_method = AO2MO(C, occupations, verbose=mol.verbose, I=tei_ao)
+    ao2mo_method = AO2MO(C, occupations, I=tei_ao)
     ao2mo_method.perform_rhf_full()
     assert len(ao2mo_method.tei_mo) == ntransforms
     tei_mo_method = ao2mo_method.tei_mo[0]  # ty: ignore[index-out-of-bounds]
@@ -61,7 +60,7 @@ def test_ao2mo_hand_against_pyscf_rhf_partial() -> None:
     o = slice(0, nocc)
     v = slice(nocc, nmo)
 
-    ao2mo = AO2MOpyscf(C, verbose=mol.verbose, pyscfmol=mol)
+    ao2mo = AO2MOpyscf(C, pyscfmol=mol)
     ao2mo.perform_rhf_partial()
     assert len(ao2mo.tei_mo) == ntransforms
     tei_mo_ovov_pyscf = ao2mo.tei_mo[0]  # ty: ignore[index-out-of-bounds]
@@ -81,7 +80,7 @@ def test_ao2mo_hand_against_pyscf_rhf_partial() -> None:
 
     print("2. Use the class method normally.")
 
-    ao2mo_method = AO2MO(C, occupations, verbose=mol.verbose, I=tei_ao)
+    ao2mo_method = AO2MO(C, occupations, I=tei_ao)
     ao2mo_method.perform_rhf_partial()
     assert len(ao2mo_method.tei_mo) == ntransforms
     tei_mo_ovov_method = ao2mo_method.tei_mo[0]  # ty: ignore[index-out-of-bounds]
