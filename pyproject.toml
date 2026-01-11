@@ -71,14 +71,6 @@ output = "build/coverage/coverage.xml"
 [tool.doc8]
 ignore = "D001"
 
-[tool.isort]
-profile = "black"
-line_length = 100
-# default is FUTURE,STDLIB,THIRDPARTY,FIRSTPARTY,LOCALFOLDER
-sections = ["FUTURE", "STDLIB", "ATTRS", "THIRDPARTY", "CHEMISTRY", "FIRSTPARTY", "LOCALFOLDER"]
-known_attrs = ["attr"]
-known_chemistry = ["psi4", "pyscf"]
-
 [tool.mypy]
 cache_dir = "build/.mypy_cache"
 strict = true
