@@ -31,7 +31,7 @@ class IntegralsPyscf(Integrals):
         self, label: IntegralLabel
     ) -> np.ndarray[tuple[int, int, int], np.dtype[np.floating]]:
         if label.symmetry == IntegralSymmetry.ANTISYMMETRIC:
-            return self.mol.intor_asymmetric(label.label, comp=label.comp)  # ty: ignore[invalid-return-type]
+            return self.mol.intor_asymmetric(label.label, comp=label.comp)
         return self.mol.intor(label.label, comp=label.comp)
 
 
