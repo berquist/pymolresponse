@@ -3,7 +3,7 @@ from dataclasses import dataclass
 Occupations = tuple[int, int, int, int]
 
 
-# TODO kw_only is 3.10
+# TODO kw_only and slots are 3.10
 @dataclass(frozen=True)
 class Indices:
     indices_closed_act: list[tuple[int, int]]

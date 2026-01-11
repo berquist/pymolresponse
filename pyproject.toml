@@ -13,7 +13,6 @@ classifiers = [
 ]
 requires-python = ">=3.9"
 dependencies = [
-    "attrs>=25.4,<26",
     "cclib>=1.8.1,<2",
     "periodictable>=2.0.2,<3",
 ]
@@ -71,14 +70,6 @@ output = "build/coverage/coverage.xml"
 
 [tool.doc8]
 ignore = "D001"
-
-[tool.isort]
-profile = "black"
-line_length = 100
-# default is FUTURE,STDLIB,THIRDPARTY,FIRSTPARTY,LOCALFOLDER
-sections = ["FUTURE", "STDLIB", "ATTRS", "THIRDPARTY", "CHEMISTRY", "FIRSTPARTY", "LOCALFOLDER"]
-known_attrs = ["attr"]
-known_chemistry = ["psi4", "pyscf"]
 
 [tool.mypy]
 cache_dir = "build/.mypy_cache"
