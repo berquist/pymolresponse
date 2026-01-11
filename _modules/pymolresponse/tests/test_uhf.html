@@ -72,7 +72,6 @@
 <span></span><span class="sd">&quot;&quot;&quot;Hard-coded response equations for unrestricted wavefunctions.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-
 <span class="kn">import</span><span class="w"> </span><span class="nn">pyscf</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse</span><span class="w"> </span><span class="kn">import</span> <span class="n">cphf</span>
@@ -93,7 +92,7 @@
     <span class="n">mf</span><span class="o">.</span><span class="n">kernel</span><span class="p">()</span>
     <span class="n">mocoeffs</span> <span class="o">=</span> <span class="n">mf</span><span class="o">.</span><span class="n">mo_coeff</span>
     <span class="n">moenergies</span> <span class="o">=</span> <span class="n">mf</span><span class="o">.</span><span class="n">mo_energy</span>
-    <span class="n">ao2mo</span> <span class="o">=</span> <span class="n">AO2MOpyscf</span><span class="p">(</span><span class="n">mocoeffs</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span> <span class="n">mol</span><span class="p">)</span>
+    <span class="n">ao2mo</span> <span class="o">=</span> <span class="n">AO2MOpyscf</span><span class="p">(</span><span class="n">mocoeffs</span><span class="p">,</span> <span class="n">mol</span><span class="p">)</span>
     <span class="n">ao2mo</span><span class="o">.</span><span class="n">perform_rhf_full</span><span class="p">()</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">ao2mo</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
     <span class="n">tei_mo</span> <span class="o">=</span> <span class="n">ao2mo</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># ty: ignore[index-out-of-bounds]</span>
@@ -234,7 +233,7 @@
     <span class="k">assert</span> <span class="n">C_a</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">C_b</span><span class="o">.</span><span class="n">shape</span>
     <span class="k">assert</span> <span class="n">E_a</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">E_b</span><span class="o">.</span><span class="n">shape</span>
 
-    <span class="n">ao2mo</span> <span class="o">=</span> <span class="n">AO2MOpyscf</span><span class="p">(</span><span class="n">mf</span><span class="o">.</span><span class="n">mo_coeff</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">mol</span><span class="p">)</span>
+    <span class="n">ao2mo</span> <span class="o">=</span> <span class="n">AO2MOpyscf</span><span class="p">(</span><span class="n">mf</span><span class="o">.</span><span class="n">mo_coeff</span><span class="p">,</span> <span class="n">mol</span><span class="p">)</span>
     <span class="n">ao2mo</span><span class="o">.</span><span class="n">perform_uhf_full</span><span class="p">()</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">ao2mo</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span>
     <span class="n">tei_mo_aaaa</span><span class="p">,</span> <span class="n">tei_mo_aabb</span><span class="p">,</span> <span class="n">tei_mo_bbaa</span><span class="p">,</span> <span class="n">tei_mo_bbbb</span> <span class="o">=</span> <span class="n">ao2mo</span><span class="o">.</span><span class="n">tei_mo</span>  <span class="c1"># ty: ignore[invalid-assignment]</span>
@@ -349,7 +348,7 @@
 
     <span class="n">solver</span> <span class="o">=</span> <span class="n">solvers</span><span class="o">.</span><span class="n">ExactInv</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">occupations</span><span class="p">)</span>
 
-    <span class="n">ao2mo</span> <span class="o">=</span> <span class="n">AO2MOpyscf</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span> <span class="n">mol</span><span class="p">)</span>
+    <span class="n">ao2mo</span> <span class="o">=</span> <span class="n">AO2MOpyscf</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">mol</span><span class="p">)</span>
     <span class="n">ao2mo</span><span class="o">.</span><span class="n">perform_uhf_full</span><span class="p">()</span>
     <span class="n">solver</span><span class="o">.</span><span class="n">tei_mo</span> <span class="o">=</span> <span class="n">ao2mo</span><span class="o">.</span><span class="n">tei_mo</span>
     <span class="n">solver</span><span class="o">.</span><span class="n">tei_mo_type</span> <span class="o">=</span> <span class="n">AO2MOTransformationType</span><span class="o">.</span><span class="n">full</span>

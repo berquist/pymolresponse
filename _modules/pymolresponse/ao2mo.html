@@ -75,7 +75,7 @@
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">fix_mocoeffs_shape</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">DirtyMocoeffs</span><span class="p">,</span> <span class="n">fix_mocoeffs_shape</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.indices</span><span class="w"> </span><span class="kn">import</span> <span class="n">Occupations</span>
@@ -91,14 +91,12 @@
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">C</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]],</span>
+        <span class="n">C</span><span class="p">:</span> <span class="n">DirtyMocoeffs</span><span class="p">,</span>
         <span class="n">occupations</span><span class="p">:</span> <span class="s2">&quot;Occupations&quot;</span><span class="p">,</span>
-        <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
         <span class="n">I</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># noqa: E741</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="n">fix_mocoeffs_shape</span><span class="p">(</span><span class="n">C</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">occupations</span> <span class="o">=</span> <span class="n">occupations</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">I</span> <span class="o">=</span> <span class="n">I</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">nocc_alph</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nvirt_alph</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nocc_beta</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nvirt_beta</span> <span class="o">=</span> <span class="n">occupations</span>
@@ -156,13 +154,15 @@
 <div class="viewcode-block" id="AO2MO.perform_uhf_full">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.ao2mo.AO2MO.perform_uhf_full">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">perform_uhf_full</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Perform the transformation :math:`(\mu\nu|\lambda\sigma) \rightarrow (p^{\alpha}q^{\alpha}|r^{\alpha}s^{\alpha}), (p^{\alpha}q^{\alpha}|r^{\beta}s^{\beta}), (p^{\beta}q^{\beta}|r^{\alpha}s^{\alpha}), (p^{\beta}q^{\beta}|r^{\beta}s^{\beta})`.&quot;&quot;&quot;</span></div>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Perform the transformation :math:`(\mu\nu|\lambda\sigma) \rightarrow (p^{\alpha}q^{\alpha}|r^{\alpha}s^{\alpha}), (p^{\alpha}q^{\alpha}|r^{\beta}s^{\beta}), (p^{\beta}q^{\beta}|r^{\alpha}s^{\alpha}), (p^{\beta}q^{\beta}|r^{\beta}s^{\beta})`.&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 
 <div class="viewcode-block" id="AO2MO.perform_uhf_partial">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.ao2mo.AO2MO.perform_uhf_partial">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">perform_uhf_partial</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Perform the transformation :math:`(\mu\nu|\lambda\sigma) \rightarrow (i^{\alpha}a^{\alpha}|j^{\alpha}b^{\alpha}), (i^{\alpha}a^{\alpha}|j^{\beta}b^{\beta}), (i^{\beta}a^{\beta}|j^{\alpha}b^{\alpha}), (i^{\beta}a^{\beta}|j^{\beta}b^{\beta}), (i^{\alpha}j^{\alpha}|a^{\alpha}b^{\alpha}), (i^{\beta}j^{\beta}|a^{\beta}b^{\beta})`.&quot;&quot;&quot;</span></div>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Perform the transformation :math:`(\mu\nu|\lambda\sigma) \rightarrow (i^{\alpha}a^{\alpha}|j^{\alpha}b^{\alpha}), (i^{\alpha}a^{\alpha}|j^{\beta}b^{\beta}), (i^{\beta}a^{\beta}|j^{\alpha}b^{\alpha}), (i^{\beta}a^{\beta}|j^{\beta}b^{\beta}), (i^{\alpha}j^{\alpha}|a^{\alpha}b^{\alpha}), (i^{\beta}j^{\beta}|a^{\beta}b^{\beta})`.&quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 </div>
 
 </pre></div>

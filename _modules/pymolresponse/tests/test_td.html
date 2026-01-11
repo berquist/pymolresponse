@@ -96,7 +96,7 @@
     <span class="n">occupations</span> <span class="o">=</span> <span class="n">occupations_from_pyscf_mol</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">C</span><span class="p">)</span>
     <span class="n">solver_tda</span> <span class="o">=</span> <span class="n">solvers</span><span class="o">.</span><span class="n">ExactDiagonalizationSolverTDA</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">occupations</span><span class="p">)</span>
     <span class="n">solver_tdhf</span> <span class="o">=</span> <span class="n">solvers</span><span class="o">.</span><span class="n">ExactDiagonalizationSolver</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">occupations</span><span class="p">)</span>
-    <span class="n">ao2mo</span> <span class="o">=</span> <span class="n">AO2MOpyscf</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span> <span class="n">mol</span><span class="p">)</span>
+    <span class="n">ao2mo</span> <span class="o">=</span> <span class="n">AO2MOpyscf</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">mol</span><span class="p">)</span>
     <span class="n">ao2mo</span><span class="o">.</span><span class="n">perform_rhf_partial</span><span class="p">()</span>
     <span class="n">tei_mo</span> <span class="o">=</span> <span class="n">ao2mo</span><span class="o">.</span><span class="n">tei_mo</span>
     <span class="n">solver_tda</span><span class="o">.</span><span class="n">tei_mo</span> <span class="o">=</span> <span class="n">tei_mo</span>
@@ -185,7 +185,7 @@
 <span class="c1">#     occupations = occupations_from_pyscf_mol(mol, C)</span>
 <span class="c1">#     solver_tda = solvers.ExactDiagonalizationSolverTDA(C, E, occupations)</span>
 <span class="c1">#     # TODO i thought this was part of the solver interface</span>
-<span class="c1">#     ao2mo = AO2MOpyscf(C, mol.verbose, mol)</span>
+<span class="c1">#     ao2mo = AO2MOpyscf(C, mol)</span>
 <span class="c1">#     ao2mo.perform_uhf_partial()</span>
 <span class="c1">#     tei_mo = ao2mo.tei_mo</span>
 <span class="c1">#     solver_tda.tei_mo = tei_mo</span>

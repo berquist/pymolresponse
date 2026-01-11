@@ -70,7 +70,6 @@
              
   <h1>Source code for pymolresponse.tests.test_uncoupled</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-
 <span class="kn">import</span><span class="w"> </span><span class="nn">pyscf</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse</span><span class="w"> </span><span class="kn">import</span> <span class="n">cphf</span><span class="p">,</span> <span class="n">operators</span><span class="p">,</span> <span class="n">solvers</span><span class="p">,</span> <span class="n">utils</span>
@@ -270,7 +269,7 @@
 
     <span class="n">solver</span> <span class="o">=</span> <span class="n">solvers</span><span class="o">.</span><span class="n">ExactInv</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">occupations</span><span class="p">)</span>
 
-    <span class="n">ao2mo</span> <span class="o">=</span> <span class="n">AO2MOpyscf</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span> <span class="n">mol</span><span class="p">)</span>
+    <span class="n">ao2mo</span> <span class="o">=</span> <span class="n">AO2MOpyscf</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">mol</span><span class="p">)</span>
     <span class="n">ao2mo</span><span class="o">.</span><span class="n">perform_rhf_partial</span><span class="p">()</span>
     <span class="n">solver</span><span class="o">.</span><span class="n">tei_mo</span> <span class="o">=</span> <span class="n">ao2mo</span><span class="o">.</span><span class="n">tei_mo</span>
     <span class="n">solver</span><span class="o">.</span><span class="n">tei_mo_type</span> <span class="o">=</span> <span class="n">AO2MOTransformationType</span><span class="o">.</span><span class="n">partial</span>
@@ -331,7 +330,7 @@
 
     <span class="n">solver</span> <span class="o">=</span> <span class="n">solvers</span><span class="o">.</span><span class="n">ExactInv</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">occupations</span><span class="p">)</span>
 
-    <span class="n">ao2mo</span> <span class="o">=</span> <span class="n">AO2MOpyscf</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span> <span class="n">mol</span><span class="p">)</span>
+    <span class="n">ao2mo</span> <span class="o">=</span> <span class="n">AO2MOpyscf</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">mol</span><span class="p">)</span>
     <span class="n">ao2mo</span><span class="o">.</span><span class="n">perform_uhf_partial</span><span class="p">()</span>
     <span class="n">solver</span><span class="o">.</span><span class="n">tei_mo</span> <span class="o">=</span> <span class="n">ao2mo</span><span class="o">.</span><span class="n">tei_mo</span>
     <span class="n">solver</span><span class="o">.</span><span class="n">tei_mo_type</span> <span class="o">=</span> <span class="n">AO2MOTransformationType</span><span class="o">.</span><span class="n">partial</span>

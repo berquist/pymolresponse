@@ -72,7 +72,6 @@
 <span></span><span class="sd">&quot;&quot;&quot;Hard-coded response equations for restricted wavefunctions.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-
 <span class="kn">import</span><span class="w"> </span><span class="nn">pyscf</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse</span><span class="w"> </span><span class="kn">import</span> <span class="n">explicit_equations_full</span> <span class="k">as</span> <span class="n">eqns</span>
@@ -90,7 +89,7 @@
     <span class="n">mf</span><span class="o">.</span><span class="n">kernel</span><span class="p">()</span>
     <span class="n">mocoeffs</span> <span class="o">=</span> <span class="n">mf</span><span class="o">.</span><span class="n">mo_coeff</span>
     <span class="n">moenergies</span> <span class="o">=</span> <span class="n">mf</span><span class="o">.</span><span class="n">mo_energy</span>
-    <span class="n">ao2mo</span> <span class="o">=</span> <span class="n">AO2MOpyscf</span><span class="p">(</span><span class="n">mocoeffs</span><span class="p">,</span> <span class="n">mol</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span> <span class="n">mol</span><span class="p">)</span>
+    <span class="n">ao2mo</span> <span class="o">=</span> <span class="n">AO2MOpyscf</span><span class="p">(</span><span class="n">mocoeffs</span><span class="p">,</span> <span class="n">mol</span><span class="p">)</span>
     <span class="n">ao2mo</span><span class="o">.</span><span class="n">perform_rhf_full</span><span class="p">()</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">ao2mo</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
     <span class="n">tei_mo</span> <span class="o">=</span> <span class="n">ao2mo</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># ty: ignore[index-out-of-bounds]</span>
@@ -148,7 +147,7 @@
 <span class="c1">#     mf.kernel()</span>
 <span class="c1">#     mocoeffs = mf.mo_coeff</span>
 <span class="c1">#     moenergies = mf.mo_energy</span>
-<span class="c1">#     ao2mo = AO2MOpyscf(mocoeffs, mol.verbose, mol)</span>
+<span class="c1">#     ao2mo = AO2MOpyscf(mocoeffs, mol)</span>
 <span class="c1">#     ao2mo.perform_rhf_full()</span>
 <span class="c1">#     tei_mo = ao2mo.tei_mo[0]</span>
 
