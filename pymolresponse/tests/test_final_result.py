@@ -23,7 +23,7 @@ def test_final_result_rhf_h2o_sto3g_rpa_singlet() -> None:
     E = utils.fix_moenergies_shape(utils.np_load_2(REFDIR / "F_MO.npz"))
     TEI_MO = utils.np_load(REFDIR / "TEI_MO.npz")
     # nocc_alph, nvirt_alph, nocc_beta, nvirt_beta
-    occupations = np.asarray([5, 2, 5, 2], dtype=int)
+    occupations = (5, 2, 5, 2)
     stub = "h2o_sto3g_"
     dim = occupations[0] + occupations[1]
     mat_dipole_x = utils.parse_int_file_2(REFDIR / f"{stub}mux.dat", dim)
@@ -108,7 +108,7 @@ def test_final_result_rhf_h2o_sto3g_rpa_triplet() -> None:
     E = utils.fix_moenergies_shape(utils.np_load_2(REFDIR / "F_MO.npz"))
     TEI_MO = utils.np_load(REFDIR / "TEI_MO.npz")
     # nocc_alph, nvirt_alph, nocc_beta, nvirt_beta
-    occupations = np.asarray([5, 2, 5, 2], dtype=int)
+    occupations = (5, 2, 5, 2)
     stub = "h2o_sto3g_"
     dim = occupations[0] + occupations[1]
     mat_dipole_x = utils.parse_int_file_2(REFDIR / f"{stub}mux.dat", dim)
@@ -193,7 +193,7 @@ def test_final_result_rhf_h2o_sto3g_tda_singlet() -> None:
     E = utils.fix_moenergies_shape(utils.np_load_2(REFDIR / "F_MO.npz"))
     TEI_MO = utils.np_load(REFDIR / "TEI_MO.npz")
     # nocc_alph, nvirt_alph, nocc_beta, nvirt_beta
-    occupations = np.asarray([5, 2, 5, 2], dtype=int)
+    occupations = (5, 2, 5, 2)
     stub = "h2o_sto3g_"
     dim = occupations[0] + occupations[1]
     mat_dipole_x = utils.parse_int_file_2(REFDIR / f"{stub}mux.dat", dim)
@@ -276,7 +276,7 @@ def test_final_result_rhf_h2o_sto3g_tda_triplet() -> None:
     E = utils.fix_moenergies_shape(utils.np_load_2(REFDIR / "F_MO.npz"))
     TEI_MO = utils.np_load(REFDIR / "TEI_MO.npz")
     # nocc_alph, nvirt_alph, nocc_beta, nvirt_beta
-    occupations = np.asarray([5, 2, 5, 2], dtype=int)
+    occupations = (5, 2, 5, 2)
     stub = "h2o_sto3g_"
     dim = occupations[0] + occupations[1]
     mat_dipole_x = utils.parse_int_file_2(REFDIR / f"{stub}mux.dat", dim)

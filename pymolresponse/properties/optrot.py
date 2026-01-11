@@ -7,6 +7,7 @@ from pymolresponse.core import Program
 from pymolresponse.cphf import CPHF
 from pymolresponse.molecular_property import ResponseProperty
 from pymolresponse.operators import Operator
+from pymolresponse.ranges import Occupations
 
 
 class ORD(ResponseProperty):
@@ -17,7 +18,7 @@ class ORD(ResponseProperty):
         driver: CPHF,
         mocoeffs: np.ndarray,
         moenergies: np.ndarray,
-        occupations: np.ndarray,
+        occupations: Occupations,
         *,
         frequencies: Sequence[float] = [0.0],
         do_dipvel: bool = False,

@@ -9,6 +9,7 @@ from pymolresponse.constants import HARTREE_TO_EV, HARTREE_TO_INVCM, alpha, esue
 from pymolresponse.core import Program
 from pymolresponse.molecular_property import TransitionProperty
 from pymolresponse.operators import Operator
+from pymolresponse.ranges import Occupations
 from pymolresponse.td import TDHF
 from pymolresponse.utils import form_indices_zero
 
@@ -25,7 +26,7 @@ class ECD(TransitionProperty):
         driver: TDHF,
         mocoeffs: np.ndarray,
         moenergies: np.ndarray,
-        occupations: np.ndarray,
+        occupations: Occupations,
         *,
         do_tda: bool = False,
         do_dipvel: bool = False,

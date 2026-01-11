@@ -7,6 +7,7 @@ from pymolresponse.cphf import CPHF
 from pymolresponse.interfaces.pyscf.helpers import calculate_origin_pyscf
 from pymolresponse.molecular_property import ResponseProperty
 from pymolresponse.operators import Operator
+from pymolresponse.ranges import Occupations
 
 
 class Magnetizability(ResponseProperty):
@@ -17,7 +18,7 @@ class Magnetizability(ResponseProperty):
         driver: CPHF,
         mocoeffs: np.ndarray,
         moenergies: np.ndarray,
-        occupations: np.ndarray,
+        occupations: Occupations,
         use_giao: bool = False,
     ) -> None:
         super().__init__(
@@ -69,7 +70,7 @@ class ElectronicGTensor(ResponseProperty):
         driver: CPHF,
         mocoeffs: np.ndarray,
         moenergies: np.ndarray,
-        occupations: np.ndarray,
+        occupations: Occupations,
         *,
         gauge_origin: Union[str, np.ndarray] = "ecc",
     ) -> None:

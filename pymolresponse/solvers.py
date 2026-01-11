@@ -28,6 +28,7 @@ from pymolresponse.explicit_equations_partial import (
 )
 from pymolresponse.integrals import JK
 from pymolresponse.operators import Operator
+from pymolresponse.ranges import Occupations
 from pymolresponse.utils import repack_matrix_to_vector
 
 np.set_printoptions(precision=5, linewidth=200, suppress=True)
@@ -46,7 +47,7 @@ class Solver(ABC):
     """
 
     def __init__(
-        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: np.ndarray
+        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: Occupations
     ) -> None:
         # MO coefficients: the first axis is alpha/beta
         assert len(mocoeffs.shape) == 3
@@ -183,7 +184,7 @@ class LineqSolver(Solver, ABC):
     """Base class for all solvers of the type $AX = B$."""
 
     def __init__(
-        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: np.ndarray
+        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: Occupations
     ) -> None:
         super().__init__(mocoeffs, moenergies, occupations)
 
@@ -194,7 +195,7 @@ class ExactLineqSolver(LineqSolver, ABC):
     """
 
     def __init__(
-        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: np.ndarray
+        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: Occupations
     ) -> None:
         super().__init__(mocoeffs, moenergies, occupations)
 
@@ -528,7 +529,7 @@ class ExactInv(ExactLineqSolver):
         self,
         mocoeffs: np.ndarray,
         moenergies: np.ndarray,
-        occupations: np.ndarray,
+        occupations: Occupations,
         *,
         inv_func: Optional[Callable[[np.ndarray], np.ndarray]] = None,
     ) -> None:
@@ -565,7 +566,7 @@ class ExactInv(ExactLineqSolver):
 
 class ExactInvCholesky(ExactLineqSolver):
     def __init__(
-        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: np.ndarray
+        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: Occupations
     ) -> None:
         super().__init__(mocoeffs, moenergies, occupations)
 
@@ -608,7 +609,7 @@ class IterativeLinEqSolver(LineqSolver):
         self,
         mocoeffs: np.ndarray,
         moenergies: np.ndarray,
-        occupations: np.ndarray,
+        occupations: Occupations,
         jk_generator: JK,
         *,
         maxiter: int = 40,
@@ -718,7 +719,7 @@ class EigSolver(Solver, ABC):
     """Base class for all solvers of the type $AX = 0$ (eigensolvers)."""
 
     def __init__(
-        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: np.ndarray
+        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: Occupations
     ) -> None:
         super().__init__(mocoeffs, moenergies, occupations)
 
@@ -736,7 +737,7 @@ class EigSolverTDA(EigSolver, ABC):
     """
 
     def __init__(
-        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: np.ndarray
+        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: Occupations
     ) -> None:
         super().__init__(mocoeffs, moenergies, occupations)
 
@@ -747,7 +748,7 @@ class ExactDiagonalizationSolver(EigSolver):
     """
 
     def __init__(
-        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: np.ndarray
+        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: Occupations
     ) -> None:
         super().__init__(mocoeffs, moenergies, occupations)
 
@@ -858,7 +859,7 @@ class ExactDiagonalizationSolverTDA(ExactDiagonalizationSolver, EigSolverTDA):
     """
 
     def __init__(
-        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: np.ndarray
+        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: Occupations
     ) -> None:
         super().__init__(mocoeffs, moenergies, occupations)
 
