@@ -30,13 +30,15 @@ class Integrals(ABC):
     def __init__(self) -> None:
         pass
 
-    def integrals(self, label: IntegralLabel) -> np.ndarray:
-        if label is None:
-            raise RuntimeError
+    def integrals(
+        self, label: IntegralLabel
+    ) -> np.ndarray[tuple[int, int, int], np.dtype[np.floating]]:
         return self._compute(label)
 
     @abstractmethod
-    def _compute(self, label: IntegralLabel) -> np.ndarray:
+    def _compute(
+        self, label: IntegralLabel
+    ) -> np.ndarray[tuple[int, int, int], np.dtype[np.floating]]:
         """Compute the integrals of some operator using some implementation."""
 
 
@@ -49,13 +51,23 @@ class JK(ABC):
         pass
 
     @abstractmethod
-    def compute_from_density(self, D: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    def compute_from_density(
+        self, D: np.ndarray
+    ) -> tuple[
+        np.ndarray[tuple[int, int], np.dtype[np.floating]],
+        np.ndarray[tuple[int, int], np.dtype[np.floating]],
+    ]:
         """Compute J and K from some density."""
 
     @abstractmethod
     def compute_from_mocoeffs(
-        self, C_left: np.ndarray, C_right: Optional[np.ndarray] = None
-    ) -> tuple[np.ndarray, np.ndarray]:
+        self,
+        C_left: np.ndarray[tuple[int, int], np.dtype[np.floating]],
+        C_right: Optional[np.ndarray[tuple[int, int], np.dtype[np.floating]]] = None,
+    ) -> tuple[
+        np.ndarray[tuple[int, int], np.dtype[np.floating]],
+        np.ndarray[tuple[int, int], np.dtype[np.floating]],
+    ]:
         """Compute J and K from MO coefficients."""
 
 
@@ -108,7 +120,6 @@ def parse_aoproper(integralfilename: str) -> Mapping[str, Any]:
             # top: b'1 A  15 ANTISYMMXDIPVEL  \x00\x00\x00\xa8\x00\x00\x00'
             # end: b'\xa8\x00\x00\x00 \x00\x00\x00' -> (168, 32)
             integrals_as_bytes = record[32:-8]
-            # pylint: disable=no-member
             integrals_tril = np.fromstring(integrals_as_bytes, dtype=np.double)
             # positive solution to x = n*(n+1)/2
             nbasis = int(0.5 * (-1 + np.sqrt(1 + (8 * len(integrals_tril)))))

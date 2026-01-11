@@ -191,7 +191,6 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_small
             tr = tr1 + tr2 + tr3 + tr4 + tr5 + tr6
             hyperpolarizability[r, a] = -2 * (tl - tr)
 
-    # pylint: disable=C0326
     ref = np.array(
         [
             [0.00000000, 0.00000000, 0.18268574],
@@ -471,7 +470,6 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_large
             tr = tr1 + tr2 + tr3 + tr4 + tr5 + tr6
             hyperpolarizability[r, a] = -2 * (tl - tr)
 
-    # pylint: disable=C0326
     ref = np.array(
         [
             [0.00000000, 0.00000000, 1.92505358],
@@ -731,7 +729,6 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_large
 #             tr = tr1 + tr2 + tr3 + tr4 + tr5 + tr6
 #             hyperpolarizability[r, a] = -2 * (tl - tr)
 
-#     # pylint: disable=C0326
 #     ref = np.array([
 #         [0.00000000,   0.00000000,  0.18268574],
 #         [0.00000000,   0.00000000, -9.93851928],

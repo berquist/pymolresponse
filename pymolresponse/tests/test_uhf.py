@@ -134,7 +134,6 @@ def test_explicit_uhf_from_rhf_outside_solver() -> None:
     print(res_u)
 
 
-# pylint: disable=bad-whitespace
 ref_water_cation_UHF_HF_STO3G = np.array(
     [
         [6.1406370, 0.0000000, 0.0000000],

@@ -19,8 +19,8 @@ def test_final_result_rhf_h2o_sto3g_rpa_singlet() -> None:
     hamiltonian = Hamiltonian.RPA
     spin = Spin.singlet
 
-    C = utils.fix_mocoeffs_shape(utils.np_load(REFDIR / "C.npz"))
-    E = utils.fix_moenergies_shape(utils.np_load(REFDIR / "F_MO.npz"))
+    C = utils.fix_mocoeffs_shape(utils.np_load_2(REFDIR / "C.npz"))
+    E = utils.fix_moenergies_shape(utils.np_load_2(REFDIR / "F_MO.npz"))
     TEI_MO = utils.np_load(REFDIR / "TEI_MO.npz")
     # nocc_alph, nvirt_alph, nocc_beta, nvirt_beta
     occupations = np.asarray([5, 2, 5, 2], dtype=int)
@@ -104,8 +104,8 @@ def test_final_result_rhf_h2o_sto3g_rpa_triplet() -> None:
     hamiltonian = Hamiltonian.RPA
     spin = Spin.triplet
 
-    C = utils.fix_mocoeffs_shape(utils.np_load(REFDIR / "C.npz"))
-    E = utils.fix_moenergies_shape(utils.np_load(REFDIR / "F_MO.npz"))
+    C = utils.fix_mocoeffs_shape(utils.np_load_2(REFDIR / "C.npz"))
+    E = utils.fix_moenergies_shape(utils.np_load_2(REFDIR / "F_MO.npz"))
     TEI_MO = utils.np_load(REFDIR / "TEI_MO.npz")
     # nocc_alph, nvirt_alph, nocc_beta, nvirt_beta
     occupations = np.asarray([5, 2, 5, 2], dtype=int)
@@ -189,8 +189,8 @@ def test_final_result_rhf_h2o_sto3g_tda_singlet() -> None:
     hamiltonian = Hamiltonian.TDA
     spin = Spin.singlet
 
-    C = utils.fix_mocoeffs_shape(utils.np_load(REFDIR / "C.npz"))
-    E = utils.fix_moenergies_shape(utils.np_load(REFDIR / "F_MO.npz"))
+    C = utils.fix_mocoeffs_shape(utils.np_load_2(REFDIR / "C.npz"))
+    E = utils.fix_moenergies_shape(utils.np_load_2(REFDIR / "F_MO.npz"))
     TEI_MO = utils.np_load(REFDIR / "TEI_MO.npz")
     # nocc_alph, nvirt_alph, nocc_beta, nvirt_beta
     occupations = np.asarray([5, 2, 5, 2], dtype=int)
@@ -272,8 +272,8 @@ def test_final_result_rhf_h2o_sto3g_tda_triplet() -> None:
     hamiltonian = Hamiltonian.TDA
     spin = Spin.triplet
 
-    C = utils.fix_mocoeffs_shape(utils.np_load(REFDIR / "C.npz"))
-    E = utils.fix_moenergies_shape(utils.np_load(REFDIR / "F_MO.npz"))
+    C = utils.fix_mocoeffs_shape(utils.np_load_2(REFDIR / "C.npz"))
+    E = utils.fix_moenergies_shape(utils.np_load_2(REFDIR / "F_MO.npz"))
     TEI_MO = utils.np_load(REFDIR / "TEI_MO.npz")
     # nocc_alph, nvirt_alph, nocc_beta, nvirt_beta
     occupations = np.asarray([5, 2, 5, 2], dtype=int)

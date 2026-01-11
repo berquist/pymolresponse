@@ -351,7 +351,6 @@ def test_geometric_hessian_rhf_outside_solver_psi4numpy() -> None:
     Mat.name = " TOTAL HESSIAN"
     Mat.print_out()
 
-    # pylint: disable=bad-whitespace
     H_psi4 = psi4.core.Matrix.from_list(
         [
             [
@@ -748,7 +747,6 @@ def test_geometric_hessian_rhf_outside_solver_chemists() -> None:
     Mat.name = " TOTAL HESSIAN"
     Mat.print_out()
 
-    # pylint: disable=bad-whitespace
     H_psi4 = psi4.core.Matrix.from_list(
         [
             [
@@ -957,8 +955,6 @@ def test_geometric_hessian_rhf_right_hand_side() -> None:
     for k in B_func:
         np.testing.assert_allclose(B_func[k], B[k], rtol=0, atol=1.0e-12)
 
-    return B_func
-
 
 def test_atomic_polar_tensor_rhf() -> None:
     mol = molecules.molecule_physicists_water_sto3g()
@@ -977,7 +973,7 @@ def test_atomic_polar_tensor_rhf() -> None:
     E = moenergies_from_psi4wfn(wfn)
     occupations = occupations_from_psi4wfn(wfn)
     nocc, nvir, _, _ = occupations
-    norb = nocc + nvir
+    norb = nocc + nvir  # noqa: F841
 
     # electric perturbation part
     ao2mo = AO2MO(C, occupations, I=np.asarray(mints.ao_eri()))
@@ -1027,5 +1023,3 @@ def test_atomic_polar_tensor_rhf() -> None:
     Z = np.asarray([mol.Z(i) for i in range(natom)])
     nuclear_contrib = np.concatenate([np.diag(Z.take(3 * [i])) for i in range(natom)])
     print(nuclear_contrib)
-
-    return locals()

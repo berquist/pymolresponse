@@ -135,7 +135,6 @@ def test_first_hyperpolarizability_static_rhf_wigner_explicit() -> None:
             tr = tr1 + tr2 + tr3 + tr4 + tr5 + tr6
             hyperpolarizability[r, a] = 2 * (tl - tr)
 
-    # pylint: disable=C0326
     ref = np.array(
         [
             [-8.86822254, 0.90192130, -0.50796586],
@@ -380,7 +379,6 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit() -> None:
             tr = tr1 + tr2 + tr3 + tr4 + tr5 + tr6
             hyperpolarizability[r, a] = -2 * (tl - tr)
 
-    # pylint: disable=C0326
     ref = np.array(
         [
             [-9.36569537, 0.95027236, -0.53517712],
@@ -664,7 +662,6 @@ def test_first_hyperpolarizability_eope_rhf_wigner_explicit() -> None:
             tr = tr1 + tr2 + tr3 + tr4 + tr5 + tr6
             hyperpolarizability[r, a] = -2 * (tl - tr)
 
-    # pylint: disable=C0326
     ref = np.array(
         [
             [-9.02854579, 0.92021130, -0.51824440],
@@ -868,7 +865,6 @@ def test_first_hyperpolarizability_or_rhf_wigner_explicit() -> None:
             tr = tr1 + tr2 + tr3 + tr4 + tr5 + tr6
             hyperpolarizability[r, a] = -2 * (tl - tr)
 
-    # pylint: disable=C0326
     ref = np.array(
         [
             [-9.02854579, 0.92998934, -0.52377445],
@@ -1064,7 +1060,6 @@ def test_first_hyperpolarizability_or_rhf_wigner_explicit() -> None:
 #             tr = tr1 + tr2 + tr3 + tr4 + tr5 + tr6
 #             hyperpolarizability[r, a] = -2 * (tl - tr)
 
-#     # pylint: disable=C0326
 
 #     print('hyperpolarizability: (-{}; {}, {}), symmetry-unique components'.format(f1 + f2, f1, f2))
 #     print(hyperpolarizability)

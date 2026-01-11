@@ -3,7 +3,7 @@ from typing import Optional
 import numpy as np
 import scipy.constants as spc
 
-from pymolresponse.utils import fix_mocoeffs_shape, repack_matrix_to_vector
+from pymolresponse.utils import DirtyMocoeffs, fix_mocoeffs_shape, repack_matrix_to_vector
 
 
 class Operator:
@@ -46,7 +46,9 @@ class Operator:
     def calculate_ao_integrals(self) -> None:
         pass
 
-    def form_rhs(self, C: np.ndarray, occupations: np.ndarray) -> None:
+    def form_rhs(
+        self, C: np.ndarray[tuple[int, int, int], np.dtype[np.floating]], occupations: np.ndarray
+    ) -> None:
         """Form the right-hand side for CPHF."""
         assert isinstance(self.ao_integrals, np.ndarray)
         if len(C.shape) == 2:
@@ -68,7 +70,6 @@ class Operator:
         operator_ai_supervector_beta = []
         # Loop over the operator components (usually multiple
         # Cartesian directions).
-        # pylint: disable=no-member
         for idx in range(self.ao_integrals.shape[0]):
             operator_component_ai_alph = np.dot(
                 C_alph[:, nocc_alph:].T, np.dot(self.ao_integrals[idx], C_alph[:, :nocc_alph])
@@ -114,7 +115,7 @@ class Operator:
 
     def form_rhs_geometric(
         self,
-        C: np.ndarray,
+        C: DirtyMocoeffs,
         occupations: np.ndarray,
         natoms: int,
         MO_full,
@@ -132,7 +133,6 @@ class Operator:
         B_vectors = [repack_matrix_to_vector(B)[:, np.newaxis] for B in B_matrices]
         mo_integrals_ai_alph = np.stack(B_vectors)
         self.mo_integrals_ai_alph = mo_integrals_ai_alph
-        # pylint: disable=invalid-unary-operand-type
         self.mo_integrals_ai_supervector_alph = np.concatenate(
             (mo_integrals_ai_alph, -mo_integrals_ai_alph), axis=1
         )

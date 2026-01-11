@@ -64,7 +64,6 @@ class AO2MOpyscf(AO2MO):
         ).reshape(norb, norb, norb, norb)
         self.tei_mo = (tei_mo_aaaa, tei_mo_aabb, tei_mo_bbaa, tei_mo_bbbb)
 
-    # pylint: disable=too-many-locals
     def perform_uhf_partial(self) -> None:
         nocc_a, nvirt_a, nocc_b, nvirt_b = self.occupations
         C_occ_alph = self.C[0, :, :nocc_a]
