@@ -23,7 +23,7 @@ def test_HF_both_singlet_HF_STO3G() -> None:
     occupations = occupations_from_pyscf_mol(mol, C)
     solver_tda = solvers.ExactDiagonalizationSolverTDA(C, E, occupations)
     solver_tdhf = solvers.ExactDiagonalizationSolver(C, E, occupations)
-    ao2mo = AO2MOpyscf(C, mol.verbose, mol)
+    ao2mo = AO2MOpyscf(C, mol)
     ao2mo.perform_rhf_partial()
     tei_mo = ao2mo.tei_mo
     solver_tda.tei_mo = tei_mo
@@ -111,7 +111,7 @@ HF_neutral_singlet_HF_STO3G_RPA_qchem = {
 #     occupations = occupations_from_pyscf_mol(mol, C)
 #     solver_tda = solvers.ExactDiagonalizationSolverTDA(C, E, occupations)
 #     # TODO i thought this was part of the solver interface
-#     ao2mo = AO2MOpyscf(C, mol.verbose, mol)
+#     ao2mo = AO2MOpyscf(C, mol)
 #     ao2mo.perform_uhf_partial()
 #     tei_mo = ao2mo.tei_mo
 #     solver_tda.tei_mo = tei_mo

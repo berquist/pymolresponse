@@ -2,29 +2,31 @@
 using pyscf.
 """
 
-from typing import Any, Optional
-
-import numpy as np
+from typing import TYPE_CHECKING
 
 from pyscf.ao2mo import full, general
 
 from pymolresponse.ao2mo import AO2MO
 from pymolresponse.interfaces.pyscf.utils import occupations_from_pyscf_mol
+from pymolresponse.utils import DirtyMocoeffs
+
+if TYPE_CHECKING:
+    from pyscf.gto.mole import Mole
 
 
 class AO2MOpyscf(AO2MO):
     """Perform AO-to-MO transformations using pyscf."""
 
     # TODO what does the pyscf compact kwarg do?
-    def __init__(self, C: np.ndarray, verbose: int = 1, pyscfmol: Optional[Any] = None) -> None:
+    def __init__(self, C: DirtyMocoeffs, pyscfmol: "Mole") -> None:
         self.pyscfmol = pyscfmol
         occupations = occupations_from_pyscf_mol(self.pyscfmol, C)
-        super().__init__(C, occupations, verbose, I=None)
+        super().__init__(C, occupations, I=None)
 
     def perform_rhf_full(self) -> None:
         norb = self.C.shape[-1]
         tei_mo = full(
-            self.pyscfmol, self.C[0], aosym="s4", compact=False, verbose=self.verbose
+            self.pyscfmol, self.C[0], aosym="s4", compact=False, verbose=self.pyscfmol.verbose
         ).reshape(norb, norb, norb, norb)
         self.tei_mo = (tei_mo,)
 
@@ -35,10 +37,10 @@ class AO2MOpyscf(AO2MO):
         C_ovov = (C_occ, C_virt, C_occ, C_virt)
         C_oovv = (C_occ, C_occ, C_virt, C_virt)
         tei_mo_ovov = general(
-            self.pyscfmol, C_ovov, aosym="s4", compact=False, verbose=self.verbose
+            self.pyscfmol, C_ovov, aosym="s4", compact=False, verbose=self.pyscfmol.verbose
         ).reshape(nocc_a, nvirt_a, nocc_a, nvirt_a)
         tei_mo_oovv = general(
-            self.pyscfmol, C_oovv, aosym="s4", compact=False, verbose=self.verbose
+            self.pyscfmol, C_oovv, aosym="s4", compact=False, verbose=self.pyscfmol.verbose
         ).reshape(nocc_a, nocc_a, nvirt_a, nvirt_a)
         self.tei_mo = (tei_mo_ovov, tei_mo_oovv)
 
@@ -51,16 +53,16 @@ class AO2MOpyscf(AO2MO):
         C_bbaa = (C_b, C_b, C_a, C_a)
         C_bbbb = (C_b, C_b, C_b, C_b)
         tei_mo_aaaa = general(
-            self.pyscfmol, C_aaaa, aosym="s4", compact=False, verbose=self.verbose
+            self.pyscfmol, C_aaaa, aosym="s4", compact=False, verbose=self.pyscfmol.verbose
         ).reshape(norb, norb, norb, norb)
         tei_mo_aabb = general(
-            self.pyscfmol, C_aabb, aosym="s4", compact=False, verbose=self.verbose
+            self.pyscfmol, C_aabb, aosym="s4", compact=False, verbose=self.pyscfmol.verbose
         ).reshape(norb, norb, norb, norb)
         tei_mo_bbaa = general(
-            self.pyscfmol, C_bbaa, aosym="s4", compact=False, verbose=self.verbose
+            self.pyscfmol, C_bbaa, aosym="s4", compact=False, verbose=self.pyscfmol.verbose
         ).reshape(norb, norb, norb, norb)
         tei_mo_bbbb = general(
-            self.pyscfmol, C_bbbb, aosym="s4", compact=False, verbose=self.verbose
+            self.pyscfmol, C_bbbb, aosym="s4", compact=False, verbose=self.pyscfmol.verbose
         ).reshape(norb, norb, norb, norb)
         self.tei_mo = (tei_mo_aaaa, tei_mo_aabb, tei_mo_bbaa, tei_mo_bbbb)
 
@@ -78,22 +80,22 @@ class AO2MOpyscf(AO2MO):
         C_oovv_bbbb = (C_occ_beta, C_occ_beta, C_virt_beta, C_virt_beta)
 
         tei_mo_ovov_aaaa = general(
-            self.pyscfmol, C_ovov_aaaa, aosym="s4", compact=False, verbose=self.verbose
+            self.pyscfmol, C_ovov_aaaa, aosym="s4", compact=False, verbose=self.pyscfmol.verbose
         ).reshape(nocc_a, nvirt_a, nocc_a, nvirt_a)
         tei_mo_ovov_aabb = general(
-            self.pyscfmol, C_ovov_aabb, aosym="s4", compact=False, verbose=self.verbose
+            self.pyscfmol, C_ovov_aabb, aosym="s4", compact=False, verbose=self.pyscfmol.verbose
         ).reshape(nocc_a, nvirt_a, nocc_b, nvirt_b)
         tei_mo_ovov_bbaa = general(
-            self.pyscfmol, C_ovov_bbaa, aosym="s4", compact=False, verbose=self.verbose
+            self.pyscfmol, C_ovov_bbaa, aosym="s4", compact=False, verbose=self.pyscfmol.verbose
         ).reshape(nocc_b, nvirt_b, nocc_a, nvirt_a)
         tei_mo_ovov_bbbb = general(
-            self.pyscfmol, C_ovov_bbbb, aosym="s4", compact=False, verbose=self.verbose
+            self.pyscfmol, C_ovov_bbbb, aosym="s4", compact=False, verbose=self.pyscfmol.verbose
         ).reshape(nocc_b, nvirt_b, nocc_b, nvirt_b)
         tei_mo_oovv_aaaa = general(
-            self.pyscfmol, C_oovv_aaaa, aosym="s4", compact=False, verbose=self.verbose
+            self.pyscfmol, C_oovv_aaaa, aosym="s4", compact=False, verbose=self.pyscfmol.verbose
         ).reshape(nocc_a, nocc_a, nvirt_a, nvirt_a)
         tei_mo_oovv_bbbb = general(
-            self.pyscfmol, C_oovv_bbbb, aosym="s4", compact=False, verbose=self.verbose
+            self.pyscfmol, C_oovv_bbbb, aosym="s4", compact=False, verbose=self.pyscfmol.verbose
         ).reshape(nocc_b, nocc_b, nvirt_b, nvirt_b)
         self.tei_mo = (
             tei_mo_ovov_aaaa,
