@@ -30,12 +30,9 @@ class ECD(TransitionProperty):
         moenergies: np.ndarray,
         occupations: "Occupations",
         *,
-        do_tda: bool = False,
         do_dipvel: bool = False,
     ) -> None:
-        super().__init__(
-            program, program_obj, driver, mocoeffs, moenergies, occupations, do_tda=do_tda
-        )
+        super().__init__(program, program_obj, driver, mocoeffs, moenergies, occupations)
         self.do_dipvel = do_dipvel
 
     def form_operators(self) -> None:
