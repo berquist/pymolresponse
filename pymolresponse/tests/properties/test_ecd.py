@@ -164,7 +164,8 @@ BC2H4_cation_HF_STO3G_TDA_singlet_orca: ECDReference = {
 }
 
 
-def test_ECD_TDA_singlet_BC2H4_cation_HF_STO3G() -> None:
+def test_ECD_TDA_from_TDHF_singlet_BC2H4_cation_HF_STO3G() -> None:
+    """Perform ECD within the TDA using the TDHF solver."""
     ref = BC2H4_cation_HF_STO3G_TDA_singlet_orca
     nroots = ref["nroots"]
 
@@ -248,6 +249,54 @@ def test_ECD_TDA_singlet_BC2H4_cation_HF_STO3G() -> None:
     # print(ecd_dipvel_tda.print_results_nwchem())
     # print(ecd_dipvel_tda.print_results_orca())
     # print(ecd_dipvel_tda.print_results_qchem())
+
+
+def test_ECD_TDA_singlet_BC2H4_cation_HF_STO3G() -> None:
+    """Perform ECD within the TDA using the TDA solver.
+
+    Instead of comparing against a reference, perform TDA using the TDHF
+    solver.
+    """
+
+    mol = molecules.molecule_bc2h4_cation_sto3g()
+    mol.build()
+
+    mf = pyscf.scf.RHF(mol)
+    mf.scf()
+
+    C = utils.fix_mocoeffs_shape(mf.mo_coeff)
+    E = utils.fix_moenergies_shape(mf.mo_energy)
+    occupations = occupations_from_pyscf_mol(mol, C)
+
+    ecd_dipvel_from_tdhf = ecd.ECD(
+        Program.PySCF,
+        mol,
+        td.TDHF(solvers.ExactDiagonalizationSolver(C, E, occupations)),
+        C,
+        E,
+        occupations,
+        do_dipvel=True,
+    )
+    ecd_dipvel_from_tdhf.form_operators()
+    ecd_dipvel_from_tdhf.run(hamiltonian=Hamiltonian.TDA, spin=Spin.singlet)
+    ecd_dipvel_from_tdhf.form_results()
+
+    ecd_dipvel_from_tda = ecd.ECD(
+        Program.PySCF,
+        mol,
+        td.TDA(solvers.ExactDiagonalizationSolverTDA(C, E, occupations)),
+        C,
+        E,
+        occupations,
+        do_dipvel=True,
+    )
+    ecd_dipvel_from_tda.form_operators()
+    ecd_dipvel_from_tda.run(hamiltonian=Hamiltonian.TDA, spin=Spin.singlet)
+    ecd_dipvel_from_tda.form_results()
+
+    res_etenergies_tdhf = ecd_dipvel_from_tdhf.driver.solver.eigvals
+    res_etenergies_tda = ecd_dipvel_from_tda.driver.solver.eigvals
+    np.testing.assert_allclose(actual=res_etenergies_tda, desired=res_etenergies_tdhf, rtol=1.0e-13)
 
 
 def test_ECD_RPA_singlet_BC2H4_cation_HF_STO3G() -> None:

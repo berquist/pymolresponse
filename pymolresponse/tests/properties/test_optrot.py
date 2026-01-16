@@ -230,7 +230,7 @@ def test_ORD_RPA_singlet_BC2H4_cation_HF_STO3G() -> None:
             assert (abs_diff < thresh).all()
 
     # from ecd import ECD
-    # ecd = ECD(pyscfmol, C, E, occupations, do_dipvel=True, do_tda=False)
+    # ecd = ECD(pyscfmol, C, E, occupations, do_dipvel=True)
     # ecd.run()
     # ecd.form_results()
     # ord_solver.form_operators()

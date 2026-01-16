@@ -95,14 +95,7 @@ class TransitionProperty(MolecularProperty, ABC):
         mocoeffs: np.ndarray,
         moenergies: np.ndarray,
         occupations: "Occupations",
-        *,
-        do_tda: bool = False,
     ):
-        assert isinstance(do_tda, bool)
-        # FIXME this doesn't do anything as long as the driver is a required
-        # argument and TDA can be passed in instead of TDHF.
-        self.do_tda = do_tda
-
         super().__init__(program, program_obj, driver, mocoeffs, moenergies, occupations)
 
     @abstractmethod
