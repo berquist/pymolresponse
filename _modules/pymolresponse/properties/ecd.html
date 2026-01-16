@@ -103,12 +103,9 @@
         <span class="n">moenergies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
         <span class="n">occupations</span><span class="p">:</span> <span class="s2">&quot;Occupations&quot;</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
-        <span class="n">do_tda</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">do_dipvel</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">program</span><span class="p">,</span> <span class="n">program_obj</span><span class="p">,</span> <span class="n">driver</span><span class="p">,</span> <span class="n">mocoeffs</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">,</span> <span class="n">occupations</span><span class="p">,</span> <span class="n">do_tda</span><span class="o">=</span><span class="n">do_tda</span>
-        <span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="n">program_obj</span><span class="p">,</span> <span class="n">driver</span><span class="p">,</span> <span class="n">mocoeffs</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">,</span> <span class="n">occupations</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">do_dipvel</span> <span class="o">=</span> <span class="n">do_dipvel</span>
 
 <div class="viewcode-block" id="ECD.form_operators">
