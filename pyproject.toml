@@ -115,6 +115,7 @@ skip-magic-trailing-comma = true
 
 [tool.ruff.lint]
 extend-select = [
+    "D", # pydocstyle
     "FURB", # refurb
     "I", # isort
     "ICN", # flake8-import-conventions
@@ -161,6 +162,9 @@ section-order = [
 attrs = ["attr"]
 chemistry-calculators = ["psi4", "pyscf"]
 chemistry-utils = ["cclib", "daltools"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
 
 [tool.versioningit.format]
 method = {module = "versioningit_override", value = "pymolresponse_format", module-dir = "tools"}
