@@ -115,6 +115,7 @@ skip-magic-trailing-comma = true
 
 [tool.ruff.lint]
 extend-select = [
+    "D", # pydocstyle
     "FURB", # refurb
     "N", # pep8-naming
     "NPY", # NumPy-specific rules
@@ -148,6 +149,9 @@ section-order = ["future", "standard-library", "attrs", "third-party", "chemistr
 [tool.ruff.lint.isort.sections]
 "attrs" = ["attr"]
 "chemistry" = ["psi4", "pyscf"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
 
 [tool.versioningit.format]
 method = {module = "versioningit_override", value = "pymolresponse_format", module-dir = "tools"}
