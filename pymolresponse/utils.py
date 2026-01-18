@@ -318,7 +318,10 @@ def tensor_printer(
     return eigvals, iso, aniso
 
 
-def form_vec_energy_differences(moene_occ: np.ndarray, moene_virt: np.ndarray) -> np.ndarray:
+def form_vec_energy_differences(
+    moene_occ: np.ndarray[tuple[int], np.dtype[np.floating]],
+    moene_virt: np.ndarray[tuple[int], np.dtype[np.floating]],
+) -> np.ndarray[tuple[int], np.dtype[np.floating]]:
     """Form a vector of virtual-occupied MO energy differences.
 
     In the compound-indexed result vector, the virtual index is fast and the
