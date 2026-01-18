@@ -114,6 +114,15 @@ line-length = 100
 skip-magic-trailing-comma = true
 
 [tool.ruff.lint]
+extend-select = [
+    "N", # pep8-naming
+]
+ignore = [
+    "N802", # keep abbreviations obvious
+    "N803", # matrix-valued arguments are usually uppercase
+    "N806", # matrix-valued variables are usually uppercase
+    "N816", # FIXME
+]
 
 [tool.ruff.lint.isort]
 lines-after-imports = 2
