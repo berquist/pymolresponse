@@ -352,7 +352,6 @@ def matsym(amat: np.ndarray[tuple[int, int], np.dtype[np.number]], thrzer: float
         - 3 if all elements are below `thrzer`
         - 0 otherwise (the matrix is unsymmetric about the diagonal)
     """
-
     assert amat.shape[0] == amat.shape[1]
 
     n = amat.shape[0]

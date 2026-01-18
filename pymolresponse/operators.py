@@ -13,7 +13,8 @@ if TYPE_CHECKING:
 class Operator:
     """Handle property integrals, taking them from the AO basis to a
     representation of a right-hand side perturbation for CPHF or
-    transition properties."""
+    transition properties.
+    """
 
     def __init__(
         self,

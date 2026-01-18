@@ -1,5 +1,6 @@
 """Drivers for solving the time-dependent Hartree-Fock (TDHF)
-equations."""
+equations.
+"""
 
 from typing import Any, Optional
 

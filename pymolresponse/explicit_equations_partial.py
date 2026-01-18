@@ -17,7 +17,6 @@ def form_rpa_a_matrix_mo_singlet_partial(
     \left<aj|bi\right> = [ai|jb] - [ab|ji] = 2(ai|jb) - (ab|ji)`. It
     also includes the virt-occ energy difference on the diagonal.
     """
-
     shape_iajb = TEI_MO_iajb.shape
     shape_ijab = TEI_MO_ijab.shape
     assert len(shape_iajb) == len(shape_ijab) == 4
@@ -51,7 +50,6 @@ def form_rpa_a_matrix_mo_triplet_partial(
     \left<aj|bi\right> = - [ab|ji] = - (ab|ji)`. It also includes the
     virt-occ energy difference on the diagonal.
     """
-
     shape_ijab = TEI_MO_ijab.shape
     assert len(shape_ijab) == 4
     assert shape_ijab[0] == shape_ijab[1]
@@ -83,7 +81,6 @@ def form_rpa_b_matrix_mo_singlet_partial(
     :math:`\left<ab||ij\right> = \left<ab|ij\right> -
     \left<ab|ji\right> = [ai|bj] - [aj|bi] = 2(ai|bj) - (aj|bi)`.
     """
-
     shape_iajb = TEI_MO_iajb.shape
     assert len(shape_iajb) == 4
     assert shape_iajb[0] == shape_iajb[2]
@@ -106,7 +103,6 @@ def form_rpa_b_matrix_mo_triplet_partial(
 
     The equation for element :math:`\{ia,jb\}` is :math:`????`.
     """
-
     shape_iajb = TEI_MO_iajb.shape
     assert len(shape_iajb) == 4
     assert shape_iajb[0] == shape_iajb[2]
@@ -132,7 +128,6 @@ def form_rpa_a_matrix_mo_singlet_ss_partial(
 
     The equation for element :math:`\{ia,jb\}` is :math:`????`.
     """
-
     shape_iajb = TEI_MO_iajb.shape
     shape_ijab = TEI_MO_ijab.shape
     assert len(shape_iajb) == len(shape_ijab) == 4
@@ -164,7 +159,6 @@ def form_rpa_a_matrix_mo_singlet_os_partial(
 
     The equation for element :math:`\{ia,jb\}` is :math:`????`.
     """
-
     shape = TEI_MO_iajb_xxyy.shape
     assert len(shape) == 4
     nocc_x, nvirt_x, nocc_y, nvirt_y = shape
@@ -185,7 +179,6 @@ def form_rpa_b_matrix_mo_singlet_ss_partial(
 
     The equation for element :math:`\{ia,jb\}` is :math:`????`.
     """
-
     shape_iajb = TEI_MO_iajb.shape
     assert len(shape_iajb) == 4
     assert shape_iajb[0] == shape_iajb[2]
@@ -209,7 +202,6 @@ def form_rpa_b_matrix_mo_singlet_os_partial(
 
     The equation for element :math:`\{ia,jb\}` is :math:`????`.
     """
-
     shape = TEI_MO_iajb_xxyy.shape
     assert len(shape) == 4
     nocc_x, nvirt_x, nocc_y, nvirt_y = shape

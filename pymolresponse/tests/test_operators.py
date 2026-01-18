@@ -6,7 +6,6 @@ def test_dalton_label_to_operator() -> None:
     1. Operator attributes are properly set based on a DALTON label, and that
     2. __str__ is correct
     """
-
     operator = run_dalton_label_to_operator("zdiplen", "dipole", 2, False, False)
     assert (
         operator.__str__()
