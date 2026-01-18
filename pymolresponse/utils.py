@@ -109,6 +109,19 @@ def get_reference_value_from_file(
 def read_file_occupations(
     filename: Union[Path, str],
 ) -> np.ndarray[tuple[int], np.dtype[np.integer]]:
+    """Read molecular orbital occupations from a file.
+
+    The file should contain a single line of four integers
+    - number of occupied alpha orbitals
+    - number of unoccupied (virtual) alpha orbitals
+    - number of occupied beta orbitals
+    - number of unoccupied (virtual) beta orbitals
+    which are parsed and returned in an array in the same order.
+
+    The file makes no distinction about whether or not they come from a
+    restricted calculation, in which case the alpha and beta values will be
+    identical.
+    """
     with open(filename) as fh:
         contents = fh.read().strip()
     tokens = contents.split()
