@@ -319,6 +319,11 @@ def tensor_printer(
 
 
 def form_vec_energy_differences(moene_occ: np.ndarray, moene_virt: np.ndarray) -> np.ndarray:
+    """Form a vector of virtual-occupied MO energy differences.
+
+    In the compound-indexed result vector, the virtual index is fast and the
+    occupied index is slow.
+    """
     nocc = moene_occ.shape[0]
     nvirt = moene_virt.shape[0]
     nov = nocc * nvirt
@@ -337,8 +342,9 @@ def form_vec_energy_differences(moene_occ: np.ndarray, moene_virt: np.ndarray) -
 def screen(
     mat: np.ndarray[tuple[int, ...], np.dtype[np.number]], thresh: float = 1.0e-16
 ) -> np.ndarray[tuple[int, ...], np.dtype[np.number]]:
-    """Set all values smaller than the given threshold to zero
-    (considering them as numerical noise).
+    """Set all values smaller than the threshold to zero.
+
+    This function makes a copy of mat and does not modify it in-place.
 
     Parameters
     ----------
@@ -357,7 +363,8 @@ def screen(
 
 
 def matsym(amat: np.ndarray[tuple[int, int], np.dtype[np.number]], thrzer: float = 1.0e-14) -> int:
-    """
+    """Determine matrix symmetry.
+
     - Copied from ``DALTON/gp/gphjj.F/MATSYM``.
     - `thrzer` taken from ``DALTON/include/thrzer.h``.
 
@@ -399,8 +406,9 @@ def matsym(amat: np.ndarray[tuple[int, int], np.dtype[np.number]], thrzer: float
 def flip_triangle_sign(
     A: np.ndarray[tuple[int, int], np.dtype[np.number]], triangle: str = "lower"
 ) -> np.ndarray[tuple[int, int], np.dtype[np.number]]:
-    """Flip the sign of either the lower or upper triangle of a square
-    matrix. Assume nothing about its symmetry.
+    """Flip the sign of either the lower or upper triangle of a square matrix.
+
+    Assumes nothing about the input matrix symmetry.
 
     Parameters
     ----------
