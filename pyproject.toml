@@ -115,6 +115,7 @@ skip-magic-trailing-comma = true
 
 [tool.ruff.lint]
 extend-select = [
+    "FURB", # refurb
     "N", # pep8-naming
     "NPY", # NumPy-specific rules
     "PIE", # flake8-pie
