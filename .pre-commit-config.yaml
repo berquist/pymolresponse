@@ -48,12 +48,6 @@ repos:
   #       # not reading pyproject.toml? :(
   #       args:
   #         - "--ignore=D001"
-  # - repo: https://github.com/PyCQA/pydocstyle
-  #   rev: "6.3.0"
-  #   hooks:
-  #     - id: pydocstyle
-  #       additional_dependencies:
-  #         - toml
   # - repo: https://github.com/pre-commit/mirrors-mypy
   #   rev: v1.19.1
   #   hooks:
