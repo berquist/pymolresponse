@@ -119,7 +119,7 @@ extend-select = [
     "NPY", # NumPy-specific rules
     "PIE", # flake8-pie
     "PLE", # pylint: error
-    "PLR17", # pylint: refactor
+    "PLR", # pylint: refactor
     "PT", # flake8-pytest-style
     "S", # flake8-bandit
     "T10", # flake8-debugger
@@ -130,6 +130,11 @@ ignore = [
     "N806", # matrix-valued variables are usually uppercase
     "N816", # FIXME
     "PIE808", # make obvious (orbital window) ranges that start at zero
+    "PLR0912", # TODO "too many branches" is possibly pedantic
+    "PLR0913", # TODO "too many arguments" is possibly pedantic
+    "PLR0915", # TODO "too many statements" is possibly pedantic
+    "PLR2004", # unfortunately magic values appear in defensive programming
+               # assertions
     "S101", # high test coverage and not trying to enforce user contracts
             # makes assert usage ok for defensive programming
 ]
