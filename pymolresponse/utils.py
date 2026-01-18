@@ -47,6 +47,11 @@ def np_load_2(filename: Union[str, Path]) -> np.ndarray[tuple[int, int], np.dtyp
 def parse_int_file_2(
     filename: Union[str, Path], dim: int
 ) -> np.ndarray[tuple[int, int], np.dtype[np.floating]]:
+    """Read a 2-D array from a formatted text file.
+
+    The first two columns are the one-based indices and the third column is
+    the array element.
+    """
     mat = np.zeros(shape=(dim, dim))
     with open(filename) as fh:
         contents = fh.readlines()
@@ -58,10 +63,12 @@ def parse_int_file_2(
 
 
 def repack_matrix_to_vector(mat: np.ndarray) -> np.ndarray:
+    """Convert a matrix to a vector for compound indexing."""
     return np.reshape(mat, -1, order="F")
 
 
 def repack_vector_to_matrix(vec: np.ndarray, shape: tuple[int, ...]) -> np.ndarray:
+    """Convert a vector with an assumed compound index into a dense matrix."""
     return vec.reshape(shape, order="F")
 
 
@@ -263,6 +270,7 @@ def fix_moenergies_shape(
 
 
 def read_dalton_propfile(tmpdir: Path) -> list[str]:
+    """Parse a DALTON.PROP file."""
     proplist = []
     with open(tmpdir / "DALTON.PROP") as propfile:
         proplines = propfile.readlines()
@@ -404,6 +412,7 @@ def flip_triangle_sign(
 def form_first_hyperpolarizability_averages(
     beta: np.ndarray[tuple[int, int, int], np.dtype[np.floating]],
 ) -> tuple[np.ndarray[tuple[int], np.dtype[np.floating]], np.floating]:
+    """Form the relevant averages from a complete (no symmetry) hyperpolarizability tensor."""
     assert beta.shape == (3, 3, 3)
     avgs = (-1 / 3) * (
         np.einsum("ijj->i", beta) + np.einsum("jij->i", beta) + np.einsum("jji->i", beta)
@@ -413,9 +422,11 @@ def form_first_hyperpolarizability_averages(
 
 
 def form_indices_orbwin(nocc: int, nvirt: int) -> list[tuple[int, int]]:
+    """Form all occupied-virtual pairs of indices starting from their absolute position."""
     norb = nocc + nvirt
     return [(i, a) for i in range(0, nocc) for a in range(nocc, norb)]
 
 
 def form_indices_zero(nocc: int, nvirt: int) -> list[tuple[int, int]]:
+    """Form all occupied-virtual pairs of indices, both starting from zero."""
     return [(i, a) for i in range(nocc) for a in range(nvirt)]
