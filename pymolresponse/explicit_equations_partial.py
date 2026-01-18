@@ -10,7 +10,7 @@ def form_rpa_a_matrix_mo_singlet_partial(
     TEI_MO_iajb: np.ndarray[tuple[int, int, int, int], np.dtype[np.floating]],
     TEI_MO_ijab: np.ndarray[tuple[int, int, int, int], np.dtype[np.floating]],
 ) -> np.ndarray[tuple[int, int], np.dtype[np.floating]]:
-    r"""Form the A (CIS) matrix in the MO basis. [singlet]
+    r"""Form the A (CIS) matrix in the MO basis. [singlet].
 
     The equation for element :math:`\{ia,jb\}` is
     :math:`\left<aj||ib\right> = \left<aj|ib\right> -
@@ -44,7 +44,7 @@ def form_rpa_a_matrix_mo_triplet_partial(
     E_MO: np.ndarray[tuple[int, int], np.dtype[np.floating]],
     TEI_MO_ijab: np.ndarray[tuple[int, int, int, int], np.dtype[np.floating]],
 ) -> np.ndarray[tuple[int, int], np.dtype[np.floating]]:
-    r"""Form the A (CIS) matrix in the MO basis. [triplet]
+    r"""Form the A (CIS) matrix in the MO basis. [triplet].
 
     The equation for element :math:`\{ia,jb\}` is :math:`-
     \left<aj|bi\right> = - [ab|ji] = - (ab|ji)`. It also includes the
@@ -75,7 +75,7 @@ def form_rpa_a_matrix_mo_triplet_partial(
 def form_rpa_b_matrix_mo_singlet_partial(
     TEI_MO_iajb: np.ndarray[tuple[int, int, int, int], np.dtype[np.floating]],
 ) -> np.ndarray[tuple[int, int], np.dtype[np.floating]]:
-    r"""Form the B matrix for RPA in the MO basis. [singlet]
+    r"""Form the B matrix for RPA in the MO basis. [singlet].
 
     The equation for element :math:`\{ia,jb\}` is
     :math:`\left<ab||ij\right> = \left<ab|ij\right> -
@@ -99,7 +99,7 @@ def form_rpa_b_matrix_mo_singlet_partial(
 def form_rpa_b_matrix_mo_triplet_partial(
     TEI_MO_iajb: np.ndarray[tuple[int, int, int, int], np.dtype[np.floating]],
 ) -> np.ndarray[tuple[int, int], np.dtype[np.floating]]:
-    r"""Form the B matrix for RPA in the MO basis. [triplet]
+    r"""Form the B matrix for RPA in the MO basis. [triplet].
 
     The equation for element :math:`\{ia,jb\}` is :math:`????`.
     """
@@ -124,7 +124,7 @@ def form_rpa_a_matrix_mo_singlet_ss_partial(
     TEI_MO_ijab: np.ndarray[tuple[int, int, int, int], np.dtype[np.floating]],
 ) -> np.ndarray[tuple[int, int], np.dtype[np.floating]]:
     r"""Form the same-spin part of the A (CIS) matrix in the MO
-    basis. [singlet]
+    basis. [singlet].
 
     The equation for element :math:`\{ia,jb\}` is :math:`????`.
     """
@@ -155,7 +155,7 @@ def form_rpa_a_matrix_mo_singlet_os_partial(
     TEI_MO_iajb_xxyy: np.ndarray[tuple[int, int, int, int], np.dtype[np.floating]],
 ) -> np.ndarray[tuple[int, int], np.dtype[np.floating]]:
     r"""Form the opposite-spin part of the A (CIS) matrix in the MO
-    basis. [singlet]
+    basis. [singlet].
 
     The equation for element :math:`\{ia,jb\}` is :math:`????`.
     """
@@ -175,7 +175,7 @@ def form_rpa_b_matrix_mo_singlet_ss_partial(
     TEI_MO_iajb: np.ndarray[tuple[int, int, int, int], np.dtype[np.floating]],
 ) -> np.ndarray[tuple[int, int], np.dtype[np.floating]]:
     r"""Form the same-spin part of the RPA B matrix in the MO
-    basis. [singlet]
+    basis. [singlet].
 
     The equation for element :math:`\{ia,jb\}` is :math:`????`.
     """
@@ -198,7 +198,7 @@ def form_rpa_b_matrix_mo_singlet_os_partial(
     TEI_MO_iajb_xxyy: np.ndarray[tuple[int, int, int, int], np.dtype[np.floating]],
 ) -> np.ndarray[tuple[int, int], np.dtype[np.floating]]:
     r"""Form the opposite-spin part of the RPA B matrix in the MO
-    basis. [singlet]
+    basis. [singlet].
 
     The equation for element :math:`\{ia,jb\}` is :math:`????`.
     """
