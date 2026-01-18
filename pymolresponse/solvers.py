@@ -39,7 +39,7 @@ np.set_printoptions(precision=5, linewidth=200, suppress=True)
 
 
 class Solver(ABC):
-    """A Solver does all of the TODO
+    """A Solver does all of the TODO.
 
     There are two principal algorithm classes for forming response vectors:
 

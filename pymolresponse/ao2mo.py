@@ -39,9 +39,7 @@ class AO2MO:
         C3: np.ndarray[tuple[int, int], np.dtype[np.floating]],
         C4: np.ndarray[tuple[int, int], np.dtype[np.floating]],  # noqa: E741
     ) -> np.ndarray[tuple[int, int, int, int], np.dtype[np.floating]]:
-        """
-        Transforms the 4-index ERI I with the 4 transformation matrices C1 to C4.
-        """
+        """Transforms the 4-index ERI I with the 4 transformation matrices C1 to C4."""
         nao = I.shape[0]
         MO = np.dot(C1.T, I.reshape(nao, -1)).reshape(C1.shape[1], nao, nao, nao)
 
