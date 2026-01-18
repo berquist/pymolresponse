@@ -295,8 +295,6 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_small
     print(avgs)
     print(avg)
 
-    return
-
 
 def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_large() -> None:
     mol = molecule_physicists_water_augccpvdz()
@@ -573,8 +571,6 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_large
     assert np.allclose([ref_avg], [avg], rtol=0, atol=1.0e-3)
     print(avgs)
     print(avg)
-
-    return
 
 
 # def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_psi4_small() -> None:

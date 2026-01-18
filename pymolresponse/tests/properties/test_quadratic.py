@@ -204,8 +204,6 @@ def test_first_hyperpolarizability_static_rhf_wigner_explicit() -> None:
     assert np.allclose(avgs, utils_avgs, rtol=0, atol=1.0e-13)
     assert np.allclose([avg], [utils_avg], rtol=0, atol=1.0e-13)
 
-    return
-
 
 def test_first_hyperpolarizability_shg_rhf_wigner_explicit() -> None:
     mol = molecule_water_sto3g_angstrom()
@@ -479,8 +477,6 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit() -> None:
     print(avgs)
     print(avg)
 
-    return
-
 
 def test_first_hyperpolarizability_eope_rhf_wigner_explicit() -> None:
     mol = molecule_water_sto3g_angstrom()
@@ -682,8 +678,6 @@ def test_first_hyperpolarizability_eope_rhf_wigner_explicit() -> None:
     print(f"hyperpolarizability: EOPE, (-{f2}; {f1}, {f2}), symmetry-unique components")
     print(hyperpolarizability)
 
-    return
-
 
 def test_first_hyperpolarizability_or_rhf_wigner_explicit() -> None:
     mol = molecule_water_sto3g_angstrom()
@@ -884,8 +878,6 @@ def test_first_hyperpolarizability_or_rhf_wigner_explicit() -> None:
 
     print(f"hyperpolarizability: OR, (0; {f2}, -{f2}), symmetry-unique components")
     print(hyperpolarizability)
-
-    return
 
 
 # def test_first_hyperpolarizability_general_rhf_wigner_explicit() -> None:
