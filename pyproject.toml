@@ -125,6 +125,7 @@ extend-select = [
     "PT", # flake8-pytest-style
     "S", # flake8-bandit
     "T10", # flake8-debugger
+    "TID", # flake8-tidy-imports
     "UP", # pyupgrade
 ]
 ignore = [
