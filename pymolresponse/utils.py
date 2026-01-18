@@ -118,6 +118,7 @@ def read_file_occupations(
 
 
 def read_file_1(filename: Union[Path, str]) -> np.ndarray[tuple[int], np.dtype[np.floating]]:
+    """Read a libaview-formatted 1-D array."""
     elements = []
     with open(filename) as fh:
         n_elem = int(next(fh))
@@ -128,6 +129,7 @@ def read_file_1(filename: Union[Path, str]) -> np.ndarray[tuple[int], np.dtype[n
 
 
 def read_file_2(filename: Union[Path, str]) -> np.ndarray[tuple[int, int], np.dtype[np.floating]]:
+    """Read a libaview-formatted 2-D array."""
     elements = []
     with open(filename) as fh:
         n_rows, n_cols = (int(x) for x in next(fh).split())
@@ -141,6 +143,7 @@ def read_file_2(filename: Union[Path, str]) -> np.ndarray[tuple[int, int], np.dt
 def read_file_3(
     filename: Union[Path, str],
 ) -> np.ndarray[tuple[int, int, int], np.dtype[np.floating]]:
+    """Read a libaview-formatted 3-D array."""
     elements = []
     with open(filename) as fh:
         n_slices, n_rows, n_cols = (int(x) for x in next(fh).split())
@@ -153,6 +156,7 @@ def read_file_3(
 def read_file_4(
     filename: Union[Path, str],
 ) -> np.ndarray[tuple[int, int, int, int], np.dtype[np.floating]]:
+    """Read a libaview-formatted 4-D array."""
     elements = []
     with open(filename) as fh:
         n_d1, n_d2, n_d3, n_d4 = (int(x) for x in next(fh).split())
@@ -163,6 +167,7 @@ def read_file_4(
 
 
 def occupations_from_sirifc(ifc: "sirifc") -> np.ndarray[tuple[int], np.dtype[np.integer]]:
+    """Read orbital occupations from a parsed DALTON SIRIFC object."""
     nocc_a, nocc_b = ifc.nisht + ifc.nasht, ifc.nisht
     norb = ifc.norbt
     nvirt_a, nvirt_b = norb - nocc_a, norb - nocc_b
@@ -170,17 +175,14 @@ def occupations_from_sirifc(ifc: "sirifc") -> np.ndarray[tuple[int], np.dtype[np
 
 
 class Splitter:
-    """Split a line based not on a character, but a given number of field
-    widths.
-    """
+    """Split a line based on a number of field widths."""
 
     def __init__(self, widths: Iterable[int]) -> None:
         self.start_indices = [0] + list(accumulate(widths))[:-1]
         self.end_indices = list(accumulate(widths))
 
     def split(self, line: str, truncate: bool = True) -> list[str]:
-        """Split the given line using the field widths passed in on class
-        initialization.
+        """Split a line using field widths passed on class initialization.
 
         Handle lines that contain fewer fields than specified in the
         widths; they are added as empty strings. If `truncate`, remove
@@ -207,6 +209,12 @@ DirtyMocoeffs = Union[
 def fix_mocoeffs_shape(
     mocoeffs: DirtyMocoeffs,
 ) -> np.ndarray[tuple[int, int, int], np.dtype[np.floating]]:
+    """Clean up the dimensionality of molecular orbital coefficients.
+
+    The result is 3-D, where the first index is spin, the second is the atomic
+    orbital, and the third is the molecular orbital.  The first index will
+    only ever be of length 1 or 2.
+    """
     if isinstance(mocoeffs, tuple):
         # this will properly fall through to the else clause
         mocoeffs_new = fix_mocoeffs_shape(np.stack(mocoeffs, axis=0))
@@ -228,6 +236,13 @@ def fix_moenergies_shape(
         np.ndarray[Union[tuple[int], tuple[int, int], tuple[int, int, int]], np.dtype[np.floating]],
     ],
 ) -> np.ndarray[tuple[int, int, int], np.dtype[np.floating]]:
+    """Clean up the dimensionality of molecular orbital energies.
+
+    The result is 3-D, where the first index is spin and the second and third
+    indices are molecular orbitals.  For canonical orbitals, all off-diagonal
+    elements will be zero, but it is more convenient to have the shape be a
+    matrix rather than a vector.
+    """
     if isinstance(moenergies, tuple):
         # this will properly fall through to the else clause
         moenergies_new = fix_moenergies_shape(np.stack(moenergies, axis=0))
@@ -285,6 +300,7 @@ def read_dalton_propfile(tmpdir: Path) -> list[str]:
 def tensor_printer(
     tensor: np.ndarray[tuple[int, int], np.dtype[np.floating]],
 ) -> tuple[np.ndarray[tuple[int], np.dtype[np.floating]], np.floating, float]:
+    """Pretty-print a 2-D array."""
     print(tensor)
     eigvals = np.linalg.eigvals(tensor)
     # or should this be the trace of the matrix?
