@@ -16,6 +16,7 @@ def form_results(
     vecs_property: np.ndarray[tuple[int, int, int], np.dtype[np.floating]],
     vecs_response: np.ndarray[tuple[int, int, int], np.dtype[np.floating]],
 ) -> np.ndarray[tuple[int, int], np.dtype[np.floating]]:
+    """Form all possible results by contracting response vectors with property gradients."""
     # TODO document what the assertions mean
     assert vecs_property.shape[1:] == vecs_response.shape[1:]
     assert len(vecs_property.shape) == 3
@@ -80,6 +81,7 @@ def get_reference_value_from_file(
     label_1: str,
     label_2: str,
 ) -> float:
+    """Find a reference value for the linear response of a system to two operators."""
     # TODO need to pass the frequency as a string identical to the one
     # found in the file, can't pass a float due to fp error; how to
     # get around this?

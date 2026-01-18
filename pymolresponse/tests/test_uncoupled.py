@@ -1,3 +1,9 @@
+"""Tests for uncoupled (initial guess) results.
+
+The module also has tests against coupled (full) results, which were
+convenient to generate calculations for.
+"""
+
 import numpy as np
 
 import pyscf
@@ -12,6 +18,7 @@ from pymolresponse.interfaces.pyscf.utils import occupations_from_pyscf_mol
 def mol_atom(
     symbol: str = "He", charge: int = 0, spin: int = 0, basis: str = "sto-3g", verbose: int = 0
 ) -> pyscf.gto.Mole:
+    """Create a pyscf.gto.Mole instance for a single atom."""
     mol = pyscf.gto.Mole()
     mol.verbose = verbose
     mol.output = None
@@ -182,6 +189,7 @@ uhf_uncoupled = {
 
 
 def test_uncoupled_rhf() -> None:
+    """Test uncoupled results from a restricted wavefunction against references."""
     mol = molecules.molecule_trithiolane_sto3g()
     mol.build()
 
@@ -236,6 +244,7 @@ def test_uncoupled_rhf() -> None:
 
 
 def test_uncoupled_uhf() -> None:
+    """Test uncoupled results from an unrestricted wavefunction against references."""
     mol = molecules.molecule_trithiolane_sto3g()
     mol.charge = 1
     mol.spin = 1
