@@ -119,6 +119,7 @@ extend-select = [
     "NPY", # NumPy-specific rules
     "PIE", # flake8-pie
     "PLE", # pylint: error
+    "PLR17", # pylint: refactor
     "PT", # flake8-pytest-style
     "S", # flake8-bandit
     "T10", # flake8-debugger
