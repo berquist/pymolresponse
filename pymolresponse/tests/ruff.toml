@@ -1,0 +1,8 @@
+# https://github.com/astral-sh/ruff/issues/2656#issuecomment-1422502042
+extend = "../../pyproject.toml"
+
+[lint.flake8-tidy-imports]
+[lint.flake8-tidy-imports.banned-api]
+"mock".msg = "Use `pytest-mock` instead."
+"unittest".msg = "Use `pytest` instead."
+"unittest.mock".msg = "Use `pytest-mock` instead."
