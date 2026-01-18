@@ -116,6 +116,7 @@ skip-magic-trailing-comma = true
 [tool.ruff.lint]
 extend-select = [
     "N", # pep8-naming
+    "NPY", # NumPy-specific rules
 ]
 ignore = [
     "N802", # keep abbreviations obvious
