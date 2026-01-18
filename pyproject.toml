@@ -117,6 +117,7 @@ skip-magic-trailing-comma = true
 extend-select = [
     "N", # pep8-naming
     "NPY", # NumPy-specific rules
+    "T10", # flake8-debugger
 ]
 ignore = [
     "N802", # keep abbreviations obvious
