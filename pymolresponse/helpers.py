@@ -73,7 +73,6 @@ def get_uhf_values(
     """For a pair ROHF 1-based indices, find the corresponing alpha- and
     beta-spin UHF values.
     """
-
     # TODO there has to be a better way than including this here...
     range_uhf_a_closed = list(range(0, nocc_a))
     range_uhf_a_virt = list(range(nocc_a, nocc_a + nvirt_a))

@@ -1,5 +1,6 @@
 """Wrapper for performing an electronic circular dichroism (ECD)
-calculation."""
+calculation.
+"""
 
 from typing import TYPE_CHECKING, Any
 

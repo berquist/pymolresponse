@@ -20,7 +20,6 @@ from pymolresponse.properties import electric, magnetic
 
 def test_inversion() -> None:
     """Test that each kind of inversion function gives identical results."""
-
     mol = molecules_pyscf.molecule_glycine_sto3g()
     mol.charge = 1
     mol.spin = 1

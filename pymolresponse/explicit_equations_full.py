@@ -17,7 +17,6 @@ def form_rpa_a_matrix_mo_singlet_full(
     \left<aj|bi\right> = [ai|jb] - [ab|ji] = 2(ai|jb) - (ab|ji)`. It
     also includes the virt-occ energy difference on the diagonal.
     """
-
     norb = E_MO.shape[0]
     nvirt = norb - nocc
     nov = nocc * nvirt
@@ -52,7 +51,6 @@ def form_rpa_a_matrix_mo_triplet_full(
     \left<aj|bi\right> = - [ab|ji] = - (ab|ji)`. It also includes the
     virt-occ energy difference on the diagonal.
     """
-
     norb = E_MO.shape[0]
     nvirt = norb - nocc
     nov = nocc * nvirt
@@ -83,7 +81,6 @@ def form_rpa_b_matrix_mo_singlet_full(
     :math:`\left<ab||ij\right> = \left<ab|ij\right> -
     \left<ab|ji\right> = [ai|bj] - [aj|bi] = 2(ai|bj) - (aj|bi)`.
     """
-
     norb = TEI_MO.shape[0]
     nvirt = norb - nocc
     nov = nocc * nvirt
@@ -110,7 +107,6 @@ def form_rpa_b_matrix_mo_triplet_full(
 
     The equation for element :math:`\{ia,jb\}` is :math:`????`.
     """
-
     norb = TEI_MO.shape[0]
     nvirt = norb - nocc
     nov = nocc * nvirt
@@ -138,7 +134,6 @@ def form_rpa_a_matrix_mo_singlet_ss_full(
 
     The equation for element :math:`\{ia,jb\}` is :math:`????`.
     """
-
     norb = E_MO.shape[0]
     nvirt = norb - nocc
     nov = nocc * nvirt
@@ -170,7 +165,6 @@ def form_rpa_a_matrix_mo_singlet_os_full(
 
     The equation for element :math:`\{ia,jb\}` is :math:`????`.
     """
-
     nvirt_x = TEI_MO_xxyy.shape[0] - nocc_x
     nvirt_y = TEI_MO_xxyy.shape[2] - nocc_y
     nov_x = nocc_x * nvirt_x
@@ -198,7 +192,6 @@ def form_rpa_b_matrix_mo_singlet_ss_full(
 
     The equation for element :math:`\{ia,jb\}` is :math:`????`.
     """
-
     norb = TEI_MO.shape[0]
     nvirt = norb - nocc
     nov = nocc * nvirt
@@ -226,7 +219,6 @@ def form_rpa_b_matrix_mo_singlet_os_full(
 
     The equation for element :math:`\{ia,jb\}` is :math:`????`.
     """
-
     nvirt_x = TEI_MO_xxyy.shape[0] - nocc_x
     nvirt_y = TEI_MO_xxyy.shape[2] - nocc_y
     nov_x = nocc_x * nvirt_x
