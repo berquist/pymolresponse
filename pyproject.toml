@@ -117,6 +117,7 @@ skip-magic-trailing-comma = true
 extend-select = [
     "N", # pep8-naming
     "NPY", # NumPy-specific rules
+    "PIE", # flake8-pie
     "T10", # flake8-debugger
 ]
 ignore = [
@@ -124,6 +125,7 @@ ignore = [
     "N803", # matrix-valued arguments are usually uppercase
     "N806", # matrix-valued variables are usually uppercase
     "N816", # FIXME
+    "PIE808", # make obvious (orbital window) ranges that start at zero
 ]
 
 [tool.ruff.lint.isort]
