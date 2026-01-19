@@ -1,5 +1,11 @@
-import numpy as np
+"""Hard-coded response equations for unrestricted wavefunctions.
 
+The difference between this file and test_uhf.py is here only the necessary
+subspaces of the MO-basis two-electron integrals are formed, and in
+test_uhf.py the entire orbital space is formed.
+"""
+
+import numpy as np
 import pyscf
 
 from pymolresponse import cphf, operators, solvers
@@ -10,6 +16,7 @@ from pymolresponse.tests.test_uhf import ref_water_cation_UHF_HF_STO3G
 
 
 def test_explicit_uhf_outside_solver() -> None:
+    """Run hard-coded response equations for a UHF reference."""
     mol = molecules.molecule_water_sto3g()
     mol.charge = 1
     mol.spin = 1
@@ -141,7 +148,14 @@ def test_explicit_uhf_outside_solver() -> None:
     np.testing.assert_allclose(res_u, ref_water_cation_UHF_HF_STO3G, rtol=rtol, atol=atol)
 
 
-def test_explicit_uhf() -> None:
+# TODO maybe this test should get a better name
+def test_api_uhf() -> None:
+    """Run linear response (static polarizability) for a UHF reference.
+
+    The only differences between this and a production calculation are that it
+    doesn't use the Polarizability wrapper and the two-electron integral MO
+    transformations are done manually.
+    """
     mol = molecules.molecule_water_sto3g()
     mol.charge = 1
     mol.spin = 1

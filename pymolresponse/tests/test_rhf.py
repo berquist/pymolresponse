@@ -1,4 +1,12 @@
-"""Hard-coded response equations for restricted wavefunctions."""
+"""Hard-coded response equations for restricted wavefunctions.
+
+Tests here are a complete implementation of the linear response equations from
+molecular orbital coefficients and energies and property integrals computed on
+the fly.  The only reused functionality from the production implementations is
+
+1. forming the two-electron integrals in the MO basis and
+2. forming the blocks of the orbital Hessian
+"""
 
 import numpy as np
 
@@ -10,6 +18,7 @@ from pymolresponse.interfaces.pyscf.ao2mo import AO2MOpyscf
 
 
 def test_explicit_rhf_outside_solver_off_diagonal_blocks() -> None:
+    """Run hard-coded response equations for an RHF reference."""
     mol = molecules.molecule_water_sto3g()
     mol.build()
 
@@ -66,6 +75,7 @@ def test_explicit_rhf_outside_solver_off_diagonal_blocks() -> None:
     np.testing.assert_allclose(polarizability, result__0_00, rtol=rtol, atol=atol)
 
 
+# TODO why is this commented out?
 # def test_explicit_rhf_outside_solver_all_blocks() -> None:
 #     mol = molecules.molecule_water_sto3g()
 #     mol.build()
