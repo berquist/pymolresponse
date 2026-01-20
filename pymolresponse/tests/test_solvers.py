@@ -1,9 +1,10 @@
 """Tests for solvers, used by drivers to compute orbital Hessian eigenvectors or response vectors."""
 
 import numpy as np
+import scipy as sp
+
 import psi4
 import pyscf
-import scipy as sp
 
 from pymolresponse import cphf, solvers, utils
 from pymolresponse.core import Hamiltonian, Program, Spin

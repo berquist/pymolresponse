@@ -6,6 +6,7 @@ test_uhf.py the entire orbital space is formed.
 """
 
 import numpy as np
+
 import pyscf
 
 from pymolresponse import cphf, operators, solvers
