@@ -31,6 +31,7 @@ from pymolresponse.integrals import JK
 from pymolresponse.operators import Operator
 from pymolresponse.utils import repack_matrix_to_vector
 
+
 if TYPE_CHECKING:
     from pymolresponse.indices import Occupations
 

@@ -2,6 +2,7 @@ r"""Storage of common physical constants. Uses `scipy.constants`: https://docs.s
 
 import scipy.constants as spc
 
+
 ## Fundamental
 
 alpha = spc.alpha

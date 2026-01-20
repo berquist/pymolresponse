@@ -20,3 +20,5 @@ a96c60e060dab7174c2d395e2c75af4c0b554475
 25da5e33e0bcf88b44fdd38dced132cb70112c68
 # chore: remove unused ty ignore
 9a34b3c363d4d1abef9ca3ae765e8126926a20b9
+# style: apply ruff-isort
+23e0132e3e6dc6313e31d5e2868f526c9430a04c

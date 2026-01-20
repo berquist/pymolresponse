@@ -8,6 +8,7 @@ from pymolresponse.cphf import CPHF
 from pymolresponse.molecular_property import ResponseProperty
 from pymolresponse.operators import Operator
 
+
 if TYPE_CHECKING:
     from pymolresponse.indices import Occupations
 

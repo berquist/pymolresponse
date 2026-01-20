@@ -4,6 +4,7 @@ from typing import Any
 from versioningit import VCSDescription
 from versioningit.basics import DEFAULT_FORMATS
 
+
 _ENVVARNAME = "VERSIONINGIT_FOR_PACKAGE_INDEX"
 
 

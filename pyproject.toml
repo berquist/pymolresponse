@@ -116,6 +116,7 @@ skip-magic-trailing-comma = true
 [tool.ruff.lint]
 extend-select = [
     "FURB", # refurb
+    "I", # isort
     "ICN", # flake8-import-conventions
     "N", # pep8-naming
     "NPY", # NumPy-specific rules
@@ -145,11 +146,21 @@ ignore = [
 
 [tool.ruff.lint.isort]
 lines-after-imports = 2
-section-order = ["future", "standard-library", "attrs", "third-party", "chemistry", "first-party", "local-folder"]
+section-order = [
+    "future",
+    "standard-library",
+    "attrs",
+    "third-party",
+    "chemistry-utils",
+    "chemistry-calculators",
+    "first-party",
+    "local-folder",
+]
 
 [tool.ruff.lint.isort.sections]
-"attrs" = ["attr"]
-"chemistry" = ["psi4", "pyscf"]
+attrs = ["attr"]
+chemistry-calculators = ["psi4", "pyscf"]
+chemistry-utils = ["cclib", "daltools"]
 
 [tool.versioningit.format]
 method = {module = "versioningit_override", value = "pymolresponse_format", module-dir = "tools"}

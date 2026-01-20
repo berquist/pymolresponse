@@ -1,6 +1,7 @@
 """Hard-coded response equations for restricted wavefunctions."""
 
 import numpy as np
+
 import pyscf
 
 from pymolresponse import explicit_equations_full as eqns

@@ -8,6 +8,7 @@ from pymolresponse.core import Hamiltonian, Program, Spin
 from pymolresponse.cphf import CPHF, Driver
 from pymolresponse.td import TDHF
 
+
 if TYPE_CHECKING:
     from pymolresponse.indices import Occupations
 

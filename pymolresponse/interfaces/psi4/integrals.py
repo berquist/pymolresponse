@@ -6,6 +6,7 @@ import psi4
 
 from pymolresponse.integrals import JK, IntegralLabel, Integrals
 
+
 DIPOLE = object()
 DIPVEL = object()
 ANGMOM_COMMON_GAUGE = object()

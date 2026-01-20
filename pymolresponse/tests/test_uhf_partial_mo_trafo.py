@@ -2,9 +2,8 @@ import numpy as np
 
 import pyscf
 
-from pymolresponse import cphf
+from pymolresponse import cphf, operators, solvers
 from pymolresponse import explicit_equations_partial as eqns
-from pymolresponse import operators, solvers
 from pymolresponse.core import AO2MOTransformationType, Hamiltonian, Program, Spin
 from pymolresponse.interfaces.pyscf import molecules
 from pymolresponse.tests.test_uhf import ref_water_cation_UHF_HF_STO3G
