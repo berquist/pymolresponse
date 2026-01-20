@@ -12,6 +12,7 @@ from pymolresponse.operators import Operator
 from pymolresponse.td import TDHF
 from pymolresponse.utils import form_indices_zero
 
+
 if TYPE_CHECKING:
     from pymolresponse.indices import Occupations
 

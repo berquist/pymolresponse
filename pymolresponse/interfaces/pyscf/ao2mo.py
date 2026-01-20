@@ -10,6 +10,7 @@ from pymolresponse.ao2mo import AO2MO
 from pymolresponse.interfaces.pyscf.utils import occupations_from_pyscf_mol
 from pymolresponse.utils import DirtyMocoeffs
 
+
 if TYPE_CHECKING:
     from pyscf.gto.mole import Mole
 

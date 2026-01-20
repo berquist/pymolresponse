@@ -1,9 +1,6 @@
 from itertools import permutations, product
 
 import numpy as np
-
-import pyscf
-
 from pymolresponse import cphf, solvers, utils
 from pymolresponse.core import Hamiltonian, Program, Spin
 from pymolresponse.interfaces.pyscf.molecules import (
@@ -12,6 +9,8 @@ from pymolresponse.interfaces.pyscf.molecules import (
 )
 from pymolresponse.interfaces.pyscf.utils import occupations_from_pyscf_mol
 from pymolresponse.properties import electric
+
+import pyscf
 
 
 def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_small() -> None:

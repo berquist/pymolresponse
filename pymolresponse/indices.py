@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+
 Occupations = tuple[int, int, int, int]
 
 

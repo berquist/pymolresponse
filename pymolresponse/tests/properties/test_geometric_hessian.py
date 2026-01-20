@@ -1,9 +1,6 @@
 import os.path
 
 import numpy as np
-
-import psi4
-
 from pymolresponse.ao2mo import AO2MO
 from pymolresponse.core import AO2MOTransformationType, Hamiltonian, Program, Spin
 from pymolresponse.cphf import CPHF
@@ -16,6 +13,9 @@ from pymolresponse.interfaces.psi4.utils import (
 )
 from pymolresponse.operators import Operator
 from pymolresponse.solvers import ExactInv
+
+import psi4
+
 
 np.set_printoptions(precision=8, linewidth=200, suppress=True)
 

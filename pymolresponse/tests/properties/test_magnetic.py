@@ -1,12 +1,12 @@
 import numpy as np
-
-import pyscf
-
 from pymolresponse import cphf, solvers, utils
 from pymolresponse.core import Hamiltonian, Program, Spin
 from pymolresponse.interfaces.pyscf import molecules
 from pymolresponse.interfaces.pyscf.utils import occupations_from_pyscf_mol
 from pymolresponse.properties import magnetic
+
+import pyscf
+
 
 # These were generated using DALTON.
 ref_magnetizability_rhf = np.array(

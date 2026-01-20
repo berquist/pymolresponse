@@ -6,6 +6,7 @@ import psi4
 
 from pymolresponse.utils import fix_mocoeffs_shape, fix_moenergies_shape
 
+
 if TYPE_CHECKING:
     from pymolresponse.indices import Occupations
 

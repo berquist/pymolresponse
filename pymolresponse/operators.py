@@ -5,6 +5,7 @@ import scipy.constants as spc
 
 from pymolresponse.utils import DirtyMocoeffs, fix_mocoeffs_shape, repack_matrix_to_vector
 
+
 if TYPE_CHECKING:
     from pymolresponse.indices import Indices, Occupations
 

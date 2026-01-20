@@ -6,6 +6,7 @@ import numpy as np
 
 from pymolresponse.utils import DirtyMocoeffs, fix_mocoeffs_shape
 
+
 if TYPE_CHECKING:
     from pymolresponse.indices import Occupations
 

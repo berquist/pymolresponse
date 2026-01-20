@@ -1,5 +1,4 @@
 import numpy as np
-
 from pymolresponse.interfaces.pyscf import integrals, molecules
 
 

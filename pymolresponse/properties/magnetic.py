@@ -8,6 +8,7 @@ from pymolresponse.interfaces.pyscf.helpers import calculate_origin_pyscf
 from pymolresponse.molecular_property import ResponseProperty
 from pymolresponse.operators import Operator
 
+
 if TYPE_CHECKING:
     from pymolresponse.indices import Occupations
 
