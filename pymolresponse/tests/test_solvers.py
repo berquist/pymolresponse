@@ -1,8 +1,9 @@
-import numpy as np
-import scipy as sp
+"""Tests for solvers, used by drivers to compute orbital Hessian eigenvectors or response vectors."""
 
+import numpy as np
 import psi4
 import pyscf
+import scipy as sp
 
 from pymolresponse import cphf, solvers, utils
 from pymolresponse.core import Hamiltonian, Program, Spin
@@ -65,6 +66,7 @@ def test_inversion() -> None:
 
 
 def test_final_result_rhf_h2o_sto3g_rpa_singlet_iter() -> None:
+    """Test that an iterative solver gives the same results as performing exact inversion."""
     mol = molecules_psi4.molecule_physicists_water_sto3g()
     psi4.core.set_active_molecule(mol)
     psi4.set_options(
