@@ -69,7 +69,9 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pymolresponse.tests.test_solvers</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span></span><span class="sd">&quot;&quot;&quot;Tests for solvers, used by drivers to compute orbital Hessian eigenvectors or response vectors.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sp</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">psi4</span>
@@ -93,7 +95,6 @@
 <a class="viewcode-back" href="../../../pyresponse.tests.html#pymolresponse.tests.test_solvers.test_inversion">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">test_inversion</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Test that each kind of inversion function gives identical results.&quot;&quot;&quot;</span>
-
     <span class="n">mol</span> <span class="o">=</span> <span class="n">molecules_pyscf</span><span class="o">.</span><span class="n">molecule_glycine_sto3g</span><span class="p">()</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">charge</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">spin</span> <span class="o">=</span> <span class="mi">1</span>
@@ -142,6 +143,7 @@
 <div class="viewcode-block" id="test_final_result_rhf_h2o_sto3g_rpa_singlet_iter">
 <a class="viewcode-back" href="../../../pyresponse.tests.html#pymolresponse.tests.test_solvers.test_final_result_rhf_h2o_sto3g_rpa_singlet_iter">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">test_final_result_rhf_h2o_sto3g_rpa_singlet_iter</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test that an iterative solver gives the same results as performing exact inversion.&quot;&quot;&quot;</span>
     <span class="n">mol</span> <span class="o">=</span> <span class="n">molecules_psi4</span><span class="o">.</span><span class="n">molecule_physicists_water_sto3g</span><span class="p">()</span>
     <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">set_active_molecule</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
     <span class="n">psi4</span><span class="o">.</span><span class="n">set_options</span><span class="p">(</span>

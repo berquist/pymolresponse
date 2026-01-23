@@ -83,14 +83,13 @@
     <span class="n">TEI_MO</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]],</span>
     <span class="n">nocc</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Form the A (CIS) matrix in the MO basis. [singlet]</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Form the A (CIS) matrix in the MO basis. [singlet].</span>
 
 <span class="sd">    The equation for element :math:`\{ia,jb\}` is</span>
 <span class="sd">    :math:`\left&lt;aj||ib\right&gt; = \left&lt;aj|ib\right&gt; -</span>
 <span class="sd">    \left&lt;aj|bi\right&gt; = [ai|jb] - [ab|ji] = 2(ai|jb) - (ab|ji)`. It</span>
 <span class="sd">    also includes the virt-occ energy difference on the diagonal.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="n">norb</span> <span class="o">=</span> <span class="n">E_MO</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">nvirt</span> <span class="o">=</span> <span class="n">norb</span> <span class="o">-</span> <span class="n">nocc</span>
     <span class="n">nov</span> <span class="o">=</span> <span class="n">nocc</span> <span class="o">*</span> <span class="n">nvirt</span>
@@ -122,13 +121,12 @@
     <span class="n">TEI_MO</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]],</span>
     <span class="n">nocc</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Form the A (CIS) matrix in the MO basis. [triplet]</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Form the A (CIS) matrix in the MO basis. [triplet].</span>
 
 <span class="sd">    The equation for element :math:`\{ia,jb\}` is :math:`-</span>
 <span class="sd">    \left&lt;aj|bi\right&gt; = - [ab|ji] = - (ab|ji)`. It also includes the</span>
 <span class="sd">    virt-occ energy difference on the diagonal.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="n">norb</span> <span class="o">=</span> <span class="n">E_MO</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">nvirt</span> <span class="o">=</span> <span class="n">norb</span> <span class="o">-</span> <span class="n">nocc</span>
     <span class="n">nov</span> <span class="o">=</span> <span class="n">nocc</span> <span class="o">*</span> <span class="n">nvirt</span>
@@ -156,13 +154,12 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">form_rpa_b_matrix_mo_singlet_full</span><span class="p">(</span>
     <span class="n">TEI_MO</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]],</span> <span class="n">nocc</span><span class="p">:</span> <span class="nb">int</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Form the B matrix for RPA in the MO basis. [singlet]</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Form the B matrix for RPA in the MO basis. [singlet].</span>
 
 <span class="sd">    The equation for element :math:`\{ia,jb\}` is</span>
 <span class="sd">    :math:`\left&lt;ab||ij\right&gt; = \left&lt;ab|ij\right&gt; -</span>
 <span class="sd">    \left&lt;ab|ji\right&gt; = [ai|bj] - [aj|bi] = 2(ai|bj) - (aj|bi)`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="n">norb</span> <span class="o">=</span> <span class="n">TEI_MO</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">nvirt</span> <span class="o">=</span> <span class="n">norb</span> <span class="o">-</span> <span class="n">nocc</span>
     <span class="n">nov</span> <span class="o">=</span> <span class="n">nocc</span> <span class="o">*</span> <span class="n">nvirt</span>
@@ -188,11 +185,10 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">form_rpa_b_matrix_mo_triplet_full</span><span class="p">(</span>
     <span class="n">TEI_MO</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]],</span> <span class="n">nocc</span><span class="p">:</span> <span class="nb">int</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Form the B matrix for RPA in the MO basis. [triplet]</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Form the B matrix for RPA in the MO basis. [triplet].</span>
 
 <span class="sd">    The equation for element :math:`\{ia,jb\}` is :math:`????`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="n">norb</span> <span class="o">=</span> <span class="n">TEI_MO</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">nvirt</span> <span class="o">=</span> <span class="n">norb</span> <span class="o">-</span> <span class="n">nocc</span>
     <span class="n">nov</span> <span class="o">=</span> <span class="n">nocc</span> <span class="o">*</span> <span class="n">nvirt</span>
@@ -219,11 +215,10 @@
     <span class="n">nocc</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Form the same-spin part of the A (CIS) matrix in the MO</span>
-<span class="sd">    basis. [singlet]</span>
+<span class="sd">    basis. [singlet].</span>
 
 <span class="sd">    The equation for element :math:`\{ia,jb\}` is :math:`????`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="n">norb</span> <span class="o">=</span> <span class="n">E_MO</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">nvirt</span> <span class="o">=</span> <span class="n">norb</span> <span class="o">-</span> <span class="n">nocc</span>
     <span class="n">nov</span> <span class="o">=</span> <span class="n">nocc</span> <span class="o">*</span> <span class="n">nvirt</span>
@@ -254,11 +249,10 @@
     <span class="n">nocc_y</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Form the opposite-spin part of the A (CIS) matrix in the MO</span>
-<span class="sd">    basis. [singlet]</span>
+<span class="sd">    basis. [singlet].</span>
 
 <span class="sd">    The equation for element :math:`\{ia,jb\}` is :math:`????`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="n">nvirt_x</span> <span class="o">=</span> <span class="n">TEI_MO_xxyy</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">nocc_x</span>
     <span class="n">nvirt_y</span> <span class="o">=</span> <span class="n">TEI_MO_xxyy</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">nocc_y</span>
     <span class="n">nov_x</span> <span class="o">=</span> <span class="n">nocc_x</span> <span class="o">*</span> <span class="n">nvirt_x</span>
@@ -285,11 +279,10 @@
     <span class="n">TEI_MO</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]],</span> <span class="n">nocc</span><span class="p">:</span> <span class="nb">int</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Form the same-spin part of the RPA B matrix in the MO</span>
-<span class="sd">    basis. [singlet]</span>
+<span class="sd">    basis. [singlet].</span>
 
 <span class="sd">    The equation for element :math:`\{ia,jb\}` is :math:`????`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="n">norb</span> <span class="o">=</span> <span class="n">TEI_MO</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">nvirt</span> <span class="o">=</span> <span class="n">norb</span> <span class="o">-</span> <span class="n">nocc</span>
     <span class="n">nov</span> <span class="o">=</span> <span class="n">nocc</span> <span class="o">*</span> <span class="n">nvirt</span>
@@ -316,11 +309,10 @@
     <span class="n">nocc_y</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Form the opposite-spin part of the RPA B matrix in the MO</span>
-<span class="sd">    basis. [singlet]</span>
+<span class="sd">    basis. [singlet].</span>
 
 <span class="sd">    The equation for element :math:`\{ia,jb\}` is :math:`????`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="n">nvirt_x</span> <span class="o">=</span> <span class="n">TEI_MO_xxyy</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">nocc_x</span>
     <span class="n">nvirt_y</span> <span class="o">=</span> <span class="n">TEI_MO_xxyy</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">nocc_y</span>
     <span class="n">nov_x</span> <span class="o">=</span> <span class="n">nocc_x</span> <span class="o">*</span> <span class="n">nvirt_x</span>
