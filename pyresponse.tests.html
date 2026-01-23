@@ -76,57 +76,43 @@
 </section>
 <section id="pymolresponse-tests-test-ao2mo-module">
 <h2>pymolresponse.tests.test_ao2mo module<a class="headerlink" href="#pymolresponse-tests-test-ao2mo-module" title="Link to this heading"></a></h2>
-<p id="module-pymolresponse.tests.test_ao2mo">Test two-electron integral MO transformation interfaces.</p>
-<dl class="py function">
+<span class="target" id="module-pymolresponse.tests.test_ao2mo"></span><dl class="py function">
 <dt class="sig sig-object py" id="pymolresponse.tests.test_ao2mo.test_ao2mo_hand_against_pyscf_rhf_full">
 <span class="sig-prename descclassname"><span class="pre">pymolresponse.tests.test_ao2mo.</span></span><span class="sig-name descname"><span class="pre">test_ao2mo_hand_against_pyscf_rhf_full</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pymolresponse/tests/test_ao2mo.html#test_ao2mo_hand_against_pyscf_rhf_full"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymolresponse.tests.test_ao2mo.test_ao2mo_hand_against_pyscf_rhf_full" title="Link to this definition"></a></dt>
-<dd><p>Compare the unoptimized MO transformation with PySCF.</p>
-<p>All orbitals are present in the transformation (“full”).</p>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pymolresponse.tests.test_ao2mo.test_ao2mo_hand_against_pyscf_rhf_partial">
 <span class="sig-prename descclassname"><span class="pre">pymolresponse.tests.test_ao2mo.</span></span><span class="sig-name descname"><span class="pre">test_ao2mo_hand_against_pyscf_rhf_partial</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pymolresponse/tests/test_ao2mo.html#test_ao2mo_hand_against_pyscf_rhf_partial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymolresponse.tests.test_ao2mo.test_ao2mo_hand_against_pyscf_rhf_partial" title="Link to this definition"></a></dt>
-<dd><p>Compare the unoptimized MO transformation with PySCF.</p>
-<p>Only those orbitals needed for the response calculation are present
-(“partial”).</p>
-</dd></dl>
+<dd></dd></dl>
 
 </section>
 <section id="pymolresponse-tests-test-calculators-module">
 <h2>pymolresponse.tests.test_calculators module<a class="headerlink" href="#pymolresponse-tests-test-calculators-module" title="Link to this heading"></a></h2>
-<p id="module-pymolresponse.tests.test_calculators">Response term calculators using reference data from disk.</p>
-<dl class="py function">
+<span class="target" id="module-pymolresponse.tests.test_calculators"></span><dl class="py function">
 <dt class="sig sig-object py" id="pymolresponse.tests.test_calculators.calculate_disk_rhf">
 <span class="sig-prename descclassname"><span class="pre">pymolresponse.tests.test_calculators.</span></span><span class="sig-name descname"><span class="pre">calculate_disk_rhf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">testcasedir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hamiltonian</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/pymolresponse/tests/test_calculators.html#calculate_disk_rhf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymolresponse.tests.test_calculators.calculate_disk_rhf" title="Link to this definition"></a></dt>
-<dd><p>Calculate a single linear response term from a test case directory.</p>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pymolresponse.tests.test_calculators.calculate_disk_uhf">
 <span class="sig-prename descclassname"><span class="pre">pymolresponse.tests.test_calculators.</span></span><span class="sig-name descname"><span class="pre">calculate_disk_uhf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">testcasedir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hamiltonian</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/pymolresponse/tests/test_calculators.html#calculate_disk_uhf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymolresponse.tests.test_calculators.calculate_disk_uhf" title="Link to this definition"></a></dt>
-<dd><p>Calculate a single linear response term from a test case directory.</p>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pymolresponse.tests.test_calculators.calculate_rhf">
 <span class="sig-prename descclassname"><span class="pre">pymolresponse.tests.test_calculators.</span></span><span class="sig-name descname"><span class="pre">calculate_rhf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dalton_tmpdir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hamiltonian</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operator_label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_moenergies</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_mocoeffs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_operator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/pymolresponse/tests/test_calculators.html#calculate_rhf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymolresponse.tests.test_calculators.calculate_rhf" title="Link to this definition"></a></dt>
-<dd><p>Calculate a single linear response term from a DALTON scratch directory.</p>
-<p>This uses PySCF to compute two-electron integrals.</p>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pymolresponse.tests.test_calculators.calculate_uhf">
 <span class="sig-prename descclassname"><span class="pre">pymolresponse.tests.test_calculators.</span></span><span class="sig-name descname"><span class="pre">calculate_uhf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dalton_tmpdir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hamiltonian</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operator_label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_moenergies</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_mocoeffs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_operator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/pymolresponse/tests/test_calculators.html#calculate_uhf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymolresponse.tests.test_calculators.calculate_uhf" title="Link to this definition"></a></dt>
-<dd><p>Calculate a single linear response term from a DALTON scratch directory.</p>
-<p>This uses PySCF to compute two-electron integrals.</p>
-</dd></dl>
+<dd></dd></dl>
 
 </section>
 <section id="pymolresponse-tests-test-final-result-module">
 <h2>pymolresponse.tests.test_final_result module<a class="headerlink" href="#pymolresponse-tests-test-final-result-module" title="Link to this heading"></a></h2>
-<p id="module-pymolresponse.tests.test_final_result">Tests against reference values using inputs from disk..</p>
-<dl class="py function">
+<span class="target" id="module-pymolresponse.tests.test_final_result"></span><dl class="py function">
 <dt class="sig sig-object py" id="pymolresponse.tests.test_final_result.test_as_many_as_possible_rhf_disk">
 <span class="sig-prename descclassname"><span class="pre">pymolresponse.tests.test_final_result.</span></span><span class="sig-name descname"><span class="pre">test_as_many_as_possible_rhf_disk</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pymolresponse/tests/test_final_result.html#test_as_many_as_possible_rhf_disk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymolresponse.tests.test_final_result.test_as_many_as_possible_rhf_disk" title="Link to this definition"></a></dt>
 <dd><p>Test correctness of the final result for closed-shell molecules against
@@ -175,45 +161,36 @@ operator computed with quantities from disk.</p>
 </section>
 <section id="pymolresponse-tests-test-hydrogen-module">
 <h2>pymolresponse.tests.test_hydrogen module<a class="headerlink" href="#pymolresponse-tests-test-hydrogen-module" title="Link to this heading"></a></h2>
-</section>
+<span class="target" id="module-pymolresponse.tests.test_hydrogen"></span></section>
 <section id="pymolresponse-tests-test-molecular-property-module">
 <h2>pymolresponse.tests.test_molecular_property module<a class="headerlink" href="#pymolresponse-tests-test-molecular-property-module" title="Link to this heading"></a></h2>
 </section>
 <section id="pymolresponse-tests-test-operators-module">
 <h2>pymolresponse.tests.test_operators module<a class="headerlink" href="#pymolresponse-tests-test-operators-module" title="Link to this heading"></a></h2>
-<p id="module-pymolresponse.tests.test_operators">Basic tests for Operators.</p>
-<dl class="py function">
+<span class="target" id="module-pymolresponse.tests.test_operators"></span><dl class="py function">
 <dt class="sig sig-object py" id="pymolresponse.tests.test_operators.test_dalton_label_to_operator">
 <span class="sig-prename descclassname"><span class="pre">pymolresponse.tests.test_operators.</span></span><span class="sig-name descname"><span class="pre">test_dalton_label_to_operator</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pymolresponse/tests/test_operators.html#test_dalton_label_to_operator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymolresponse.tests.test_operators.test_dalton_label_to_operator" title="Link to this definition"></a></dt>
-<dd><p>Test that Operator metadata is generated from DALTON labels.</p>
+<dd><p>Test that
+1. Operator attributes are properly set based on a DALTON label, and that
+2. __str__ is correct</p>
 </dd></dl>
 
 </section>
 <section id="pymolresponse-tests-test-rhf-module">
 <h2>pymolresponse.tests.test_rhf module<a class="headerlink" href="#pymolresponse-tests-test-rhf-module" title="Link to this heading"></a></h2>
 <p id="module-pymolresponse.tests.test_rhf">Hard-coded response equations for restricted wavefunctions.</p>
-<p>Tests here are a complete implementation of the linear response equations from
-molecular orbital coefficients and energies and property integrals computed on
-the fly.  The only reused functionality from the production implementations is</p>
-<ol class="arabic simple">
-<li><p>forming the two-electron integrals in the MO basis and</p></li>
-<li><p>forming the blocks of the orbital Hessian</p></li>
-</ol>
 <dl class="py function">
 <dt class="sig sig-object py" id="pymolresponse.tests.test_rhf.test_explicit_rhf_outside_solver_off_diagonal_blocks">
 <span class="sig-prename descclassname"><span class="pre">pymolresponse.tests.test_rhf.</span></span><span class="sig-name descname"><span class="pre">test_explicit_rhf_outside_solver_off_diagonal_blocks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pymolresponse/tests/test_rhf.html#test_explicit_rhf_outside_solver_off_diagonal_blocks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymolresponse.tests.test_rhf.test_explicit_rhf_outside_solver_off_diagonal_blocks" title="Link to this definition"></a></dt>
-<dd><p>Run hard-coded response equations for an RHF reference.</p>
-</dd></dl>
+<dd></dd></dl>
 
 </section>
 <section id="pymolresponse-tests-test-runners-module">
 <h2>pymolresponse.tests.test_runners module<a class="headerlink" href="#pymolresponse-tests-test-runners-module" title="Link to this heading"></a></h2>
-<p id="module-pymolresponse.tests.test_runners">Run response term calculators over all references for a test case.</p>
-<dl class="py function">
+<span class="target" id="module-pymolresponse.tests.test_runners"></span><dl class="py function">
 <dt class="sig sig-object py" id="pymolresponse.tests.test_runners.run_as_many_tests_as_possible_rhf_disk">
 <span class="sig-prename descclassname"><span class="pre">pymolresponse.tests.test_runners.</span></span><span class="sig-name descname"><span class="pre">run_as_many_tests_as_possible_rhf_disk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">testcase</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pymolresponse/tests/test_runners.html#run_as_many_tests_as_possible_rhf_disk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymolresponse.tests.test_runners.run_as_many_tests_as_possible_rhf_disk" title="Link to this definition"></a></dt>
-<dd><p>Execute all comparisons against DALTON disk references for a test case.</p>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pymolresponse.tests.test_runners.run_as_many_tests_as_possible_uhf_disk">
@@ -223,18 +200,15 @@ the fly.  The only reused functionality from the production implementations is</
 <dl class="py function">
 <dt class="sig sig-object py" id="pymolresponse.tests.test_runners.run_dalton_label_to_operator">
 <span class="sig-prename descclassname"><span class="pre">pymolresponse.tests.test_runners.</span></span><span class="sig-name descname"><span class="pre">run_dalton_label_to_operator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dalton_label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operator_label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slice_idx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_imaginary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_spin_dependent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pyresponse.html#pymolresponse.operators.Operator" title="pymolresponse.operators.Operator"><span class="pre">Operator</span></a></span></span><a class="reference internal" href="_modules/pymolresponse/tests/test_runners.html#run_dalton_label_to_operator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymolresponse.tests.test_runners.run_dalton_label_to_operator" title="Link to this definition"></a></dt>
-<dd><p>Convert a DALTON integral label to an Operator.</p>
-</dd></dl>
+<dd></dd></dl>
 
 </section>
 <section id="pymolresponse-tests-test-solvers-module">
 <h2>pymolresponse.tests.test_solvers module<a class="headerlink" href="#pymolresponse-tests-test-solvers-module" title="Link to this heading"></a></h2>
-<p id="module-pymolresponse.tests.test_solvers">Tests for solvers, used by drivers to compute orbital Hessian eigenvectors or response vectors.</p>
-<dl class="py function">
+<span class="target" id="module-pymolresponse.tests.test_solvers"></span><dl class="py function">
 <dt class="sig sig-object py" id="pymolresponse.tests.test_solvers.test_final_result_rhf_h2o_sto3g_rpa_singlet_iter">
 <span class="sig-prename descclassname"><span class="pre">pymolresponse.tests.test_solvers.</span></span><span class="sig-name descname"><span class="pre">test_final_result_rhf_h2o_sto3g_rpa_singlet_iter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pymolresponse/tests/test_solvers.html#test_final_result_rhf_h2o_sto3g_rpa_singlet_iter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymolresponse.tests.test_solvers.test_final_result_rhf_h2o_sto3g_rpa_singlet_iter" title="Link to this definition"></a></dt>
-<dd><p>Test that an iterative solver gives the same results as performing exact inversion.</p>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pymolresponse.tests.test_solvers.test_inversion">
@@ -245,95 +219,65 @@ the fly.  The only reused functionality from the production implementations is</
 </section>
 <section id="pymolresponse-tests-test-td-module">
 <h2>pymolresponse.tests.test_td module<a class="headerlink" href="#pymolresponse-tests-test-td-module" title="Link to this heading"></a></h2>
-<p id="module-pymolresponse.tests.test_td">Core tests for excitation energies.</p>
-<dl class="py function">
+<span class="target" id="module-pymolresponse.tests.test_td"></span><dl class="py function">
 <dt class="sig sig-object py" id="pymolresponse.tests.test_td.test_HF_both_singlet_HF_STO3G">
 <span class="sig-prename descclassname"><span class="pre">pymolresponse.tests.test_td.</span></span><span class="sig-name descname"><span class="pre">test_HF_both_singlet_HF_STO3G</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pymolresponse/tests/test_td.html#test_HF_both_singlet_HF_STO3G"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymolresponse.tests.test_td.test_HF_both_singlet_HF_STO3G" title="Link to this definition"></a></dt>
-<dd><p>Compare singlet TDA and RPA excitation energies for RHF.</p>
-</dd></dl>
+<dd></dd></dl>
 
 </section>
 <section id="pymolresponse-tests-test-uhf-module">
 <h2>pymolresponse.tests.test_uhf module<a class="headerlink" href="#pymolresponse-tests-test-uhf-module" title="Link to this heading"></a></h2>
 <p id="module-pymolresponse.tests.test_uhf">Hard-coded response equations for unrestricted wavefunctions.</p>
-<p>Tests here are a complete implementation of the linear response equations from
-molecular orbital coefficients and energies and property integrals computed on
-the fly.  The only reused functionality from the production implementations is</p>
-<ol class="arabic simple">
-<li><p>forming the two-electron integrals in the MO basis and</p></li>
-<li><p>forming the blocks of the orbital Hessian</p></li>
-</ol>
 <dl class="py function">
-<dt class="sig sig-object py" id="pymolresponse.tests.test_uhf.test_api_uhf">
-<span class="sig-prename descclassname"><span class="pre">pymolresponse.tests.test_uhf.</span></span><span class="sig-name descname"><span class="pre">test_api_uhf</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pymolresponse/tests/test_uhf.html#test_api_uhf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymolresponse.tests.test_uhf.test_api_uhf" title="Link to this definition"></a></dt>
-<dd><p>Run linear response (static polarizability) through for a UHF reference.</p>
-<p>The only difference between this and a production calculation is that it
-doesn’t use the Polarizability wrapper.</p>
-</dd></dl>
+<dt class="sig sig-object py" id="pymolresponse.tests.test_uhf.test_explicit_uhf">
+<span class="sig-prename descclassname"><span class="pre">pymolresponse.tests.test_uhf.</span></span><span class="sig-name descname"><span class="pre">test_explicit_uhf</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pymolresponse/tests/test_uhf.html#test_explicit_uhf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymolresponse.tests.test_uhf.test_explicit_uhf" title="Link to this definition"></a></dt>
+<dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pymolresponse.tests.test_uhf.test_explicit_uhf_from_rhf_outside_solver">
 <span class="sig-prename descclassname"><span class="pre">pymolresponse.tests.test_uhf.</span></span><span class="sig-name descname"><span class="pre">test_explicit_uhf_from_rhf_outside_solver</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pymolresponse/tests/test_uhf.html#test_explicit_uhf_from_rhf_outside_solver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymolresponse.tests.test_uhf.test_explicit_uhf_from_rhf_outside_solver" title="Link to this definition"></a></dt>
-<dd><p>Run hard-coded response equations for an RHF reference using the UHF equations.</p>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pymolresponse.tests.test_uhf.test_explicit_uhf_outside_solver">
 <span class="sig-prename descclassname"><span class="pre">pymolresponse.tests.test_uhf.</span></span><span class="sig-name descname"><span class="pre">test_explicit_uhf_outside_solver</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pymolresponse/tests/test_uhf.html#test_explicit_uhf_outside_solver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymolresponse.tests.test_uhf.test_explicit_uhf_outside_solver" title="Link to this definition"></a></dt>
-<dd><p>Run hard-coded response equations for a UHF reference.</p>
-</dd></dl>
+<dd></dd></dl>
 
 </section>
 <section id="pymolresponse-tests-test-uhf-partial-mo-trafo-module">
 <h2>pymolresponse.tests.test_uhf_partial_mo_trafo module<a class="headerlink" href="#pymolresponse-tests-test-uhf-partial-mo-trafo-module" title="Link to this heading"></a></h2>
-<p id="module-pymolresponse.tests.test_uhf_partial_mo_trafo">Hard-coded response equations for unrestricted wavefunctions.</p>
-<p>The difference between this file and test_uhf.py is here only the necessary
-subspaces of the MO-basis two-electron integrals are formed, and in
-test_uhf.py the entire orbital space is formed.</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="pymolresponse.tests.test_uhf_partial_mo_trafo.test_api_uhf">
-<span class="sig-prename descclassname"><span class="pre">pymolresponse.tests.test_uhf_partial_mo_trafo.</span></span><span class="sig-name descname"><span class="pre">test_api_uhf</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pymolresponse/tests/test_uhf_partial_mo_trafo.html#test_api_uhf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymolresponse.tests.test_uhf_partial_mo_trafo.test_api_uhf" title="Link to this definition"></a></dt>
-<dd><p>Run linear response (static polarizability) for a UHF reference.</p>
-<p>The only differences between this and a production calculation are that it
-doesn’t use the Polarizability wrapper and the two-electron integral MO
-transformations are done manually.</p>
-</dd></dl>
+<span class="target" id="module-pymolresponse.tests.test_uhf_partial_mo_trafo"></span><dl class="py function">
+<dt class="sig sig-object py" id="pymolresponse.tests.test_uhf_partial_mo_trafo.test_explicit_uhf">
+<span class="sig-prename descclassname"><span class="pre">pymolresponse.tests.test_uhf_partial_mo_trafo.</span></span><span class="sig-name descname"><span class="pre">test_explicit_uhf</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pymolresponse/tests/test_uhf_partial_mo_trafo.html#test_explicit_uhf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymolresponse.tests.test_uhf_partial_mo_trafo.test_explicit_uhf" title="Link to this definition"></a></dt>
+<dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pymolresponse.tests.test_uhf_partial_mo_trafo.test_explicit_uhf_outside_solver">
 <span class="sig-prename descclassname"><span class="pre">pymolresponse.tests.test_uhf_partial_mo_trafo.</span></span><span class="sig-name descname"><span class="pre">test_explicit_uhf_outside_solver</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pymolresponse/tests/test_uhf_partial_mo_trafo.html#test_explicit_uhf_outside_solver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymolresponse.tests.test_uhf_partial_mo_trafo.test_explicit_uhf_outside_solver" title="Link to this definition"></a></dt>
-<dd><p>Run hard-coded response equations for a UHF reference.</p>
-</dd></dl>
+<dd></dd></dl>
 
 </section>
 <section id="pymolresponse-tests-test-uncoupled-module">
 <h2>pymolresponse.tests.test_uncoupled module<a class="headerlink" href="#pymolresponse-tests-test-uncoupled-module" title="Link to this heading"></a></h2>
-<p id="module-pymolresponse.tests.test_uncoupled">Tests for uncoupled (initial guess) results.</p>
-<p>The module also has tests against coupled (full) results, which were
-convenient to generate calculations for.</p>
-<dl class="py function">
+<span class="target" id="module-pymolresponse.tests.test_uncoupled"></span><dl class="py function">
 <dt class="sig sig-object py" id="pymolresponse.tests.test_uncoupled.mol_atom">
 <span class="sig-prename descclassname"><span class="pre">pymolresponse.tests.test_uncoupled.</span></span><span class="sig-name descname"><span class="pre">mol_atom</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'He'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charge</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basis</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'sto-3g'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Mole</span></span></span><a class="reference internal" href="_modules/pymolresponse/tests/test_uncoupled.html#mol_atom"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymolresponse.tests.test_uncoupled.mol_atom" title="Link to this definition"></a></dt>
-<dd><p>Create a pyscf.gto.Mole instance for a single atom.</p>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pymolresponse.tests.test_uncoupled.test_uncoupled_rhf">
 <span class="sig-prename descclassname"><span class="pre">pymolresponse.tests.test_uncoupled.</span></span><span class="sig-name descname"><span class="pre">test_uncoupled_rhf</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pymolresponse/tests/test_uncoupled.html#test_uncoupled_rhf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymolresponse.tests.test_uncoupled.test_uncoupled_rhf" title="Link to this definition"></a></dt>
-<dd><p>Test uncoupled results from a restricted wavefunction against references.</p>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pymolresponse.tests.test_uncoupled.test_uncoupled_uhf">
 <span class="sig-prename descclassname"><span class="pre">pymolresponse.tests.test_uncoupled.</span></span><span class="sig-name descname"><span class="pre">test_uncoupled_uhf</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pymolresponse/tests/test_uncoupled.html#test_uncoupled_uhf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymolresponse.tests.test_uncoupled.test_uncoupled_uhf" title="Link to this definition"></a></dt>
-<dd><p>Test uncoupled results from an unrestricted wavefunction against references.</p>
-</dd></dl>
+<dd></dd></dl>
 
 </section>
 <section id="pymolresponse-tests-test-utils-module">
 <h2>pymolresponse.tests.test_utils module<a class="headerlink" href="#pymolresponse-tests-test-utils-module" title="Link to this heading"></a></h2>
-<p id="module-pymolresponse.tests.test_utils">Tests for functions in pymolresponse.utils.</p>
-<dl class="py function">
+<span class="target" id="module-pymolresponse.tests.test_utils"></span><dl class="py function">
 <dt class="sig sig-object py" id="pymolresponse.tests.test_utils.test_splitter_default">
 <span class="sig-prename descclassname"><span class="pre">pymolresponse.tests.test_utils.</span></span><span class="sig-name descname"><span class="pre">test_splitter_default</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pymolresponse/tests/test_utils.html#test_splitter_default"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pymolresponse.tests.test_utils.test_splitter_default" title="Link to this definition"></a></dt>
 <dd><p>Does the splitter remove empty fields by default properly?</p>

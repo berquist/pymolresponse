@@ -69,9 +69,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pymolresponse.tests.test_calculators</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Response term calculators using reference data from disk.&quot;&quot;&quot;</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
@@ -98,7 +96,6 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">calculate_disk_rhf</span><span class="p">(</span>
     <span class="n">testcasedir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">hamiltonian</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">spin</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">frequency</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">label_1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">label_2</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate a single linear response term from a test case directory.&quot;&quot;&quot;</span>
     <span class="n">occupations</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">read_file_occupations</span><span class="p">(</span><span class="n">testcasedir</span> <span class="o">/</span> <span class="s2">&quot;occupations&quot;</span><span class="p">)</span>
     <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">,</span> <span class="n">nvirt_beta</span> <span class="o">=</span> <span class="n">occupations</span>
     <span class="k">assert</span> <span class="n">nocc_alph</span> <span class="o">==</span> <span class="n">nocc_beta</span>
@@ -176,7 +173,6 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">calculate_disk_uhf</span><span class="p">(</span>
     <span class="n">testcasedir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">hamiltonian</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">spin</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">frequency</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">label_1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">label_2</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate a single linear response term from a test case directory.&quot;&quot;&quot;</span>
     <span class="n">occupations</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">read_file_occupations</span><span class="p">(</span><span class="n">testcasedir</span> <span class="o">/</span> <span class="s2">&quot;occupations&quot;</span><span class="p">)</span>
     <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">,</span> <span class="n">nvirt_beta</span> <span class="o">=</span> <span class="n">occupations</span>
     <span class="n">norb</span> <span class="o">=</span> <span class="n">nocc_alph</span> <span class="o">+</span> <span class="n">nvirt_alph</span>
@@ -264,7 +260,6 @@
 
 
 
-<span class="c1"># TODO this is unused</span>
 <div class="viewcode-block" id="calculate_rhf">
 <a class="viewcode-back" href="../../../pyresponse.tests.html#pymolresponse.tests.test_calculators.calculate_rhf">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">calculate_rhf</span><span class="p">(</span>
@@ -277,10 +272,6 @@
     <span class="n">source_mocoeffs</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">source_operator</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate a single linear response term from a DALTON scratch directory.</span>
-
-<span class="sd">    This uses PySCF to compute two-electron integrals.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">operator_label</span><span class="p">:</span>
         <span class="c1"># TODO add dipvel</span>
         <span class="k">assert</span> <span class="n">operator_label</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;dipole&quot;</span><span class="p">,</span> <span class="s2">&quot;angmom&quot;</span><span class="p">,</span> <span class="s2">&quot;spinorb&quot;</span><span class="p">)</span>
@@ -390,7 +381,6 @@
 
 
 
-<span class="c1"># TODO this is unused</span>
 <div class="viewcode-block" id="calculate_uhf">
 <a class="viewcode-back" href="../../../pyresponse.tests.html#pymolresponse.tests.test_calculators.calculate_uhf">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">calculate_uhf</span><span class="p">(</span>
@@ -403,10 +393,6 @@
     <span class="n">source_mocoeffs</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">source_operator</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate a single linear response term from a DALTON scratch directory.</span>
-
-<span class="sd">    This uses PySCF to compute two-electron integrals.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">operator_label</span><span class="p">:</span>
         <span class="c1"># TODO add dipvel</span>
         <span class="k">assert</span> <span class="n">operator_label</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;dipole&quot;</span><span class="p">,</span> <span class="s2">&quot;angmom&quot;</span><span class="p">,</span> <span class="s2">&quot;spinorb&quot;</span><span class="p">)</span>

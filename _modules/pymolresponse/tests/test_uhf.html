@@ -69,15 +69,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pymolresponse.tests.test_uhf</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Hard-coded response equations for unrestricted wavefunctions.</span>
-
-<span class="sd">Tests here are a complete implementation of the linear response equations from</span>
-<span class="sd">molecular orbital coefficients and energies and property integrals computed on</span>
-<span class="sd">the fly.  The only reused functionality from the production implementations is</span>
-
-<span class="sd">1. forming the two-electron integrals in the MO basis and</span>
-<span class="sd">2. forming the blocks of the orbital Hessian</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">&quot;&quot;&quot;Hard-coded response equations for unrestricted wavefunctions.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
@@ -93,7 +85,6 @@
 <div class="viewcode-block" id="test_explicit_uhf_from_rhf_outside_solver">
 <a class="viewcode-back" href="../../../pyresponse.tests.html#pymolresponse.tests.test_uhf.test_explicit_uhf_from_rhf_outside_solver">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">test_explicit_uhf_from_rhf_outside_solver</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run hard-coded response equations for an RHF reference using the UHF equations.&quot;&quot;&quot;</span>
     <span class="n">mol</span> <span class="o">=</span> <span class="n">molecules</span><span class="o">.</span><span class="n">molecule_water_sto3g</span><span class="p">()</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
 
@@ -228,7 +219,6 @@
 <div class="viewcode-block" id="test_explicit_uhf_outside_solver">
 <a class="viewcode-back" href="../../../pyresponse.tests.html#pymolresponse.tests.test_uhf.test_explicit_uhf_outside_solver">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">test_explicit_uhf_outside_solver</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run hard-coded response equations for a UHF reference.&quot;&quot;&quot;</span>
     <span class="n">mol</span> <span class="o">=</span> <span class="n">molecules</span><span class="o">.</span><span class="n">molecule_water_sto3g</span><span class="p">()</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">charge</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">spin</span> <span class="o">=</span> <span class="mi">1</span>
@@ -336,15 +326,9 @@
 
 
 
-<span class="c1"># TODO maybe this test should get a better name</span>
-<div class="viewcode-block" id="test_api_uhf">
-<a class="viewcode-back" href="../../../pyresponse.tests.html#pymolresponse.tests.test_uhf.test_api_uhf">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">test_api_uhf</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run linear response (static polarizability) through for a UHF reference.</span>
-
-<span class="sd">    The only difference between this and a production calculation is that it</span>
-<span class="sd">    doesn&#39;t use the Polarizability wrapper.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="test_explicit_uhf">
+<a class="viewcode-back" href="../../../pyresponse.tests.html#pymolresponse.tests.test_uhf.test_explicit_uhf">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_explicit_uhf</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="n">mol</span> <span class="o">=</span> <span class="n">molecules</span><span class="o">.</span><span class="n">molecule_water_sto3g</span><span class="p">()</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">charge</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">spin</span> <span class="o">=</span> <span class="mi">1</span>

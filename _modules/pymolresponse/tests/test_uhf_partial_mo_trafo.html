@@ -69,14 +69,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pymolresponse.tests.test_uhf_partial_mo_trafo</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Hard-coded response equations for unrestricted wavefunctions.</span>
-
-<span class="sd">The difference between this file and test_uhf.py is here only the necessary</span>
-<span class="sd">subspaces of the MO-basis two-electron integrals are formed, and in</span>
-<span class="sd">test_uhf.py the entire orbital space is formed.</span>
-<span class="sd">&quot;&quot;&quot;</span>
-
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">pyscf</span>
 
@@ -90,7 +83,6 @@
 <div class="viewcode-block" id="test_explicit_uhf_outside_solver">
 <a class="viewcode-back" href="../../../pyresponse.tests.html#pymolresponse.tests.test_uhf_partial_mo_trafo.test_explicit_uhf_outside_solver">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">test_explicit_uhf_outside_solver</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run hard-coded response equations for a UHF reference.&quot;&quot;&quot;</span>
     <span class="n">mol</span> <span class="o">=</span> <span class="n">molecules</span><span class="o">.</span><span class="n">molecule_water_sto3g</span><span class="p">()</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">charge</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">spin</span> <span class="o">=</span> <span class="mi">1</span>
@@ -223,16 +215,9 @@
 
 
 
-<span class="c1"># TODO maybe this test should get a better name</span>
-<div class="viewcode-block" id="test_api_uhf">
-<a class="viewcode-back" href="../../../pyresponse.tests.html#pymolresponse.tests.test_uhf_partial_mo_trafo.test_api_uhf">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">test_api_uhf</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run linear response (static polarizability) for a UHF reference.</span>
-
-<span class="sd">    The only differences between this and a production calculation are that it</span>
-<span class="sd">    doesn&#39;t use the Polarizability wrapper and the two-electron integral MO</span>
-<span class="sd">    transformations are done manually.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="test_explicit_uhf">
+<a class="viewcode-back" href="../../../pyresponse.tests.html#pymolresponse.tests.test_uhf_partial_mo_trafo.test_explicit_uhf">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_explicit_uhf</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="n">mol</span> <span class="o">=</span> <span class="n">molecules</span><span class="o">.</span><span class="n">molecule_water_sto3g</span><span class="p">()</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">charge</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">spin</span> <span class="o">=</span> <span class="mi">1</span>
