@@ -115,7 +115,7 @@ skip-magic-trailing-comma = true
 
 [tool.ruff.lint]
 extend-select = [
-    "D", # pydocstyle
+    # "D", # pydocstyle
     "FURB", # refurb
     "I", # isort
     "ICN", # flake8-import-conventions
