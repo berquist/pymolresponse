@@ -1,3 +1,5 @@
+"""Tests against reference values using inputs from disk.."""
+
 import numpy as np
 
 from pymolresponse import cphf, operators, solvers, utils

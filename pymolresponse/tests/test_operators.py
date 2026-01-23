@@ -1,11 +1,10 @@
+"""Basic tests for Operators."""
+
 from pymolresponse.tests.test_runners import run_dalton_label_to_operator
 
 
 def test_dalton_label_to_operator() -> None:
-    """Test that
-    1. Operator attributes are properly set based on a DALTON label, and that
-    2. __str__ is correct.
-    """
+    """Test that Operator metadata is generated from DALTON labels."""
     operator = run_dalton_label_to_operator("zdiplen", "dipole", 2, False, False)
     assert (
         operator.__str__()

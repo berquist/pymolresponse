@@ -1,3 +1,5 @@
+"""Wrappers for performing magnetic property calculations."""
+
 from typing import TYPE_CHECKING, Any, Union
 
 import numpy as np

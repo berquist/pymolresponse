@@ -1,3 +1,5 @@
+"""Tests for optical rotation calculations."""
+
 import numpy as np
 from pymolresponse import cphf, solvers, utils
 from pymolresponse.core import Hamiltonian, Program, Spin

@@ -1,3 +1,5 @@
+"""Test two-electron integral MO transformation interfaces."""
+
 import numpy as np
 
 import pyscf
@@ -10,6 +12,10 @@ from pymolresponse.utils import fix_mocoeffs_shape
 
 
 def test_ao2mo_hand_against_pyscf_rhf_full() -> None:
+    """Compare the unoptimized MO transformation with PySCF.
+
+    All orbitals are present in the transformation ("full").
+    """
     mol = molecules_pyscf.molecule_physicists_water_sto3g()
     mol.build()
 
@@ -47,6 +53,11 @@ def test_ao2mo_hand_against_pyscf_rhf_full() -> None:
 
 
 def test_ao2mo_hand_against_pyscf_rhf_partial() -> None:
+    """Compare the unoptimized MO transformation with PySCF.
+
+    Only those orbitals needed for the response calculation are present
+    ("partial").
+    """
     mol = molecules_pyscf.molecule_physicists_water_sto3g()
     mol.build()
 

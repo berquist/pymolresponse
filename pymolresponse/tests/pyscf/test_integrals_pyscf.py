@@ -1,8 +1,14 @@
+"""Tests for computing integrals with PySCF."""
+
 import numpy as np
 from pymolresponse.interfaces.pyscf import integrals, molecules
 
 
 def test_integrals_pyscf() -> None:
+    """Test the PySCF property integral interface.
+
+    This is closer to an implementation test than a proper unit test.
+    """
     mol = molecules.molecule_water_sto3g()
     mol.build()
     integral_generator = integrals.IntegralsPyscf(mol)
@@ -16,6 +22,7 @@ def test_integrals_pyscf() -> None:
 
 
 def test_jk_pyscf() -> None:
+    """Test the PySCF Coulomb and exchange integral interface."""
     mol = molecules.molecule_water_sto3g()
     mol.build()
     jk_generator = integrals.JKPyscf(mol)  # noqa: F841

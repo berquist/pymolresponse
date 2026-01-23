@@ -1,3 +1,5 @@
+"""Run response term calculators over all references for a test case."""
+
 from pathlib import Path
 from typing import Union
 
@@ -14,6 +16,7 @@ def run_dalton_label_to_operator(
     is_imaginary: bool,
     is_spin_dependent: bool,
 ) -> Operator:
+    """Convert a DALTON integral label to an Operator."""
     operator = dalton_label_to_operator(dalton_label)
     assert operator.label == operator_label
     assert operator.slice_idx == slice_idx
@@ -22,10 +25,8 @@ def run_dalton_label_to_operator(
     return operator
 
 
-# def run_reference_disk_rhf(testcase):
-
-
 def run_as_many_tests_as_possible_rhf_disk(testcase: Union[Path, str]) -> None:
+    """Execute all comparisons against DALTON disk references for a test case."""
     testcasedir = REFDIR / testcase
 
     thresh = 5.0e-3

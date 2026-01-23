@@ -1,3 +1,8 @@
+"""Tests for quadratic response calculations.
+
+The molecule used is physicist's water from Psi4NumPy.
+"""
+
 from itertools import permutations, product
 
 import numpy as np

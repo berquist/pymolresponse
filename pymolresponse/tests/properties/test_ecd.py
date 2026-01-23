@@ -1,3 +1,5 @@
+"""Tests for electronic circular dichroism calculations."""
+
 from typing import TypedDict
 
 import numpy as np
