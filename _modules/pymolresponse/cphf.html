@@ -116,8 +116,8 @@
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.cphf.CPHF.set_frequencies">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_frequencies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frequencies</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Set the frequencies :math:`\omega_f` for which frequency-dependent</span>
-<span class="sd">        CPHF is performed.&quot;&quot;&quot;</span>
-
+<span class="sd">        CPHF is performed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># TODO</span>
         <span class="c1"># :type frequencies float or list</span>
         <span class="c1"># :param frequencies one or more frequencies in atomic units;</span>
@@ -131,8 +131,8 @@
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.cphf.CPHF.add_operator">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_operator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operator</span><span class="p">:</span> <span class="n">Operator</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add an operator to the list of operators that will be used as the</span>
-<span class="sd">        right-hand side perturbation.&quot;&quot;&quot;</span>
-
+<span class="sd">        right-hand side perturbation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">add_operator</span><span class="p">(</span><span class="n">operator</span><span class="p">)</span></div>
 
