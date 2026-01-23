@@ -89,7 +89,6 @@
     <span class="n">vecs_property</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]],</span>
     <span class="n">vecs_response</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Form all possible results by contracting response vectors with property gradients.&quot;&quot;&quot;</span>
     <span class="c1"># TODO document what the assertions mean</span>
     <span class="k">assert</span> <span class="n">vecs_property</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">==</span> <span class="n">vecs_response</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">vecs_property</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span>
@@ -130,11 +129,6 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_int_file_2</span><span class="p">(</span>
     <span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">],</span> <span class="n">dim</span><span class="p">:</span> <span class="nb">int</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read a 2-D array from a formatted text file.</span>
-
-<span class="sd">    The first two columns are the one-based indices and the third column is</span>
-<span class="sd">    the array element.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="n">dim</span><span class="p">))</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
         <span class="n">contents</span> <span class="o">=</span> <span class="n">fh</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
@@ -149,7 +143,6 @@
 <div class="viewcode-block" id="repack_matrix_to_vector">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.utils.repack_matrix_to_vector">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">repack_matrix_to_vector</span><span class="p">(</span><span class="n">mat</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a matrix to a vector for compound indexing.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;F&quot;</span><span class="p">)</span></div>
 
 
@@ -157,7 +150,6 @@
 <div class="viewcode-block" id="repack_vector_to_matrix">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.utils.repack_vector_to_matrix">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">repack_vector_to_matrix</span><span class="p">(</span><span class="n">vec</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">shape</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a vector with an assumed compound index into a dense matrix.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">vec</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s2">&quot;F&quot;</span><span class="p">)</span></div>
 
 
@@ -172,7 +164,6 @@
     <span class="n">label_1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">label_2</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Find a reference value for the linear response of a system to two operators.&quot;&quot;&quot;</span>
     <span class="c1"># TODO need to pass the frequency as a string identical to the one</span>
     <span class="c1"># found in the file, can&#39;t pass a float due to fp error; how to</span>
     <span class="c1"># get around this?</span>
@@ -205,19 +196,6 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">read_file_occupations</span><span class="p">(</span>
     <span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read molecular orbital occupations from a file.</span>
-
-<span class="sd">    The file should contain a single line of four integers</span>
-<span class="sd">    - number of occupied alpha orbitals</span>
-<span class="sd">    - number of unoccupied (virtual) alpha orbitals</span>
-<span class="sd">    - number of occupied beta orbitals</span>
-<span class="sd">    - number of unoccupied (virtual) beta orbitals</span>
-<span class="sd">    which are parsed and returned in an array in the same order.</span>
-
-<span class="sd">    The file makes no distinction about whether or not they come from a</span>
-<span class="sd">    restricted calculation, in which case the alpha and beta values will be</span>
-<span class="sd">    identical.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
         <span class="n">contents</span> <span class="o">=</span> <span class="n">fh</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
     <span class="n">tokens</span> <span class="o">=</span> <span class="n">contents</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
@@ -230,7 +208,6 @@
 <div class="viewcode-block" id="read_file_1">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.utils.read_file_1">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">read_file_1</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read a libaview-formatted 1-D array.&quot;&quot;&quot;</span>
     <span class="n">elements</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
         <span class="n">n_elem</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">fh</span><span class="p">))</span>
@@ -244,7 +221,6 @@
 <div class="viewcode-block" id="read_file_2">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.utils.read_file_2">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">read_file_2</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read a libaview-formatted 2-D array.&quot;&quot;&quot;</span>
     <span class="n">elements</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
         <span class="n">n_rows</span><span class="p">,</span> <span class="n">n_cols</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">next</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
@@ -261,7 +237,6 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">read_file_3</span><span class="p">(</span>
     <span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read a libaview-formatted 3-D array.&quot;&quot;&quot;</span>
     <span class="n">elements</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
         <span class="n">n_slices</span><span class="p">,</span> <span class="n">n_rows</span><span class="p">,</span> <span class="n">n_cols</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">next</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
@@ -277,7 +252,6 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">read_file_4</span><span class="p">(</span>
     <span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read a libaview-formatted 4-D array.&quot;&quot;&quot;</span>
     <span class="n">elements</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
         <span class="n">n_d1</span><span class="p">,</span> <span class="n">n_d2</span><span class="p">,</span> <span class="n">n_d3</span><span class="p">,</span> <span class="n">n_d4</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">next</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
@@ -291,7 +265,6 @@
 <div class="viewcode-block" id="occupations_from_sirifc">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.utils.occupations_from_sirifc">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">occupations_from_sirifc</span><span class="p">(</span><span class="n">ifc</span><span class="p">:</span> <span class="s2">&quot;sirifc&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read orbital occupations from a parsed DALTON SIRIFC object.&quot;&quot;&quot;</span>
     <span class="n">nocc_a</span><span class="p">,</span> <span class="n">nocc_b</span> <span class="o">=</span> <span class="n">ifc</span><span class="o">.</span><span class="n">nisht</span> <span class="o">+</span> <span class="n">ifc</span><span class="o">.</span><span class="n">nasht</span><span class="p">,</span> <span class="n">ifc</span><span class="o">.</span><span class="n">nisht</span>
     <span class="n">norb</span> <span class="o">=</span> <span class="n">ifc</span><span class="o">.</span><span class="n">norbt</span>
     <span class="n">nvirt_a</span><span class="p">,</span> <span class="n">nvirt_b</span> <span class="o">=</span> <span class="n">norb</span> <span class="o">-</span> <span class="n">nocc_a</span><span class="p">,</span> <span class="n">norb</span> <span class="o">-</span> <span class="n">nocc_b</span>
@@ -302,7 +275,9 @@
 <div class="viewcode-block" id="Splitter">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.utils.Splitter">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Splitter</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Split a line based on a number of field widths.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Split a line based not on a character, but a given number of field</span>
+<span class="sd">    widths.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widths</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">start_indices</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">accumulate</span><span class="p">(</span><span class="n">widths</span><span class="p">))[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
@@ -311,7 +286,8 @@
 <div class="viewcode-block" id="Splitter.split">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.utils.Splitter.split">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">split</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">truncate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Split a line using field widths passed on class initialization.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Split the given line using the field widths passed in on class</span>
+<span class="sd">        initialization.</span>
 
 <span class="sd">        Handle lines that contain fewer fields than specified in the</span>
 <span class="sd">        widths; they are added as empty strings. If `truncate`, remove</span>
@@ -342,12 +318,6 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">fix_mocoeffs_shape</span><span class="p">(</span>
     <span class="n">mocoeffs</span><span class="p">:</span> <span class="n">DirtyMocoeffs</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Clean up the dimensionality of molecular orbital coefficients.</span>
-
-<span class="sd">    The result is 3-D, where the first index is spin, the second is the atomic</span>
-<span class="sd">    orbital, and the third is the molecular orbital.  The first index will</span>
-<span class="sd">    only ever be of length 1 or 2.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mocoeffs</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
         <span class="c1"># this will properly fall through to the else clause</span>
         <span class="n">mocoeffs_new</span> <span class="o">=</span> <span class="n">fix_mocoeffs_shape</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">mocoeffs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
@@ -372,13 +342,6 @@
         <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]],</span>
     <span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Clean up the dimensionality of molecular orbital energies.</span>
-
-<span class="sd">    The result is 3-D, where the first index is spin and the second and third</span>
-<span class="sd">    indices are molecular orbitals.  For canonical orbitals, all off-diagonal</span>
-<span class="sd">    elements will be zero, but it is more convenient to have the shape be a</span>
-<span class="sd">    matrix rather than a vector.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">moenergies</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
         <span class="c1"># this will properly fall through to the else clause</span>
         <span class="n">moenergies_new</span> <span class="o">=</span> <span class="n">fix_moenergies_shape</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">moenergies</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
@@ -424,7 +387,6 @@
 <div class="viewcode-block" id="read_dalton_propfile">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.utils.read_dalton_propfile">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">read_dalton_propfile</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse a DALTON.PROP file.&quot;&quot;&quot;</span>
     <span class="n">proplist</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">tmpdir</span> <span class="o">/</span> <span class="s2">&quot;DALTON.PROP&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">propfile</span><span class="p">:</span>
         <span class="n">proplines</span> <span class="o">=</span> <span class="n">propfile</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
@@ -442,7 +404,6 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">tensor_printer</span><span class="p">(</span>
     <span class="n">tensor</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]],</span> <span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Pretty-print a 2-D array.&quot;&quot;&quot;</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
     <span class="n">eigvals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigvals</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
     <span class="c1"># or should this be the trace of the matrix?</span>
@@ -463,15 +424,7 @@
 
 <div class="viewcode-block" id="form_vec_energy_differences">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.utils.form_vec_energy_differences">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">form_vec_energy_differences</span><span class="p">(</span>
-    <span class="n">moene_occ</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]],</span>
-    <span class="n">moene_virt</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]],</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Form a vector of virtual-occupied MO energy differences.</span>
-
-<span class="sd">    In the compound-indexed result vector, the virtual index is fast and the</span>
-<span class="sd">    occupied index is slow.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">form_vec_energy_differences</span><span class="p">(</span><span class="n">moene_occ</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">moene_virt</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="n">nocc</span> <span class="o">=</span> <span class="n">moene_occ</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">nvirt</span> <span class="o">=</span> <span class="n">moene_virt</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">nov</span> <span class="o">=</span> <span class="n">nocc</span> <span class="o">*</span> <span class="n">nvirt</span>
@@ -493,9 +446,8 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">screen</span><span class="p">(</span>
     <span class="n">mat</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">number</span><span class="p">]],</span> <span class="n">thresh</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0e-16</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">number</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Set all values smaller than the threshold to zero.</span>
-
-<span class="sd">    This function makes a copy of mat and does not modify it in-place.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Set all values smaller than the given threshold to zero</span>
+<span class="sd">    (considering them as numerical noise).</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -517,8 +469,7 @@
 <div class="viewcode-block" id="matsym">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.utils.matsym">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">matsym</span><span class="p">(</span><span class="n">amat</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">number</span><span class="p">]],</span> <span class="n">thrzer</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0e-14</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Determine matrix symmetry.</span>
-
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    - Copied from ``DALTON/gp/gphjj.F/MATSYM``.</span>
 <span class="sd">    - `thrzer` taken from ``DALTON/include/thrzer.h``.</span>
 
@@ -537,6 +488,7 @@
 <span class="sd">        - 3 if all elements are below `thrzer`</span>
 <span class="sd">        - 0 otherwise (the matrix is unsymmetric about the diagonal)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">assert</span> <span class="n">amat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">amat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
     <span class="n">n</span> <span class="o">=</span> <span class="n">amat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -563,9 +515,8 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">flip_triangle_sign</span><span class="p">(</span>
     <span class="n">A</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">number</span><span class="p">]],</span> <span class="n">triangle</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;lower&quot;</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">number</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Flip the sign of either the lower or upper triangle of a square matrix.</span>
-
-<span class="sd">    Assumes nothing about the input matrix symmetry.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Flip the sign of either the lower or upper triangle of a square</span>
+<span class="sd">    matrix. Assume nothing about its symmetry.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -596,7 +547,6 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">form_first_hyperpolarizability_averages</span><span class="p">(</span>
     <span class="n">beta</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]],</span> <span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Form the relevant averages from a complete (no symmetry) hyperpolarizability tensor.&quot;&quot;&quot;</span>
     <span class="k">assert</span> <span class="n">beta</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
     <span class="n">avgs</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span>
         <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;ijj-&gt;i&quot;</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;jij-&gt;i&quot;</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;jji-&gt;i&quot;</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
@@ -609,7 +559,6 @@
 <div class="viewcode-block" id="form_indices_orbwin">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.utils.form_indices_orbwin">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">form_indices_orbwin</span><span class="p">(</span><span class="n">nocc</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">nvirt</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Form all occupied-virtual pairs of indices starting from their absolute position.&quot;&quot;&quot;</span>
     <span class="n">norb</span> <span class="o">=</span> <span class="n">nocc</span> <span class="o">+</span> <span class="n">nvirt</span>
     <span class="k">return</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">nocc</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nocc</span><span class="p">,</span> <span class="n">norb</span><span class="p">)]</span></div>
 
@@ -618,7 +567,6 @@
 <div class="viewcode-block" id="form_indices_zero">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.utils.form_indices_zero">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">form_indices_zero</span><span class="p">(</span><span class="n">nocc</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">nvirt</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Form all occupied-virtual pairs of indices, both starting from zero.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nocc</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nvirt</span><span class="p">)]</span></div>
 
 </pre></div>
