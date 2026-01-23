@@ -1,4 +1,12 @@
-"""Hard-coded response equations for unrestricted wavefunctions."""
+"""Hard-coded response equations for unrestricted wavefunctions.
+
+Tests here are a complete implementation of the linear response equations from
+molecular orbital coefficients and energies and property integrals computed on
+the fly.  The only reused functionality from the production implementations is
+
+1. forming the two-electron integrals in the MO basis and
+2. forming the blocks of the orbital Hessian
+"""
 
 import numpy as np
 
@@ -12,6 +20,7 @@ from pymolresponse.interfaces.pyscf.ao2mo import AO2MOpyscf
 
 
 def test_explicit_uhf_from_rhf_outside_solver() -> None:
+    """Run hard-coded response equations for an RHF reference using the UHF equations."""
     mol = molecules.molecule_water_sto3g()
     mol.build()
 
@@ -143,6 +152,7 @@ ref_water_cation_UHF_HF_STO3G = np.array(
 
 
 def test_explicit_uhf_outside_solver() -> None:
+    """Run hard-coded response equations for a UHF reference."""
     mol = molecules.molecule_water_sto3g()
     mol.charge = 1
     mol.spin = 1
@@ -249,7 +259,13 @@ def test_explicit_uhf_outside_solver() -> None:
     np.testing.assert_allclose(res_u, ref_water_cation_UHF_HF_STO3G, rtol=rtol, atol=atol)
 
 
-def test_explicit_uhf() -> None:
+# TODO maybe this test should get a better name
+def test_api_uhf() -> None:
+    """Run linear response (static polarizability) through for a UHF reference.
+
+    The only difference between this and a production calculation is that it
+    doesn't use the Polarizability wrapper.
+    """
     mol = molecules.molecule_water_sto3g()
     mol.charge = 1
     mol.spin = 1

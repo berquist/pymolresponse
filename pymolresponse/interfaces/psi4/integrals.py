@@ -75,7 +75,6 @@ def compute_jk(
 
     Examples
     --------
-
     ndocc = 5
     nbf = 15
 
@@ -91,7 +90,6 @@ def compute_jk(
 
     J_list, K_list = compute_jk(jk, [Cocc, Cocc])
     """
-
     # Clear out the matrices
     jk.C_clear()
 

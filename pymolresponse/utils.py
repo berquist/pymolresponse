@@ -16,6 +16,7 @@ def form_results(
     vecs_property: np.ndarray[tuple[int, int, int], np.dtype[np.floating]],
     vecs_response: np.ndarray[tuple[int, int, int], np.dtype[np.floating]],
 ) -> np.ndarray[tuple[int, int], np.dtype[np.floating]]:
+    """Form all possible results by contracting response vectors with property gradients."""
     # TODO document what the assertions mean
     assert vecs_property.shape[1:] == vecs_response.shape[1:]
     assert len(vecs_property.shape) == 3
@@ -47,6 +48,11 @@ def np_load_2(filename: Union[str, Path]) -> np.ndarray[tuple[int, int], np.dtyp
 def parse_int_file_2(
     filename: Union[str, Path], dim: int
 ) -> np.ndarray[tuple[int, int], np.dtype[np.floating]]:
+    """Read a 2-D array from a formatted text file.
+
+    The first two columns are the one-based indices and the third column is
+    the array element.
+    """
     mat = np.zeros(shape=(dim, dim))
     with open(filename) as fh:
         contents = fh.readlines()
@@ -58,10 +64,12 @@ def parse_int_file_2(
 
 
 def repack_matrix_to_vector(mat: np.ndarray) -> np.ndarray:
+    """Convert a matrix to a vector for compound indexing."""
     return np.reshape(mat, -1, order="F")
 
 
 def repack_vector_to_matrix(vec: np.ndarray, shape: tuple[int, ...]) -> np.ndarray:
+    """Convert a vector with an assumed compound index into a dense matrix."""
     return vec.reshape(shape, order="F")
 
 
@@ -73,6 +81,7 @@ def get_reference_value_from_file(
     label_1: str,
     label_2: str,
 ) -> float:
+    """Find a reference value for the linear response of a system to two operators."""
     # TODO need to pass the frequency as a string identical to the one
     # found in the file, can't pass a float due to fp error; how to
     # get around this?
@@ -102,6 +111,19 @@ def get_reference_value_from_file(
 def read_file_occupations(
     filename: Union[Path, str],
 ) -> np.ndarray[tuple[int], np.dtype[np.integer]]:
+    """Read molecular orbital occupations from a file.
+
+    The file should contain a single line of four integers
+    - number of occupied alpha orbitals
+    - number of unoccupied (virtual) alpha orbitals
+    - number of occupied beta orbitals
+    - number of unoccupied (virtual) beta orbitals
+    which are parsed and returned in an array in the same order.
+
+    The file makes no distinction about whether or not they come from a
+    restricted calculation, in which case the alpha and beta values will be
+    identical.
+    """
     with open(filename) as fh:
         contents = fh.read().strip()
     tokens = contents.split()
@@ -111,6 +133,7 @@ def read_file_occupations(
 
 
 def read_file_1(filename: Union[Path, str]) -> np.ndarray[tuple[int], np.dtype[np.floating]]:
+    """Read a libaview-formatted 1-D array."""
     elements = []
     with open(filename) as fh:
         n_elem = int(next(fh))
@@ -121,6 +144,7 @@ def read_file_1(filename: Union[Path, str]) -> np.ndarray[tuple[int], np.dtype[n
 
 
 def read_file_2(filename: Union[Path, str]) -> np.ndarray[tuple[int, int], np.dtype[np.floating]]:
+    """Read a libaview-formatted 2-D array."""
     elements = []
     with open(filename) as fh:
         n_rows, n_cols = (int(x) for x in next(fh).split())
@@ -134,6 +158,7 @@ def read_file_2(filename: Union[Path, str]) -> np.ndarray[tuple[int, int], np.dt
 def read_file_3(
     filename: Union[Path, str],
 ) -> np.ndarray[tuple[int, int, int], np.dtype[np.floating]]:
+    """Read a libaview-formatted 3-D array."""
     elements = []
     with open(filename) as fh:
         n_slices, n_rows, n_cols = (int(x) for x in next(fh).split())
@@ -146,6 +171,7 @@ def read_file_3(
 def read_file_4(
     filename: Union[Path, str],
 ) -> np.ndarray[tuple[int, int, int, int], np.dtype[np.floating]]:
+    """Read a libaview-formatted 4-D array."""
     elements = []
     with open(filename) as fh:
         n_d1, n_d2, n_d3, n_d4 = (int(x) for x in next(fh).split())
@@ -156,6 +182,7 @@ def read_file_4(
 
 
 def occupations_from_sirifc(ifc: "sirifc") -> np.ndarray[tuple[int], np.dtype[np.integer]]:
+    """Read orbital occupations from a parsed DALTON SIRIFC object."""
     nocc_a, nocc_b = ifc.nisht + ifc.nasht, ifc.nisht
     norb = ifc.norbt
     nvirt_a, nvirt_b = norb - nocc_a, norb - nocc_b
@@ -163,17 +190,14 @@ def occupations_from_sirifc(ifc: "sirifc") -> np.ndarray[tuple[int], np.dtype[np
 
 
 class Splitter:
-    """Split a line based not on a character, but a given number of field
-    widths.
-    """
+    """Split a line based on a number of field widths."""
 
     def __init__(self, widths: Iterable[int]) -> None:
         self.start_indices = [0] + list(accumulate(widths))[:-1]
         self.end_indices = list(accumulate(widths))
 
     def split(self, line: str, truncate: bool = True) -> list[str]:
-        """Split the given line using the field widths passed in on class
-        initialization.
+        """Split a line using field widths passed on class initialization.
 
         Handle lines that contain fewer fields than specified in the
         widths; they are added as empty strings. If `truncate`, remove
@@ -200,6 +224,12 @@ DirtyMocoeffs = Union[
 def fix_mocoeffs_shape(
     mocoeffs: DirtyMocoeffs,
 ) -> np.ndarray[tuple[int, int, int], np.dtype[np.floating]]:
+    """Clean up the dimensionality of molecular orbital coefficients.
+
+    The result is 3-D, where the first index is spin, the second is the atomic
+    orbital, and the third is the molecular orbital.  The first index will
+    only ever be of length 1 or 2.
+    """
     if isinstance(mocoeffs, tuple):
         # this will properly fall through to the else clause
         mocoeffs_new = fix_mocoeffs_shape(np.stack(mocoeffs, axis=0))
@@ -221,6 +251,13 @@ def fix_moenergies_shape(
         np.ndarray[Union[tuple[int], tuple[int, int], tuple[int, int, int]], np.dtype[np.floating]],
     ],
 ) -> np.ndarray[tuple[int, int, int], np.dtype[np.floating]]:
+    """Clean up the dimensionality of molecular orbital energies.
+
+    The result is 3-D, where the first index is spin and the second and third
+    indices are molecular orbitals.  For canonical orbitals, all off-diagonal
+    elements will be zero, but it is more convenient to have the shape be a
+    matrix rather than a vector.
+    """
     if isinstance(moenergies, tuple):
         # this will properly fall through to the else clause
         moenergies_new = fix_moenergies_shape(np.stack(moenergies, axis=0))
@@ -263,6 +300,7 @@ def fix_moenergies_shape(
 
 
 def read_dalton_propfile(tmpdir: Path) -> list[str]:
+    """Parse a DALTON.PROP file."""
     proplist = []
     with open(tmpdir / "DALTON.PROP") as propfile:
         proplines = propfile.readlines()
@@ -277,6 +315,7 @@ def read_dalton_propfile(tmpdir: Path) -> list[str]:
 def tensor_printer(
     tensor: np.ndarray[tuple[int, int], np.dtype[np.floating]],
 ) -> tuple[np.ndarray[tuple[int], np.dtype[np.floating]], np.floating, float]:
+    """Pretty-print a 2-D array."""
     print(tensor)
     eigvals = np.linalg.eigvals(tensor)
     # or should this be the trace of the matrix?
@@ -294,7 +333,15 @@ def tensor_printer(
     return eigvals, iso, aniso
 
 
-def form_vec_energy_differences(moene_occ: np.ndarray, moene_virt: np.ndarray) -> np.ndarray:
+def form_vec_energy_differences(
+    moene_occ: np.ndarray[tuple[int], np.dtype[np.floating]],
+    moene_virt: np.ndarray[tuple[int], np.dtype[np.floating]],
+) -> np.ndarray[tuple[int], np.dtype[np.floating]]:
+    """Form a vector of virtual-occupied MO energy differences.
+
+    In the compound-indexed result vector, the virtual index is fast and the
+    occupied index is slow.
+    """
     nocc = moene_occ.shape[0]
     nvirt = moene_virt.shape[0]
     nov = nocc * nvirt
@@ -313,8 +360,9 @@ def form_vec_energy_differences(moene_occ: np.ndarray, moene_virt: np.ndarray) -
 def screen(
     mat: np.ndarray[tuple[int, ...], np.dtype[np.number]], thresh: float = 1.0e-16
 ) -> np.ndarray[tuple[int, ...], np.dtype[np.number]]:
-    """Set all values smaller than the given threshold to zero
-    (considering them as numerical noise).
+    """Set all values smaller than the threshold to zero.
+
+    This function makes a copy of mat and does not modify it in-place.
 
     Parameters
     ----------
@@ -333,7 +381,8 @@ def screen(
 
 
 def matsym(amat: np.ndarray[tuple[int, int], np.dtype[np.number]], thrzer: float = 1.0e-14) -> int:
-    """
+    """Determine matrix symmetry.
+
     - Copied from ``DALTON/gp/gphjj.F/MATSYM``.
     - `thrzer` taken from ``DALTON/include/thrzer.h``.
 
@@ -352,7 +401,6 @@ def matsym(amat: np.ndarray[tuple[int, int], np.dtype[np.number]], thrzer: float
         - 3 if all elements are below `thrzer`
         - 0 otherwise (the matrix is unsymmetric about the diagonal)
     """
-
     assert amat.shape[0] == amat.shape[1]
 
     n = amat.shape[0]
@@ -376,8 +424,9 @@ def matsym(amat: np.ndarray[tuple[int, int], np.dtype[np.number]], thrzer: float
 def flip_triangle_sign(
     A: np.ndarray[tuple[int, int], np.dtype[np.number]], triangle: str = "lower"
 ) -> np.ndarray[tuple[int, int], np.dtype[np.number]]:
-    """Flip the sign of either the lower or upper triangle of a square
-    matrix. Assume nothing about its symmetry.
+    """Flip the sign of either the lower or upper triangle of a square matrix.
+
+    Assumes nothing about the input matrix symmetry.
 
     Parameters
     ----------
@@ -405,6 +454,7 @@ def flip_triangle_sign(
 def form_first_hyperpolarizability_averages(
     beta: np.ndarray[tuple[int, int, int], np.dtype[np.floating]],
 ) -> tuple[np.ndarray[tuple[int], np.dtype[np.floating]], np.floating]:
+    """Form the relevant averages from a complete (no symmetry) hyperpolarizability tensor."""
     assert beta.shape == (3, 3, 3)
     avgs = (-1 / 3) * (
         np.einsum("ijj->i", beta) + np.einsum("jij->i", beta) + np.einsum("jji->i", beta)
@@ -414,9 +464,11 @@ def form_first_hyperpolarizability_averages(
 
 
 def form_indices_orbwin(nocc: int, nvirt: int) -> list[tuple[int, int]]:
+    """Form all occupied-virtual pairs of indices starting from their absolute position."""
     norb = nocc + nvirt
     return [(i, a) for i in range(0, nocc) for a in range(nocc, norb)]
 
 
 def form_indices_zero(nocc: int, nvirt: int) -> list[tuple[int, int]]:
+    """Form all occupied-virtual pairs of indices, both starting from zero."""
     return [(i, a) for i in range(nocc) for a in range(nvirt)]

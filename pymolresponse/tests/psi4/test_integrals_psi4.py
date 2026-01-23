@@ -1,3 +1,5 @@
+"""Tests for computing integrals with Psi4."""
+
 import numpy as np
 from pymolresponse.interfaces.psi4 import integrals, molecules
 from pymolresponse.interfaces.psi4.utils import mocoeffs_from_psi4wfn, occupations_from_psi4wfn
@@ -6,6 +8,10 @@ import psi4
 
 
 def test_integrals_psi4() -> None:
+    """Test the Psi4 property integral interface.
+
+    This is closer to an implementation test than a proper unit test.
+    """
     mol = molecules.molecule_water_sto3g()
     mol.reset_point_group("c1")
     mol.update_geometry()
@@ -28,6 +34,7 @@ def test_integrals_psi4() -> None:
 
 
 def test_jk_psi4() -> None:
+    """Test the Psi4 Coulomb and exchange integral interface."""
     mol = molecules.molecule_water_sto3g()
     mol.reset_point_group("c1")
     mol.update_geometry()

@@ -1,3 +1,5 @@
+"""Core tests for excitation energies."""
+
 import pyscf
 
 from pymolresponse import solvers, td, utils
@@ -7,6 +9,7 @@ from pymolresponse.interfaces.pyscf.utils import occupations_from_pyscf_mol
 
 
 def test_HF_both_singlet_HF_STO3G() -> None:
+    """Compare singlet TDA and RPA excitation energies for RHF."""
     mol = pyscf.gto.Mole()
     mol.verbose = 0
     mol.output = None
@@ -98,7 +101,7 @@ HF_neutral_singlet_HF_STO3G_RPA_qchem = {
     "etoscslen": [0.0001877054, 0.0001877054, 0.7777380206, 0.0322221420, 0.0686085799],
 }
 
-# TODO
+# TODO why is this not finished?
 #
 # def test_LiH_cation_TDA_singlet_HF_STO3G() -> None:
 #     from pymolresponse.interfaces.pyscf.molecules import molecule_lih_cation_sto3g

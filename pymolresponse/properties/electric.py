@@ -1,4 +1,4 @@
-"""Wrapper for performing a dipole polarizability calculation."""
+"""Wrappers for performing electric property calculations."""
 
 from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any

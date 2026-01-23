@@ -1,3 +1,5 @@
+"""Response term calculators using reference data from disk."""
+
 from pathlib import Path
 
 import numpy as np
@@ -23,6 +25,7 @@ except ImportError:
 def calculate_disk_rhf(
     testcasedir: Path, hamiltonian: str, spin: str, frequency: str, label_1: str, label_2: str
 ) -> float:
+    """Calculate a single linear response term from a test case directory."""
     occupations = utils.read_file_occupations(testcasedir / "occupations")
     nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = occupations
     assert nocc_alph == nocc_beta
@@ -97,6 +100,7 @@ def calculate_disk_rhf(
 def calculate_disk_uhf(
     testcasedir: Path, hamiltonian: str, spin: str, frequency: str, label_1: str, label_2: str
 ) -> float:
+    """Calculate a single linear response term from a test case directory."""
     occupations = utils.read_file_occupations(testcasedir / "occupations")
     nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = occupations
     norb = nocc_alph + nvirt_alph
@@ -183,6 +187,7 @@ def calculate_disk_uhf(
     return bl
 
 
+# TODO this is unused
 def calculate_rhf(
     dalton_tmpdir: Path,
     hamiltonian: str,
@@ -193,6 +198,10 @@ def calculate_rhf(
     source_mocoeffs: str,
     source_operator: str,
 ) -> float:
+    """Calculate a single linear response term from a DALTON scratch directory.
+
+    This uses PySCF to compute two-electron integrals.
+    """
     if operator_label:
         # TODO add dipvel
         assert operator_label in ("dipole", "angmom", "spinorb")
@@ -301,6 +310,7 @@ def calculate_rhf(
     return driver.results[0]
 
 
+# TODO this is unused
 def calculate_uhf(
     dalton_tmpdir: Path,
     hamiltonian: str,
@@ -311,6 +321,10 @@ def calculate_uhf(
     source_mocoeffs: str,
     source_operator: str,
 ) -> float:
+    """Calculate a single linear response term from a DALTON scratch directory.
+
+    This uses PySCF to compute two-electron integrals.
+    """
     if operator_label:
         # TODO add dipvel
         assert operator_label in ("dipole", "angmom", "spinorb")

@@ -1,3 +1,5 @@
+"""Functions for overriding default versioningit behavior."""
+
 from os import getenv
 from typing import Any
 
@@ -11,6 +13,7 @@ _ENVVARNAME = "VERSIONINGIT_FOR_PACKAGE_INDEX"
 def pymolresponse_format(
     *, description: VCSDescription, base_version: str, next_version: str, params: dict[str, Any]
 ) -> str:
+    """Form the project-specific version string used by versioningit."""
     state = description.state
     assert state in {"distance", "dirty", "distance-dirty"}
 

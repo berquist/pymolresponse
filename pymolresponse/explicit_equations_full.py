@@ -10,14 +10,13 @@ def form_rpa_a_matrix_mo_singlet_full(
     TEI_MO: np.ndarray[tuple[int, int, int, int], np.dtype[np.floating]],
     nocc: int,
 ) -> np.ndarray[tuple[int, int], np.dtype[np.floating]]:
-    r"""Form the A (CIS) matrix in the MO basis. [singlet]
+    r"""Form the A (CIS) matrix in the MO basis. [singlet].
 
     The equation for element :math:`\{ia,jb\}` is
     :math:`\left<aj||ib\right> = \left<aj|ib\right> -
     \left<aj|bi\right> = [ai|jb] - [ab|ji] = 2(ai|jb) - (ab|ji)`. It
     also includes the virt-occ energy difference on the diagonal.
     """
-
     norb = E_MO.shape[0]
     nvirt = norb - nocc
     nov = nocc * nvirt
@@ -46,13 +45,12 @@ def form_rpa_a_matrix_mo_triplet_full(
     TEI_MO: np.ndarray[tuple[int, int, int, int], np.dtype[np.floating]],
     nocc: int,
 ) -> np.ndarray[tuple[int, int], np.dtype[np.floating]]:
-    r"""Form the A (CIS) matrix in the MO basis. [triplet]
+    r"""Form the A (CIS) matrix in the MO basis. [triplet].
 
     The equation for element :math:`\{ia,jb\}` is :math:`-
     \left<aj|bi\right> = - [ab|ji] = - (ab|ji)`. It also includes the
     virt-occ energy difference on the diagonal.
     """
-
     norb = E_MO.shape[0]
     nvirt = norb - nocc
     nov = nocc * nvirt
@@ -77,13 +75,12 @@ def form_rpa_a_matrix_mo_triplet_full(
 def form_rpa_b_matrix_mo_singlet_full(
     TEI_MO: np.ndarray[tuple[int, int, int, int], np.dtype[np.floating]], nocc: int
 ) -> np.ndarray[tuple[int, int], np.dtype[np.floating]]:
-    r"""Form the B matrix for RPA in the MO basis. [singlet]
+    r"""Form the B matrix for RPA in the MO basis. [singlet].
 
     The equation for element :math:`\{ia,jb\}` is
     :math:`\left<ab||ij\right> = \left<ab|ij\right> -
     \left<ab|ji\right> = [ai|bj] - [aj|bi] = 2(ai|bj) - (aj|bi)`.
     """
-
     norb = TEI_MO.shape[0]
     nvirt = norb - nocc
     nov = nocc * nvirt
@@ -106,11 +103,10 @@ def form_rpa_b_matrix_mo_singlet_full(
 def form_rpa_b_matrix_mo_triplet_full(
     TEI_MO: np.ndarray[tuple[int, int, int, int], np.dtype[np.floating]], nocc: int
 ) -> np.ndarray[tuple[int, int], np.dtype[np.floating]]:
-    r"""Form the B matrix for RPA in the MO basis. [triplet]
+    r"""Form the B matrix for RPA in the MO basis. [triplet].
 
     The equation for element :math:`\{ia,jb\}` is :math:`????`.
     """
-
     norb = TEI_MO.shape[0]
     nvirt = norb - nocc
     nov = nocc * nvirt
@@ -134,11 +130,10 @@ def form_rpa_a_matrix_mo_singlet_ss_full(
     nocc: int,
 ) -> np.ndarray[tuple[int, int], np.dtype[np.floating]]:
     r"""Form the same-spin part of the A (CIS) matrix in the MO
-    basis. [singlet]
+    basis. [singlet].
 
     The equation for element :math:`\{ia,jb\}` is :math:`????`.
     """
-
     norb = E_MO.shape[0]
     nvirt = norb - nocc
     nov = nocc * nvirt
@@ -166,11 +161,10 @@ def form_rpa_a_matrix_mo_singlet_os_full(
     nocc_y: int,
 ) -> np.ndarray[tuple[int, int], np.dtype[np.floating]]:
     r"""Form the opposite-spin part of the A (CIS) matrix in the MO
-    basis. [singlet]
+    basis. [singlet].
 
     The equation for element :math:`\{ia,jb\}` is :math:`????`.
     """
-
     nvirt_x = TEI_MO_xxyy.shape[0] - nocc_x
     nvirt_y = TEI_MO_xxyy.shape[2] - nocc_y
     nov_x = nocc_x * nvirt_x
@@ -194,11 +188,10 @@ def form_rpa_b_matrix_mo_singlet_ss_full(
     TEI_MO: np.ndarray[tuple[int, int, int, int], np.dtype[np.floating]], nocc: int
 ) -> np.ndarray[tuple[int, int], np.dtype[np.floating]]:
     r"""Form the same-spin part of the RPA B matrix in the MO
-    basis. [singlet]
+    basis. [singlet].
 
     The equation for element :math:`\{ia,jb\}` is :math:`????`.
     """
-
     norb = TEI_MO.shape[0]
     nvirt = norb - nocc
     nov = nocc * nvirt
@@ -222,11 +215,10 @@ def form_rpa_b_matrix_mo_singlet_os_full(
     nocc_y: int,
 ) -> np.ndarray[tuple[int, int], np.dtype[np.floating]]:
     r"""Form the opposite-spin part of the RPA B matrix in the MO
-    basis. [singlet]
+    basis. [singlet].
 
     The equation for element :math:`\{ia,jb\}` is :math:`????`.
     """
-
     nvirt_x = TEI_MO_xxyy.shape[0] - nocc_x
     nvirt_y = TEI_MO_xxyy.shape[2] - nocc_y
     nov_x = nocc_x * nvirt_x

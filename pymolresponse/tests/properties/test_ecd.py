@@ -1,3 +1,5 @@
+"""Tests for electronic circular dichroism calculations."""
+
 from typing import TypedDict
 
 import numpy as np
@@ -256,7 +258,6 @@ def test_ECD_TDA_singlet_BC2H4_cation_HF_STO3G() -> None:
     Instead of comparing against a reference, perform TDA using the TDHF
     solver.
     """
-
     mol = molecules.molecule_bc2h4_cation_sto3g()
     mol.build()
 

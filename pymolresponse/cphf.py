@@ -35,8 +35,8 @@ class CPHF(Driver):
 
     def set_frequencies(self, frequencies: Optional[Sequence[float]] = None) -> None:
         r"""Set the frequencies :math:`\omega_f` for which frequency-dependent
-        CPHF is performed."""
-
+        CPHF is performed.
+        """
         # TODO
         # :type frequencies float or list
         # :param frequencies one or more frequencies in atomic units;
@@ -47,8 +47,8 @@ class CPHF(Driver):
 
     def add_operator(self, operator: Operator) -> None:
         """Add an operator to the list of operators that will be used as the
-        right-hand side perturbation."""
-
+        right-hand side perturbation.
+        """
         assert self.solver is not None
         self.solver.add_operator(operator)
 

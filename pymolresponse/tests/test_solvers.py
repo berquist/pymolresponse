@@ -1,3 +1,5 @@
+"""Tests for solvers, used by drivers to compute orbital Hessian eigenvectors or response vectors."""
+
 import numpy as np
 import scipy as sp
 
@@ -20,7 +22,6 @@ from pymolresponse.properties import electric, magnetic
 
 def test_inversion() -> None:
     """Test that each kind of inversion function gives identical results."""
-
     mol = molecules_pyscf.molecule_glycine_sto3g()
     mol.charge = 1
     mol.spin = 1
@@ -66,6 +67,7 @@ def test_inversion() -> None:
 
 
 def test_final_result_rhf_h2o_sto3g_rpa_singlet_iter() -> None:
+    """Test that an iterative solver gives the same results as performing exact inversion."""
     mol = molecules_psi4.molecule_physicists_water_sto3g()
     psi4.core.set_active_molecule(mol)
     psi4.set_options(
