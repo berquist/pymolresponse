@@ -80,7 +80,7 @@ repos:
     rev: v1.22.0
     hooks:
       - id: zizmor
-        args: [--no-progress, --persona=pedantic, --fix]
+        args: [--no-progress, --persona=pedantic, --fix=all]
   - repo: https://github.com/berquist/validate-git-blame-ignore-revs
     rev: v0.1.0
     hooks:
