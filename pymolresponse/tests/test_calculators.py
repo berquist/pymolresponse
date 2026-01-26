@@ -28,6 +28,7 @@ def calculate_disk_rhf(
     norb = nocc_alph + nvirt_alph
     C = utils.read_file_3(testcasedir / "C")
     assert C.shape[0] == 1
+    assert C.shape[1] >= C.shape[2]
     assert C.shape[2] == norb
     nbasis = C.shape[1]
     moene = utils.read_file_2(testcasedir / "moene")
@@ -101,6 +102,7 @@ def calculate_disk_uhf(
     norb = nocc_alph + nvirt_alph
     C = utils.read_file_3(testcasedir / "C")
     assert C.shape[0] == 2
+    assert C.shape[1] >= C.shape[2]
     assert C.shape[2] == norb
     nbasis = C.shape[1]
     moene = utils.read_file_2(testcasedir / "moene")
