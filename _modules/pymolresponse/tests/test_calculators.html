@@ -77,6 +77,8 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">cclib.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">ccopen</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cclib.parser.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">convertor</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">daltools</span><span class="w"> </span><span class="kn">import</span> <span class="n">mol</span> <span class="k">as</span> <span class="n">dalmol</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">daltools</span><span class="w"> </span><span class="kn">import</span> <span class="n">sirifc</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">pyscf</span>
 
@@ -84,13 +86,6 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">AO2MOTransformationType</span><span class="p">,</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">Spin</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.interfaces.dalton.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">dalton_label_to_operator</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.interfaces.pyscf.ao2mo</span><span class="w"> </span><span class="kn">import</span> <span class="n">AO2MOpyscf</span>
-
-
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">daltools</span><span class="w"> </span><span class="kn">import</span> <span class="n">mol</span> <span class="k">as</span> <span class="n">dalmol</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">daltools</span><span class="w"> </span><span class="kn">import</span> <span class="n">sirifc</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="k">pass</span>
 
 
 <div class="viewcode-block" id="calculate_disk_rhf">
@@ -106,6 +101,7 @@
     <span class="n">norb</span> <span class="o">=</span> <span class="n">nocc_alph</span> <span class="o">+</span> <span class="n">nvirt_alph</span>
     <span class="n">C</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">read_file_3</span><span class="p">(</span><span class="n">testcasedir</span> <span class="o">/</span> <span class="s2">&quot;C&quot;</span><span class="p">)</span>
     <span class="k">assert</span> <span class="n">C</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="k">assert</span> <span class="n">C</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">C</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
     <span class="k">assert</span> <span class="n">C</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">norb</span>
     <span class="n">nbasis</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">moene</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">read_file_2</span><span class="p">(</span><span class="n">testcasedir</span> <span class="o">/</span> <span class="s2">&quot;moene&quot;</span><span class="p">)</span>
@@ -182,6 +178,7 @@
     <span class="n">norb</span> <span class="o">=</span> <span class="n">nocc_alph</span> <span class="o">+</span> <span class="n">nvirt_alph</span>
     <span class="n">C</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">read_file_3</span><span class="p">(</span><span class="n">testcasedir</span> <span class="o">/</span> <span class="s2">&quot;C&quot;</span><span class="p">)</span>
     <span class="k">assert</span> <span class="n">C</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span>
+    <span class="k">assert</span> <span class="n">C</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">C</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
     <span class="k">assert</span> <span class="n">C</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">norb</span>
     <span class="n">nbasis</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">moene</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">read_file_2</span><span class="p">(</span><span class="n">testcasedir</span> <span class="o">/</span> <span class="s2">&quot;moene&quot;</span><span class="p">)</span>

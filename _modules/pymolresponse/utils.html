@@ -82,6 +82,8 @@
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">daltools.sirifc</span><span class="w"> </span><span class="kn">import</span> <span class="n">sirifc</span>
 
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.indices</span><span class="w"> </span><span class="kn">import</span> <span class="n">Occupations</span>
+
 
 <div class="viewcode-block" id="form_results">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.utils.form_results">[docs]</a>
@@ -202,9 +204,7 @@
 
 <div class="viewcode-block" id="read_file_occupations">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.utils.read_file_occupations">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">read_file_occupations</span><span class="p">(</span>
-    <span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">]]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">read_file_occupations</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="s2">&quot;Occupations&quot;</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Read molecular orbital occupations from a file.</span>
 
 <span class="sd">    The file should contain a single line of four integers</span>
@@ -222,8 +222,7 @@
         <span class="n">contents</span> <span class="o">=</span> <span class="n">fh</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
     <span class="n">tokens</span> <span class="o">=</span> <span class="n">contents</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span>
-    <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">,</span> <span class="n">nvirt_beta</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">,</span> <span class="n">nvirt_beta</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">)</span>  <span class="c1"># ty: ignore[invalid-return-type]</span></div>
 
 
 
@@ -290,12 +289,12 @@
 
 <div class="viewcode-block" id="occupations_from_sirifc">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.utils.occupations_from_sirifc">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">occupations_from_sirifc</span><span class="p">(</span><span class="n">ifc</span><span class="p">:</span> <span class="s2">&quot;sirifc&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">]]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">occupations_from_sirifc</span><span class="p">(</span><span class="n">ifc</span><span class="p">:</span> <span class="s2">&quot;sirifc&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Occupations&quot;</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Read orbital occupations from a parsed DALTON SIRIFC object.&quot;&quot;&quot;</span>
     <span class="n">nocc_a</span><span class="p">,</span> <span class="n">nocc_b</span> <span class="o">=</span> <span class="n">ifc</span><span class="o">.</span><span class="n">nisht</span> <span class="o">+</span> <span class="n">ifc</span><span class="o">.</span><span class="n">nasht</span><span class="p">,</span> <span class="n">ifc</span><span class="o">.</span><span class="n">nisht</span>
     <span class="n">norb</span> <span class="o">=</span> <span class="n">ifc</span><span class="o">.</span><span class="n">norbt</span>
     <span class="n">nvirt_a</span><span class="p">,</span> <span class="n">nvirt_b</span> <span class="o">=</span> <span class="n">norb</span> <span class="o">-</span> <span class="n">nocc_a</span><span class="p">,</span> <span class="n">norb</span> <span class="o">-</span> <span class="n">nocc_b</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">nocc_a</span><span class="p">,</span> <span class="n">nvirt_a</span><span class="p">,</span> <span class="n">nocc_b</span><span class="p">,</span> <span class="n">nvirt_b</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">nocc_a</span><span class="p">,</span> <span class="n">nvirt_a</span><span class="p">,</span> <span class="n">nocc_b</span><span class="p">,</span> <span class="n">nvirt_b</span></div>
 
 
 

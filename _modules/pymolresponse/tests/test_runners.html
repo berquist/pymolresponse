@@ -77,7 +77,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">REFDIR</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.interfaces.dalton.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">dalton_label_to_operator</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.operators</span><span class="w"> </span><span class="kn">import</span> <span class="n">Operator</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.tests.test_calculators</span><span class="w"> </span><span class="kn">import</span> <span class="n">calculate_disk_rhf</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.tests.test_calculators</span><span class="w"> </span><span class="kn">import</span> <span class="n">calculate_disk_rhf</span><span class="p">,</span> <span class="n">calculate_disk_uhf</span>
 
 
 <div class="viewcode-block" id="run_dalton_label_to_operator">
@@ -143,8 +143,7 @@
 <div class="viewcode-block" id="run_as_many_tests_as_possible_uhf_disk">
 <a class="viewcode-back" href="../../../pyresponse.tests.html#pymolresponse.tests.test_runners.run_as_many_tests_as_possible_uhf_disk">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">run_as_many_tests_as_possible_uhf_disk</span><span class="p">(</span><span class="n">testcase</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">.test_calculators</span><span class="w"> </span><span class="kn">import</span> <span class="n">calculate_disk_uhf</span>
-
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Execute all comparisons against DALTON disk references for a test case.&quot;&quot;&quot;</span>
     <span class="n">testcasedir</span> <span class="o">=</span> <span class="n">REFDIR</span> <span class="o">/</span> <span class="n">testcase</span>
 
     <span class="n">thresh</span> <span class="o">=</span> <span class="mf">1.0e-1</span>
