@@ -6,6 +6,8 @@ import numpy as np
 
 from cclib.io import ccopen
 from cclib.parser.utils import convertor
+from daltools import mol as dalmol
+from daltools import sirifc
 
 import pyscf
 
@@ -13,13 +15,6 @@ from pymolresponse import cphf, operators, solvers, utils
 from pymolresponse.core import AO2MOTransformationType, Hamiltonian, Spin
 from pymolresponse.interfaces.dalton.utils import dalton_label_to_operator
 from pymolresponse.interfaces.pyscf.ao2mo import AO2MOpyscf
-
-
-try:
-    from daltools import mol as dalmol
-    from daltools import sirifc
-except ImportError:
-    pass
 
 
 def calculate_disk_rhf(
@@ -33,6 +28,7 @@ def calculate_disk_rhf(
     norb = nocc_alph + nvirt_alph
     C = utils.read_file_3(testcasedir / "C")
     assert C.shape[0] == 1
+    assert C.shape[1] >= C.shape[2]
     assert C.shape[2] == norb
     nbasis = C.shape[1]
     moene = utils.read_file_2(testcasedir / "moene")
@@ -106,6 +102,7 @@ def calculate_disk_uhf(
     norb = nocc_alph + nvirt_alph
     C = utils.read_file_3(testcasedir / "C")
     assert C.shape[0] == 2
+    assert C.shape[1] >= C.shape[2]
     assert C.shape[2] == norb
     nbasis = C.shape[1]
     moene = utils.read_file_2(testcasedir / "moene")

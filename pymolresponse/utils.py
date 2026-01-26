@@ -11,6 +11,8 @@ import numpy as np
 if TYPE_CHECKING:
     from daltools.sirifc import sirifc
 
+    from pymolresponse.indices import Occupations
+
 
 def form_results(
     vecs_property: np.ndarray[tuple[int, int, int], np.dtype[np.floating]],
@@ -108,9 +110,7 @@ def get_reference_value_from_file(
     return ref
 
 
-def read_file_occupations(
-    filename: Union[Path, str],
-) -> np.ndarray[tuple[int], np.dtype[np.integer]]:
+def read_file_occupations(filename: Union[Path, str]) -> "Occupations":
     """Read molecular orbital occupations from a file.
 
     The file should contain a single line of four integers
@@ -128,8 +128,7 @@ def read_file_occupations(
         contents = fh.read().strip()
     tokens = contents.split()
     assert len(tokens) == 4
-    nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = (int(x) for x in tokens)
-    return np.asarray([nocc_alph, nvirt_alph, nocc_beta, nvirt_beta], dtype=int)
+    return tuple(int(x) for x in tokens)  # ty: ignore[invalid-return-type]
 
 
 def read_file_1(filename: Union[Path, str]) -> np.ndarray[tuple[int], np.dtype[np.floating]]:
@@ -181,12 +180,12 @@ def read_file_4(
     return np.reshape(np.array(elements, dtype=float), (n_d1, n_d2, n_d3, n_d4))
 
 
-def occupations_from_sirifc(ifc: "sirifc") -> np.ndarray[tuple[int], np.dtype[np.integer]]:
+def occupations_from_sirifc(ifc: "sirifc") -> "Occupations":
     """Read orbital occupations from a parsed DALTON SIRIFC object."""
     nocc_a, nocc_b = ifc.nisht + ifc.nasht, ifc.nisht
     norb = ifc.norbt
     nvirt_a, nvirt_b = norb - nocc_a, norb - nocc_b
-    return np.asarray([nocc_a, nvirt_a, nocc_b, nvirt_b], dtype=int)
+    return nocc_a, nvirt_a, nocc_b, nvirt_b
 
 
 class Splitter:
