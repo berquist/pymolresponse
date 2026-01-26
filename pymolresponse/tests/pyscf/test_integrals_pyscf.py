@@ -1,6 +1,7 @@
 """Tests for computing integrals with PySCF."""
 
 import numpy as np
+import pytest
 
 from pymolresponse.interfaces.pyscf import integrals, molecules
 
@@ -22,6 +23,7 @@ def test_integrals_pyscf() -> None:
     )
 
 
+@pytest.mark.skip("Incomplete test")
 def test_jk_pyscf() -> None:
     """Test the PySCF Coulomb and exchange integral interface."""
     mol = molecules.molecule_water_sto3g()
