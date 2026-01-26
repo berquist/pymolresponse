@@ -6,6 +6,8 @@ import numpy as np
 
 from cclib.io import ccopen
 from cclib.parser.utils import convertor
+from daltools import mol as dalmol
+from daltools import sirifc
 
 import pyscf
 
@@ -13,13 +15,6 @@ from pymolresponse import cphf, operators, solvers, utils
 from pymolresponse.core import AO2MOTransformationType, Hamiltonian, Spin
 from pymolresponse.interfaces.dalton.utils import dalton_label_to_operator
 from pymolresponse.interfaces.pyscf.ao2mo import AO2MOpyscf
-
-
-try:
-    from daltools import mol as dalmol
-    from daltools import sirifc
-except ImportError:
-    pass
 
 
 def calculate_disk_rhf(
