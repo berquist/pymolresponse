@@ -1,10 +1,11 @@
 """Tests for computing integrals with Psi4."""
 
 import numpy as np
-from pymolresponse.interfaces.psi4 import integrals, molecules
-from pymolresponse.interfaces.psi4.utils import mocoeffs_from_psi4wfn, occupations_from_psi4wfn
 
 import psi4
+
+from pymolresponse.interfaces.psi4 import integrals, molecules
+from pymolresponse.interfaces.psi4.utils import mocoeffs_from_psi4wfn, occupations_from_psi4wfn
 
 
 def test_integrals_psi4() -> None:

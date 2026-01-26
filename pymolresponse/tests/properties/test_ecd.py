@@ -3,13 +3,14 @@
 from typing import TypedDict
 
 import numpy as np
+
+import pyscf
+
 from pymolresponse import solvers, td, utils
 from pymolresponse.core import Hamiltonian, Program, Spin
 from pymolresponse.interfaces.pyscf import molecules
 from pymolresponse.interfaces.pyscf.utils import occupations_from_pyscf_mol
 from pymolresponse.properties import ecd
-
-import pyscf
 
 
 class ECDReference(TypedDict):
