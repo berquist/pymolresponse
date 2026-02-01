@@ -8,7 +8,7 @@ import numpy as np
 
 from pymolresponse.core import Hamiltonian, Program, Spin
 from pymolresponse.operators import Operator
-from pymolresponse.solvers import Solver
+from pymolresponse.solvers import LineqSolver, Solver
 from pymolresponse.utils import form_results, form_vec_energy_differences
 
 
@@ -29,9 +29,9 @@ class Driver(ABC):
 class CPHF(Driver):
     """Driver for solving the coupled perturbed Hartree-Fock (CPHF) equations."""
 
-    def __init__(self, solver: Solver) -> None:
-        assert isinstance(solver, Solver)
-        super().__init__(solver)
+    def __init__(self, solver: LineqSolver) -> None:
+        assert isinstance(solver, LineqSolver)
+        self.solver = solver
 
     def set_frequencies(self, frequencies: Optional[Sequence[float]] = None) -> None:
         r"""Set the frequencies :math:`\omega_f` for which frequency-dependent

@@ -9,7 +9,7 @@ import numpy as np
 from pymolresponse.constants import HARTREE_TO_EV, HARTREE_TO_INVCM
 from pymolresponse.core import Hamiltonian, Program, Spin
 from pymolresponse.cphf import CPHF
-from pymolresponse.solvers import EigSolver, EigSolverTDA, Solver
+from pymolresponse.solvers import EigSolver, EigSolverTDA
 from pymolresponse.utils import form_indices_orbwin, form_vec_energy_differences
 
 
@@ -19,9 +19,9 @@ class TDHF(CPHF):
     equations.
     """
 
-    def __init__(self, solver: Solver) -> None:
+    def __init__(self, solver: EigSolver) -> None:
         assert isinstance(solver, EigSolver)
-        super().__init__(solver)
+        self.solver = solver
 
     def run(
         self, hamiltonian: Hamiltonian, spin: Spin, program: Optional[Program], program_obj: Any
@@ -178,7 +178,7 @@ class TDA(TDHF):
 
     def __init__(self, solver: EigSolverTDA) -> None:
         assert isinstance(solver, EigSolverTDA)
-        super().__init__(solver)
+        self.solver = solver
 
     def form_results(self) -> None:
         nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.solver.occupations
