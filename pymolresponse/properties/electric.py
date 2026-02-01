@@ -6,12 +6,12 @@ from typing import TYPE_CHECKING, Any
 import numpy as np
 
 from pymolresponse.core import Program
-from pymolresponse.cphf import CPHF
 from pymolresponse.molecular_property import ResponseProperty
 from pymolresponse.operators import Operator
 
 
 if TYPE_CHECKING:
+    from pymolresponse.cphf import CPHF
     from pymolresponse.indices import Occupations
 
 
@@ -22,7 +22,7 @@ class Polarizability(ResponseProperty):
         self,
         program: Program,
         program_obj: Any,
-        driver: CPHF,
+        driver: "CPHF",
         mocoeffs: np.ndarray,
         moenergies: np.ndarray,
         occupations: "Occupations",
