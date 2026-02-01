@@ -999,7 +999,7 @@ def test_atomic_polar_tensor_rhf() -> None:
         triplet=False,
         ao_integrals=np.zeros((3 * mol.natom(), M.shape[1], M.shape[2])),
     )
-    operator_geometric.form_rhs_geometric(C, occupations, mol.natom(), solver.tei_mo[0], mints)
+    operator_geometric.form_rhs_geometric(C, occupations, mol.natom(), solver.tei_mo[0], mints)  # ty: ignore[index-out-of-bounds]
     print(operator_geometric.label)
     print(operator_geometric.mo_integrals_ai_alph)
     print(operator_diplen.label)

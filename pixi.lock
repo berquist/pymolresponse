@@ -3683,8 +3683,8 @@ packages:
   requires_python: '>=3.8'
 - pypi: ./
   name: pymolresponse
-  version: 0.3.2.post139+04a8960
-  sha256: f92848ea03a3fae11d578a0040e8e7d4f3e9980e8630ddd560705334a83c9f00
+  version: 0.3.2.post148+84c8a1d.d20260201
+  sha256: 19e273e42c0b5057a9196c369e67ece01f54c105be20a0a4c9b9de25541d797b
   requires_dist:
   - cclib>=1.8.1,<2
   - periodictable>=2.0.2,<3

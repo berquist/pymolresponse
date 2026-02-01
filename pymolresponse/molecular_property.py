@@ -1,14 +1,10 @@
 from abc import ABC, abstractmethod
 from collections.abc import Sequence
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
 from pymolresponse.core import Hamiltonian, Program, Spin
-from pymolresponse.cphf import Driver
-
-
-if TYPE_CHECKING:
-    from pymolresponse.cphf import CPHF
-    from pymolresponse.td import TDHF
+from pymolresponse.cphf import CPHF, Driver
+from pymolresponse.td import TDHF
 
 
 class MolecularProperty(ABC):
@@ -52,25 +48,11 @@ class ResponseProperty(MolecularProperty, ABC):
     ) -> None:
         driver.set_frequencies(frequencies)
         super().__init__(program, program_obj, driver)
+        assert isinstance(self.driver, CPHF)  # for ty
         self.frequencies = self.driver.frequencies
-
-    @abstractmethod
-    def form_operators(self) -> None:
-        pass
-
-    @abstractmethod
-    def form_results(self) -> None:
-        pass
 
 
 class TransitionProperty(MolecularProperty, ABC):
     def __init__(self, program: Program, program_obj: Any, driver: "TDHF"):
         super().__init__(program, program_obj, driver)
-
-    @abstractmethod
-    def form_operators(self) -> None:
-        pass
-
-    @abstractmethod
-    def form_results(self) -> None:
-        pass
+        assert isinstance(self.driver, TDHF)  # for ty
