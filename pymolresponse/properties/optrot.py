@@ -1,16 +1,13 @@
 from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any
 
-import numpy as np
-
 from pymolresponse.core import Program
-from pymolresponse.cphf import CPHF
 from pymolresponse.molecular_property import ResponseProperty
 from pymolresponse.operators import Operator
 
 
 if TYPE_CHECKING:
-    from pymolresponse.indices import Occupations
+    from pymolresponse.cphf import CPHF
 
 
 class ORD(ResponseProperty):
@@ -18,17 +15,12 @@ class ORD(ResponseProperty):
         self,
         program: Program,
         program_obj: Any,
-        driver: CPHF,
-        mocoeffs: np.ndarray,
-        moenergies: np.ndarray,
-        occupations: "Occupations",
+        driver: "CPHF",
         *,
         frequencies: Sequence[float] = [0.0],
         do_dipvel: bool = False,
     ) -> None:
-        super().__init__(
-            program, program_obj, driver, mocoeffs, moenergies, occupations, frequencies=frequencies
-        )
+        super().__init__(program, program_obj, driver, frequencies=frequencies)
         self.do_dipvel = do_dipvel
 
     def form_operators(self) -> None:

@@ -2,15 +2,12 @@ from abc import ABC, abstractmethod
 from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any
 
-import numpy as np
-
 from pymolresponse.core import Hamiltonian, Program, Spin
 from pymolresponse.cphf import Driver
 
 
 if TYPE_CHECKING:
     from pymolresponse.cphf import CPHF
-    from pymolresponse.indices import Occupations
     from pymolresponse.td import TDHF
 
 
@@ -20,27 +17,13 @@ class MolecularProperty(ABC):
     The TODO
     """
 
-    def __init__(
-        self,
-        program: Program,
-        program_obj: Any,
-        driver: Driver,
-        mocoeffs: np.ndarray,
-        moenergies: np.ndarray,
-        occupations: "Occupations",
-    ) -> None:
+    def __init__(self, program: Program, program_obj: Any, driver: Driver) -> None:
         assert isinstance(program, Program)
         # TODO isinstance(program_obj, ...)
-        assert isinstance(mocoeffs, np.ndarray)
-        assert isinstance(moenergies, np.ndarray)
-        assert isinstance(occupations, tuple)
         assert isinstance(driver, Driver)
         self.program = program
         self.program_obj = program_obj
         self.driver = driver
-        self.mocoeffs = mocoeffs
-        self.moenergies = moenergies
-        self.occupations = occupations
 
     def run(self, hamiltonian: Hamiltonian, spin: Spin) -> None:
         assert self.driver.solver is not None
@@ -65,18 +48,10 @@ class ResponseProperty(MolecularProperty, ABC):
     """
 
     def __init__(
-        self,
-        program: Program,
-        program_obj: Any,
-        driver: "CPHF",
-        mocoeffs: np.ndarray,
-        moenergies: np.ndarray,
-        occupations: "Occupations",
-        *,
-        frequencies: Sequence[float],
+        self, program: Program, program_obj: Any, driver: "CPHF", *, frequencies: Sequence[float]
     ) -> None:
         driver.set_frequencies(frequencies)
-        super().__init__(program, program_obj, driver, mocoeffs, moenergies, occupations)
+        super().__init__(program, program_obj, driver)
         self.frequencies = self.driver.frequencies
 
     @abstractmethod
@@ -89,16 +64,8 @@ class ResponseProperty(MolecularProperty, ABC):
 
 
 class TransitionProperty(MolecularProperty, ABC):
-    def __init__(
-        self,
-        program: Program,
-        program_obj: Any,
-        driver: "TDHF",
-        mocoeffs: np.ndarray,
-        moenergies: np.ndarray,
-        occupations: "Occupations",
-    ):
-        super().__init__(program, program_obj, driver, mocoeffs, moenergies, occupations)
+    def __init__(self, program: Program, program_obj: Any, driver: "TDHF"):
+        super().__init__(program, program_obj, driver)
 
     @abstractmethod
     def form_operators(self) -> None:

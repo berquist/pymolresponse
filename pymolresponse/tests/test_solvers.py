@@ -38,7 +38,7 @@ def test_inversion() -> None:
     occupations = occupations_from_pyscf_mol(mol, C)
 
     calculator_ref = magnetic.Magnetizability(
-        Program.PySCF, mol, cphf.CPHF(solvers.ExactInv(C, E, occupations)), C, E, occupations
+        Program.PySCF, mol, cphf.CPHF(solvers.ExactInv(C, E, occupations))
     )
     calculator_ref.form_operators()
     calculator_ref.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)
@@ -51,7 +51,7 @@ def test_inversion() -> None:
     # TODO actually test the different inversion functions...
     for _ in inv_funcs:
         calculator_res = magnetic.Magnetizability(
-            Program.PySCF, mol, cphf.CPHF(solvers.ExactInv(C, E, occupations)), C, E, occupations
+            Program.PySCF, mol, cphf.CPHF(solvers.ExactInv(C, E, occupations))
         )
         calculator_res.form_operators()
         calculator_res.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)
@@ -86,13 +86,7 @@ def test_final_result_rhf_h2o_sto3g_rpa_singlet_iter() -> None:
     frequencies = [0.0, 0.0773178]
 
     ref_polarizability = electric.Polarizability(
-        Program.Psi4,
-        mol,
-        cphf.CPHF(solvers.ExactInv(C, E, occupations)),
-        C,
-        E,
-        occupations,
-        frequencies=frequencies,
+        Program.Psi4, mol, cphf.CPHF(solvers.ExactInv(C, E, occupations)), frequencies=frequencies
     )
     ref_polarizability.form_operators()
     ref_polarizability.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)
@@ -104,9 +98,6 @@ def test_final_result_rhf_h2o_sto3g_rpa_singlet_iter() -> None:
         cphf.CPHF(
             solvers.IterativeLinEqSolver(C, E, occupations, integrals.JKPsi4(wfn), conv=1.0e-12)
         ),
-        C,
-        E,
-        occupations,
         frequencies=frequencies,
     )
     res_polarizability.form_operators()

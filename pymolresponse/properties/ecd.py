@@ -10,12 +10,11 @@ from pymolresponse.constants import HARTREE_TO_EV, HARTREE_TO_INVCM, alpha, esue
 from pymolresponse.core import Program
 from pymolresponse.molecular_property import TransitionProperty
 from pymolresponse.operators import Operator
-from pymolresponse.td import TDHF
 from pymolresponse.utils import form_indices_zero
 
 
 if TYPE_CHECKING:
-    from pymolresponse.indices import Occupations
+    from pymolresponse.td import TDHF
 
 
 class ECD(TransitionProperty):
@@ -24,17 +23,9 @@ class ECD(TransitionProperty):
     """
 
     def __init__(
-        self,
-        program: Program,
-        program_obj: Any,
-        driver: TDHF,
-        mocoeffs: np.ndarray,
-        moenergies: np.ndarray,
-        occupations: "Occupations",
-        *,
-        do_dipvel: bool = False,
+        self, program: Program, program_obj: Any, driver: "TDHF", *, do_dipvel: bool = False
     ) -> None:
-        super().__init__(program, program_obj, driver, mocoeffs, moenergies, occupations)
+        super().__init__(program, program_obj, driver)
         self.do_dipvel = do_dipvel
 
     def form_operators(self) -> None:

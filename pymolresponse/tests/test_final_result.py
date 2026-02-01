@@ -74,13 +74,7 @@ def test_final_result_rhf_h2o_sto3g_rpa_singlet() -> None:
     mol = molecules.molecule_water_sto3g()
     mol.build()
     polarizability = electric.Polarizability(
-        Program.PySCF,
-        mol,
-        cphf.CPHF(solvers.ExactInv(C, E, occupations)),
-        C,
-        E,
-        occupations,
-        frequencies=frequencies,
+        Program.PySCF, mol, cphf.CPHF(solvers.ExactInv(C, E, occupations)), frequencies=frequencies
     )
     polarizability.form_operators()
     polarizability.run(hamiltonian=hamiltonian, spin=spin)
@@ -161,13 +155,7 @@ def test_final_result_rhf_h2o_sto3g_rpa_triplet() -> None:
     mol = molecules.molecule_water_sto3g()
     mol.build()
     polarizability = electric.Polarizability(
-        Program.PySCF,
-        mol,
-        cphf.CPHF(solvers.ExactInv(C, E, occupations)),
-        C,
-        E,
-        occupations,
-        frequencies=frequencies,
+        Program.PySCF, mol, cphf.CPHF(solvers.ExactInv(C, E, occupations)), frequencies=frequencies
     )
     polarizability.form_operators()
     polarizability.run(hamiltonian=hamiltonian, spin=spin)
@@ -246,13 +234,7 @@ def test_final_result_rhf_h2o_sto3g_tda_singlet() -> None:
     mol = molecules.molecule_water_sto3g()
     mol.build()
     polarizability = electric.Polarizability(
-        Program.PySCF,
-        mol,
-        cphf.CPHF(solvers.ExactInv(C, E, occupations)),
-        C,
-        E,
-        occupations,
-        frequencies=frequencies,
+        Program.PySCF, mol, cphf.CPHF(solvers.ExactInv(C, E, occupations)), frequencies=frequencies
     )
     polarizability.form_operators()
     polarizability.run(hamiltonian=hamiltonian, spin=spin)
@@ -333,13 +315,7 @@ def test_final_result_rhf_h2o_sto3g_tda_triplet() -> None:
     mol = molecules.molecule_water_sto3g()
     mol.build()
     polarizability = electric.Polarizability(
-        Program.PySCF,
-        mol,
-        cphf.CPHF(solvers.ExactInv(C, E, occupations)),
-        C,
-        E,
-        occupations,
-        frequencies=frequencies,
+        Program.PySCF, mol, cphf.CPHF(solvers.ExactInv(C, E, occupations)), frequencies=frequencies
     )
     polarizability.form_operators()
     polarizability.run(hamiltonian=hamiltonian, spin=spin)
