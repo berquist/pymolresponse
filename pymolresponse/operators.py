@@ -18,6 +18,7 @@ class Operator:
 
     def __init__(
         self,
+        *,
         label: str = "",
         is_imaginary: bool = False,
         is_spin_dependent: bool = False,
