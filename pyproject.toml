@@ -111,9 +111,6 @@ cache-dir = "build/.ruff_cache"
 line-length = 100
 src = ["."]
 
-[tool.ruff.format]
-skip-magic-trailing-comma = true
-
 [tool.ruff.lint]
 extend-select = [
     # "D", # pydocstyle
