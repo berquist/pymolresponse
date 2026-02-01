@@ -9,6 +9,8 @@ import numpy as np
 
 STARS = "********"
 
+PropertyIntegrals = np.ndarray[tuple[int, int, int], np.dtype[np.floating]]
+
 
 @unique
 class IntegralSymmetry(Enum):
@@ -28,15 +30,11 @@ class Integrals(ABC):
     def __init__(self) -> None:
         pass
 
-    def integrals(
-        self, label: IntegralLabel
-    ) -> np.ndarray[tuple[int, int, int], np.dtype[np.floating]]:
+    def integrals(self, label: IntegralLabel) -> PropertyIntegrals:
         return self._compute(label)
 
     @abstractmethod
-    def _compute(
-        self, label: IntegralLabel
-    ) -> np.ndarray[tuple[int, int, int], np.dtype[np.floating]]:
+    def _compute(self, label: IntegralLabel) -> PropertyIntegrals:
         """Compute the integrals of some operator using some implementation."""
 
 

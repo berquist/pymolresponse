@@ -38,9 +38,11 @@ def test_final_result_rhf_h2o_sto3g_rpa_singlet() -> None:
     driver = cphf.CPHF(solver)
     ao_integrals_dipole = np.stack((mat_dipole_x, mat_dipole_y, mat_dipole_z), axis=0)
     operator_dipole = operators.Operator(
-        label="dipole", is_imaginary=False, is_spin_dependent=False
+        label="dipole",
+        is_imaginary=False,
+        is_spin_dependent=False,
+        ao_integrals=ao_integrals_dipole,
     )
-    operator_dipole.ao_integrals = ao_integrals_dipole
     driver.add_operator(operator_dipole)
     frequencies = (0.0, 0.02, 0.06, 0.1)
     driver.set_frequencies(frequencies)
@@ -123,9 +125,11 @@ def test_final_result_rhf_h2o_sto3g_rpa_triplet() -> None:
     driver = cphf.CPHF(solver)
     ao_integrals_dipole = np.stack((mat_dipole_x, mat_dipole_y, mat_dipole_z), axis=0)
     operator_dipole = operators.Operator(
-        label="dipole", is_imaginary=False, is_spin_dependent=False
+        label="dipole",
+        is_imaginary=False,
+        is_spin_dependent=False,
+        ao_integrals=ao_integrals_dipole,
     )
-    operator_dipole.ao_integrals = ao_integrals_dipole
     driver.add_operator(operator_dipole)
     frequencies = (0.0, 0.02, 0.06, 0.1)
     driver.set_frequencies(frequencies)
@@ -208,9 +212,11 @@ def test_final_result_rhf_h2o_sto3g_tda_singlet() -> None:
     driver = cphf.CPHF(solver)
     ao_integrals_dipole = np.stack((mat_dipole_x, mat_dipole_y, mat_dipole_z), axis=0)
     operator_dipole = operators.Operator(
-        label="dipole", is_imaginary=False, is_spin_dependent=False
+        label="dipole",
+        is_imaginary=False,
+        is_spin_dependent=False,
+        ao_integrals=ao_integrals_dipole,
     )
-    operator_dipole.ao_integrals = ao_integrals_dipole
     driver.add_operator(operator_dipole)
     frequencies = (0.0, 0.02, 0.06, 0.1)
     driver.set_frequencies(frequencies)
@@ -291,9 +297,11 @@ def test_final_result_rhf_h2o_sto3g_tda_triplet() -> None:
     driver = cphf.CPHF(solver)
     ao_integrals_dipole = np.stack((mat_dipole_x, mat_dipole_y, mat_dipole_z), axis=0)
     operator_dipole = operators.Operator(
-        label="dipole", is_imaginary=False, is_spin_dependent=False
+        label="dipole",
+        is_imaginary=False,
+        is_spin_dependent=False,
+        ao_integrals=ao_integrals_dipole,
     )
-    operator_dipole.ao_integrals = ao_integrals_dipole
     driver.add_operator(operator_dipole)
     frequencies = (0.0, 0.02, 0.06, 0.1)
     driver.set_frequencies(frequencies)

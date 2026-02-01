@@ -94,16 +94,17 @@ def dalton_label_to_operator(label: str) -> Operator:
         # FIXME
         slice_idx = None
     else:
-        operator_label = ""
-        is_imaginary = None
-        is_spin_dependent = None
-        slice_idx = None
+        raise RuntimeError(f"Unhandled DALTON operator label: {label}")
+
+    # TODO this hack should go away once the PSO label is fixed
+    assert slice_idx is not None
 
     operator = Operator(
         label=operator_label,
         is_imaginary=is_imaginary,
         is_spin_dependent=is_spin_dependent,
         slice_idx=slice_idx,
+        ao_integrals=None,  # ty: ignore[invalid-argument-type]
     )
 
     return operator

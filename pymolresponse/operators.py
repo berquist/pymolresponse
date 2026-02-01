@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 import numpy as np
 import scipy.constants as spc
@@ -8,6 +8,7 @@ from pymolresponse.utils import DirtyMocoeffs, fix_mocoeffs_shape, repack_matrix
 
 if TYPE_CHECKING:
     from pymolresponse.indices import Indices, Occupations
+    from pymolresponse.integrals import PropertyIntegrals
 
 
 class Operator:
@@ -18,12 +19,13 @@ class Operator:
 
     def __init__(
         self,
+        *,
         label: str = "",
         is_imaginary: bool = False,
         is_spin_dependent: bool = False,
         triplet: bool = False,
         slice_idx: int = -1,
-        ao_integrals: Optional[np.ndarray[tuple[int, int], np.dtype[np.floating]]] = None,
+        ao_integrals: "PropertyIntegrals",
     ) -> None:
         self.label = label
         self.is_imaginary = is_imaginary

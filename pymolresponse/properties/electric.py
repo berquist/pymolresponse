@@ -6,12 +6,12 @@ from typing import TYPE_CHECKING, Any
 import numpy as np
 
 from pymolresponse.core import Program
-from pymolresponse.cphf import CPHF
 from pymolresponse.molecular_property import ResponseProperty
 from pymolresponse.operators import Operator
 
 
 if TYPE_CHECKING:
+    from pymolresponse.cphf import CPHF
     from pymolresponse.indices import Occupations
 
 
@@ -22,7 +22,7 @@ class Polarizability(ResponseProperty):
         self,
         program: Program,
         program_obj: Any,
-        driver: CPHF,
+        driver: "CPHF",
         mocoeffs: np.ndarray,
         moenergies: np.ndarray,
         occupations: "Occupations",
@@ -47,9 +47,12 @@ class Polarizability(ResponseProperty):
             raise RuntimeError
 
         operator_diplen = Operator(
-            label="dipole", is_imaginary=False, is_spin_dependent=False, triplet=False
+            label="dipole",
+            is_imaginary=False,
+            is_spin_dependent=False,
+            triplet=False,
+            ao_integrals=integral_generator.integrals(integrals.DIPOLE),
         )
-        operator_diplen.ao_integrals = integral_generator.integrals(integrals.DIPOLE)
         self.driver.add_operator(operator_diplen)
 
     def form_results(self) -> None:

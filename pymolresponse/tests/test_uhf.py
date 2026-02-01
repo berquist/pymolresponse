@@ -293,9 +293,11 @@ def test_api_uhf() -> None:
     driver = cphf.CPHF(solver)
 
     operator_dipole = operators.Operator(
-        label="dipole", is_imaginary=False, is_spin_dependent=False
+        label="dipole",
+        is_imaginary=False,
+        is_spin_dependent=False,
+        ao_integrals=integrals_dipole_ao,
     )
-    operator_dipole.ao_integrals = integrals_dipole_ao
     driver.add_operator(operator_dipole)
 
     driver.set_frequencies()

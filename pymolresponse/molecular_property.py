@@ -5,12 +5,13 @@ from typing import TYPE_CHECKING, Any
 import numpy as np
 
 from pymolresponse.core import Hamiltonian, Program, Spin
-from pymolresponse.cphf import CPHF, Driver
-from pymolresponse.td import TDHF
+from pymolresponse.cphf import Driver
 
 
 if TYPE_CHECKING:
+    from pymolresponse.cphf import CPHF
     from pymolresponse.indices import Occupations
+    from pymolresponse.td import TDHF
 
 
 class MolecularProperty(ABC):
@@ -67,7 +68,7 @@ class ResponseProperty(MolecularProperty, ABC):
         self,
         program: Program,
         program_obj: Any,
-        driver: CPHF,
+        driver: "CPHF",
         mocoeffs: np.ndarray,
         moenergies: np.ndarray,
         occupations: "Occupations",
@@ -92,7 +93,7 @@ class TransitionProperty(MolecularProperty, ABC):
         self,
         program: Program,
         program_obj: Any,
-        driver: TDHF,
+        driver: "TDHF",
         mocoeffs: np.ndarray,
         moenergies: np.ndarray,
         occupations: "Occupations",

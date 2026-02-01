@@ -8,6 +8,8 @@ from pymolresponse.integrals import JK, IntegralLabel, Integrals, IntegralSymmet
 if TYPE_CHECKING:
     from pyscf.gto.mole import Mole
 
+    from pymolresponse.integrals import PropertyIntegrals
+
 ANGMOM_COMMON_GAUGE = IntegralLabel("cint1e_cg_irxp_sph", 3)
 ANGMOM_GIAO = IntegralLabel("cint1e_giao_irjxp_sph", 3)
 DIPOLE = IntegralLabel("cint1e_r_sph", 3)
@@ -28,9 +30,7 @@ class IntegralsPyscf(Integrals):
 
         self.mol = pyscfmol
 
-    def _compute(
-        self, label: IntegralLabel
-    ) -> np.ndarray[tuple[int, int, int], np.dtype[np.floating]]:
+    def _compute(self, label: IntegralLabel) -> "PropertyIntegrals":
         if label.symmetry == IntegralSymmetry.ANTISYMMETRIC:
             return self.mol.intor_asymmetric(label.label, comp=label.comp)
         return self.mol.intor(label.label, comp=label.comp)

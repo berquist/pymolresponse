@@ -209,11 +209,14 @@ def test_uncoupled_rhf() -> None:
 
     driver = cphf.CPHF(solver)
 
-    operator_diplen = operators.Operator(
-        label="dipole", is_imaginary=False, is_spin_dependent=False, triplet=False
-    )
     integrals_diplen_ao = mol.intor("cint1e_r_sph", comp=3)
-    operator_diplen.ao_integrals = integrals_diplen_ao
+    operator_diplen = operators.Operator(
+        label="dipole",
+        is_imaginary=False,
+        is_spin_dependent=False,
+        triplet=False,
+        ao_integrals=integrals_diplen_ao,
+    )
     driver.add_operator(operator_diplen)
 
     frequencies = [0.0, 0.0773178, 0.128347]
@@ -268,11 +271,14 @@ def test_uncoupled_uhf() -> None:
 
     driver = cphf.CPHF(solver)
 
-    operator_diplen = operators.Operator(
-        label="dipole", is_imaginary=False, is_spin_dependent=False, triplet=False
-    )
     integrals_diplen_ao = mol.intor("cint1e_r_sph", comp=3)
-    operator_diplen.ao_integrals = integrals_diplen_ao
+    operator_diplen = operators.Operator(
+        label="dipole",
+        is_imaginary=False,
+        is_spin_dependent=False,
+        triplet=False,
+        ao_integrals=integrals_diplen_ao,
+    )
     driver.add_operator(operator_diplen)
 
     frequencies = [0.0, 0.0773178, 0.128347, 0.4556355]

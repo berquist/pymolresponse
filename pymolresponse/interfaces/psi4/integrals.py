@@ -1,4 +1,4 @@
-from typing import Optional, Union
+from typing import TYPE_CHECKING, Optional, Union
 
 import numpy as np
 
@@ -7,9 +7,14 @@ import psi4
 from pymolresponse.integrals import JK, IntegralLabel, Integrals
 
 
-DIPOLE = object()
-DIPVEL = object()
-ANGMOM_COMMON_GAUGE = object()
+if TYPE_CHECKING:
+    from pymolresponse.integrals import PropertyIntegrals
+
+
+_unused = "unused"
+DIPOLE = IntegralLabel(_unused)
+DIPVEL = IntegralLabel(_unused)
+ANGMOM_COMMON_GAUGE = IntegralLabel(_unused)
 
 
 class IntegralsPsi4(Integrals):
@@ -24,9 +29,7 @@ class IntegralsPsi4(Integrals):
             raise RuntimeError
         self._mints = psi4.core.MintsHelper(wfn)
 
-    def _compute(
-        self, label: IntegralLabel
-    ) -> np.ndarray[tuple[int, int, int], np.dtype[np.floating]]:
+    def _compute(self, label: IntegralLabel) -> "PropertyIntegrals":
         if label == DIPOLE:
             return np.stack([np.asarray(Mc) for Mc in self._mints.ao_dipole()])
         elif label == DIPVEL:
