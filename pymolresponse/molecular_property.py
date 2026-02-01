@@ -54,23 +54,7 @@ class ResponseProperty(MolecularProperty, ABC):
         super().__init__(program, program_obj, driver)
         self.frequencies = self.driver.frequencies
 
-    @abstractmethod
-    def form_operators(self) -> None:
-        pass
-
-    @abstractmethod
-    def form_results(self) -> None:
-        pass
-
 
 class TransitionProperty(MolecularProperty, ABC):
     def __init__(self, program: Program, program_obj: Any, driver: "TDHF"):
         super().__init__(program, program_obj, driver)
-
-    @abstractmethod
-    def form_operators(self) -> None:
-        pass
-
-    @abstractmethod
-    def form_results(self) -> None:
-        pass
