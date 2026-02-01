@@ -983,25 +983,27 @@ def test_atomic_polar_tensor_rhf() -> None:
     solver.tei_mo = ao2mo.tei_mo
     solver.tei_mo_type = AO2MOTransformationType.full
     driver = CPHF(solver)
-    operator_diplen = Operator(
-        label="dipole", is_imaginary=False, is_spin_dependent=False, triplet=False
-    )
     # integrals_diplen_ao = self.pyscfmol.intor('cint1e_r_sph', comp=3)
     M = np.stack([np.asarray(Mc) for Mc in mints.ao_dipole()])
-    operator_diplen.ao_integrals = M
+    operator_diplen = Operator(
+        label="dipole", is_imaginary=False, is_spin_dependent=False, triplet=False, ao_integrals=M
+    )
     driver.add_operator(operator_diplen)
 
     # geometric perturbation part
+    # empty ao integrals are hack for dim check in solver
     operator_geometric = Operator(
-        label="nuclear", is_imaginary=False, is_spin_dependent=False, triplet=False
+        label="nuclear",
+        is_imaginary=False,
+        is_spin_dependent=False,
+        triplet=False,
+        ao_integrals=np.zeros((3 * mol.natom(), M.shape[1], M.shape[2])),
     )
     operator_geometric.form_rhs_geometric(C, occupations, mol.natom(), solver.tei_mo[0], mints)
     print(operator_geometric.label)
     print(operator_geometric.mo_integrals_ai_alph)
     print(operator_diplen.label)
     print(operator_diplen.mo_integrals_ai_alph)
-    # hack for dim check in solver
-    operator_geometric.ao_integrals = np.zeros((3 * mol.natom(), M.shape[1], M.shape[2]))
     # bypass driver's call to form_rhs
     driver.solver.operators.append(operator_geometric)
 

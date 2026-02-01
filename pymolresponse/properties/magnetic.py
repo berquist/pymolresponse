@@ -54,9 +54,12 @@ class Magnetizability(ResponseProperty):
         else:
             integrals_angmom_ao = integral_generator.integrals(integrals.ANGMOM_COMMON_GAUGE)
         operator_angmom = Operator(
-            label="angmom", is_imaginary=True, is_spin_dependent=False, triplet=False
+            label="angmom",
+            is_imaginary=True,
+            is_spin_dependent=False,
+            triplet=False,
+            ao_integrals=integrals_angmom_ao,
         )
-        operator_angmom.ao_integrals = integrals_angmom_ao
         self.driver.add_operator(operator_angmom)
 
     def form_results(self) -> None:
@@ -124,36 +127,45 @@ class ElectronicGTensor(ResponseProperty):
             raise RuntimeError
 
         # angular momentum
-        operator_angmom = Operator(
-            label="angmom", is_imaginary=True, is_spin_dependent=False, triplet=False
-        )
         self.program_obj.set_common_orig(self.gauge_origin)
-        operator_angmom.ao_integrals = integral_generator.integrals(integrals.ANGMOM_COMMON_GAUGE)
+        operator_angmom = Operator(
+            label="angmom",
+            is_imaginary=True,
+            is_spin_dependent=False,
+            triplet=False,
+            ao_integrals=integral_generator.integrals(integrals.ANGMOM_COMMON_GAUGE),
+        )
         self.driver.add_operator(operator_angmom)
 
         # spin-orbit (1-electron, exact nuclear charges)
-        operator_spinorb = Operator(
-            label="spinorb", is_imaginary=True, is_spin_dependent=False, triplet=False
-        )
         integrals_spinorb_ao = 0
         for atm_id in range(self.program_obj.natm):
             self.program_obj.set_rinv_orig(self.program_obj.atom_coord(atm_id))
             chg = self.program_obj.atom_charge(atm_id)
             integrals_spinorb_ao += chg * integral_generator.integrals(integrals.SO_SPHER_1e)
-        operator_spinorb.ao_integrals = integrals_spinorb_ao
+        operator_spinorb = Operator(
+            label="spinorb",
+            is_imaginary=True,
+            is_spin_dependent=False,
+            triplet=False,
+            ao_integrals=integrals_spinorb_ao,
+        )
         self.driver.add_operator(operator_spinorb)
 
         # spin-orbit (1-electron, effective nuclear charges)
-        operator_spinorb_eff = Operator(
-            label="spinorb_eff", is_imaginary=True, is_spin_dependent=False, triplet=False
-        )
         integrals_spinorb_eff_ao = 0
         for atm_id in range(self.program_obj.natm):
             self.program_obj.set_rinv_orig(self.program_obj.atom_coord(atm_id))
             # chg = self.program_obj.atom_effective_charge[atm_id]
             chg = 0
             integrals_spinorb_eff_ao += chg * integral_generator.integrals(integrals.SO_SPHER_1e)
-        operator_spinorb_eff.ao_integrals = integrals_spinorb_eff_ao
+        operator_spinorb_eff = Operator(
+            label="spinorb_eff",
+            is_imaginary=True,
+            is_spin_dependent=False,
+            triplet=False,
+            ao_integrals=integrals_spinorb_eff_ao,
+        )
         self.driver.add_operator(operator_spinorb_eff)
 
     def form_results(self) -> None:

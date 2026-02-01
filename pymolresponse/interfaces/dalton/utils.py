@@ -104,6 +104,7 @@ def dalton_label_to_operator(label: str) -> Operator:
         is_imaginary=is_imaginary,
         is_spin_dependent=is_spin_dependent,
         slice_idx=slice_idx,
+        ao_integrals=None,  # ty: ignore[invalid-argument-type]
     )
 
     return operator

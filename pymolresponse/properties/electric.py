@@ -47,9 +47,12 @@ class Polarizability(ResponseProperty):
             raise RuntimeError
 
         operator_diplen = Operator(
-            label="dipole", is_imaginary=False, is_spin_dependent=False, triplet=False
+            label="dipole",
+            is_imaginary=False,
+            is_spin_dependent=False,
+            triplet=False,
+            ao_integrals=integral_generator.integrals(integrals.DIPOLE),
         )
-        operator_diplen.ao_integrals = integral_generator.integrals(integrals.DIPOLE)
         self.driver.add_operator(operator_diplen)
 
     def form_results(self) -> None:
