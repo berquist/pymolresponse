@@ -158,21 +158,11 @@ class Solver(ABC):
 class LineqSolver(Solver, ABC):
     """Base class for all solvers of the type $AX = B$."""
 
-    def __init__(
-        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: "Occupations"
-    ) -> None:
-        super().__init__(mocoeffs, moenergies, occupations)
-
 
 class ExactLineqSolver(LineqSolver, ABC):
     """Base class for all solvers of the type $AX = B$, where $A$ is formed
     explicitly.
     """
-
-    def __init__(
-        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: "Occupations"
-    ) -> None:
-        super().__init__(mocoeffs, moenergies, occupations)
 
     def form_explicit_hessian(
         self, hamiltonian: Hamiltonian, spin: Spin, frequency: Optional[float]
@@ -538,11 +528,6 @@ class ExactInv(ExactLineqSolver):
 
 
 class ExactInvCholesky(ExactLineqSolver):
-    def __init__(
-        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: "Occupations"
-    ) -> None:
-        super().__init__(mocoeffs, moenergies, occupations)
-
     def invert_explicit_hessian(self) -> None:
         assert hasattr(self, "explicit_hessian")
         if not self.is_uhf:
@@ -691,11 +676,6 @@ class IterativeLinEqSolver(LineqSolver):
 class EigSolver(Solver, ABC):
     """Base class for all solvers of the type $AX = 0$ (eigensolvers)."""
 
-    def __init__(
-        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: "Occupations"
-    ) -> None:
-        super().__init__(mocoeffs, moenergies, occupations)
-
     @staticmethod
     def norm_xy(z: np.ndarray, nocc: int, nvirt: int) -> tuple[np.ndarray, np.ndarray]:
         x, y = z.reshape(2, nvirt, nocc)
@@ -709,21 +689,11 @@ class EigSolverTDA(EigSolver, ABC):
     (TDA) rather than the random phase approximation (RPA).
     """
 
-    def __init__(
-        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: "Occupations"
-    ) -> None:
-        super().__init__(mocoeffs, moenergies, occupations)
-
 
 class ExactDiagonalizationSolver(EigSolver):
     """Get the eigenvectors and eigenvalues of the RPA Hamiltonian by forming the
     electronic Hessian explicitly and diagonalizing it exactly.
     """
-
-    def __init__(
-        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: "Occupations"
-    ) -> None:
-        super().__init__(mocoeffs, moenergies, occupations)
 
     def form_explicit_hessian(
         self, hamiltonian: Hamiltonian, spin: Spin, frequency: Optional[float]
@@ -830,11 +800,6 @@ class ExactDiagonalizationSolverTDA(ExactDiagonalizationSolver, EigSolverTDA):
     """Get the eigenvectors and eigenvalues of the TDA Hamiltonian by forming the
     electronic Hessian explicitly and diagonalizing it exactly.
     """
-
-    def __init__(
-        self, mocoeffs: np.ndarray, moenergies: np.ndarray, occupations: "Occupations"
-    ) -> None:
-        super().__init__(mocoeffs, moenergies, occupations)
 
     def form_explicit_hessian(
         self, hamiltonian: Hamiltonian, spin: Spin, frequency: Optional[float]
