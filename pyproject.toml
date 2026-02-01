@@ -13,7 +13,6 @@ classifiers = [
 ]
 requires-python = ">=3.9"
 dependencies = [
-    "cclib>=1.8.1,<2",
     "periodictable>=2.0.2,<3",
 ]
 
@@ -24,6 +23,7 @@ Homepage = "https://github.com/berquist/pymolresponse"
 
 [project.optional-dependencies]
 test = [
+    "cclib>=1.8.1,<2",
     "coverage",
     "daltools",
     "pyscf",
