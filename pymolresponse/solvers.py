@@ -267,8 +267,6 @@ class ExactLineqSolver(LineqSolver, ABC):
                 tei_mo_ovov_bbbb = self.tei_mo[3]  # ty: ignore[index-out-of-bounds]
                 tei_mo_oovv_aaaa = self.tei_mo[4]  # ty: ignore[index-out-of-bounds]
                 tei_mo_oovv_bbbb = self.tei_mo[5]  # ty: ignore[index-out-of-bounds]
-            else:
-                pass
 
             E_a = self.moenergies[0]
             E_b = self.moenergies[1]
@@ -789,7 +787,7 @@ class ExactDiagonalizationSolver(EigSolver):
 
         else:
             # TODO UHF
-            pass
+            raise NotImplementedError
 
     def diagonalize_explicit_hessian(self) -> None:
         nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
@@ -809,7 +807,7 @@ class ExactDiagonalizationSolver(EigSolver):
             self.eigvecs = self.eigvecs[:, nov_alph:]
         else:
             # TODO UHF
-            pass
+            raise NotImplementedError
 
     def run(
         self, hamiltonian: Hamiltonian, spin: Spin, program: Optional[Program], program_obj: Any
@@ -881,7 +879,7 @@ class ExactDiagonalizationSolverTDA(ExactDiagonalizationSolver, EigSolverTDA):
 
         else:
             # TODO UHF
-            pass
+            raise NotImplementedError
 
     def diagonalize_explicit_hessian(self) -> None:
         nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
