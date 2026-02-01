@@ -80,6 +80,8 @@
 
 <span class="n">STARS</span> <span class="o">=</span> <span class="s2">&quot;********&quot;</span>
 
+<span class="n">PropertyIntegrals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]]</span>
+
 
 <div class="viewcode-block" id="IntegralSymmetry">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.integrals.IntegralSymmetry">[docs]</a>
@@ -109,16 +111,12 @@
 
 <div class="viewcode-block" id="Integrals.integrals">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.integrals.Integrals.integrals">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">integrals</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="n">IntegralLabel</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">integrals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="n">IntegralLabel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PropertyIntegrals</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute</span><span class="p">(</span><span class="n">label</span><span class="p">)</span></div>
 
 
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">_compute</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="n">IntegralLabel</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="n">IntegralLabel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PropertyIntegrals</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the integrals of some operator using some implementation.&quot;&quot;&quot;</span></div>
 
 

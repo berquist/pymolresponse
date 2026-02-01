@@ -129,9 +129,12 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">integrals_angmom_ao</span> <span class="o">=</span> <span class="n">integral_generator</span><span class="o">.</span><span class="n">integrals</span><span class="p">(</span><span class="n">integrals</span><span class="o">.</span><span class="n">ANGMOM_COMMON_GAUGE</span><span class="p">)</span>
         <span class="n">operator_angmom</span> <span class="o">=</span> <span class="n">Operator</span><span class="p">(</span>
-            <span class="n">label</span><span class="o">=</span><span class="s2">&quot;angmom&quot;</span><span class="p">,</span> <span class="n">is_imaginary</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">is_spin_dependent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">triplet</span><span class="o">=</span><span class="kc">False</span>
+            <span class="n">label</span><span class="o">=</span><span class="s2">&quot;angmom&quot;</span><span class="p">,</span>
+            <span class="n">is_imaginary</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">is_spin_dependent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">triplet</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">ao_integrals</span><span class="o">=</span><span class="n">integrals_angmom_ao</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">operator_angmom</span><span class="o">.</span><span class="n">ao_integrals</span> <span class="o">=</span> <span class="n">integrals_angmom_ao</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">add_operator</span><span class="p">(</span><span class="n">operator_angmom</span><span class="p">)</span></div>
 
 
@@ -208,36 +211,45 @@
             <span class="k">raise</span> <span class="ne">RuntimeError</span>
 
         <span class="c1"># angular momentum</span>
-        <span class="n">operator_angmom</span> <span class="o">=</span> <span class="n">Operator</span><span class="p">(</span>
-            <span class="n">label</span><span class="o">=</span><span class="s2">&quot;angmom&quot;</span><span class="p">,</span> <span class="n">is_imaginary</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">is_spin_dependent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">triplet</span><span class="o">=</span><span class="kc">False</span>
-        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">program_obj</span><span class="o">.</span><span class="n">set_common_orig</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gauge_origin</span><span class="p">)</span>
-        <span class="n">operator_angmom</span><span class="o">.</span><span class="n">ao_integrals</span> <span class="o">=</span> <span class="n">integral_generator</span><span class="o">.</span><span class="n">integrals</span><span class="p">(</span><span class="n">integrals</span><span class="o">.</span><span class="n">ANGMOM_COMMON_GAUGE</span><span class="p">)</span>
+        <span class="n">operator_angmom</span> <span class="o">=</span> <span class="n">Operator</span><span class="p">(</span>
+            <span class="n">label</span><span class="o">=</span><span class="s2">&quot;angmom&quot;</span><span class="p">,</span>
+            <span class="n">is_imaginary</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">is_spin_dependent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">triplet</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">ao_integrals</span><span class="o">=</span><span class="n">integral_generator</span><span class="o">.</span><span class="n">integrals</span><span class="p">(</span><span class="n">integrals</span><span class="o">.</span><span class="n">ANGMOM_COMMON_GAUGE</span><span class="p">),</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">add_operator</span><span class="p">(</span><span class="n">operator_angmom</span><span class="p">)</span>
 
         <span class="c1"># spin-orbit (1-electron, exact nuclear charges)</span>
-        <span class="n">operator_spinorb</span> <span class="o">=</span> <span class="n">Operator</span><span class="p">(</span>
-            <span class="n">label</span><span class="o">=</span><span class="s2">&quot;spinorb&quot;</span><span class="p">,</span> <span class="n">is_imaginary</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">is_spin_dependent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">triplet</span><span class="o">=</span><span class="kc">False</span>
-        <span class="p">)</span>
         <span class="n">integrals_spinorb_ao</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">atm_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">program_obj</span><span class="o">.</span><span class="n">natm</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">program_obj</span><span class="o">.</span><span class="n">set_rinv_orig</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">program_obj</span><span class="o">.</span><span class="n">atom_coord</span><span class="p">(</span><span class="n">atm_id</span><span class="p">))</span>
             <span class="n">chg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">program_obj</span><span class="o">.</span><span class="n">atom_charge</span><span class="p">(</span><span class="n">atm_id</span><span class="p">)</span>
             <span class="n">integrals_spinorb_ao</span> <span class="o">+=</span> <span class="n">chg</span> <span class="o">*</span> <span class="n">integral_generator</span><span class="o">.</span><span class="n">integrals</span><span class="p">(</span><span class="n">integrals</span><span class="o">.</span><span class="n">SO_SPHER_1e</span><span class="p">)</span>
-        <span class="n">operator_spinorb</span><span class="o">.</span><span class="n">ao_integrals</span> <span class="o">=</span> <span class="n">integrals_spinorb_ao</span>
+        <span class="n">operator_spinorb</span> <span class="o">=</span> <span class="n">Operator</span><span class="p">(</span>
+            <span class="n">label</span><span class="o">=</span><span class="s2">&quot;spinorb&quot;</span><span class="p">,</span>
+            <span class="n">is_imaginary</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">is_spin_dependent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">triplet</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">ao_integrals</span><span class="o">=</span><span class="n">integrals_spinorb_ao</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">add_operator</span><span class="p">(</span><span class="n">operator_spinorb</span><span class="p">)</span>
 
         <span class="c1"># spin-orbit (1-electron, effective nuclear charges)</span>
-        <span class="n">operator_spinorb_eff</span> <span class="o">=</span> <span class="n">Operator</span><span class="p">(</span>
-            <span class="n">label</span><span class="o">=</span><span class="s2">&quot;spinorb_eff&quot;</span><span class="p">,</span> <span class="n">is_imaginary</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">is_spin_dependent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">triplet</span><span class="o">=</span><span class="kc">False</span>
-        <span class="p">)</span>
         <span class="n">integrals_spinorb_eff_ao</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">atm_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">program_obj</span><span class="o">.</span><span class="n">natm</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">program_obj</span><span class="o">.</span><span class="n">set_rinv_orig</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">program_obj</span><span class="o">.</span><span class="n">atom_coord</span><span class="p">(</span><span class="n">atm_id</span><span class="p">))</span>
             <span class="c1"># chg = self.program_obj.atom_effective_charge[atm_id]</span>
             <span class="n">chg</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="n">integrals_spinorb_eff_ao</span> <span class="o">+=</span> <span class="n">chg</span> <span class="o">*</span> <span class="n">integral_generator</span><span class="o">.</span><span class="n">integrals</span><span class="p">(</span><span class="n">integrals</span><span class="o">.</span><span class="n">SO_SPHER_1e</span><span class="p">)</span>
-        <span class="n">operator_spinorb_eff</span><span class="o">.</span><span class="n">ao_integrals</span> <span class="o">=</span> <span class="n">integrals_spinorb_eff_ao</span>
+        <span class="n">operator_spinorb_eff</span> <span class="o">=</span> <span class="n">Operator</span><span class="p">(</span>
+            <span class="n">label</span><span class="o">=</span><span class="s2">&quot;spinorb_eff&quot;</span><span class="p">,</span>
+            <span class="n">is_imaginary</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">is_spin_dependent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">triplet</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">ao_integrals</span><span class="o">=</span><span class="n">integrals_spinorb_eff_ao</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">add_operator</span><span class="p">(</span><span class="n">operator_spinorb_eff</span><span class="p">)</span></div>
 
 

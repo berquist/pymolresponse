@@ -79,6 +79,8 @@
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">pyscf.gto.mole</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mole</span>
 
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.integrals</span><span class="w"> </span><span class="kn">import</span> <span class="n">PropertyIntegrals</span>
+
 <span class="n">ANGMOM_COMMON_GAUGE</span> <span class="o">=</span> <span class="n">IntegralLabel</span><span class="p">(</span><span class="s2">&quot;cint1e_cg_irxp_sph&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 <span class="n">ANGMOM_GIAO</span> <span class="o">=</span> <span class="n">IntegralLabel</span><span class="p">(</span><span class="s2">&quot;cint1e_giao_irjxp_sph&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 <span class="n">DIPOLE</span> <span class="o">=</span> <span class="n">IntegralLabel</span><span class="p">(</span><span class="s2">&quot;cint1e_r_sph&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
@@ -101,9 +103,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">mol</span> <span class="o">=</span> <span class="n">pyscfmol</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_compute</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="n">IntegralLabel</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="n">IntegralLabel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;PropertyIntegrals&quot;</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">label</span><span class="o">.</span><span class="n">symmetry</span> <span class="o">==</span> <span class="n">IntegralSymmetry</span><span class="o">.</span><span class="n">ANTISYMMETRIC</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">intor_asymmetric</span><span class="p">(</span><span class="n">label</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">comp</span><span class="o">=</span><span class="n">label</span><span class="o">.</span><span class="n">comp</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">intor</span><span class="p">(</span><span class="n">label</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">comp</span><span class="o">=</span><span class="n">label</span><span class="o">.</span><span class="n">comp</span><span class="p">)</span></div>

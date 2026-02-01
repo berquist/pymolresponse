@@ -170,16 +170,17 @@
         <span class="c1"># FIXME</span>
         <span class="n">slice_idx</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">operator_label</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-        <span class="n">is_imaginary</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="n">is_spin_dependent</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="n">slice_idx</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unhandled DALTON operator label: </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># TODO this hack should go away once the PSO label is fixed</span>
+    <span class="k">assert</span> <span class="n">slice_idx</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
 
     <span class="n">operator</span> <span class="o">=</span> <span class="n">Operator</span><span class="p">(</span>
         <span class="n">label</span><span class="o">=</span><span class="n">operator_label</span><span class="p">,</span>
         <span class="n">is_imaginary</span><span class="o">=</span><span class="n">is_imaginary</span><span class="p">,</span>
         <span class="n">is_spin_dependent</span><span class="o">=</span><span class="n">is_spin_dependent</span><span class="p">,</span>
         <span class="n">slice_idx</span><span class="o">=</span><span class="n">slice_idx</span><span class="p">,</span>
+        <span class="n">ao_integrals</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>  <span class="c1"># ty: ignore[invalid-argument-type]</span>
     <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">operator</span></div>

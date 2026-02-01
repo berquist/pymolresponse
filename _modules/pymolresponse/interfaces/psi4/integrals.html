@@ -69,7 +69,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pymolresponse.interfaces.psi4.integrals</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
@@ -78,9 +78,14 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.integrals</span><span class="w"> </span><span class="kn">import</span> <span class="n">JK</span><span class="p">,</span> <span class="n">IntegralLabel</span><span class="p">,</span> <span class="n">Integrals</span>
 
 
-<span class="n">DIPOLE</span> <span class="o">=</span> <span class="nb">object</span><span class="p">()</span>
-<span class="n">DIPVEL</span> <span class="o">=</span> <span class="nb">object</span><span class="p">()</span>
-<span class="n">ANGMOM_COMMON_GAUGE</span> <span class="o">=</span> <span class="nb">object</span><span class="p">()</span>
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.integrals</span><span class="w"> </span><span class="kn">import</span> <span class="n">PropertyIntegrals</span>
+
+
+<span class="n">_unused</span> <span class="o">=</span> <span class="s2">&quot;unused&quot;</span>
+<span class="n">DIPOLE</span> <span class="o">=</span> <span class="n">IntegralLabel</span><span class="p">(</span><span class="n">_unused</span><span class="p">)</span>
+<span class="n">DIPVEL</span> <span class="o">=</span> <span class="n">IntegralLabel</span><span class="p">(</span><span class="n">_unused</span><span class="p">)</span>
+<span class="n">ANGMOM_COMMON_GAUGE</span> <span class="o">=</span> <span class="n">IntegralLabel</span><span class="p">(</span><span class="n">_unused</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="IntegralsPsi4">
@@ -97,9 +102,7 @@
             <span class="k">raise</span> <span class="ne">RuntimeError</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_mints</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">MintsHelper</span><span class="p">(</span><span class="n">wfn</span><span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_compute</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="n">IntegralLabel</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">]]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="n">IntegralLabel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;PropertyIntegrals&quot;</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">label</span> <span class="o">==</span> <span class="n">DIPOLE</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">Mc</span><span class="p">)</span> <span class="k">for</span> <span class="n">Mc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mints</span><span class="o">.</span><span class="n">ao_dipole</span><span class="p">()])</span>
         <span class="k">elif</span> <span class="n">label</span> <span class="o">==</span> <span class="n">DIPVEL</span><span class="p">:</span>

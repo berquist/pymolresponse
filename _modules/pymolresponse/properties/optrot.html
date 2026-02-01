@@ -119,22 +119,31 @@
             <span class="k">raise</span> <span class="ne">RuntimeError</span>
 
         <span class="n">operator_angmom</span> <span class="o">=</span> <span class="n">Operator</span><span class="p">(</span>
-            <span class="n">label</span><span class="o">=</span><span class="s2">&quot;angmom&quot;</span><span class="p">,</span> <span class="n">is_imaginary</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">is_spin_dependent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">triplet</span><span class="o">=</span><span class="kc">False</span>
+            <span class="n">label</span><span class="o">=</span><span class="s2">&quot;angmom&quot;</span><span class="p">,</span>
+            <span class="n">is_imaginary</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">is_spin_dependent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">triplet</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">ao_integrals</span><span class="o">=</span><span class="n">integral_generator</span><span class="o">.</span><span class="n">integrals</span><span class="p">(</span><span class="n">integrals</span><span class="o">.</span><span class="n">ANGMOM_COMMON_GAUGE</span><span class="p">),</span>
         <span class="p">)</span>
-        <span class="n">operator_angmom</span><span class="o">.</span><span class="n">ao_integrals</span> <span class="o">=</span> <span class="n">integral_generator</span><span class="o">.</span><span class="n">integrals</span><span class="p">(</span><span class="n">integrals</span><span class="o">.</span><span class="n">ANGMOM_COMMON_GAUGE</span><span class="p">)</span>  <span class="c1"># ty: ignore[invalid-argument-type]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">add_operator</span><span class="p">(</span><span class="n">operator_angmom</span><span class="p">)</span>
 
         <span class="n">operator_diplen</span> <span class="o">=</span> <span class="n">Operator</span><span class="p">(</span>
-            <span class="n">label</span><span class="o">=</span><span class="s2">&quot;dipole&quot;</span><span class="p">,</span> <span class="n">is_imaginary</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">is_spin_dependent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">triplet</span><span class="o">=</span><span class="kc">False</span>
+            <span class="n">label</span><span class="o">=</span><span class="s2">&quot;dipole&quot;</span><span class="p">,</span>
+            <span class="n">is_imaginary</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">is_spin_dependent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">triplet</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">ao_integrals</span><span class="o">=</span><span class="n">integral_generator</span><span class="o">.</span><span class="n">integrals</span><span class="p">(</span><span class="n">integrals</span><span class="o">.</span><span class="n">DIPOLE</span><span class="p">),</span>
         <span class="p">)</span>
-        <span class="n">operator_diplen</span><span class="o">.</span><span class="n">ao_integrals</span> <span class="o">=</span> <span class="n">integral_generator</span><span class="o">.</span><span class="n">integrals</span><span class="p">(</span><span class="n">integrals</span><span class="o">.</span><span class="n">DIPOLE</span><span class="p">)</span>  <span class="c1"># ty: ignore[invalid-argument-type]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">add_operator</span><span class="p">(</span><span class="n">operator_diplen</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_dipvel</span><span class="p">:</span>
             <span class="n">operator_dipvel</span> <span class="o">=</span> <span class="n">Operator</span><span class="p">(</span>
-                <span class="n">label</span><span class="o">=</span><span class="s2">&quot;dipvel&quot;</span><span class="p">,</span> <span class="n">is_imaginary</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">is_spin_dependent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">triplet</span><span class="o">=</span><span class="kc">False</span>
+                <span class="n">label</span><span class="o">=</span><span class="s2">&quot;dipvel&quot;</span><span class="p">,</span>
+                <span class="n">is_imaginary</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">is_spin_dependent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">triplet</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">ao_integrals</span><span class="o">=</span><span class="n">integral_generator</span><span class="o">.</span><span class="n">integrals</span><span class="p">(</span><span class="n">integrals</span><span class="o">.</span><span class="n">DIPVEL</span><span class="p">),</span>
             <span class="p">)</span>
-            <span class="n">operator_dipvel</span><span class="o">.</span><span class="n">ao_integrals</span> <span class="o">=</span> <span class="n">integral_generator</span><span class="o">.</span><span class="n">integrals</span><span class="p">(</span><span class="n">integrals</span><span class="o">.</span><span class="n">DIPVEL</span><span class="p">)</span>  <span class="c1"># ty: ignore[invalid-argument-type]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">add_operator</span><span class="p">(</span><span class="n">operator_dipvel</span><span class="p">)</span></div>
 
 
