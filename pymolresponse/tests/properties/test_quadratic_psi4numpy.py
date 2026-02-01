@@ -37,13 +37,7 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_small
     f2 = 2 * f1
     frequencies = [f1, f2]
     calculator = electric.Polarizability(
-        Program.PySCF,
-        mol,
-        cphf.CPHF(solvers.ExactInv(C, E, occupations)),
-        C,
-        E,
-        occupations,
-        frequencies=frequencies,
+        Program.PySCF, mol, cphf.CPHF(solvers.ExactInv(C, E, occupations)), frequencies=frequencies
     )
     calculator.form_operators()
     calculator.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)
@@ -319,13 +313,7 @@ def test_first_hyperpolarizability_shg_rhf_wigner_explicit_psi4numpy_pyscf_large
     f2 = 2 * f1
     frequencies = [f1, f2]
     calculator = electric.Polarizability(
-        Program.PySCF,
-        mol,
-        cphf.CPHF(solvers.ExactInv(C, E, occupations)),
-        C,
-        E,
-        occupations,
-        frequencies=frequencies,
+        Program.PySCF, mol, cphf.CPHF(solvers.ExactInv(C, E, occupations)), frequencies=frequencies
     )
     calculator.form_operators()
     calculator.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)

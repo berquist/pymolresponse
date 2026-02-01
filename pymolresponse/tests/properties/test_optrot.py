@@ -196,9 +196,6 @@ def test_ORD_RPA_singlet_BC2H4_cation_HF_STO3G() -> None:
         Program.PySCF,
         pyscfmol,
         cphf.CPHF(solvers.ExactInv(C, E, occupations)),
-        C,
-        E,
-        occupations,
         frequencies=frequencies,
         do_dipvel=False,
     )
@@ -263,9 +260,6 @@ def test_ORD_RPA_singlet_BC2H4_HF_STO3G() -> None:
         Program.PySCF,
         pyscfmol,
         cphf.CPHF(solvers.ExactInv(C, E, occupations)),
-        C,
-        E,
-        occupations,
         frequencies=frequencies,
         do_dipvel=False,
     )
@@ -321,9 +315,6 @@ def test_ORD_RPA_singlet_trithiolane_HF_STO3G() -> None:
         Program.PySCF,
         pyscfmol,
         cphf.CPHF(solvers.ExactInv(C, E, occupations)),
-        C,
-        E,
-        occupations,
         frequencies=frequencies,
         do_dipvel=False,
     )

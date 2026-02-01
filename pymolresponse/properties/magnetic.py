@@ -5,36 +5,20 @@ from typing import TYPE_CHECKING, Any, Union
 import numpy as np
 
 from pymolresponse.core import Program
-from pymolresponse.cphf import CPHF
 from pymolresponse.interfaces.pyscf.helpers import calculate_origin_pyscf
 from pymolresponse.molecular_property import ResponseProperty
 from pymolresponse.operators import Operator
 
 
 if TYPE_CHECKING:
-    from pymolresponse.indices import Occupations
+    from pymolresponse.cphf import CPHF
 
 
 class Magnetizability(ResponseProperty):
     def __init__(
-        self,
-        program: Program,
-        program_obj: Any,
-        driver: CPHF,
-        mocoeffs: np.ndarray,
-        moenergies: np.ndarray,
-        occupations: "Occupations",
-        use_giao: bool = False,
+        self, program: Program, program_obj: Any, driver: "CPHF", use_giao: bool = False
     ) -> None:
-        super().__init__(
-            program,
-            program_obj,
-            driver,
-            mocoeffs,
-            moenergies,
-            occupations,
-            frequencies=np.asarray([0.0]),
-        )
+        super().__init__(program, program_obj, driver, frequencies=np.asarray([0.0]))
         self.use_giao = use_giao
 
     def form_operators(self) -> None:
@@ -75,22 +59,19 @@ class ElectronicGTensor(ResponseProperty):
         self,
         program: Program,
         program_obj: Any,
-        driver: CPHF,
-        mocoeffs: np.ndarray,
-        moenergies: np.ndarray,
-        occupations: "Occupations",
+        driver: "CPHF",
         *,
         gauge_origin: Union[str, np.ndarray] = "ecc",
     ) -> None:
-        super().__init__(
-            program, program_obj, driver, mocoeffs, moenergies, occupations, frequencies=[0.0]
-        )
+        super().__init__(program, program_obj, driver, frequencies=[0.0])
 
         if program == Program.PySCF:
             assert isinstance(gauge_origin, (str, list, tuple, np.ndarray))
             if isinstance(gauge_origin, str):
                 coords = program_obj.atom_coords()
                 charges = program_obj.atom_charges()
+                mocoeffs = self.driver.solver.mocoeffs
+                occupations = self.driver.solver.occupations
                 is_uhf = mocoeffs.shape[0] == 2
                 if is_uhf:
                     Ca = mocoeffs[0]

@@ -185,9 +185,6 @@ def test_ECD_TDA_from_TDHF_singlet_BC2H4_cation_HF_STO3G() -> None:
         Program.PySCF,
         mol,
         td.TDHF(solvers.ExactDiagonalizationSolver(C, E, occupations)),
-        C,
-        E,
-        occupations,
         do_dipvel=True,
     )
     ecd_dipvel_tda.form_operators()
@@ -273,9 +270,6 @@ def test_ECD_TDA_singlet_BC2H4_cation_HF_STO3G() -> None:
         Program.PySCF,
         mol,
         td.TDHF(solvers.ExactDiagonalizationSolver(C, E, occupations)),
-        C,
-        E,
-        occupations,
         do_dipvel=True,
     )
     ecd_dipvel_from_tdhf.form_operators()
@@ -286,9 +280,6 @@ def test_ECD_TDA_singlet_BC2H4_cation_HF_STO3G() -> None:
         Program.PySCF,
         mol,
         td.TDA(solvers.ExactDiagonalizationSolverTDA(C, E, occupations)),
-        C,
-        E,
-        occupations,
         do_dipvel=True,
     )
     ecd_dipvel_from_tda.form_operators()
@@ -318,9 +309,6 @@ def test_ECD_RPA_singlet_BC2H4_cation_HF_STO3G() -> None:
         Program.PySCF,
         mol,
         td.TDHF(solvers.ExactDiagonalizationSolver(C, E, occupations)),
-        C,
-        E,
-        occupations,
         do_dipvel=True,
     )
     ecd_dipvel_rpa.form_operators()
