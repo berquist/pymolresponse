@@ -80,7 +80,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">HARTREE_TO_EV</span><span class="p">,</span> <span class="n">HARTREE_TO_INVCM</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">Program</span><span class="p">,</span> <span class="n">Spin</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.cphf</span><span class="w"> </span><span class="kn">import</span> <span class="n">CPHF</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.solvers</span><span class="w"> </span><span class="kn">import</span> <span class="n">EigSolver</span><span class="p">,</span> <span class="n">EigSolverTDA</span><span class="p">,</span> <span class="n">Solver</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.solvers</span><span class="w"> </span><span class="kn">import</span> <span class="n">EigSolver</span><span class="p">,</span> <span class="n">EigSolverTDA</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">form_indices_orbwin</span><span class="p">,</span> <span class="n">form_vec_energy_differences</span>
 
 
@@ -92,9 +92,9 @@
 <span class="sd">    equations.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">solver</span><span class="p">:</span> <span class="n">Solver</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">solver</span><span class="p">:</span> <span class="n">EigSolver</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="n">EigSolver</span><span class="p">)</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">solver</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">=</span> <span class="n">solver</span>
 
 <div class="viewcode-block" id="TDHF.run">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.td.TDHF.run">[docs]</a>
@@ -118,13 +118,14 @@
         <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">,</span> <span class="n">nvirt_beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">occupations</span>
         <span class="n">nov_alph</span> <span class="o">=</span> <span class="n">nocc_alph</span> <span class="o">*</span> <span class="n">nvirt_alph</span>
         <span class="c1"># nov_beta = nocc_beta * nvirt_beta</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">eigvecs_normed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">eigvecs</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="p">,</span> <span class="n">EigSolver</span><span class="p">)</span>  <span class="c1"># for ty</span>
+        <span class="n">eigvecs_normed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">eigvecs</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="c1"># This is because we&#39;ve calculated all possible roots.</span>
         <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nov_alph</span><span class="p">):</span>
             <span class="n">eigvec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">eigvecs</span><span class="p">[:,</span> <span class="n">idx</span><span class="p">]</span>
             <span class="n">x_normed</span><span class="p">,</span> <span class="n">y_normed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">norm_xy</span><span class="p">(</span><span class="n">eigvec</span><span class="p">,</span> <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">)</span>
             <span class="n">eigvec_normed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">x_normed</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">y_normed</span><span class="o">.</span><span class="n">flatten</span><span class="p">()),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">eigvecs_normed</span><span class="p">[:,</span> <span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">eigvec_normed</span>
+            <span class="n">eigvecs_normed</span><span class="p">[:,</span> <span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">eigvec_normed</span>
             <span class="n">eigval</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">eigvals</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">real</span>
             <span class="c1"># contract the components of every operator with every</span>
             <span class="c1"># eigenvector</span>
@@ -146,6 +147,7 @@
                 <span class="n">operator</span><span class="o">.</span><span class="n">transition_moments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">transition_moment</span><span class="p">)</span>
                 <span class="n">operator</span><span class="o">.</span><span class="n">oscillator_strengths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">oscillator_strength</span><span class="p">)</span>
                 <span class="n">operator</span><span class="o">.</span><span class="n">total_oscillator_strengths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">total_oscillator_strength</span><span class="p">)</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="p">,</span> <span class="s2">&quot;eigvecs_normed&quot;</span><span class="p">,</span> <span class="n">eigvecs_normed</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">operator</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">operators</span><span class="p">:</span>
             <span class="n">operator</span><span class="o">.</span><span class="n">transition_moments</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">operator</span><span class="o">.</span><span class="n">transition_moments</span><span class="p">)</span>
             <span class="n">operator</span><span class="o">.</span><span class="n">oscillator_strengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">operator</span><span class="o">.</span><span class="n">oscillator_strengths</span><span class="p">)</span>
@@ -155,6 +157,7 @@
 <div class="viewcode-block" id="TDHF.print_results">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.td.TDHF.print_results">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">print_results</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="p">,</span> <span class="n">EigSolver</span><span class="p">)</span>  <span class="c1"># for ty</span>
         <span class="n">energies</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">eigvals</span><span class="o">.</span><span class="n">real</span>
         <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">energies</span><span class="p">)):</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">78</span><span class="p">)</span>
@@ -208,6 +211,7 @@
 <div class="viewcode-block" id="TDHF.print_results_orca">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.td.TDHF.print_results_orca">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">print_results_orca</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cutoff</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="p">,</span> <span class="n">EigSolver</span><span class="p">)</span>  <span class="c1"># for ty</span>
         <span class="n">energies</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">eigvals</span><span class="o">.</span><span class="n">real</span>
         <span class="n">energies_ev</span> <span class="o">=</span> <span class="n">energies</span> <span class="o">*</span> <span class="n">HARTREE_TO_EV</span>
         <span class="n">energies_invcm</span> <span class="o">=</span> <span class="n">energies</span> <span class="o">*</span> <span class="n">HARTREE_TO_INVCM</span>
@@ -269,7 +273,7 @@
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">solver</span><span class="p">:</span> <span class="n">EigSolverTDA</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="n">EigSolverTDA</span><span class="p">)</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">solver</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">=</span> <span class="n">solver</span>
 
 <div class="viewcode-block" id="TDA.form_results">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.td.TDA.form_results">[docs]</a>
@@ -277,14 +281,15 @@
         <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">,</span> <span class="n">nvirt_beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">occupations</span>
         <span class="n">nov_alph</span> <span class="o">=</span> <span class="n">nocc_alph</span> <span class="o">*</span> <span class="n">nvirt_alph</span>
         <span class="c1"># nov_beta = nocc_beta * nvirt_beta</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">eigvecs_normed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">eigvecs</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="p">,</span> <span class="n">EigSolver</span><span class="p">)</span>  <span class="c1"># for ty</span>
+        <span class="n">eigvecs_normed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">eigvecs</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="c1"># This is because we&#39;ve calculated all possible roots.</span>
 
         <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nov_alph</span><span class="p">):</span>
             <span class="n">norm</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
             <span class="n">eigvec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">eigvecs</span><span class="p">[:,</span> <span class="n">idx</span><span class="p">]</span>
             <span class="n">eigvec_normed</span> <span class="o">=</span> <span class="n">eigvec</span> <span class="o">*</span> <span class="n">norm</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">eigvecs_normed</span><span class="p">[:,</span> <span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">eigvec_normed</span>
+            <span class="n">eigvecs_normed</span><span class="p">[:,</span> <span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">eigvec_normed</span>
             <span class="n">eigval</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">eigvals</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">real</span>
             <span class="c1"># contract the components of every operator with every</span>
             <span class="c1"># eigenvector</span>
@@ -306,6 +311,7 @@
                 <span class="n">operator</span><span class="o">.</span><span class="n">transition_moments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">transition_moment</span><span class="p">)</span>
                 <span class="n">operator</span><span class="o">.</span><span class="n">oscillator_strengths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">oscillator_strength</span><span class="p">)</span>
                 <span class="n">operator</span><span class="o">.</span><span class="n">total_oscillator_strengths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">total_oscillator_strength</span><span class="p">)</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="p">,</span> <span class="s2">&quot;eigvecs_normed&quot;</span><span class="p">,</span> <span class="n">eigvecs_normed</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">operator</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">operators</span><span class="p">:</span>
             <span class="n">operator</span><span class="o">.</span><span class="n">transition_moments</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">operator</span><span class="o">.</span><span class="n">transition_moments</span><span class="p">)</span>
             <span class="n">operator</span><span class="o">.</span><span class="n">oscillator_strengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">operator</span><span class="o">.</span><span class="n">oscillator_strengths</span><span class="p">)</span>
