@@ -8,6 +8,7 @@ from pymolresponse.utils import DirtyMocoeffs, fix_mocoeffs_shape, repack_matrix
 
 if TYPE_CHECKING:
     from pymolresponse.indices import Indices, Occupations
+    from pymolresponse.integrals import PropertyIntegrals
 
 
 class Operator:
@@ -24,7 +25,7 @@ class Operator:
         is_spin_dependent: bool = False,
         triplet: bool = False,
         slice_idx: int = -1,
-        ao_integrals: np.ndarray[tuple[int, int, int], np.dtype[np.floating]],
+        ao_integrals: "PropertyIntegrals",
     ) -> None:
         self.label = label
         self.is_imaginary = is_imaginary
