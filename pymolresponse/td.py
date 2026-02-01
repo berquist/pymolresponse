@@ -40,13 +40,14 @@ class TDHF(CPHF):
         nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.solver.occupations
         nov_alph = nocc_alph * nvirt_alph
         # nov_beta = nocc_beta * nvirt_beta
-        self.solver.eigvecs_normed = self.solver.eigvecs.copy()
+        assert isinstance(self.solver, EigSolver)  # for ty
+        eigvecs_normed = self.solver.eigvecs.copy()
         # This is because we've calculated all possible roots.
         for idx in range(nov_alph):
             eigvec = self.solver.eigvecs[:, idx]
             x_normed, y_normed = self.solver.norm_xy(eigvec, nocc_alph, nvirt_alph)
             eigvec_normed = np.concatenate((x_normed.flatten(), y_normed.flatten()), axis=0)
-            self.solver.eigvecs_normed[:, idx] = eigvec_normed
+            eigvecs_normed[:, idx] = eigvec_normed
             eigval = self.solver.eigvals[idx].real
             # contract the components of every operator with every
             # eigenvector
@@ -68,12 +69,14 @@ class TDHF(CPHF):
                 operator.transition_moments.append(transition_moment)
                 operator.oscillator_strengths.append(oscillator_strength)
                 operator.total_oscillator_strengths.append(total_oscillator_strength)
+        setattr(self.solver, "eigvecs_normed", eigvecs_normed)
         for operator in self.solver.operators:
             operator.transition_moments = np.array(operator.transition_moments)
             operator.oscillator_strengths = np.array(operator.oscillator_strengths)
             operator.total_oscillator_strengths = np.array(operator.total_oscillator_strengths)
 
     def print_results(self) -> None:
+        assert isinstance(self.solver, EigSolver)  # for ty
         energies = self.solver.eigvals.real
         for idx in range(len(energies)):
             print("=" * 78)
@@ -121,6 +124,7 @@ class TDHF(CPHF):
     _SPIN_MAP_ORCA = {Spin.singlet: "SINGLETS", Spin.triplet: "TRIPLETS"}
 
     def print_results_orca(self, cutoff: float = 0.01) -> str:
+        assert isinstance(self.solver, EigSolver)  # for ty
         energies = self.solver.eigvals.real
         energies_ev = energies * HARTREE_TO_EV
         energies_invcm = energies * HARTREE_TO_INVCM
@@ -184,14 +188,15 @@ class TDA(TDHF):
         nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.solver.occupations
         nov_alph = nocc_alph * nvirt_alph
         # nov_beta = nocc_beta * nvirt_beta
-        self.solver.eigvecs_normed = self.solver.eigvecs.copy()
+        assert isinstance(self.solver, EigSolver)  # for ty
+        eigvecs_normed = self.solver.eigvecs.copy()
         # This is because we've calculated all possible roots.
 
         for idx in range(nov_alph):
             norm = 1 / np.sqrt(2)
             eigvec = self.solver.eigvecs[:, idx]
             eigvec_normed = eigvec * norm
-            self.solver.eigvecs_normed[:, idx] = eigvec_normed
+            eigvecs_normed[:, idx] = eigvec_normed
             eigval = self.solver.eigvals[idx].real
             # contract the components of every operator with every
             # eigenvector
@@ -213,6 +218,7 @@ class TDA(TDHF):
                 operator.transition_moments.append(transition_moment)
                 operator.oscillator_strengths.append(oscillator_strength)
                 operator.total_oscillator_strengths.append(total_oscillator_strength)
+        setattr(self.solver, "eigvecs_normed", eigvecs_normed)
         for operator in self.solver.operators:
             operator.transition_moments = np.array(operator.transition_moments)
             operator.oscillator_strengths = np.array(operator.oscillator_strengths)

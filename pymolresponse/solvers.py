@@ -676,6 +676,22 @@ class IterativeLinEqSolver(LineqSolver):
 class EigSolver(Solver, ABC):
     """Base class for all solvers of the type $AX = 0$ (eigensolvers)."""
 
+    @property
+    def eigvals(self):
+        return self._eigvals
+
+    @eigvals.setter
+    def eigvals(self, x) -> None:
+        self._eigvals = x
+
+    @property
+    def eigvecs(self):
+        return self._eigvecs
+
+    @eigvecs.setter
+    def eigvecs(self, x) -> None:
+        self._eigvecs = x
+
     @staticmethod
     def norm_xy(z: np.ndarray, nocc: int, nvirt: int) -> tuple[np.ndarray, np.ndarray]:
         x, y = z.reshape(2, nvirt, nocc)
