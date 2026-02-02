@@ -287,25 +287,6 @@
 
     <span class="k">return</span> <span class="n">mol</span></div>
 
-
-
-<div class="viewcode-block" id="molecule_alanine_sto3g">
-<a class="viewcode-back" href="../../../../pyresponse.pyscf.html#pymolresponse.interfaces.pyscf.molecules.molecule_alanine_sto3g">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">molecule_alanine_sto3g</span><span class="p">(</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">:</span>
-    <span class="n">mol</span> <span class="o">=</span> <span class="n">pyscf</span><span class="o">.</span><span class="n">gto</span><span class="o">.</span><span class="n">Mole</span><span class="p">()</span>
-    <span class="n">mol</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
-    <span class="n">mol</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="kc">None</span>
-
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">COORDDIR</span> <span class="o">/</span> <span class="s2">&quot;L-Ala.xyz&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
-        <span class="nb">next</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span>
-        <span class="nb">next</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span>
-        <span class="n">mol</span><span class="o">.</span><span class="n">atom</span> <span class="o">=</span> <span class="n">fh</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-    <span class="n">mol</span><span class="o">.</span><span class="n">basis</span> <span class="o">=</span> <span class="s2">&quot;sto-3g&quot;</span>
-    <span class="n">mol</span><span class="o">.</span><span class="n">charge</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">mol</span><span class="o">.</span><span class="n">spin</span> <span class="o">=</span> <span class="mi">0</span>
-
-    <span class="k">return</span> <span class="n">mol</span></div>
-
 </pre></div>
 
            </div>
