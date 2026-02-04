@@ -180,3 +180,19 @@ def molecule_bh_cation_def2_svp(verbose: int = 0) -> pyscf.gto.Mole:
     mol.spin = 1
 
     return mol
+
+
+def molecule_alanine_sto3g(verbose: int = 0) -> pyscf.gto.Mole:
+    mol = pyscf.gto.Mole()
+    mol.verbose = verbose
+    mol.output = None
+
+    with open(COORDDIR / "L-Ala.xyz") as fh:
+        next(fh)
+        next(fh)
+        mol.atom = fh.read()
+    mol.basis = "sto-3g"
+    mol.charge = 0
+    mol.spin = 0
+
+    return mol

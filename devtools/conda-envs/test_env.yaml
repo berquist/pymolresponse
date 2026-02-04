@@ -5,6 +5,7 @@ channels:
 dependencies:
   - cclib
   - coverage
+  - findiff
   - pip
   - psi4
   - pytest-cov
