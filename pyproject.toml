@@ -11,7 +11,7 @@ classifiers = [
     "License :: OSI Approved :: BSD License",
     "Programming Language :: Python :: 3",
 ]
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 dependencies = [
     "cclib>=1.8.1,<2",
     "periodictable>=2.0.2,<3",
@@ -98,7 +98,7 @@ ignore = [
     "build"
 ]
 # not inherited for some reason
-pythonVersion = "3.6"
+pythonVersion = "3.10"
 # TODO
 typeCheckingMode = "off"
 
