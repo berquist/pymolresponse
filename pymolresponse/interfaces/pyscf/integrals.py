@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 import numpy as np
 
@@ -53,7 +53,7 @@ class JKPyscf(JK):
     def compute_from_mocoeffs(
         self,
         C_left: np.ndarray[tuple[int, int], np.dtype[np.floating]],
-        C_right: Optional[np.ndarray[tuple[int, int], np.dtype[np.floating]]] = None,
+        C_right: np.ndarray[tuple[int, int], np.dtype[np.floating]] | None = None,
     ) -> tuple[
         np.ndarray[tuple[int, int], np.dtype[np.floating]],
         np.ndarray[tuple[int, int], np.dtype[np.floating]],

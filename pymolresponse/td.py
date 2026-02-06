@@ -2,7 +2,7 @@
 equations.
 """
 
-from typing import Any, Optional
+from typing import Any
 
 import numpy as np
 
@@ -24,7 +24,7 @@ class TDHF(CPHF):
         self.solver = solver
 
     def run(
-        self, hamiltonian: Hamiltonian, spin: Spin, program: Optional[Program], program_obj: Any
+        self, hamiltonian: Hamiltonian, spin: Spin, program: Program | None, program_obj: Any
     ) -> None:
         assert isinstance(hamiltonian, Hamiltonian)
         assert isinstance(spin, Spin)

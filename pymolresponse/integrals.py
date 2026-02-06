@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from collections.abc import Mapping
 from dataclasses import dataclass
 from enum import Enum, auto, unique
-from typing import Any, Optional
+from typing import Any
 
 import numpy as np
 
@@ -22,7 +22,7 @@ class IntegralSymmetry(Enum):
 @dataclass(frozen=True)
 class IntegralLabel:
     label: str
-    comp: Optional[int] = None
+    comp: int | None = None
     symmetry: IntegralSymmetry = IntegralSymmetry.SYMMETRIC
 
 
@@ -59,7 +59,7 @@ class JK(ABC):
     def compute_from_mocoeffs(
         self,
         C_left: np.ndarray[tuple[int, int], np.dtype[np.floating]],
-        C_right: Optional[np.ndarray[tuple[int, int], np.dtype[np.floating]]] = None,
+        C_right: np.ndarray[tuple[int, int], np.dtype[np.floating]] | None = None,
     ) -> tuple[
         np.ndarray[tuple[int, int], np.dtype[np.floating]],
         np.ndarray[tuple[int, int], np.dtype[np.floating]],

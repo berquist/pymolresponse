@@ -1,7 +1,6 @@
 """Run response term calculators over all references for a test case."""
 
 from pathlib import Path
-from typing import Union
 
 from pymolresponse.data import REFDIR
 from pymolresponse.interfaces.dalton.utils import dalton_label_to_operator
@@ -25,7 +24,7 @@ def run_dalton_label_to_operator(
     return operator
 
 
-def run_as_many_tests_as_possible_rhf_disk(testcase: Union[Path, str]) -> None:
+def run_as_many_tests_as_possible_rhf_disk(testcase: Path | str) -> None:
     """Execute all comparisons against DALTON disk references for a test case."""
     testcasedir = REFDIR / testcase
 
@@ -63,7 +62,7 @@ def run_as_many_tests_as_possible_rhf_disk(testcase: Union[Path, str]) -> None:
             assert diff < thresh
 
 
-def run_as_many_tests_as_possible_uhf_disk(testcase: Union[Path, str]) -> None:
+def run_as_many_tests_as_possible_uhf_disk(testcase: Path | str) -> None:
     """Execute all comparisons against DALTON disk references for a test case."""
     testcasedir = REFDIR / testcase
 

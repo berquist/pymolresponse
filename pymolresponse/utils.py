@@ -3,7 +3,7 @@
 from collections.abc import Iterable
 from itertools import accumulate
 from pathlib import Path
-from typing import TYPE_CHECKING, Union
+from typing import TYPE_CHECKING
 
 import numpy as np
 
@@ -27,7 +27,7 @@ def form_results(
     return results
 
 
-def np_load(filename: Union[str, Path]) -> np.ndarray[tuple[int, ...], np.dtype[np.number]]:
+def np_load(filename: str | Path) -> np.ndarray[tuple[int, ...], np.dtype[np.number]]:
     """Read a file using NumPy."""
     arr = np.load(filename)
     if isinstance(arr, np.lib.npyio.NpzFile):
@@ -39,7 +39,7 @@ def np_load(filename: Union[str, Path]) -> np.ndarray[tuple[int, ...], np.dtype[
     return arr
 
 
-def np_load_2(filename: Union[str, Path]) -> np.ndarray[tuple[int, int], np.dtype[np.floating]]:
+def np_load_2(filename: str | Path) -> np.ndarray[tuple[int, int], np.dtype[np.floating]]:
     """Read a file with a floating-point matrix using NumPy."""
     mat = np_load(filename)
     assert len(mat.shape) == 2
@@ -48,7 +48,7 @@ def np_load_2(filename: Union[str, Path]) -> np.ndarray[tuple[int, int], np.dtyp
 
 
 def parse_int_file_2(
-    filename: Union[str, Path], dim: int
+    filename: str | Path, dim: int
 ) -> np.ndarray[tuple[int, int], np.dtype[np.floating]]:
     """Read a 2-D array from a formatted text file.
 
@@ -76,7 +76,7 @@ def repack_vector_to_matrix(vec: np.ndarray, shape: tuple[int, ...]) -> np.ndarr
 
 
 def get_reference_value_from_file(
-    filename: Union[Path, str],
+    filename: Path | str,
     hamiltonian: str,
     spin: str,
     frequency: str,
@@ -110,7 +110,7 @@ def get_reference_value_from_file(
     return ref
 
 
-def read_file_occupations(filename: Union[Path, str]) -> "Occupations":
+def read_file_occupations(filename: Path | str) -> "Occupations":
     """Read molecular orbital occupations from a file.
 
     The file should contain a single line of four integers
@@ -131,7 +131,7 @@ def read_file_occupations(filename: Union[Path, str]) -> "Occupations":
     return tuple(int(x) for x in tokens)  # ty: ignore[invalid-return-type]
 
 
-def read_file_1(filename: Union[Path, str]) -> np.ndarray[tuple[int], np.dtype[np.floating]]:
+def read_file_1(filename: Path | str) -> np.ndarray[tuple[int], np.dtype[np.floating]]:
     """Read a libaview-formatted 1-D array."""
     elements = []
     with open(filename) as fh:
@@ -142,7 +142,7 @@ def read_file_1(filename: Union[Path, str]) -> np.ndarray[tuple[int], np.dtype[n
     return np.array(elements, dtype=float)
 
 
-def read_file_2(filename: Union[Path, str]) -> np.ndarray[tuple[int, int], np.dtype[np.floating]]:
+def read_file_2(filename: Path | str) -> np.ndarray[tuple[int, int], np.dtype[np.floating]]:
     """Read a libaview-formatted 2-D array."""
     elements = []
     with open(filename) as fh:
@@ -155,7 +155,7 @@ def read_file_2(filename: Union[Path, str]) -> np.ndarray[tuple[int, int], np.dt
 
 
 def read_file_3(
-    filename: Union[Path, str],
+    filename: Path | str,
 ) -> np.ndarray[tuple[int, int, int], np.dtype[np.floating]]:
     """Read a libaview-formatted 3-D array."""
     elements = []
@@ -168,7 +168,7 @@ def read_file_3(
 
 
 def read_file_4(
-    filename: Union[Path, str],
+    filename: Path | str,
 ) -> np.ndarray[tuple[int, int, int, int], np.dtype[np.floating]]:
     """Read a libaview-formatted 4-D array."""
     elements = []
@@ -214,10 +214,10 @@ class Splitter:
         return elements
 
 
-DirtyMocoeffs = Union[
-    tuple[np.ndarray[tuple[int, ...], np.dtype[np.floating]], ...],
-    np.ndarray[Union[tuple[int, int], tuple[int, int, int]], np.dtype[np.floating]],
-]
+DirtyMocoeffs = (
+    tuple[np.ndarray[tuple[int, ...], np.dtype[np.floating]], ...]
+    | np.ndarray[tuple[int, int] | tuple[int, int, int], np.dtype[np.floating]],
+)
 
 
 def fix_mocoeffs_shape(
@@ -245,10 +245,8 @@ def fix_mocoeffs_shape(
 
 
 def fix_moenergies_shape(
-    moenergies: Union[
-        tuple[np.ndarray[tuple[int, ...], np.dtype[np.floating]], ...],
-        np.ndarray[Union[tuple[int], tuple[int, int], tuple[int, int, int]], np.dtype[np.floating]],
-    ],
+    moenergies: tuple[np.ndarray[tuple[int, ...], np.dtype[np.floating]], ...]
+    | np.ndarray[tuple[int] | tuple[int, int] | tuple[int, int, int], np.dtype[np.floating]],
 ) -> np.ndarray[tuple[int, int, int], np.dtype[np.floating]]:
     """Clean up the dimensionality of molecular orbital energies.
 

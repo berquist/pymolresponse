@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Optional, Union
+from typing import TYPE_CHECKING
 
 import numpy as np
 
@@ -18,7 +18,7 @@ ANGMOM_COMMON_GAUGE = IntegralLabel(_unused)
 
 
 class IntegralsPsi4(Integrals):
-    def __init__(self, wfn_or_mol: Union[psi4.core.Molecule, psi4.core.Wavefunction]) -> None:
+    def __init__(self, wfn_or_mol: psi4.core.Molecule | psi4.core.Wavefunction) -> None:
         super().__init__()
 
         if isinstance(wfn_or_mol, psi4.core.Molecule):
@@ -44,7 +44,7 @@ class IntegralsPsi4(Integrals):
 def compute_jk(
     jk: psi4.core.JK,
     C_left: np.ndarray[tuple[int, int], np.dtype[np.floating]],
-    C_right: Optional[np.ndarray[tuple[int, int], np.dtype[np.floating]]] = None,
+    C_right: np.ndarray[tuple[int, int], np.dtype[np.floating]] | None = None,
 ) -> tuple[
     np.ndarray[tuple[int, int], np.dtype[np.floating]],
     np.ndarray[tuple[int, int], np.dtype[np.floating]],
@@ -157,7 +157,7 @@ class JKPsi4(JK):
     def compute_from_mocoeffs(
         self,
         C_left: np.ndarray[tuple[int, int], np.dtype[np.floating]],
-        C_right: Optional[np.ndarray[tuple[int, int], np.dtype[np.floating]]] = None,
+        C_right: np.ndarray[tuple[int, int], np.dtype[np.floating]] | None = None,
     ) -> tuple[
         np.ndarray[tuple[int, int], np.dtype[np.floating]],
         np.ndarray[tuple[int, int], np.dtype[np.floating]],

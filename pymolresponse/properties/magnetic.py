@@ -1,6 +1,6 @@
 """Wrappers for performing magnetic property calculations."""
 
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 
@@ -61,7 +61,7 @@ class ElectronicGTensor(ResponseProperty):
         program_obj: Any,
         driver: "CPHF",
         *,
-        gauge_origin: Union[str, np.ndarray] = "ecc",
+        gauge_origin: str | np.ndarray = "ecc",
     ) -> None:
         super().__init__(program, program_obj, driver, frequencies=[0.0])
 
