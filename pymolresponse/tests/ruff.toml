@@ -2,12 +2,11 @@
 extend = "../../pyproject.toml"
 
 [lint]
-extend-select = [
-]
+extend-select = []
 ignore = [
-    "D205", # sometimes it's more convenient for test docstrings to just have
-            # a single blurb
-    "D400", # allow ending test docstring summaries with a question mark
+    "D205",  # sometimes it's more convenient for test docstrings to just have
+    # a single blurb
+    "D400",  # allow ending test docstring summaries with a question mark
 ]
 
 [lint.flake8-tidy-imports]

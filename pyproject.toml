@@ -3,10 +3,8 @@ name = "pymolresponse"
 description = "Molecular frequency-dependent response properties for arbitrary operators"
 dynamic = ["version"]
 readme = "README.md"
-authors = [
-    { name = "Eric Berquist", email = "eric.berquist@gmail.com" }
-]
-license = {file = "LICENSE"}
+authors = [{ name = "Eric Berquist", email = "eric.berquist@gmail.com" }]
+license = { file = "LICENSE" }
 classifiers = [
     "License :: OSI Approved :: BSD License",
     "Programming Language :: Python :: 3",
@@ -23,6 +21,12 @@ Documentation = "https://berquist.github.io/pymolresponse_docs/"
 Homepage = "https://github.com/berquist/pymolresponse"
 
 [project.optional-dependencies]
+dev = ["pymolresponse[docs,test]"]
+docs = [
+    "numpydoc",
+    "sphinx",
+    "sphinx_rtd_theme",
+]
 test = [
     "coverage",
     "daltools",
@@ -32,32 +36,10 @@ test = [
     "pytest-ruff",
     "pytest-snob",
 ]
-docs = [
-    "numpydoc",
-    "sphinx",
-    "sphinx_rtd_theme",
-]
-dev = ["pymolresponse[docs,test]"]
 
 [build-system]
 requires = ["setuptools>=61.0", "versioningit>=3.1"]
 build-backend = "setuptools.build_meta"
-
-[tool.setuptools]
-zip-safe = false
-# include-package-data = false
-
-# [tool.setuptools.packages.find]
-# namespaces = false
-# where = ["."]
-
-# [tool.setuptools.package-data]
-# pymolresponse2 = [
-#     "py.typed"
-# ]
-
-[tool.setuptools.package-dir]
-pymolresponse = "pymolresponse"
 
 [tool.coverage.html]
 directory = "build/coverage/htmlcov"
@@ -76,7 +58,6 @@ ignore = "D001"
 cache_dir = "build/.mypy_cache"
 strict = true
 warn_unreachable = true
-
 scripts_are_modules = true
 warn_unused_configs = true
 
@@ -91,98 +72,6 @@ module = [
     "periodictable",
 ]
 follow_untyped_imports = true
-
-[tool.pyright]
-# apparently respecting .gitignore is overrated
-ignore = [
-    "build"
-]
-# not inherited for some reason
-pythonVersion = "3.10"
-# TODO
-typeCheckingMode = "off"
-
-[tool.pytest]
-addopts = [
-    "--cov",
-    "--cov-report=term-missing",
-    "--cov-report=html",
-    "--cov-report=xml",
-    "--ruff",
-    "--ruff-format",
-]
-cache_dir = "build/.pytest_cache"
-
-[tool.ruff]
-cache-dir = "build/.ruff_cache"
-line-length = 100
-src = ["."]
-
-[tool.ruff.lint]
-extend-select = [
-    # "D", # pydocstyle
-    "FURB", # refurb
-    "I", # isort
-    "ICN", # flake8-import-conventions
-    "N", # pep8-naming
-    "NPY", # NumPy-specific rules
-    "PIE", # flake8-pie
-    "PLE", # pylint: error
-    "PLR", # pylint: refactor
-    "PT", # flake8-pytest-style
-    "S", # flake8-bandit
-    "T10", # flake8-debugger
-    "TID", # flake8-tidy-imports
-    "UP", # pyupgrade
-]
-ignore = [
-    "N802", # keep abbreviations obvious
-    "N803", # matrix-valued arguments are usually uppercase
-    "N806", # matrix-valued variables are usually uppercase
-    "N816", # FIXME
-    "PIE808", # make obvious (orbital window) ranges that start at zero
-    "PLR0912", # TODO "too many branches" is possibly pedantic
-    "PLR0913", # TODO "too many arguments" is possibly pedantic
-    "PLR0915", # TODO "too many statements" is possibly pedantic
-    "PLR2004", # unfortunately magic values appear in defensive programming
-               # assertions
-    "S101", # high test coverage and not trying to enforce user contracts
-            # makes assert usage ok for defensive programming
-]
-
-[tool.ruff.lint.isort]
-lines-after-imports = 2
-section-order = [
-    "future",
-    "standard-library",
-    "attrs",
-    "third-party",
-    "chemistry-utils",
-    "chemistry-calculators",
-    "first-party",
-    "local-folder",
-]
-
-[tool.ruff.lint.isort.sections]
-attrs = ["attr"]
-chemistry-calculators = ["psi4", "pyscf"]
-chemistry-utils = ["cclib", "daltools"]
-
-[tool.ruff.lint.pydocstyle]
-convention = "numpy"
-
-[tool.versioningit.format]
-method = {module = "versioningit_override", value = "pymolresponse_format", module-dir = "tools"}
-
-[tool.versioningit.template-fields.version-tuple]
-pep440 = true
-
-[tool.versioningit.vcs]
-method = "git"
-match = ["v*"]
-
-[tool.versioningit.write]
-file = "pymolresponse/_version.py"
 
 [tool.pixi.workspace]
 channels = ["conda-forge"]
@@ -213,12 +102,101 @@ scipy-stubs = "*"
 versioningit = "*"
 
 [tool.pixi.feature.test.tasks]
-lint = { cmd = [
-    "python", "-m", "mypy", "."
-] }
-test = { cmd = [
-    "python", "-m", "pytest"
-] }
+lint = { cmd = ["python", "-m", "mypy", "."] }
+test = { cmd = ["python", "-m", "pytest"] }
+
+[tool.pyright]
+# apparently respecting .gitignore is overrated
+ignore = ["build"]
+# not inherited for some reason
+pythonVersion = "3.10"
+# TODO
+typeCheckingMode = "off"
+
+[tool.pytest]
+addopts = [
+    "--cov",
+    "--cov-report=html",
+    "--cov-report=term-missing",
+    "--cov-report=xml",
+    "--ruff",
+    "--ruff-format",
+]
+cache_dir = "build/.pytest_cache"
+
+[tool.ruff]
+cache-dir = "build/.ruff_cache"
+line-length = 100
+src = ["."]
+
+[tool.ruff.lint]
+extend-select = [
+    # "D", # pydocstyle
+    "FURB",  # refurb
+    "I",  # isort
+    "ICN",  # flake8-import-conventions
+    "N",  # pep8-naming
+    "NPY",  # NumPy-specific rules
+    "PIE",  # flake8-pie
+    "PLE",  # pylint: error
+    "PLR",  # pylint: refactor
+    "PT",  # flake8-pytest-style
+    "S",  # flake8-bandit
+    "T10",  # flake8-debugger
+    "TID",  # flake8-tidy-imports
+    "UP",  # pyupgrade
+]
+ignore = [
+    "N802",  # keep abbreviations obvious
+    "N803",  # matrix-valued arguments are usually uppercase
+    "N806",  # matrix-valued variables are usually uppercase
+    "N816",  # FIXME
+    "PIE808",  # make obvious (orbital window) ranges that start at zero
+    "PLR0912",  # TODO "too many branches" is possibly pedantic
+    "PLR0913",  # TODO "too many arguments" is possibly pedantic
+    "PLR0915",  # TODO "too many statements" is possibly pedantic
+    "PLR2004",  # unfortunately magic values appear in defensive programming
+    # assertions
+    "S101",  # high test coverage and not trying to enforce user contracts
+    # makes assert usage ok for defensive programming
+]
+
+[tool.ruff.lint.isort]
+lines-after-imports = 2
+section-order = [
+    "future",
+    "standard-library",
+    "attrs",
+    "third-party",
+    "chemistry-utils",
+    "chemistry-calculators",
+    "first-party",
+    "local-folder",
+]
+
+[tool.ruff.lint.isort.sections]
+attrs = ["attr"]
+chemistry-calculators = ["psi4", "pyscf"]
+chemistry-utils = ["cclib", "daltools"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[tool.setuptools]
+zip-safe = false
+# include-package-data = false
+
+# [tool.setuptools.packages.find]
+# namespaces = false
+# where = ["."]
+
+# [tool.setuptools.package-data]
+# pymolresponse2 = [
+#     "py.typed"
+# ]
+
+[tool.setuptools.package-dir]
+pymolresponse = "pymolresponse"
 
 [tool.ty.environment]
 python = ".pixi/envs/dev/bin/python"
@@ -230,3 +208,16 @@ unused-ignore-comment = "error"
 exclude = [
     "pymolresponse/tests/test_calculators.py",
 ]
+
+[tool.versioningit.format]
+method = { module = "versioningit_override", value = "pymolresponse_format", module-dir = "tools" }
+
+[tool.versioningit.template-fields.version-tuple]
+pep440 = true
+
+[tool.versioningit.vcs]
+method = "git"
+match = ["v*"]
+
+[tool.versioningit.write]
+file = "pymolresponse/_version.py"
