@@ -27,7 +27,7 @@ test = [
     "coverage",
     "daltools",
     "pyscf",
-    "pytest",
+    "pytest>=9",
     "pytest-cov",
     "pytest-ruff",
     "pytest-snob",

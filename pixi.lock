@@ -3686,15 +3686,15 @@ packages:
   requires_python: '>=3.8'
 - pypi: ./
   name: pymolresponse
-  version: 0.3.2.post160+2c6c8f6
-  sha256: 8d6f2b802b33e11bad4e77c8cb03f95e4f030946c7b5d95a9104d388014fe88a
+  version: 0.3.2.post162+ca5a741.d20260209
+  sha256: 838e4edd593ab66be0910496ff5d692e9e46db30e83b8e384d9a85fbf9c67fff
   requires_dist:
   - cclib>=1.8.1,<2
   - periodictable>=2.0.2,<3
   - coverage ; extra == 'test'
   - daltools ; extra == 'test'
   - pyscf ; extra == 'test'
-  - pytest ; extra == 'test'
+  - pytest>=9 ; extra == 'test'
   - pytest-cov ; extra == 'test'
   - pytest-ruff ; extra == 'test'
   - pytest-snob ; extra == 'test'
