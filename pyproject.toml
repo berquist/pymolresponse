@@ -102,8 +102,15 @@ pythonVersion = "3.10"
 # TODO
 typeCheckingMode = "off"
 
-[tool.pytest.ini_options]
-addopts = "--cov --cov-report=term-missing --cov-report=html --cov-report=xml --ruff --ruff-format"
+[tool.pytest]
+addopts = [
+    "--cov",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+    "--cov-report=xml",
+    "--ruff",
+    "--ruff-format",
+]
 cache_dir = "build/.pytest_cache"
 
 [tool.ruff]
