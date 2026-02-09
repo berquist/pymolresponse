@@ -2,7 +2,7 @@
 
 from abc import ABC, abstractmethod
 from collections.abc import Sequence
-from typing import Any, Optional
+from typing import Any
 
 import numpy as np
 
@@ -21,7 +21,7 @@ class Driver(ABC):
 
     @abstractmethod
     def run(
-        self, hamiltonian: Hamiltonian, spin: Spin, program: Optional[Program], program_obj: Any
+        self, hamiltonian: Hamiltonian, spin: Spin, program: Program | None, program_obj: Any
     ) -> None:
         pass
 
@@ -33,7 +33,7 @@ class CPHF(Driver):
         assert isinstance(solver, LineqSolver)
         self.solver = solver
 
-    def set_frequencies(self, frequencies: Optional[Sequence[float]] = None) -> None:
+    def set_frequencies(self, frequencies: Sequence[float] | None = None) -> None:
         r"""Set the frequencies :math:`\omega_f` for which frequency-dependent
         CPHF is performed.
         """
@@ -53,7 +53,7 @@ class CPHF(Driver):
         self.solver.add_operator(operator)
 
     def run(
-        self, hamiltonian: Hamiltonian, spin: Spin, program: Optional[Program], program_obj: Any
+        self, hamiltonian: Hamiltonian, spin: Spin, program: Program | None, program_obj: Any
     ) -> None:
         assert isinstance(hamiltonian, Hamiltonian)
         assert isinstance(spin, Spin)

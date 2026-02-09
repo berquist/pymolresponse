@@ -1,6 +1,6 @@
 """Tools for performing AO-to-MO transformations of two-electron integrals."""
 
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 import numpy as np
 
@@ -21,7 +21,7 @@ class AO2MO:
         self,
         C: DirtyMocoeffs,
         occupations: "Occupations",
-        I: Optional[np.ndarray[tuple[int, int, int, int], np.dtype[np.floating]]] = None,  # noqa: E741
+        I: np.ndarray[tuple[int, int, int, int], np.dtype[np.floating]] | None = None,  # noqa: E741
     ) -> None:
         self.C = fix_mocoeffs_shape(C)
         self.occupations = occupations

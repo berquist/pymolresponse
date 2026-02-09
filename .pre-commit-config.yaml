@@ -24,21 +24,12 @@ repos:
   #   rev: "v3.6.0"
   #   hooks:
   #     - id: editorconfig-checker
-  - repo: https://github.com/asottile/pyupgrade
-    rev: v3.21.2
-    hooks:
-      - id: pyupgrade
-        args: [--py39-plus]
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.15.0
     hooks:
       - id: ruff-check
         args: [--fix]
       - id: ruff-format
-  # - repo: https://github.com/Carreau/velin
-  #   rev: "0.0.12"
-  #   hooks:
-  #     - id: velin
   # - repo: https://github.com/PyCQA/doc8
   #   rev: "v1.1.1"
   #   hooks:
@@ -66,6 +57,11 @@ repos:
   #         - pyscf
   #         - scipy-stubs
   #         - versioningit
+  - repo: https://github.com/tombi-toml/tombi-pre-commit
+    rev: v0.7.28
+    hooks:
+      - id: tombi-format
+      - id: tombi-lint
   - repo: https://github.com/google/yamlfmt
     rev: v0.21.0
     hooks:

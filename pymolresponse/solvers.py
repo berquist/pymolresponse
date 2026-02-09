@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
-from collections.abc import Sequence
-from typing import TYPE_CHECKING, Any, Callable, Optional
+from collections.abc import Callable, Sequence
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 import scipy as sp
@@ -127,7 +127,7 @@ class Solver(ABC):
         self.tei_mo = ao2mo.tei_mo
         self.tei_mo_type = tei_mo_type
 
-    def set_frequencies(self, frequencies: Optional[Sequence[float]] = None) -> None:
+    def set_frequencies(self, frequencies: Sequence[float] | None = None) -> None:
         if frequencies is None:
             self.frequencies = [0.0]
         else:
@@ -150,7 +150,7 @@ class Solver(ABC):
 
     @abstractmethod
     def run(
-        self, hamiltonian: Hamiltonian, spin: Spin, program: Optional[Program], program_obj: Any
+        self, hamiltonian: Hamiltonian, spin: Spin, program: Program | None, program_obj: Any
     ) -> None:
         """Run the solver."""
 
@@ -165,7 +165,7 @@ class ExactLineqSolver(LineqSolver, ABC):
     """
 
     def form_explicit_hessian(
-        self, hamiltonian: Hamiltonian, spin: Spin, frequency: Optional[float]
+        self, hamiltonian: Hamiltonian, spin: Spin, frequency: float | None
     ) -> None:
         assert self.tei_mo is not None
         assert len(self.tei_mo) in (1, 2, 4, 6)
@@ -469,7 +469,7 @@ class ExactLineqSolver(LineqSolver, ABC):
                 operator.rspvecs_beta.append(rspvecs_operator_beta)
 
     def run(
-        self, hamiltonian: Hamiltonian, spin: Spin, program: Optional[Program], program_obj: Any
+        self, hamiltonian: Hamiltonian, spin: Spin, program: Program | None, program_obj: Any
     ) -> None:
         assert isinstance(hamiltonian, Hamiltonian)
         assert isinstance(spin, Spin)
@@ -494,7 +494,7 @@ class ExactInv(ExactLineqSolver):
         moenergies: np.ndarray,
         occupations: "Occupations",
         *,
-        inv_func: Optional[Callable[[np.ndarray], np.ndarray]] = None,
+        inv_func: Callable[[np.ndarray], np.ndarray] | None = None,
     ) -> None:
         super().__init__(mocoeffs, moenergies, occupations)
 
@@ -584,7 +584,7 @@ class IterativeLinEqSolver(LineqSolver):
         self.conv = conv
 
     def run(
-        self, hamiltonian: Hamiltonian, spin: Spin, program: Optional[Program], program_obj: Any
+        self, hamiltonian: Hamiltonian, spin: Spin, program: Program | None, program_obj: Any
     ) -> None:
         assert isinstance(hamiltonian, Hamiltonian)
         assert isinstance(spin, Spin)
@@ -712,7 +712,7 @@ class ExactDiagonalizationSolver(EigSolver):
     """
 
     def form_explicit_hessian(
-        self, hamiltonian: Hamiltonian, spin: Spin, frequency: Optional[float]
+        self, hamiltonian: Hamiltonian, spin: Spin, frequency: float | None
     ) -> None:
         assert hasattr(self, "tei_mo")
         assert self.tei_mo is not None
@@ -796,7 +796,7 @@ class ExactDiagonalizationSolver(EigSolver):
             raise NotImplementedError
 
     def run(
-        self, hamiltonian: Hamiltonian, spin: Spin, program: Optional[Program], program_obj: Any
+        self, hamiltonian: Hamiltonian, spin: Spin, program: Program | None, program_obj: Any
     ) -> None:
         assert isinstance(hamiltonian, Hamiltonian)
         assert isinstance(spin, Spin)
@@ -818,7 +818,7 @@ class ExactDiagonalizationSolverTDA(ExactDiagonalizationSolver, EigSolverTDA):
     """
 
     def form_explicit_hessian(
-        self, hamiltonian: Hamiltonian, spin: Spin, frequency: Optional[float]
+        self, hamiltonian: Hamiltonian, spin: Spin, frequency: float | None
     ) -> None:
         assert hasattr(self, "tei_mo")
         assert self.tei_mo is not None
