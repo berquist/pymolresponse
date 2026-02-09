@@ -3686,11 +3686,15 @@ packages:
   requires_python: '>=3.8'
 - pypi: ./
   name: pymolresponse
-  version: 0.3.2.post162+ca5a741.d20260209
-  sha256: 838e4edd593ab66be0910496ff5d692e9e46db30e83b8e384d9a85fbf9c67fff
+  version: 0.3.2.post165+3fd0a5a
+  sha256: 91c2096d8e8820abebb34c92def06331872de2c26e6d38779c272aca354b883c
   requires_dist:
   - cclib>=1.8.1,<2
   - periodictable>=2.0.2,<3
+  - pymolresponse[docs,test] ; extra == 'dev'
+  - numpydoc ; extra == 'docs'
+  - sphinx ; extra == 'docs'
+  - sphinx-rtd-theme ; extra == 'docs'
   - coverage ; extra == 'test'
   - daltools ; extra == 'test'
   - pyscf ; extra == 'test'
@@ -3698,10 +3702,6 @@ packages:
   - pytest-cov ; extra == 'test'
   - pytest-ruff ; extra == 'test'
   - pytest-snob ; extra == 'test'
-  - numpydoc ; extra == 'docs'
-  - sphinx ; extra == 'docs'
-  - sphinx-rtd-theme ; extra == 'docs'
-  - pymolresponse[docs,test] ; extra == 'dev'
   requires_python: '>=3.10'
 - pypi: https://files.pythonhosted.org/packages/10/bd/c038d7cc38edc1aa5bf91ab8068b63d4308c66c4c8bb3cbba7dfbc049f9c/pyparsing-3.3.2-py3-none-any.whl
   name: pyparsing
