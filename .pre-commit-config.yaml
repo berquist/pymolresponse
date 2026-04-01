@@ -58,7 +58,7 @@ repos:
   #         - scipy-stubs
   #         - versioningit
   - repo: https://github.com/tombi-toml/tombi-pre-commit
-    rev: v0.9.12
+    rev: v0.9.13
     hooks:
       - id: tombi-format
       - id: tombi-lint
