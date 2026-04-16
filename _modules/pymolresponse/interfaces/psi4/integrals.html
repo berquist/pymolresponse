@@ -99,7 +99,7 @@
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">wfn_or_mol</span><span class="p">,</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Wavefunction</span><span class="p">):</span>
             <span class="n">wfn</span> <span class="o">=</span> <span class="n">wfn_or_mol</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_mints</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">MintsHelper</span><span class="p">(</span><span class="n">wfn</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="n">IntegralLabel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;PropertyIntegrals&quot;</span><span class="p">:</span>
@@ -187,7 +187,8 @@
             <span class="n">C_right</span> <span class="o">=</span> <span class="p">[</span><span class="n">C_right</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">C_left</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">C_right</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;JK: length of left and right matrices is not equal&quot;</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;JK: length of left and right matrices is not equal&quot;</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">C_right</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
             <span class="n">C_right</span> <span class="o">=</span> <span class="p">[</span><span class="n">C_right</span><span class="p">]</span>
