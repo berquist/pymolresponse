@@ -73,7 +73,7 @@
 <span class="sd">equations.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">ClassVar</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
@@ -115,7 +115,7 @@
 <div class="viewcode-block" id="TDHF.form_results">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.td.TDHF.form_results">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">form_results</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">,</span> <span class="n">_nocc_beta</span><span class="p">,</span> <span class="n">_nvirt_beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">occupations</span>
+        <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">,</span> <span class="n">nvirt_beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">occupations</span>
         <span class="n">nov_alph</span> <span class="o">=</span> <span class="n">nocc_alph</span> <span class="o">*</span> <span class="n">nvirt_alph</span>
         <span class="c1"># nov_beta = nocc_beta * nvirt_beta</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="p">,</span> <span class="n">EigSolver</span><span class="p">)</span>  <span class="c1"># for ty</span>
@@ -204,9 +204,9 @@
         <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span></div>
 
 
-    <span class="n">_HAMILTONIAN_MAP_ORCA</span><span class="p">:</span> <span class="n">ClassVar</span> <span class="o">=</span> <span class="p">{</span><span class="n">Hamiltonian</span><span class="o">.</span><span class="n">TDA</span><span class="p">:</span> <span class="s2">&quot;CIS-&quot;</span><span class="p">,</span> <span class="n">Hamiltonian</span><span class="o">.</span><span class="n">RPA</span><span class="p">:</span> <span class="s2">&quot;RPA &quot;</span><span class="p">}</span>
+    <span class="n">_HAMILTONIAN_MAP_ORCA</span> <span class="o">=</span> <span class="p">{</span><span class="n">Hamiltonian</span><span class="o">.</span><span class="n">TDA</span><span class="p">:</span> <span class="s2">&quot;CIS-&quot;</span><span class="p">,</span> <span class="n">Hamiltonian</span><span class="o">.</span><span class="n">RPA</span><span class="p">:</span> <span class="s2">&quot;RPA &quot;</span><span class="p">}</span>
 
-    <span class="n">_SPIN_MAP_ORCA</span><span class="p">:</span> <span class="n">ClassVar</span> <span class="o">=</span> <span class="p">{</span><span class="n">Spin</span><span class="o">.</span><span class="n">singlet</span><span class="p">:</span> <span class="s2">&quot;SINGLETS&quot;</span><span class="p">,</span> <span class="n">Spin</span><span class="o">.</span><span class="n">triplet</span><span class="p">:</span> <span class="s2">&quot;TRIPLETS&quot;</span><span class="p">}</span>
+    <span class="n">_SPIN_MAP_ORCA</span> <span class="o">=</span> <span class="p">{</span><span class="n">Spin</span><span class="o">.</span><span class="n">singlet</span><span class="p">:</span> <span class="s2">&quot;SINGLETS&quot;</span><span class="p">,</span> <span class="n">Spin</span><span class="o">.</span><span class="n">triplet</span><span class="p">:</span> <span class="s2">&quot;TRIPLETS&quot;</span><span class="p">}</span>
 
 <div class="viewcode-block" id="TDHF.print_results_orca">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.td.TDHF.print_results_orca">[docs]</a>
@@ -258,7 +258,7 @@
         <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span></div>
 
 
-    <span class="n">_SPIN_MAP_QCHEM</span><span class="p">:</span> <span class="n">ClassVar</span> <span class="o">=</span> <span class="p">{</span><span class="n">Spin</span><span class="o">.</span><span class="n">singlet</span><span class="p">:</span> <span class="s2">&quot;Singlet&quot;</span><span class="p">,</span> <span class="n">Spin</span><span class="o">.</span><span class="n">triplet</span><span class="p">:</span> <span class="s2">&quot;Triplet&quot;</span><span class="p">}</span></div>
+    <span class="n">_SPIN_MAP_QCHEM</span> <span class="o">=</span> <span class="p">{</span><span class="n">Spin</span><span class="o">.</span><span class="n">singlet</span><span class="p">:</span> <span class="s2">&quot;Singlet&quot;</span><span class="p">,</span> <span class="n">Spin</span><span class="o">.</span><span class="n">triplet</span><span class="p">:</span> <span class="s2">&quot;Triplet&quot;</span><span class="p">}</span></div>
 
 
 
@@ -278,7 +278,7 @@
 <div class="viewcode-block" id="TDA.form_results">
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.td.TDA.form_results">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">form_results</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">,</span> <span class="n">_nocc_beta</span><span class="p">,</span> <span class="n">_nvirt_beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">occupations</span>
+        <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">,</span> <span class="n">nvirt_beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">occupations</span>
         <span class="n">nov_alph</span> <span class="o">=</span> <span class="n">nocc_alph</span> <span class="o">*</span> <span class="n">nvirt_alph</span>
         <span class="c1"># nov_beta = nocc_beta * nvirt_beta</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="p">,</span> <span class="n">EigSolver</span><span class="p">)</span>  <span class="c1"># for ty</span>
