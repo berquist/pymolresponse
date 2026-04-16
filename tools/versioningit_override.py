@@ -20,7 +20,8 @@ def pymolresponse_format(
     if getenv(_ENVVARNAME, "False").lower() in ("true", "1", "t"):
         fmt_distance = "{base_version}.post{distance}"
         if state != "distance":
-            raise RuntimeError("dirty state doesn't make sense when building for a package index")
+            msg = "dirty state doesn't make sense when building for a package index"
+            raise RuntimeError(msg)
     else:
         # Default but missing {vcs} before {rev}
         fmt_distance = "{base_version}.post{distance}+{rev}"

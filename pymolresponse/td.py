@@ -2,7 +2,7 @@
 equations.
 """
 
-from typing import Any
+from typing import Any, ClassVar
 
 import numpy as np
 
@@ -37,7 +37,7 @@ class TDHF(CPHF):
         self.form_results()
 
     def form_results(self) -> None:
-        nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.solver.occupations
+        nocc_alph, nvirt_alph, _nocc_beta, _nvirt_beta = self.solver.occupations
         nov_alph = nocc_alph * nvirt_alph
         # nov_beta = nocc_beta * nvirt_beta
         assert isinstance(self.solver, EigSolver)  # for ty
@@ -119,9 +119,9 @@ class TDHF(CPHF):
         lines.append("--------------------------------------------------------")
         return "\n".join(lines)
 
-    _HAMILTONIAN_MAP_ORCA = {Hamiltonian.TDA: "CIS-", Hamiltonian.RPA: "RPA "}
+    _HAMILTONIAN_MAP_ORCA: ClassVar = {Hamiltonian.TDA: "CIS-", Hamiltonian.RPA: "RPA "}
 
-    _SPIN_MAP_ORCA = {Spin.singlet: "SINGLETS", Spin.triplet: "TRIPLETS"}
+    _SPIN_MAP_ORCA: ClassVar = {Spin.singlet: "SINGLETS", Spin.triplet: "TRIPLETS"}
 
     def print_results_orca(self, cutoff: float = 0.01) -> str:
         assert isinstance(self.solver, EigSolver)  # for ty
@@ -170,7 +170,7 @@ class TDHF(CPHF):
             lines.append("")
         return "\n".join(lines)
 
-    _SPIN_MAP_QCHEM = {Spin.singlet: "Singlet", Spin.triplet: "Triplet"}
+    _SPIN_MAP_QCHEM: ClassVar = {Spin.singlet: "Singlet", Spin.triplet: "Triplet"}
 
 
 class TDA(TDHF):
@@ -185,7 +185,7 @@ class TDA(TDHF):
         self.solver = solver
 
     def form_results(self) -> None:
-        nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.solver.occupations
+        nocc_alph, nvirt_alph, _nocc_beta, _nvirt_beta = self.solver.occupations
         nov_alph = nocc_alph * nvirt_alph
         # nov_beta = nocc_beta * nvirt_beta
         assert isinstance(self.solver, EigSolver)  # for ty

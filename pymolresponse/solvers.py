@@ -123,7 +123,8 @@ class Solver(ABC):
         elif tei_mo_type == AO2MOTransformationType.full and nden == 1:
             ao2mo.perform_rhf_full()
         else:
-            raise ValueError(f"Unknown combination of tei_mo_type {tei_mo_type} and nden {nden}")
+            msg = f"Unknown combination of tei_mo_type {tei_mo_type} and nden {nden}"
+            raise ValueError(msg)
         self.tei_mo = ao2mo.tei_mo
         self.tei_mo_type = tei_mo_type
 
@@ -245,18 +246,18 @@ class ExactLineqSolver(LineqSolver, ABC):
             # Set up "function pointers".
             if self.tei_mo_type == AO2MOTransformationType.full:
                 assert len(self.tei_mo) == 4
-                tei_mo_aaaa = self.tei_mo[0]  # ty: ignore[index-out-of-bounds]
-                tei_mo_aabb = self.tei_mo[1]  # ty: ignore[index-out-of-bounds]
-                tei_mo_bbaa = self.tei_mo[2]  # ty: ignore[index-out-of-bounds]
-                tei_mo_bbbb = self.tei_mo[3]  # ty: ignore[index-out-of-bounds]
+                tei_mo_aaaa = self.tei_mo[0]
+                tei_mo_aabb = self.tei_mo[1]
+                tei_mo_bbaa = self.tei_mo[2]
+                tei_mo_bbbb = self.tei_mo[3]
             elif self.tei_mo_type == AO2MOTransformationType.partial:
                 assert len(self.tei_mo) == 6
-                tei_mo_ovov_aaaa = self.tei_mo[0]  # ty: ignore[index-out-of-bounds]
-                tei_mo_ovov_aabb = self.tei_mo[1]  # ty: ignore[index-out-of-bounds]
-                tei_mo_ovov_bbaa = self.tei_mo[2]  # ty: ignore[index-out-of-bounds]
-                tei_mo_ovov_bbbb = self.tei_mo[3]  # ty: ignore[index-out-of-bounds]
-                tei_mo_oovv_aaaa = self.tei_mo[4]  # ty: ignore[index-out-of-bounds]
-                tei_mo_oovv_bbbb = self.tei_mo[5]  # ty: ignore[index-out-of-bounds]
+                tei_mo_ovov_aaaa = self.tei_mo[0]
+                tei_mo_ovov_aabb = self.tei_mo[1]
+                tei_mo_ovov_bbaa = self.tei_mo[2]
+                tei_mo_ovov_bbbb = self.tei_mo[3]
+                tei_mo_oovv_aaaa = self.tei_mo[4]
+                tei_mo_oovv_bbbb = self.tei_mo[5]
 
             E_a = self.moenergies[0]
             E_b = self.moenergies[1]
@@ -398,7 +399,7 @@ class ExactLineqSolver(LineqSolver, ABC):
             # TODO
             # assert isinstance(self.explicit_hessian_inv, tuple)
             # assert len(self.explicit_hessian_inv) == 2
-            G_aa, G_ab, G_ba, G_bb = self.explicit_hessian
+            _G_aa, G_ab, G_ba, _G_bb = self.explicit_hessian
             G_aa_inv, G_bb_inv = self.explicit_hessian_inv  # ty: ignore[not-iterable]
         for operator in self.operators:
             if not self.is_uhf:
@@ -477,9 +478,8 @@ class ExactLineqSolver(LineqSolver, ABC):
         # TODO program_obj
         if not self.tei_mo:
             if program is None:
-                raise RuntimeError(
-                    "Program must be specified for computing 2-electron integrals in MO basis"
-                )
+                msg = "Program must be specified for computing 2-electron integrals in MO basis"
+                raise RuntimeError(msg)
             self.form_tei_mo(program, program_obj, AO2MOTransformationType.partial)
         for frequency in self.frequencies:
             self.form_explicit_hessian(hamiltonian, spin, frequency)
@@ -507,8 +507,8 @@ class ExactInv(ExactLineqSolver):
         assert hasattr(self, "explicit_hessian")
         if not self.is_uhf:
             assert isinstance(self.explicit_hessian, np.ndarray)
-            assert len(self.explicit_hessian.shape) == 2  # ty: ignore[invalid-argument-type]
-            assert self.explicit_hessian.shape[0] == self.explicit_hessian.shape[1]  # ty: ignore[not-subscriptable]
+            assert len(self.explicit_hessian.shape) == 2
+            assert self.explicit_hessian.shape[0] == self.explicit_hessian.shape[1]
             self.explicit_hessian_inv = self.inv_func(self.explicit_hessian)
         else:
             assert isinstance(self.explicit_hessian, tuple)
@@ -804,9 +804,8 @@ class ExactDiagonalizationSolver(EigSolver):
         # TODO program_obj
         if not self.tei_mo:
             if program is None:
-                raise RuntimeError(
-                    "Program must be specified for computing 2-electron integrals in MO basis"
-                )
+                msg = "Program must be specified for computing 2-electron integrals in MO basis"
+                raise RuntimeError(msg)
             self.form_tei_mo(program, program_obj, AO2MOTransformationType.partial)
         self.form_explicit_hessian(hamiltonian, spin, None)
         self.diagonalize_explicit_hessian()
