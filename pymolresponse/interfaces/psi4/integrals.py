@@ -26,7 +26,7 @@ class IntegralsPsi4(Integrals):
         elif isinstance(wfn_or_mol, psi4.core.Wavefunction):
             wfn = wfn_or_mol
         else:
-            raise RuntimeError
+            raise TypeError
         self._mints = psi4.core.MintsHelper(wfn)
 
     def _compute(self, label: IntegralLabel) -> "PropertyIntegrals":
@@ -111,7 +111,8 @@ def compute_jk(
             C_right = [C_right]
 
         if len(C_left) != len(C_right):
-            raise ValueError("JK: length of left and right matrices is not equal")
+            msg = "JK: length of left and right matrices is not equal"
+            raise ValueError(msg)
 
         if not isinstance(C_right, (list, tuple)):
             C_right = [C_right]

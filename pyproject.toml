@@ -132,18 +132,22 @@ src = ["."]
 [tool.ruff.lint]
 extend-select = [
     # "D", # pydocstyle
+    "FLY",  # flynt
     "FURB",  # refurb
     "I",  # isort
     "ICN",  # flake8-import-conventions
     "N",  # pep8-naming
     "NPY",  # NumPy-specific rules
+    "PERF",  # Perflint
     "PIE",  # flake8-pie
     "PLE",  # pylint: error
     "PLR",  # pylint: refactor
     "PT",  # flake8-pytest-style
+    "RUF",  # Ruff-specific rules
     "S",  # flake8-bandit
     "T10",  # flake8-debugger
     "TID",  # flake8-tidy-imports
+    "TRY",  # tryceratops
     "UP",  # pyupgrade
 ]
 ignore = [

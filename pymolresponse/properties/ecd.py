@@ -2,7 +2,7 @@
 calculation.
 """
 
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, ClassVar
 
 import numpy as np
 
@@ -212,10 +212,10 @@ class ECD(TransitionProperty):
         lines.append(
             "-----------------------------------------------------------------------------"
         )
-        for state in range(nstates):
-            lines.append(
-                f"{state + 1:>4d}{energies_to_invcm[state]:>10.1f}{energies_to_nm[state]:>9.1f}{etoscslen[state]:>14.9f}{t2_diplen[state]:>10.5f}{tmom_diplen[state, 0]:>10.5f}{tmom_diplen[state, 1]:>10.5f}{tmom_diplen[state, 2]:>10.5f}"
-            )
+        lines.extend(
+            f"{state + 1:>4d}{energies_to_invcm[state]:>10.1f}{energies_to_nm[state]:>9.1f}{etoscslen[state]:>14.9f}{t2_diplen[state]:>10.5f}{tmom_diplen[state, 0]:>10.5f}{tmom_diplen[state, 1]:>10.5f}{tmom_diplen[state, 2]:>10.5f}"
+            for state in range(nstates)
+        )
         lines.append("")
         lines.append(
             "-----------------------------------------------------------------------------"
@@ -229,10 +229,10 @@ class ECD(TransitionProperty):
         lines.append(
             "-----------------------------------------------------------------------------"
         )
-        for state in range(nstates):
-            lines.append(
-                f"{state + 1:>4d}{energies_to_invcm[state]:>10.1f}{energies_to_nm[state]:>9.1f}{etoscsvel[state]:>14.9f}{t2_dipvel[state]:>10.5f}{tmom_dipvel[state, 0]:>10.5f}{tmom_dipvel[state, 1]:>10.5f}{tmom_dipvel[state, 2]:>10.5f}"
-            )
+        lines.extend(
+            f"{state + 1:>4d}{energies_to_invcm[state]:>10.1f}{energies_to_nm[state]:>9.1f}{etoscsvel[state]:>14.9f}{t2_dipvel[state]:>10.5f}{tmom_dipvel[state, 0]:>10.5f}{tmom_dipvel[state, 1]:>10.5f}{tmom_dipvel[state, 2]:>10.5f}"
+            for state in range(nstates)
+        )
         lines.append("")
         lines.append("-------------------------------------------------------------------")
         lines.append("                             CD SPECTRUM")
@@ -240,14 +240,14 @@ class ECD(TransitionProperty):
         lines.append("State   Energy Wavelength       R         MX        MY        MZ")
         lines.append("        (cm-1)   (nm)       (1e40*cgs)   (au)      (au)      (au)")
         lines.append("-------------------------------------------------------------------")
-        for state in range(nstates):
-            lines.append(
-                f"{state + 1:>4d}{energies_to_invcm[state]:>10.1f}{energies_to_nm[state]:>9.1f}{rotstrlen[state]:>13.5f}{tmom_angmom[state, 0]:>10.5f}{tmom_angmom[state, 1]:>10.5f}{tmom_angmom[state, 2]:>10.5f}"
-            )
+        lines.extend(
+            f"{state + 1:>4d}{energies_to_invcm[state]:>10.1f}{energies_to_nm[state]:>9.1f}{rotstrlen[state]:>13.5f}{tmom_angmom[state, 0]:>10.5f}{tmom_angmom[state, 1]:>10.5f}{tmom_angmom[state, 2]:>10.5f}"
+            for state in range(nstates)
+        )
         lines.append("")
         return "\n".join(lines)
 
-    _HAMILTONIAN_PREFIX_QCHEM = {"tda": "", "rpa": "X: "}
+    _HAMILTONIAN_PREFIX_QCHEM: ClassVar = {"tda": "", "rpa": "X: "}
 
     # TODO cutoff taken from ORCA, check the source code to see the
     # real criterion

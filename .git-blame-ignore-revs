@@ -28,3 +28,5 @@ a96c60e060dab7174c2d395e2c75af4c0b554475
 a5275f329d33ed20ef979012125f6aa98a3383e2
 # chore: apply tombi
 3fd0a5ab494654608ccba7b8df7fb68fdb23a169
+# chore: apply fixes for new ruff lints
+eed2d84f09f9212660a36c59177e9e6236b9bcc7

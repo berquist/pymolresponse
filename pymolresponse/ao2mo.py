@@ -37,7 +37,7 @@ class AO2MO:
         C1: np.ndarray[tuple[int, int], np.dtype[np.floating]],
         C2: np.ndarray[tuple[int, int], np.dtype[np.floating]],
         C3: np.ndarray[tuple[int, int], np.dtype[np.floating]],
-        C4: np.ndarray[tuple[int, int], np.dtype[np.floating]],  # noqa: E741
+        C4: np.ndarray[tuple[int, int], np.dtype[np.floating]],
     ) -> np.ndarray[tuple[int, int, int, int], np.dtype[np.floating]]:
         """Transforms the 4-index ERI I with the 4 transformation matrices C1 to C4."""
         nao = I.shape[0]

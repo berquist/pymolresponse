@@ -94,7 +94,8 @@ def dalton_label_to_operator(label: str) -> Operator:
         # FIXME
         slice_idx = None
     else:
-        raise RuntimeError(f"Unhandled DALTON operator label: {label}")
+        msg = f"Unhandled DALTON operator label: {label}"
+        raise RuntimeError(msg)
 
     # TODO this hack should go away once the PSO label is fixed
     assert slice_idx is not None

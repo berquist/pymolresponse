@@ -33,7 +33,7 @@ def np_load(filename: str | Path) -> np.ndarray[tuple[int, ...], np.dtype[np.num
     if isinstance(arr, np.lib.npyio.NpzFile):
         # Make the assumption that there's only a single array
         # present, even though *.npz files can hold multiple arrays.
-        for _arr_name, _arr in arr.items():
+        for _arr in arr.values():
             arr = _arr
             break
     return arr
@@ -105,7 +105,8 @@ def get_reference_value_from_file(
                 found = True
 
     if not found:
-        raise ValueError("Could not find reference value")
+        msg = "Could not find reference value"
+        raise ValueError(msg)
 
     return ref
 
@@ -133,22 +134,18 @@ def read_file_occupations(filename: Path | str) -> "Occupations":
 
 def read_file_1(filename: Path | str) -> np.ndarray[tuple[int], np.dtype[np.floating]]:
     """Read a libaview-formatted 1-D array."""
-    elements = []
     with open(filename) as fh:
         n_elem = int(next(fh))
-        for line in fh:
-            elements.append(float(line))
+        elements = [float(line) for line in fh]
     assert len(elements) == n_elem
     return np.array(elements, dtype=float)
 
 
 def read_file_2(filename: Path | str) -> np.ndarray[tuple[int, int], np.dtype[np.floating]]:
     """Read a libaview-formatted 2-D array."""
-    elements = []
     with open(filename) as fh:
         n_rows, n_cols = (int(x) for x in next(fh).split())
-        for line in fh:
-            elements.append(float(line))
+        elements = [float(line) for line in fh]
     assert len(elements) == (n_rows * n_cols)
     # The last index is the fast index (cols).
     return np.reshape(np.array(elements, dtype=float), (n_rows, n_cols))
@@ -158,11 +155,9 @@ def read_file_3(
     filename: Path | str,
 ) -> np.ndarray[tuple[int, int, int], np.dtype[np.floating]]:
     """Read a libaview-formatted 3-D array."""
-    elements = []
     with open(filename) as fh:
         n_slices, n_rows, n_cols = (int(x) for x in next(fh).split())
-        for line in fh:
-            elements.append(float(line))
+        elements = [float(line) for line in fh]
     assert len(elements) == (n_rows * n_cols * n_slices)
     return np.reshape(np.array(elements, dtype=float), (n_slices, n_rows, n_cols))
 
@@ -171,11 +166,9 @@ def read_file_4(
     filename: Path | str,
 ) -> np.ndarray[tuple[int, int, int, int], np.dtype[np.floating]]:
     """Read a libaview-formatted 4-D array."""
-    elements = []
     with open(filename) as fh:
         n_d1, n_d2, n_d3, n_d4 = (int(x) for x in next(fh).split())
-        for line in fh:
-            elements.append(float(line))
+        elements = [float(line) for line in fh]
     assert len(elements) == (n_d1 * n_d2 * n_d3 * n_d4)
     return np.reshape(np.array(elements, dtype=float), (n_d1, n_d2, n_d3, n_d4))
 
@@ -192,7 +185,7 @@ class Splitter:
     """Split a line based on a number of field widths."""
 
     def __init__(self, widths: Iterable[int]) -> None:
-        self.start_indices = [0] + list(accumulate(widths))[:-1]
+        self.start_indices = [0, *list(accumulate(widths))[:-1]]
         self.end_indices = list(accumulate(widths))
 
     def split(self, line: str, truncate: bool = True) -> list[str]:
@@ -241,7 +234,7 @@ def fix_mocoeffs_shape(
         else:
             mocoeffs_new = mocoeffs
     assert len(mocoeffs_new.shape) == 3
-    return mocoeffs_new  # ty: ignore[invalid-return-type]
+    return mocoeffs_new
 
 
 def fix_moenergies_shape(
@@ -442,7 +435,8 @@ def flip_triangle_sign(
     elif triangle == "upper":
         indices = np.triu_indices(dim)
     else:
-        raise ValueError("argument to triangle must be 'upper' or 'lower'")
+        msg = "argument to triangle must be 'upper' or 'lower'"
+        raise ValueError(msg)
     B = A.copy()
     B[indices] *= -1.0
     return B

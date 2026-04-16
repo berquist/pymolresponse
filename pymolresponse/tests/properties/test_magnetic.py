@@ -46,8 +46,8 @@ def test_magnetizability_rhf() -> None:
     calculator_common.form_operators()
     calculator_common.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)
     calculator_common.form_results()
-    ref_eigvals, ref_iso, _ = utils.tensor_printer(ref_magnetizability_rhf)
-    res_eigvals, res_iso, _ = utils.tensor_printer(calculator_common.magnetizability)
+    ref_eigvals, _ref_iso, _ = utils.tensor_printer(ref_magnetizability_rhf)
+    res_eigvals, _res_iso, _ = utils.tensor_printer(calculator_common.magnetizability)
     thresh_eigval = 1.0e-3
     for i in range(3):
         assert abs(ref_eigvals[i] - res_eigvals[i]) < thresh_eigval
@@ -81,8 +81,8 @@ def test_magnetizability_uhf() -> None:
     calculator_common.form_operators()
     calculator_common.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)
     calculator_common.form_results()
-    ref_eigvals, ref_iso, _ = utils.tensor_printer(ref_magnetizability_rohf)
-    res_eigvals, res_iso, _ = utils.tensor_printer(calculator_common.magnetizability)
+    ref_eigvals, _ref_iso, _ = utils.tensor_printer(ref_magnetizability_rohf)
+    res_eigvals, _res_iso, _ = utils.tensor_printer(calculator_common.magnetizability)
     thresh_eigval = 1.0e-1
     for i in range(3):
         assert abs(ref_eigvals[i] - res_eigvals[i]) < thresh_eigval
