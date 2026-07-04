@@ -3,7 +3,21 @@ import psi4
 from pymolresponse.data import COORDDIR
 
 
-# TODO molecule_water_sto3g_angstrom
+def molecule_water_sto3g_angstrom() -> psi4.core.Molecule:
+    with open(COORDDIR / "water_angstrom.xyz") as fh:
+        mol = psi4.geometry("\n".join(fh.readlines()[2:]))
+
+    basis = "sto-3g"
+    mol.set_basis_all_atoms(basis, "BASIS")
+    mol.set_molecular_charge(0)
+    mol.set_multiplicity(1)
+    mol.reset_point_group("c1")
+
+    mol.update_geometry()
+
+    psi4.core.set_global_option("BASIS", basis)
+
+    return mol
 
 
 def molecule_water_sto3g() -> psi4.core.Molecule:
