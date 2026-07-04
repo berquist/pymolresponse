@@ -11,6 +11,7 @@ if TYPE_CHECKING:
     from pymolresponse.integrals import PropertyIntegrals
 
 
+OVERLAP = IntegralLabel("OVERLAP")
 DIPOLE = IntegralLabel("DIPOLE")
 DIPVEL = IntegralLabel("DIPVEL")
 ANGMOM_COMMON_GAUGE = IntegralLabel("ANGMOM_COMMON_GAUGE")
@@ -29,7 +30,9 @@ class IntegralsPsi4(Integrals):
         self._mints = psi4.core.MintsHelper(wfn)
 
     def _compute(self, label: IntegralLabel) -> "PropertyIntegrals":
-        if label == DIPOLE:
+        if label == OVERLAP:
+            return np.asarray(self._mints.ao_overlap())
+        elif label == DIPOLE:
             return np.stack([np.asarray(Mc) for Mc in self._mints.ao_dipole()])
         elif label == DIPVEL:
             return np.stack([np.asarray(Mc) for Mc in self._mints.ao_nabla()])
