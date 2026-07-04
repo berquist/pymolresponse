@@ -11,10 +11,9 @@ if TYPE_CHECKING:
     from pymolresponse.integrals import PropertyIntegrals
 
 
-_unused = "unused"
-DIPOLE = IntegralLabel(_unused)
-DIPVEL = IntegralLabel(_unused)
-ANGMOM_COMMON_GAUGE = IntegralLabel(_unused)
+DIPOLE = IntegralLabel("DIPOLE")
+DIPVEL = IntegralLabel("DIPVEL")
+ANGMOM_COMMON_GAUGE = IntegralLabel("ANGMOM_COMMON_GAUGE")
 
 
 class IntegralsPsi4(Integrals):
