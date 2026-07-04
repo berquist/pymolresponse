@@ -81,14 +81,13 @@
     <span class="n">mol</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="kc">None</span>
 
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">COORDDIR</span> <span class="o">/</span> <span class="s2">&quot;water_angstrom.xyz&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+        <span class="nb">next</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span>
+        <span class="nb">next</span><span class="p">(</span><span class="n">fh</span><span class="p">)</span>
+        <span class="n">mol</span><span class="o">.</span><span class="n">atom</span> <span class="o">=</span> <span class="n">fh</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">basis</span> <span class="o">=</span> <span class="s2">&quot;sto-3g&quot;</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">charge</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">spin</span> <span class="o">=</span> <span class="mi">0</span>
-
-    <span class="n">mol</span><span class="o">.</span><span class="n">atom</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;O         -1.81298        0.53384       -0.01233</span>
-<span class="s2">H         -0.82365        0.49649        0.00870</span>
-<span class="s2">H         -2.10234       -0.29131        0.45244</span>
-<span class="s2">&quot;&quot;&quot;</span>
 
     <span class="k">return</span> <span class="n">mol</span></div>
 
