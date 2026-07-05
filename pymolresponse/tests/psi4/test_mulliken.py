@@ -4,6 +4,7 @@ import numpy as np
 
 import psi4
 
+from pymolresponse.helpers import make_density
 from pymolresponse.interfaces.psi4 import integrals, molecules
 from pymolresponse.interfaces.psi4.utils import (
     mocoeffs_from_psi4wfn,
@@ -76,19 +77,6 @@ def make_atombasis_from_psi4bs(bs) -> list[list[int]]:
     shell_to_ao_function = [bs.shell_to_ao_function(i) for i in range(nshell)]
     # shell_to_basis_function = [bs.shell_to_basis_function(i) for i in range(nshell)]
     return make_atombasis(shell_to_center, shell_to_ao_function)
-
-
-def make_density(C, occupations):
-    nspin, nbasis, _ = C.shape
-    D = np.empty(shape=(nspin, nbasis, nbasis))
-    C_occ_a = C[0, :, : occupations[0]]
-    D[0] = C_occ_a @ C_occ_a.T
-    if nspin == 2:
-        C_occ_b = C[1, :, : occupations[2]]
-        D[1] = C_occ_b @ C_occ_b.T
-    else:
-        D *= 2.0
-    return D
 
 
 def test_mulliken() -> None:

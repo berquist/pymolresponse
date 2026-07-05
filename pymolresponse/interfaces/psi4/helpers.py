@@ -1,7 +1,7 @@
 import numpy as np
 import numpy.linalg as npl
 
-import pyscf
+import psi4
 
 from pymolresponse.constants import convfac_au_to_debye
 from pymolresponse.helpers import (
@@ -12,32 +12,35 @@ from pymolresponse.helpers import (
 )
 
 
-def calc_center_of_mass_pyscf(pyscfmol: pyscf.gto.Mole) -> np.ndarray:
+def calc_center_of_mass_psi4(pyscfmol) -> np.ndarray:
     charges = pyscfmol.atom_charges()
     masses = get_isotopic_masses(charges)
     coords = pyscfmol.atom_coords()
     return calc_center_of_mass(coords, masses)
 
 
-def calc_center_of_electronic_charge_pyscf(D: np.ndarray, pyscfmol: pyscf.gto.Mole) -> np.ndarray:
+def calc_center_of_electronic_charge_psi4(D: np.ndarray, pyscfmol) -> np.ndarray:
     assert len(D.shape) == 2
     # no linear dependencies!
     assert D.shape[0] == D.shape[1]
     zerovec = np.zeros(3)
-    dipole_at_zerovec = electronic_dipole_contribution_pyscf(D, pyscfmol, zerovec)
+    dipole_at_zerovec = electronic_dipole_contribution_psi4(D, pyscfmol, zerovec)
     nelec = pyscfmol.tot_electrons()
     return -dipole_at_zerovec / nelec
 
 
-def electronic_dipole_contribution_pyscf(
-    D: np.ndarray, pyscfmol: pyscf.gto.Mole, origin_in_bohrs: np.ndarray
+def electronic_dipole_contribution_psi4(
+    D: np.ndarray, psi4wfn: psi4.core.Wavefunction, origin_in_bohrs: np.ndarray
 ) -> np.ndarray:
+    assert isinstance(D, np.ndarray)
     assert len(D.shape) == 2
     assert D.shape[0] == D.shape[1]
+    assert isinstance(origin_in_bohrs, np.ndarray)
     assert origin_in_bohrs.shape == (3,)
     # TODO what to assert about pyscfmol? at least isinstance
 
-    M_AO = pyscfmol.intor("cint1e_r_sph", comp=3)
+    mints = psi4.core.MintsHelper(psi4wfn)
+    M_AO = np.asarray(mints.ao_dipole())
     assert isinstance(M_AO, np.ndarray)
     assert len(M_AO.shape) == 3
     assert M_AO.shape[1] == M_AO.shape[2]
@@ -61,12 +64,12 @@ def calculate_dipole(
     nuccharges: np.ndarray,
     origin: np.ndarray,
     D: np.ndarray,
-    pyscfmol: pyscf.gto.Mole,
+    pyscfmol,
     do_print: bool = False,
 ) -> np.ndarray:
     assert origin.shape == (3,)
     nuclear_components_au = nuclear_dipole_contribution(nuccoords, nuccharges, origin)
-    electronic_components_au = electronic_dipole_contribution_pyscf(D, pyscfmol, origin)
+    electronic_components_au = electronic_dipole_contribution_psi4(D, pyscfmol, origin)
     total_components_au = electronic_components_au + nuclear_components_au
     if do_print:
         nuclear_components_debye = nuclear_components_au * convfac_au_to_debye
@@ -101,9 +104,10 @@ def calculate_origin(
     nuccoords: np.ndarray,
     nuccharges: np.ndarray,
     D: np.ndarray,
-    pyscfmol: pyscf.gto.Mole,
+    pyscfmol,
     do_print: bool = False,
 ) -> np.ndarray:
+    assert isinstance(origin_string, str)
     origin_string = origin_string.lower()
     assert origin_string in (
         "explicitly-set",
@@ -134,7 +138,7 @@ def calculate_origin(
     elif origin_string in ("ecc", "centerofelcharge"):
         if do_print:
             print(" --- Origin: center of electronic charge ---")
-        origin = calc_center_of_electronic_charge_pyscf(D, pyscfmol)
+        origin = calc_center_of_electronic_charge_psi4(D, pyscfmol)
     elif origin_string in ("ncc", "centerofnuccharge"):
         if do_print:
             print(" --- Origin: center of nuclear charge ---")

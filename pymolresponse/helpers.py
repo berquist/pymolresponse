@@ -107,3 +107,16 @@ def mat_uhf_to_packed_rohf(
     for idx, pair_rohf in enumerate(indices_display_rohf):
         mat_rohf[idx] = sum(get_uhf_values(mat_alpha, mat_beta, pair_rohf))
     return mat_rohf
+
+
+def make_density(C, occupations):
+    nspin, nbasis, _ = C.shape
+    D = np.empty(shape=(nspin, nbasis, nbasis))
+    C_occ_a = C[0, :, : occupations[0]]
+    D[0] = C_occ_a @ C_occ_a.T
+    if nspin == 2:
+        C_occ_b = C[1, :, : occupations[2]]
+        D[1] = C_occ_b @ C_occ_b.T
+    else:
+        D *= 2.0
+    return D
