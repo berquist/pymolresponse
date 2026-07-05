@@ -74,24 +74,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymolresponse.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">COORDDIR</span>
 
 
-<div class="viewcode-block" id="molecule_water_sto3g_angstrom">
-<a class="viewcode-back" href="../../../../pyresponse.psi4.html#pymolresponse.interfaces.psi4.molecules.molecule_water_sto3g_angstrom">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">molecule_water_sto3g_angstrom</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">Molecule</span><span class="p">:</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">COORDDIR</span> <span class="o">/</span> <span class="s2">&quot;water_angstrom.xyz&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
-        <span class="n">mol</span> <span class="o">=</span> <span class="n">psi4</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fh</span><span class="o">.</span><span class="n">readlines</span><span class="p">()[</span><span class="mi">2</span><span class="p">:]))</span>
-
-    <span class="n">basis</span> <span class="o">=</span> <span class="s2">&quot;sto-3g&quot;</span>
-    <span class="n">mol</span><span class="o">.</span><span class="n">set_basis_all_atoms</span><span class="p">(</span><span class="n">basis</span><span class="p">,</span> <span class="s2">&quot;BASIS&quot;</span><span class="p">)</span>
-    <span class="n">mol</span><span class="o">.</span><span class="n">set_molecular_charge</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">mol</span><span class="o">.</span><span class="n">set_multiplicity</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">mol</span><span class="o">.</span><span class="n">reset_point_group</span><span class="p">(</span><span class="s2">&quot;c1&quot;</span><span class="p">)</span>
-
-    <span class="n">mol</span><span class="o">.</span><span class="n">update_geometry</span><span class="p">()</span>
-
-    <span class="n">psi4</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">set_global_option</span><span class="p">(</span><span class="s2">&quot;BASIS&quot;</span><span class="p">,</span> <span class="n">basis</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">mol</span></div>
-
+<span class="c1"># TODO molecule_water_sto3g_angstrom</span>
 
 
 <div class="viewcode-block" id="molecule_water_sto3g">
