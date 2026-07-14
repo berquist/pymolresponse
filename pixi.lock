@@ -191,7 +191,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/llvm-openmp-22.1.3-h4922eb0_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/mkl-2025.3.1-h0e700b2_10.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/msgpack-python-1.1.2-py312hd9148b4_1.conda
-      - conda: https://conda.anaconda.org/conda-forge/linux-64/mypy-2.2.0-py312h574c966_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/linux-64/mypy-2.3.0-py312h574c966_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/ncurses-6.5-h2d0b736_3.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/numpy-2.4.3-py312h33ff503_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/openorbitaloptimizer-0.2.0-hb700be7_0.conda
@@ -365,7 +365,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/libzlib-1.3.2-h8088a28_2.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/llvm-openmp-22.1.3-hc7d1edf_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/msgpack-python-1.1.2-py313ha61f8ec_1.conda
-      - conda: https://conda.anaconda.org/conda-forge/osx-arm64/mypy-2.2.0-py313h3e91af1_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/osx-arm64/mypy-2.3.0-py313h3e91af1_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/ncurses-6.5-h5e97a16_3.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/numpy-2.4.3-py313he4a34aa_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/openorbitaloptimizer-0.2.0-h1821781_0.conda
@@ -493,7 +493,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/win-64/llvm-openmp-22.1.3-h4fa8253_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/mkl-2025.3.1-hac47afa_11.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/msgpack-python-1.1.2-py313hf069bd2_1.conda
-      - conda: https://conda.anaconda.org/conda-forge/win-64/mypy-2.2.0-py313h4ac8b90_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/win-64/mypy-2.3.0-py313h4ac8b90_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/numpy-2.4.3-py313ha8dc839_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/openssl-3.6.2-hf411b9b_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/psi4-1.10-py313h2e895f1_5.conda
@@ -803,7 +803,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/llvm-openmp-22.1.3-h4922eb0_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/mkl-2025.3.1-h0e700b2_10.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/msgpack-python-1.1.2-py312hd9148b4_1.conda
-      - conda: https://conda.anaconda.org/conda-forge/linux-64/mypy-2.2.0-py312h574c966_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/linux-64/mypy-2.3.0-py312h574c966_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/ncurses-6.5-h2d0b736_3.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/numpy-2.4.3-py312h33ff503_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/openorbitaloptimizer-0.2.0-hb700be7_0.conda
@@ -954,7 +954,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/libzlib-1.3.2-h8088a28_2.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/llvm-openmp-22.1.3-hc7d1edf_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/msgpack-python-1.1.2-py313ha61f8ec_1.conda
-      - conda: https://conda.anaconda.org/conda-forge/osx-arm64/mypy-2.2.0-py313h3e91af1_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/osx-arm64/mypy-2.3.0-py313h3e91af1_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/ncurses-6.5-h5e97a16_3.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/numpy-2.4.3-py313he4a34aa_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/openorbitaloptimizer-0.2.0-h1821781_0.conda
@@ -1059,7 +1059,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/win-64/llvm-openmp-22.1.3-h4fa8253_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/mkl-2025.3.1-hac47afa_11.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/msgpack-python-1.1.2-py313hf069bd2_1.conda
-      - conda: https://conda.anaconda.org/conda-forge/win-64/mypy-2.2.0-py313h4ac8b90_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/win-64/mypy-2.3.0-py313h4ac8b90_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/numpy-2.4.3-py313ha8dc839_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/openssl-3.6.2-hf411b9b_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/psi4-1.10-py313h2e895f1_5.conda
@@ -1157,7 +1157,7 @@ packages:
   license: MIT
   license_family: MIT
   purls:
-  - pkg:pypi/ast-serialize?source=compressed-mapping
+  - pkg:pypi/ast-serialize?source=hash-mapping
   run_exports: {}
   size: 1120486
   timestamp: 1782863830347
@@ -1827,26 +1827,26 @@ packages:
   - pkg:pypi/msgpack?source=hash-mapping
   size: 102525
   timestamp: 1762504116832
-- conda: https://conda.anaconda.org/conda-forge/linux-64/mypy-2.2.0-py312h574c966_0.conda
-  sha256: cd7e588b6272313fdb2c7ac8615ddbe8c99991babf87bcc678171fce8a2f3dec
-  md5: 94e8601ebd10d5119a17108c570a6bac
+- conda: https://conda.anaconda.org/conda-forge/linux-64/mypy-2.3.0-py312h574c966_0.conda
+  sha256: 269f40944e42d84edc2cc488ea1890e129c084c12fd777c62502f7d26e887e74
+  md5: 67cff6752e05f627ca1891ccc0788760
   depends:
   - ast-serialize >=0.6.0,<1.0.0
   - mypy_extensions >=1.0.0
   - pathspec >=1.0.0
   - python
-  - python-librt >=0.12.0
+  - python-librt >=0.13.0
   - typing_extensions >=4.6.0
   - psutil >=4.0
-  - __glibc >=2.17,<3.0.a0
   - libgcc >=14
+  - __glibc >=2.17,<3.0.a0
   - python_abi 3.12.* *_cp312
   license: MIT
   purls:
-  - pkg:pypi/mypy?source=hash-mapping
+  - pkg:pypi/mypy?source=compressed-mapping
   run_exports: {}
-  size: 22721015
-  timestamp: 1783529090224
+  size: 22849418
+  timestamp: 1783986235162
 - conda: https://conda.anaconda.org/conda-forge/linux-64/ncurses-6.5-h2d0b736_3.conda
   sha256: 3fde293232fa3fca98635e1167de6b7c7fda83caf24b9d6c91ec9eefb4f4d586
   md5: 47e340acb35de30501a76c7c799c41d7
@@ -3171,15 +3171,15 @@ packages:
   - pkg:pypi/msgpack?source=hash-mapping
   size: 91725
   timestamp: 1762504404391
-- conda: https://conda.anaconda.org/conda-forge/osx-arm64/mypy-2.2.0-py313h3e91af1_0.conda
-  sha256: 22db00bb1cabd5e8404bd280de573aaca9c4267239228f95484032d5cbc48f9b
-  md5: 9e1b2758ed77641f2c09bd1590003948
+- conda: https://conda.anaconda.org/conda-forge/osx-arm64/mypy-2.3.0-py313h3e91af1_0.conda
+  sha256: 0f81f21d4d81058397efe73c4d873f958161554ca36b806f977cea3f9c27a8a6
+  md5: bd3d50f0ed60c48e29e46967173ffa56
   depends:
   - ast-serialize >=0.6.0,<1.0.0
   - mypy_extensions >=1.0.0
   - pathspec >=1.0.0
   - python
-  - python-librt >=0.12.0
+  - python-librt >=0.13.0
   - typing_extensions >=4.6.0
   - psutil >=4.0
   - __osx >=11.0
@@ -3188,8 +3188,8 @@ packages:
   purls:
   - pkg:pypi/mypy?source=compressed-mapping
   run_exports: {}
-  size: 13404962
-  timestamp: 1783529088057
+  size: 13478464
+  timestamp: 1783986161605
 - conda: https://conda.anaconda.org/conda-forge/osx-arm64/ncurses-6.5-h5e97a16_3.conda
   sha256: 2827ada40e8d9ca69a153a45f7fd14f32b2ead7045d3bbb5d10964898fe65733
   md5: 068d497125e4bf8a66bf707254fff5ae
@@ -3910,15 +3910,15 @@ packages:
   - pkg:pypi/msgpack?source=hash-mapping
   size: 88214
   timestamp: 1762504204957
-- conda: https://conda.anaconda.org/conda-forge/win-64/mypy-2.2.0-py313h4ac8b90_0.conda
-  sha256: 89024ea8af683cc45124ca6b508f8e7ac5080679d49de0b04055c564c9d7ace3
-  md5: 4bfe9c63dab8e5d457f8418a7c3a9d8c
+- conda: https://conda.anaconda.org/conda-forge/win-64/mypy-2.3.0-py313h4ac8b90_0.conda
+  sha256: f3d558918a1adb0ffb26e6d6b724122425542edecdc1f999346e38e1d89aff11
+  md5: 90a2f6fb1d07fb3174eb4ad3a2be09c7
   depends:
   - ast-serialize >=0.6.0,<1.0.0
   - mypy_extensions >=1.0.0
   - pathspec >=1.0.0
   - python
-  - python-librt >=0.12.0
+  - python-librt >=0.13.0
   - typing_extensions >=4.6.0
   - psutil >=4.0
   - vc >=14.3,<15
@@ -3927,10 +3927,10 @@ packages:
   - python_abi 3.13.* *_cp313
   license: MIT
   purls:
-  - pkg:pypi/mypy?source=hash-mapping
+  - pkg:pypi/mypy?source=compressed-mapping
   run_exports: {}
-  size: 10671002
-  timestamp: 1783529182633
+  size: 10748290
+  timestamp: 1783986251640
 - conda: https://conda.anaconda.org/conda-forge/win-64/numpy-2.4.3-py313ha8dc839_0.conda
   sha256: b01143d91ac22a37595c96023616dab0509ca22ee7791747dd52cc5c651f9b11
   md5: 764b3adfdb549bbbf58a9419f237ac25
