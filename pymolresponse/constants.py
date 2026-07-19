@@ -1,7 +1,10 @@
 r"""Storage of common physical constants. Uses `scipy.constants`: https://docs.scipy.org/doc/scipy/reference/constants.html."""
 
+import pint
 import scipy.constants as spc
 
+
+ureg = pint.UnitRegistry(system="atomic")
 
 ## Fundamental
 
@@ -15,6 +18,7 @@ HARTREE_TO_INVCM = spc.physical_constants["hartree-inverse meter relationship"][
 
 # Convert a dipole moment from atomic units (a.u.) to Debye.
 convfac_au_to_debye = 2.541746230211
+base_units_dipole = ureg.get_base_units(input_units=ureg.debye)[1]
 
 ## Electronic circular dichroism (ECD)
 
@@ -42,3 +46,5 @@ esuecd = echarge * xtang * ccm * 1.0e36 * echarge * hbar / emass
 # emass = 9.1093826e-31
 # esuecd = echarge * xtang * ccm * 1.0e36 * echarge * hbar / emass
 # print(esuecd)
+
+del pint
