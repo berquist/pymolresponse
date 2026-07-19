@@ -14,7 +14,6 @@ from pymolresponse.utils import form_results, form_vec_energy_differences
 
 class Driver(ABC):
     def __init__(self, solver: Solver) -> None:
-        assert isinstance(solver, Solver)
         self.solver = solver
 
         self.results: list[np.ndarray] = []
@@ -30,7 +29,6 @@ class CPHF(Driver):
     """Driver for solving the coupled perturbed Hartree-Fock (CPHF) equations."""
 
     def __init__(self, solver: LineqSolver) -> None:
-        assert isinstance(solver, LineqSolver)
         self.solver = solver
 
     def set_frequencies(self, frequencies: Sequence[float] | None = None) -> None:
@@ -55,9 +53,6 @@ class CPHF(Driver):
     def run(
         self, hamiltonian: Hamiltonian, spin: Spin, program: Program | None, program_obj: Any
     ) -> None:
-        assert isinstance(hamiltonian, Hamiltonian)
-        assert isinstance(spin, Spin)
-        assert isinstance(program, (Program, type(None)))
         # TODO program_obj
 
         if not hasattr(self, "frequencies"):

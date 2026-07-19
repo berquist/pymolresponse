@@ -32,10 +32,8 @@ def calc_center_of_electronic_charge_pyscf(D: np.ndarray, pyscfmol: pyscf.gto.Mo
 def electronic_dipole_contribution_pyscf(
     D: np.ndarray, pyscfmol: pyscf.gto.Mole, origin_in_bohrs: np.ndarray
 ) -> np.ndarray:
-    assert isinstance(D, np.ndarray)
     assert len(D.shape) == 2
     assert D.shape[0] == D.shape[1]
-    assert isinstance(origin_in_bohrs, np.ndarray)
     assert origin_in_bohrs.shape == (3,)
     # TODO what to assert about pyscfmol? at least isinstance
 
@@ -106,7 +104,6 @@ def calculate_origin_pyscf(
     pyscfmol: pyscf.gto.Mole,
     do_print: bool = False,
 ) -> np.ndarray:
-    assert isinstance(origin_string, str)
     origin_string = origin_string.lower()
     assert origin_string in (
         "explicitly-set",

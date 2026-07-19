@@ -86,9 +86,7 @@ class Solver(ABC):
     def form_tei_mo(
         self, program: Program, program_obj: Any, tei_mo_type: AO2MOTransformationType
     ) -> None:
-        assert isinstance(program, Program)
         # TODO program_obj
-        assert isinstance(tei_mo_type, AO2MOTransformationType)
         nden = self.mocoeffs.shape[0]
         assert nden in (1, 2)
         if program == Program.PySCF:
@@ -172,8 +170,6 @@ class ExactLineqSolver(LineqSolver, ABC):
         assert len(self.tei_mo) in (1, 2, 4, 6)
         assert isinstance(self.tei_mo_type, AO2MOTransformationType)
 
-        assert isinstance(hamiltonian, Hamiltonian)
-        assert isinstance(spin, Spin)
         assert isinstance(frequency, float)
 
         nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
@@ -472,9 +468,6 @@ class ExactLineqSolver(LineqSolver, ABC):
     def run(
         self, hamiltonian: Hamiltonian, spin: Spin, program: Program | None, program_obj: Any
     ) -> None:
-        assert isinstance(hamiltonian, Hamiltonian)
-        assert isinstance(spin, Spin)
-        assert isinstance(program, (Program, type(None)))
         # TODO program_obj
         if not self.tei_mo:
             if program is None:
@@ -573,9 +566,6 @@ class IterativeLinEqSolver(LineqSolver):
         maxiter: int = 40,
         conv: float = 1.0e-9,
     ) -> None:
-        assert isinstance(jk_generator, JK)
-        assert isinstance(maxiter, int)
-        assert isinstance(conv, float)
         super().__init__(mocoeffs, moenergies, occupations)
 
         # TODO
@@ -586,9 +576,6 @@ class IterativeLinEqSolver(LineqSolver):
     def run(
         self, hamiltonian: Hamiltonian, spin: Spin, program: Program | None, program_obj: Any
     ) -> None:
-        assert isinstance(hamiltonian, Hamiltonian)
-        assert isinstance(spin, Spin)
-        assert isinstance(program, (Program, type(None)))
         # TODO program_obj
         assert self.frequencies
         for frequency in self.frequencies:
@@ -719,10 +706,6 @@ class ExactDiagonalizationSolver(EigSolver):
         assert len(self.tei_mo) in (1, 2, 4, 6)
         assert isinstance(self.tei_mo_type, AO2MOTransformationType)
 
-        assert isinstance(hamiltonian, Hamiltonian)
-        assert isinstance(spin, Spin)
-        assert isinstance(frequency, (float, type(None)))
-
         nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
         nov_alph = nocc_alph * nvirt_alph
         nov_beta = nocc_beta * nvirt_beta  # noqa: F841
@@ -798,9 +781,6 @@ class ExactDiagonalizationSolver(EigSolver):
     def run(
         self, hamiltonian: Hamiltonian, spin: Spin, program: Program | None, program_obj: Any
     ) -> None:
-        assert isinstance(hamiltonian, Hamiltonian)
-        assert isinstance(spin, Spin)
-        assert isinstance(program, Program)
         # TODO program_obj
         if not self.tei_mo:
             if program is None:
@@ -825,8 +805,6 @@ class ExactDiagonalizationSolverTDA(ExactDiagonalizationSolver, EigSolverTDA):
         assert isinstance(self.tei_mo_type, AO2MOTransformationType)
 
         assert hamiltonian == Hamiltonian.TDA
-        assert isinstance(spin, Spin)
-        assert isinstance(frequency, (float, type(None)))
 
         nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
         nov_alph = nocc_alph * nvirt_alph  # noqa: F841

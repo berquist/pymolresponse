@@ -20,15 +20,11 @@ class TDHF(CPHF):
     """
 
     def __init__(self, solver: EigSolver) -> None:
-        assert isinstance(solver, EigSolver)
         self.solver = solver
 
     def run(
         self, hamiltonian: Hamiltonian, spin: Spin, program: Program | None, program_obj: Any
     ) -> None:
-        assert isinstance(hamiltonian, Hamiltonian)
-        assert isinstance(spin, Spin)
-        assert isinstance(program, (Program, type(None)))
         # TODO program_obj
 
         self.solver.run(hamiltonian, spin, program, program_obj)
@@ -181,7 +177,6 @@ class TDA(TDHF):
     """
 
     def __init__(self, solver: EigSolverTDA) -> None:
-        assert isinstance(solver, EigSolverTDA)
         self.solver = solver
 
     def form_results(self) -> None:

@@ -14,17 +14,13 @@ class MolecularProperty(ABC):
     """
 
     def __init__(self, program: Program, program_obj: Any, driver: Driver) -> None:
-        assert isinstance(program, Program)
         # TODO isinstance(program_obj, ...)
-        assert isinstance(driver, Driver)
         self.program = program
         self.program_obj = program_obj
         self.driver = driver
 
     def run(self, hamiltonian: Hamiltonian, spin: Spin) -> None:
         assert self.driver.solver is not None
-        assert isinstance(hamiltonian, Hamiltonian)
-        assert isinstance(spin, Spin)
         self.driver.run(
             hamiltonian=hamiltonian, spin=spin, program=self.program, program_obj=self.program_obj
         )
