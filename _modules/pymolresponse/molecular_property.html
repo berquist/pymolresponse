@@ -87,9 +87,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">program</span><span class="p">:</span> <span class="n">Program</span><span class="p">,</span> <span class="n">program_obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">driver</span><span class="p">:</span> <span class="n">Driver</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="n">Program</span><span class="p">)</span>
         <span class="c1"># TODO isinstance(program_obj, ...)</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="n">Driver</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">program</span> <span class="o">=</span> <span class="n">program</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">program_obj</span> <span class="o">=</span> <span class="n">program_obj</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">driver</span> <span class="o">=</span> <span class="n">driver</span>
@@ -98,8 +96,6 @@
 <a class="viewcode-back" href="../../pyresponse.html#pymolresponse.molecular_property.MolecularProperty.run">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hamiltonian</span><span class="p">:</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">spin</span><span class="p">:</span> <span class="n">Spin</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">solver</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hamiltonian</span><span class="p">,</span> <span class="n">Hamiltonian</span><span class="p">)</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">spin</span><span class="p">,</span> <span class="n">Spin</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
             <span class="n">hamiltonian</span><span class="o">=</span><span class="n">hamiltonian</span><span class="p">,</span> <span class="n">spin</span><span class="o">=</span><span class="n">spin</span><span class="p">,</span> <span class="n">program</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">program</span><span class="p">,</span> <span class="n">program_obj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">program_obj</span>
         <span class="p">)</span></div>

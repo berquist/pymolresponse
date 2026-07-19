@@ -161,9 +161,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">form_tei_mo</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">program</span><span class="p">:</span> <span class="n">Program</span><span class="p">,</span> <span class="n">program_obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">tei_mo_type</span><span class="p">:</span> <span class="n">AO2MOTransformationType</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="n">Program</span><span class="p">)</span>
         <span class="c1"># TODO program_obj</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tei_mo_type</span><span class="p">,</span> <span class="n">AO2MOTransformationType</span><span class="p">)</span>
         <span class="n">nden</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mocoeffs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">assert</span> <span class="n">nden</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">program</span> <span class="o">==</span> <span class="n">Program</span><span class="o">.</span><span class="n">PySCF</span><span class="p">:</span>
@@ -265,8 +263,6 @@
         <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tei_mo_type</span><span class="p">,</span> <span class="n">AO2MOTransformationType</span><span class="p">)</span>
 
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hamiltonian</span><span class="p">,</span> <span class="n">Hamiltonian</span><span class="p">)</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">spin</span><span class="p">,</span> <span class="n">Spin</span><span class="p">)</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">frequency</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
 
         <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">,</span> <span class="n">nvirt_beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">occupations</span>
@@ -574,9 +570,6 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">hamiltonian</span><span class="p">:</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">spin</span><span class="p">:</span> <span class="n">Spin</span><span class="p">,</span> <span class="n">program</span><span class="p">:</span> <span class="n">Program</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">program_obj</span><span class="p">:</span> <span class="n">Any</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hamiltonian</span><span class="p">,</span> <span class="n">Hamiltonian</span><span class="p">)</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">spin</span><span class="p">,</span> <span class="n">Spin</span><span class="p">)</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="p">(</span><span class="n">Program</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
         <span class="c1"># TODO program_obj</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">program</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -691,9 +684,6 @@
         <span class="n">maxiter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span>
         <span class="n">conv</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0e-9</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">jk_generator</span><span class="p">,</span> <span class="n">JK</span><span class="p">)</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">maxiter</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">conv</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">mocoeffs</span><span class="p">,</span> <span class="n">moenergies</span><span class="p">,</span> <span class="n">occupations</span><span class="p">)</span>
 
         <span class="c1"># TODO</span>
@@ -706,9 +696,6 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">hamiltonian</span><span class="p">:</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">spin</span><span class="p">:</span> <span class="n">Spin</span><span class="p">,</span> <span class="n">program</span><span class="p">:</span> <span class="n">Program</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">program_obj</span><span class="p">:</span> <span class="n">Any</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hamiltonian</span><span class="p">,</span> <span class="n">Hamiltonian</span><span class="p">)</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">spin</span><span class="p">,</span> <span class="n">Spin</span><span class="p">)</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="p">(</span><span class="n">Program</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
         <span class="c1"># TODO program_obj</span>
         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span>
         <span class="k">for</span> <span class="n">frequency</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">frequencies</span><span class="p">:</span>
@@ -854,10 +841,6 @@
         <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tei_mo_type</span><span class="p">,</span> <span class="n">AO2MOTransformationType</span><span class="p">)</span>
 
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hamiltonian</span><span class="p">,</span> <span class="n">Hamiltonian</span><span class="p">)</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">spin</span><span class="p">,</span> <span class="n">Spin</span><span class="p">)</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">frequency</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
-
         <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">,</span> <span class="n">nvirt_beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">occupations</span>
         <span class="n">nov_alph</span> <span class="o">=</span> <span class="n">nocc_alph</span> <span class="o">*</span> <span class="n">nvirt_alph</span>
         <span class="n">nov_beta</span> <span class="o">=</span> <span class="n">nocc_beta</span> <span class="o">*</span> <span class="n">nvirt_beta</span>  <span class="c1"># noqa: F841</span>
@@ -939,9 +922,6 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">hamiltonian</span><span class="p">:</span> <span class="n">Hamiltonian</span><span class="p">,</span> <span class="n">spin</span><span class="p">:</span> <span class="n">Spin</span><span class="p">,</span> <span class="n">program</span><span class="p">:</span> <span class="n">Program</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">program_obj</span><span class="p">:</span> <span class="n">Any</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hamiltonian</span><span class="p">,</span> <span class="n">Hamiltonian</span><span class="p">)</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">spin</span><span class="p">,</span> <span class="n">Spin</span><span class="p">)</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">program</span><span class="p">,</span> <span class="n">Program</span><span class="p">)</span>
         <span class="c1"># TODO program_obj</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">tei_mo</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">program</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -972,8 +952,6 @@
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tei_mo_type</span><span class="p">,</span> <span class="n">AO2MOTransformationType</span><span class="p">)</span>
 
         <span class="k">assert</span> <span class="n">hamiltonian</span> <span class="o">==</span> <span class="n">Hamiltonian</span><span class="o">.</span><span class="n">TDA</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">spin</span><span class="p">,</span> <span class="n">Spin</span><span class="p">)</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">frequency</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
 
         <span class="n">nocc_alph</span><span class="p">,</span> <span class="n">nvirt_alph</span><span class="p">,</span> <span class="n">nocc_beta</span><span class="p">,</span> <span class="n">nvirt_beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">occupations</span>
         <span class="n">nov_alph</span> <span class="o">=</span> <span class="n">nocc_alph</span> <span class="o">*</span> <span class="n">nvirt_alph</span>  <span class="c1"># noqa: F841</span>
