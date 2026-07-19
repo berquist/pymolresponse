@@ -15,6 +15,14 @@ OVERLAP = IntegralLabel("OVERLAP")
 DIPOLE = IntegralLabel("DIPOLE")
 DIPVEL = IntegralLabel("DIPVEL")
 ANGMOM_COMMON_GAUGE = IntegralLabel("ANGMOM_COMMON_GAUGE")
+QUADRUPOLE = IntegralLabel("QUADRUPOLE")
+
+# TODO What is the default origin?
+
+# TODO how to handle multipole of arbitrary order?  The call is
+# np.asarray(mints.ao_multipoles(order=2, origin=[0.0, 0.0, 0.0])), where
+# "order" is including all previous orders, so this gives dipole (3) +
+# quadrupole (6) for a total of 9.
 
 
 class IntegralsPsi4(Integrals):
@@ -38,6 +46,8 @@ class IntegralsPsi4(Integrals):
             return np.stack([np.asarray(Mc) for Mc in self._mints.ao_nabla()])
         elif label == ANGMOM_COMMON_GAUGE:
             return np.stack([np.asarray(Lc) for Lc in self._mints.ao_angular_momentum()])
+        elif label == QUADRUPOLE:
+            return np.stack([np.asarray(Mc) for Mc in self._mints.ao_quadrupole()])
         else:
             raise RuntimeError
 

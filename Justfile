@@ -2,7 +2,7 @@ test:
     python -m pytest
 
 test-pixi:
-    pixi run -e test test
+    pixi run --frozen -e test test
 
 pre:
     pre-commit run -a

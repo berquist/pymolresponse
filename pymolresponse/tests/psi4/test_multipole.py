@@ -53,4 +53,18 @@ def test_dipole() -> None:
     #
     #  ------------------------------------------------------------------------------------
 
+    # origin                        [a.u.]: 0.0 0.0 0.0
+    # dipole components, electronic [a.u.]: -0.2835535500148627 -0.20050276011671642 1.685250929332574e-17
+    # dipole components, nuclear    [a.u.]: -0.4359786427167471 -0.3082847307294024 0.0
+    # dipole components, total      [a.u.]: -0.7195321927316098 -0.5087874908461187 1.685250929332574e-17
+    # dipole moment, electronic     [a.u.]: 0.34728082662371784
+    # dipole moment, nuclear        [a.u.]: 0.5339633434104228
+    # dipole moment, total          [a.u.]: 0.8812441700338494
+    # dipole components, electronic [D]   : -0.7207211668132235 -0.5096271346735644 4.283480196590654e-17
+    # dipole components, nuclear    [D]   : -1.1081470715778003 -0.7835815521630717 0.0
+    # dipole components, total      [D]   : -1.828868238391024 -1.293208686836636 4.283480196590654e-17
+    # dipole moment, electronic     [D]   : 0.8826997318953946
+    # dipole moment, nuclear        [D]   : 1.3571993151843038
+    # dipole moment, total          [D]   : 2.239899047078958
+
     np.testing.assert_allclose(dipole, [-0.5403267, -0.3820709, -0.0000000])

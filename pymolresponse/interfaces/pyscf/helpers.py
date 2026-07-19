@@ -30,11 +30,11 @@ def calc_center_of_electronic_charge_pyscf(D: np.ndarray, pyscfmol: pyscf.gto.Mo
 
 
 def electronic_dipole_contribution_pyscf(
-    D: np.ndarray, pyscfmol: pyscf.gto.Mole, origin_in_bohrs: np.ndarray
+    D: np.ndarray, pyscfmol: pyscf.gto.Mole, origin: np.ndarray
 ) -> np.ndarray:
     assert len(D.shape) == 2
     assert D.shape[0] == D.shape[1]
-    assert origin_in_bohrs.shape == (3,)
+    assert origin.shape == (3,)
     # TODO what to assert about pyscfmol? at least isinstance
 
     M_AO = pyscfmol.intor("cint1e_r_sph", comp=3)
@@ -57,15 +57,15 @@ def electronic_dipole_contribution_pyscf(
 
 
 def calculate_dipole(
-    nuccoords: np.ndarray,
-    nuccharges: np.ndarray,
+    coords: np.ndarray,
+    charges: np.ndarray,
     origin: np.ndarray,
     D: np.ndarray,
     pyscfmol: pyscf.gto.Mole,
     do_print: bool = False,
 ) -> np.ndarray:
     assert origin.shape == (3,)
-    nuclear_components_au = nuclear_dipole_contribution(nuccoords, nuccharges, origin)
+    nuclear_components_au = nuclear_dipole_contribution(coords, charges, origin)
     electronic_components_au = electronic_dipole_contribution_pyscf(D, pyscfmol, origin)
     total_components_au = electronic_components_au + nuclear_components_au
     if do_print:
@@ -98,8 +98,8 @@ def calculate_dipole(
 
 def calculate_origin(
     origin_string: str,
-    nuccoords: np.ndarray,
-    nuccharges: np.ndarray,
+    coords: np.ndarray,
+    charges: np.ndarray,
     D: np.ndarray,
     pyscfmol: pyscf.gto.Mole,
     do_print: bool = False,
@@ -129,8 +129,8 @@ def calculate_origin(
     elif origin_string in ("com", "centerofmass"):
         if do_print:
             print(" --- Origin: center of mass ---")
-        masses = get_isotopic_masses(nuccharges[:, 0])
-        origin = calc_center_of_mass(nuccoords, masses)
+        masses = get_isotopic_masses(charges[:, 0])
+        origin = calc_center_of_mass(coords, masses)
     elif origin_string in ("ecc", "centerofelcharge"):
         if do_print:
             print(" --- Origin: center of electronic charge ---")
@@ -138,13 +138,13 @@ def calculate_origin(
     elif origin_string in ("ncc", "centerofnuccharge"):
         if do_print:
             print(" --- Origin: center of nuclear charge ---")
-        origin = calc_center_of_nuclear_charge(nuccoords, nuccharges)
+        origin = calc_center_of_nuclear_charge(coords, charges)
     else:
         msg = f"Unknown origin: {origin_string}"
         raise RuntimeError(msg)
 
     if do_print:
         print(" Calculating the dipole at the requested origin...")
-        calculate_dipole(nuccoords, nuccharges, origin, D, pyscfmol, do_print)
+        calculate_dipole(coords, charges, origin, D, pyscfmol, do_print)
 
     return origin

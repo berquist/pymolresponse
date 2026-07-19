@@ -12,6 +12,7 @@ from pymolresponse.helpers import (
 )
 
 
+# TODO
 def calc_center_of_mass_psi4(pyscfmol) -> np.ndarray:
     charges = pyscfmol.atom_charges()
     masses = get_isotopic_masses(charges)
@@ -19,25 +20,26 @@ def calc_center_of_mass_psi4(pyscfmol) -> np.ndarray:
     return calc_center_of_mass(coords, masses)
 
 
-def calc_center_of_electronic_charge_psi4(D: np.ndarray, pyscfmol) -> np.ndarray:
+def calc_center_of_electronic_charge_psi4(
+    D: np.ndarray, psi4wfn: psi4.core.Wavefunction
+) -> np.ndarray:
     assert len(D.shape) == 2
     # no linear dependencies!
     assert D.shape[0] == D.shape[1]
     zerovec = np.zeros(3)
-    dipole_at_zerovec = electronic_dipole_contribution_psi4(D, pyscfmol, zerovec)
-    nelec = pyscfmol.tot_electrons()
+    dipole_at_zerovec = electronic_dipole_contribution_psi4(D, psi4wfn, zerovec)
+    nelec = psi4wfn.tot_electrons()
     return -dipole_at_zerovec / nelec
 
 
 def electronic_dipole_contribution_psi4(
-    D: np.ndarray, psi4wfn: psi4.core.Wavefunction, origin_in_bohrs: np.ndarray
+    D: np.ndarray, psi4wfn: psi4.core.Wavefunction, origin: np.ndarray
 ) -> np.ndarray:
     assert isinstance(D, np.ndarray)
     assert len(D.shape) == 2
     assert D.shape[0] == D.shape[1]
-    assert isinstance(origin_in_bohrs, np.ndarray)
-    assert origin_in_bohrs.shape == (3,)
-    # TODO what to assert about pyscfmol? at least isinstance
+    assert isinstance(origin, np.ndarray)
+    assert origin.shape == (3,)
 
     mints = psi4.core.MintsHelper(psi4wfn)
     M_AO = np.asarray(mints.ao_dipole())
@@ -60,16 +62,16 @@ def electronic_dipole_contribution_psi4(
 
 
 def calculate_dipole(
-    nuccoords: np.ndarray,
-    nuccharges: np.ndarray,
+    coords: np.ndarray,
+    charges: np.ndarray,
     origin: np.ndarray,
     D: np.ndarray,
-    pyscfmol,
+    psi4wfn: psi4.core.Wavefunction,
     do_print: bool = False,
 ) -> np.ndarray:
     assert origin.shape == (3,)
-    nuclear_components_au = nuclear_dipole_contribution(nuccoords, nuccharges, origin)
-    electronic_components_au = electronic_dipole_contribution_psi4(D, pyscfmol, origin)
+    nuclear_components_au = nuclear_dipole_contribution(coords, charges, origin)
+    electronic_components_au = electronic_dipole_contribution_psi4(D, psi4wfn, origin)
     total_components_au = electronic_components_au + nuclear_components_au
     if do_print:
         nuclear_components_debye = nuclear_components_au * convfac_au_to_debye
@@ -101,10 +103,10 @@ def calculate_dipole(
 
 def calculate_origin(
     origin_string: str,
-    nuccoords: np.ndarray,
-    nuccharges: np.ndarray,
+    coords: np.ndarray,
+    charges: np.ndarray,
     D: np.ndarray,
-    pyscfmol,
+    psi4wfn: psi4.core.Wavefunction,
     do_print: bool = False,
 ) -> np.ndarray:
     assert isinstance(origin_string, str)
@@ -133,22 +135,22 @@ def calculate_origin(
     elif origin_string in ("com", "centerofmass"):
         if do_print:
             print(" --- Origin: center of mass ---")
-        masses = get_isotopic_masses(nuccharges[:, 0])
-        origin = calc_center_of_mass(nuccoords, masses)
+        masses = get_isotopic_masses(charges[:, 0])
+        origin = calc_center_of_mass(coords, masses)
     elif origin_string in ("ecc", "centerofelcharge"):
         if do_print:
             print(" --- Origin: center of electronic charge ---")
-        origin = calc_center_of_electronic_charge_psi4(D, pyscfmol)
+        origin = calc_center_of_electronic_charge_psi4(D, psi4wfn)
     elif origin_string in ("ncc", "centerofnuccharge"):
         if do_print:
             print(" --- Origin: center of nuclear charge ---")
-        origin = calc_center_of_nuclear_charge(nuccoords, nuccharges)
+        origin = calc_center_of_nuclear_charge(coords, charges)
     else:
         msg = f"Unknown origin: {origin_string}"
         raise RuntimeError(msg)
 
     if do_print:
         print(" Calculating the dipole at the requested origin...")
-        calculate_dipole(nuccoords, nuccharges, origin, D, pyscfmol, do_print)
+        calculate_dipole(coords, charges, origin, D, psi4wfn, do_print)
 
     return origin

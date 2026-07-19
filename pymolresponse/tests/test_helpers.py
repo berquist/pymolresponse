@@ -33,7 +33,9 @@ def test_calc_center_of_mass() -> None:
             [-2.514878, 1.269127, -3.241290],
         ]
     )
+    # These are averaged, not isotopic
     masses = np.asarray([12.011, 1.008, 10.810, 1.008, 12.011, 1.008, 1.008])
+
     center_of_mass = calc_center_of_mass(coords, masses)
     np.testing.assert_allclose(
         center_of_mass, [0.045689, 0.682354, -1.382979], rtol=0.0, atol=1.0e-6
@@ -41,7 +43,7 @@ def test_calc_center_of_mass() -> None:
 
 
 def test_nuclear_dipole_contribution() -> None:
-    nuccoords = np.asarray(
+    coords = np.asarray(
         [
             [-0.001566, -0.000849, -0.000612],
             [0.001024, -0.001041, 2.056253],
@@ -52,8 +54,9 @@ def test_nuclear_dipole_contribution() -> None:
             [-2.514878, 1.269127, -3.241290],
         ]
     )
-    nuccharges = np.asarray([6.0, 1.0, 5.0, 1.0, 6.0, 1.0, 1.0])
+    charges = np.asarray([6.0, 1.0, 5.0, 1.0, 6.0, 1.0, 1.0])
     masses = np.asarray([12.011, 1.008, 10.810, 1.008, 12.011, 1.008, 1.008])
-    origin_in_bohrs = calc_center_of_mass(nuccoords, masses)
-    nuclear_dipole = nuclear_dipole_contribution(nuccoords, nuccharges, origin_in_bohrs)
+    origin = calc_center_of_mass(coords, masses)
+
+    nuclear_dipole = nuclear_dipole_contribution(coords, charges, origin)
     np.testing.assert_allclose(nuclear_dipole, [-1.07799, 1.14340, -0.03516], rtol=0.0, atol=1.0e-5)
