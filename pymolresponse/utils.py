@@ -289,7 +289,7 @@ def fix_moenergies_shape(
     return moenergies_new  # ty: ignore[invalid-return-type]
 
 
-def read_dalton_propfile(tmpdir: Path) -> list[str]:
+def read_dalton_propfile(tmpdir: Path) -> list[list[str]]:
     """Parse a DALTON.PROP file."""
     proplist = []
     with open(tmpdir / "DALTON.PROP") as propfile:
