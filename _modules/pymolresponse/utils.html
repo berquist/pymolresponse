@@ -406,7 +406,7 @@
             <span class="n">moenergies_new</span> <span class="o">=</span> <span class="n">moenergies</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">moenergies_new</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span>
     <span class="k">assert</span> <span class="n">moenergies_new</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="n">moenergies_new</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">moenergies_new</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="n">moenergies_new</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">moenergies_new</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>  <span class="c1"># ty: ignore[index-out-of-bounds]</span>
     <span class="k">return</span> <span class="n">moenergies_new</span>  <span class="c1"># ty: ignore[invalid-return-type]</span></div>
 
 
