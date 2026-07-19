@@ -214,7 +214,7 @@ DirtyMocoeffs = (
 
 
 def fix_mocoeffs_shape(
-    mocoeffs: DirtyMocoeffs,
+    mocoeffs: "DirtyMocoeffs",
 ) -> np.ndarray[tuple[int, int, int], np.dtype[np.floating]]:
     """Clean up the dimensionality of molecular orbital coefficients.
 

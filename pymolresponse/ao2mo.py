@@ -4,11 +4,12 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 
-from pymolresponse.utils import DirtyMocoeffs, fix_mocoeffs_shape
+from pymolresponse.utils import fix_mocoeffs_shape
 
 
 if TYPE_CHECKING:
     from pymolresponse.indices import Occupations
+    from pymolresponse.utils import DirtyMocoeffs
 
 
 class AO2MO:
@@ -19,7 +20,7 @@ class AO2MO:
 
     def __init__(
         self,
-        C: DirtyMocoeffs,
+        C: "DirtyMocoeffs",
         occupations: "Occupations",
         I: np.ndarray[tuple[int, int, int, int], np.dtype[np.floating]] | None = None,  # noqa: E741
     ) -> None:
