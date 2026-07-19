@@ -69,7 +69,7 @@ def form_rpa_a_matrix_mo_triplet_partial(
 
     A += np.diag(ediff)
 
-    return A
+    return A  # ty: ignore[invalid-return-type]
 
 
 def form_rpa_b_matrix_mo_singlet_partial(
@@ -115,7 +115,7 @@ def form_rpa_b_matrix_mo_triplet_partial(
     B -= TEI_MO_iajb.swapaxes(1, 3)
     B.shape = (nov, nov)
 
-    return -B
+    return -B  # ty: ignore[invalid-return-type]
 
 
 def form_rpa_a_matrix_mo_singlet_ss_partial(

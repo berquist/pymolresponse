@@ -29,7 +29,7 @@ def test_explicit_rhf_outside_solver_off_diagonal_blocks() -> None:
     ao2mo = AO2MOpyscf(mocoeffs, mol)
     ao2mo.perform_rhf_full()
     assert len(ao2mo.tei_mo) == 1
-    tei_mo = ao2mo.tei_mo[0]  # ty: ignore[index-out-of-bounds]
+    tei_mo = ao2mo.tei_mo[0]
 
     C = mocoeffs
     E = np.diag(moenergies)

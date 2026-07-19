@@ -30,7 +30,7 @@ def test_ao2mo_hand_against_pyscf_rhf_full() -> None:
     ao2mo = AO2MOpyscf(C, pyscfmol=mol)
     ao2mo.perform_rhf_full()
     assert len(ao2mo.tei_mo) == ntransforms
-    tei_mo_pyscf = ao2mo.tei_mo[0]  # ty: ignore[index-out-of-bounds]
+    tei_mo_pyscf = ao2mo.tei_mo[0]
 
     tei_ao = mol.intor("int2e_sph", aosym="s1")
 
@@ -46,7 +46,7 @@ def test_ao2mo_hand_against_pyscf_rhf_full() -> None:
     ao2mo_method = AO2MO(C, occupations, I=tei_ao)
     ao2mo_method.perform_rhf_full()
     assert len(ao2mo_method.tei_mo) == ntransforms
-    tei_mo_method = ao2mo_method.tei_mo[0]  # ty: ignore[index-out-of-bounds]
+    tei_mo_method = ao2mo_method.tei_mo[0]
 
     assert tei_mo_pyscf.shape == tei_mo_method.shape == (nmo, nmo, nmo, nmo)
     np.testing.assert_allclose(tei_mo_method, tei_mo_pyscf, rtol=0, atol=1.0e-15)
@@ -75,8 +75,8 @@ def test_ao2mo_hand_against_pyscf_rhf_partial() -> None:
     ao2mo = AO2MOpyscf(C, pyscfmol=mol)
     ao2mo.perform_rhf_partial()
     assert len(ao2mo.tei_mo) == ntransforms
-    tei_mo_ovov_pyscf = ao2mo.tei_mo[0]  # ty: ignore[index-out-of-bounds]
-    tei_mo_oovv_pyscf = ao2mo.tei_mo[1]  # ty: ignore[index-out-of-bounds]
+    tei_mo_ovov_pyscf = ao2mo.tei_mo[0]
+    tei_mo_oovv_pyscf = ao2mo.tei_mo[1]
 
     tei_ao = mol.intor("int2e_sph", aosym="s1")
 
@@ -95,8 +95,8 @@ def test_ao2mo_hand_against_pyscf_rhf_partial() -> None:
     ao2mo_method = AO2MO(C, occupations, I=tei_ao)
     ao2mo_method.perform_rhf_partial()
     assert len(ao2mo_method.tei_mo) == ntransforms
-    tei_mo_ovov_method = ao2mo_method.tei_mo[0]  # ty: ignore[index-out-of-bounds]
-    tei_mo_oovv_method = ao2mo_method.tei_mo[1]  # ty: ignore[index-out-of-bounds]
+    tei_mo_ovov_method = ao2mo_method.tei_mo[0]
+    tei_mo_oovv_method = ao2mo_method.tei_mo[1]
 
     assert tei_mo_ovov_pyscf.shape == tei_mo_ovov_method.shape == (nocc, nvirt, nocc, nvirt)
     assert tei_mo_oovv_pyscf.shape == tei_mo_oovv_method.shape == (nocc, nocc, nvirt, nvirt)

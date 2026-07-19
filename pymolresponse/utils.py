@@ -285,7 +285,7 @@ def fix_moenergies_shape(
             moenergies_new = moenergies
     assert len(moenergies_new.shape) == 3
     assert moenergies_new.shape[0] in (1, 2)
-    assert moenergies_new.shape[1] == moenergies_new.shape[2]  # ty: ignore[index-out-of-bounds]
+    assert moenergies_new.shape[1] == moenergies_new.shape[2]
     return moenergies_new  # ty: ignore[invalid-return-type]
 
 

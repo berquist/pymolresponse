@@ -194,11 +194,11 @@ class ExactLineqSolver(LineqSolver, ABC):
             # Set up "function pointers".
             if self.tei_mo_type == AO2MOTransformationType.full:
                 assert len(self.tei_mo) == 1
-                tei_mo = self.tei_mo[0]  # ty: ignore[index-out-of-bounds]
+                tei_mo = self.tei_mo[0]
             elif self.tei_mo_type == AO2MOTransformationType.partial:
                 assert len(self.tei_mo) == 2
-                tei_mo_ovov = self.tei_mo[0]  # ty: ignore[index-out-of-bounds]
-                tei_mo_oovv = self.tei_mo[1]  # ty: ignore[index-out-of-bounds]
+                tei_mo_ovov = self.tei_mo[0]
+                tei_mo_oovv = self.tei_mo[1]
 
             if self.tei_mo_type == AO2MOTransformationType.full:
                 if hamiltonian == Hamiltonian.RPA and spin == Spin.singlet:
@@ -731,11 +731,11 @@ class ExactDiagonalizationSolver(EigSolver):
             # Set up "function pointers".
             if self.tei_mo_type == AO2MOTransformationType.full:
                 assert len(self.tei_mo) == 1
-                tei_mo = self.tei_mo[0]  # ty: ignore[index-out-of-bounds]
+                tei_mo = self.tei_mo[0]
             elif self.tei_mo_type == AO2MOTransformationType.partial:
                 assert len(self.tei_mo) == 2
-                tei_mo_ovov = self.tei_mo[0]  # ty: ignore[index-out-of-bounds]
-                tei_mo_oovv = self.tei_mo[1]  # ty: ignore[index-out-of-bounds]
+                tei_mo_ovov = self.tei_mo[0]
+                tei_mo_oovv = self.tei_mo[1]
 
             if self.tei_mo_type == AO2MOTransformationType.full:
                 if hamiltonian == Hamiltonian.RPA and spin == Spin.singlet:
@@ -836,11 +836,11 @@ class ExactDiagonalizationSolverTDA(ExactDiagonalizationSolver, EigSolverTDA):
             # Set up "function pointers".
             if self.tei_mo_type == AO2MOTransformationType.full:
                 assert len(self.tei_mo) == 1
-                tei_mo = self.tei_mo[0]  # ty: ignore[index-out-of-bounds]
+                tei_mo = self.tei_mo[0]
             elif self.tei_mo_type == AO2MOTransformationType.partial:
                 assert len(self.tei_mo) == 2
-                tei_mo_ovov = self.tei_mo[0]  # ty: ignore[index-out-of-bounds]
-                tei_mo_oovv = self.tei_mo[1]  # ty: ignore[index-out-of-bounds]
+                tei_mo_ovov = self.tei_mo[0]
+                tei_mo_oovv = self.tei_mo[1]
 
             if self.tei_mo_type == AO2MOTransformationType.full:
                 if spin == Spin.singlet:
