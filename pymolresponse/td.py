@@ -2,15 +2,19 @@
 equations.
 """
 
-from typing import Any, ClassVar
+from typing import TYPE_CHECKING, Any, ClassVar
 
 import numpy as np
 
 from pymolresponse.constants import HARTREE_TO_EV, HARTREE_TO_INVCM
-from pymolresponse.core import Hamiltonian, Program, Spin
+from pymolresponse.core import Hamiltonian, Spin
 from pymolresponse.cphf import CPHF
 from pymolresponse.solvers import EigSolver, EigSolverTDA
 from pymolresponse.utils import form_indices_orbwin, form_vec_energy_differences
+
+
+if TYPE_CHECKING:
+    from pymolresponse.core import Program
 
 
 class TDHF(CPHF):
@@ -23,7 +27,7 @@ class TDHF(CPHF):
         self.solver = solver
 
     def run(
-        self, hamiltonian: Hamiltonian, spin: Spin, program: Program | None, program_obj: Any
+        self, hamiltonian: Hamiltonian, spin: Spin, program: "Program | None", program_obj: Any
     ) -> None:
         # TODO program_obj
 
