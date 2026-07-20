@@ -3,7 +3,7 @@
 from collections.abc import Iterable
 from itertools import accumulate
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, TypeAlias
 
 import numpy as np
 
@@ -207,10 +207,10 @@ class Splitter:
         return elements
 
 
-DirtyMocoeffs = (
+DirtyMocoeffs: TypeAlias = """
     tuple[np.ndarray[tuple[int, ...], np.dtype[np.floating]], ...]
     | np.ndarray[tuple[int, int] | tuple[int, int, int], np.dtype[np.floating]],
-)
+"""
 
 
 def fix_mocoeffs_shape(
