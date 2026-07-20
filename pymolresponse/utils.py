@@ -3,7 +3,7 @@
 from collections.abc import Iterable
 from itertools import accumulate
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, TypeAlias
 
 import numpy as np
 
@@ -207,14 +207,14 @@ class Splitter:
         return elements
 
 
-DirtyMocoeffs = (
+DirtyMocoeffs: TypeAlias = """
     tuple[np.ndarray[tuple[int, ...], np.dtype[np.floating]], ...]
     | np.ndarray[tuple[int, int] | tuple[int, int, int], np.dtype[np.floating]],
-)
+"""
 
 
 def fix_mocoeffs_shape(
-    mocoeffs: DirtyMocoeffs,
+    mocoeffs: "DirtyMocoeffs",
 ) -> np.ndarray[tuple[int, int, int], np.dtype[np.floating]]:
     """Clean up the dimensionality of molecular orbital coefficients.
 
@@ -285,11 +285,11 @@ def fix_moenergies_shape(
             moenergies_new = moenergies
     assert len(moenergies_new.shape) == 3
     assert moenergies_new.shape[0] in (1, 2)
-    assert moenergies_new.shape[1] == moenergies_new.shape[2]  # ty: ignore[index-out-of-bounds]
+    assert moenergies_new.shape[1] == moenergies_new.shape[2]
     return moenergies_new  # ty: ignore[invalid-return-type]
 
 
-def read_dalton_propfile(tmpdir: Path) -> list[str]:
+def read_dalton_propfile(tmpdir: Path) -> list[list[str]]:
     """Parse a DALTON.PROP file."""
     proplist = []
     with open(tmpdir / "DALTON.PROP") as propfile:

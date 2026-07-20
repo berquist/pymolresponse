@@ -15,8 +15,6 @@ dependencies:
       - pyscf
       # doesn't exist on conda-forge
       - pytest-ruff
-      # doesn't exist on conda-forge
-      - pytest-snob
   # documentation
   - sphinx
   - sphinx_rtd_theme

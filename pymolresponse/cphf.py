@@ -2,26 +2,28 @@
 
 from abc import ABC, abstractmethod
 from collections.abc import Sequence
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 
-from pymolresponse.core import Hamiltonian, Program, Spin
-from pymolresponse.operators import Operator
-from pymolresponse.solvers import LineqSolver, Solver
 from pymolresponse.utils import form_results, form_vec_energy_differences
 
 
+if TYPE_CHECKING:
+    from pymolresponse.core import Hamiltonian, Program, Spin
+    from pymolresponse.operators import Operator
+    from pymolresponse.solvers import LineqSolver, Solver
+
+
 class Driver(ABC):
-    def __init__(self, solver: Solver) -> None:
-        assert isinstance(solver, Solver)
+    def __init__(self, solver: "Solver") -> None:
         self.solver = solver
 
         self.results: list[np.ndarray] = []
 
     @abstractmethod
     def run(
-        self, hamiltonian: Hamiltonian, spin: Spin, program: Program | None, program_obj: Any
+        self, hamiltonian: "Hamiltonian", spin: "Spin", program: "Program | None", program_obj: Any
     ) -> None:
         pass
 
@@ -29,8 +31,7 @@ class Driver(ABC):
 class CPHF(Driver):
     """Driver for solving the coupled perturbed Hartree-Fock (CPHF) equations."""
 
-    def __init__(self, solver: LineqSolver) -> None:
-        assert isinstance(solver, LineqSolver)
+    def __init__(self, solver: "LineqSolver") -> None:
         self.solver = solver
 
     def set_frequencies(self, frequencies: Sequence[float] | None = None) -> None:
@@ -45,7 +46,7 @@ class CPHF(Driver):
         self.solver.set_frequencies(frequencies)
         self.frequencies = self.solver.frequencies
 
-    def add_operator(self, operator: Operator) -> None:
+    def add_operator(self, operator: "Operator") -> None:
         """Add an operator to the list of operators that will be used as the
         right-hand side perturbation.
         """
@@ -53,11 +54,8 @@ class CPHF(Driver):
         self.solver.add_operator(operator)
 
     def run(
-        self, hamiltonian: Hamiltonian, spin: Spin, program: Program | None, program_obj: Any
+        self, hamiltonian: "Hamiltonian", spin: "Spin", program: "Program | None", program_obj: Any
     ) -> None:
-        assert isinstance(hamiltonian, Hamiltonian)
-        assert isinstance(spin, Spin)
-        assert isinstance(program, (Program, type(None)))
         # TODO program_obj
 
         if not hasattr(self, "frequencies"):

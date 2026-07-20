@@ -8,18 +8,19 @@ from pyscf.ao2mo import full, general
 
 from pymolresponse.ao2mo import AO2MO
 from pymolresponse.interfaces.pyscf.utils import occupations_from_pyscf_mol
-from pymolresponse.utils import DirtyMocoeffs
 
 
 if TYPE_CHECKING:
     from pyscf.gto.mole import Mole
+
+    from pymolresponse.utils import DirtyMocoeffs
 
 
 class AO2MOpyscf(AO2MO):
     """Perform AO-to-MO transformations using pyscf."""
 
     # TODO what does the pyscf compact kwarg do?
-    def __init__(self, C: DirtyMocoeffs, pyscfmol: "Mole") -> None:
+    def __init__(self, C: "DirtyMocoeffs", pyscfmol: "Mole") -> None:
         self.pyscfmol = pyscfmol
         occupations = occupations_from_pyscf_mol(self.pyscfmol, C)
         super().__init__(C, occupations, I=None)

@@ -2,15 +2,19 @@
 equations.
 """
 
-from typing import Any, ClassVar
+from typing import TYPE_CHECKING, Any, ClassVar
 
 import numpy as np
 
 from pymolresponse.constants import HARTREE_TO_EV, HARTREE_TO_INVCM
-from pymolresponse.core import Hamiltonian, Program, Spin
+from pymolresponse.core import Hamiltonian, Spin
 from pymolresponse.cphf import CPHF
 from pymolresponse.solvers import EigSolver, EigSolverTDA
 from pymolresponse.utils import form_indices_orbwin, form_vec_energy_differences
+
+
+if TYPE_CHECKING:
+    from pymolresponse.core import Program
 
 
 class TDHF(CPHF):
@@ -20,15 +24,11 @@ class TDHF(CPHF):
     """
 
     def __init__(self, solver: EigSolver) -> None:
-        assert isinstance(solver, EigSolver)
         self.solver = solver
 
     def run(
-        self, hamiltonian: Hamiltonian, spin: Spin, program: Program | None, program_obj: Any
+        self, hamiltonian: Hamiltonian, spin: Spin, program: "Program | None", program_obj: Any
     ) -> None:
-        assert isinstance(hamiltonian, Hamiltonian)
-        assert isinstance(spin, Spin)
-        assert isinstance(program, (Program, type(None)))
         # TODO program_obj
 
         self.solver.run(hamiltonian, spin, program, program_obj)
@@ -181,7 +181,6 @@ class TDA(TDHF):
     """
 
     def __init__(self, solver: EigSolverTDA) -> None:
-        assert isinstance(solver, EigSolverTDA)
         self.solver = solver
 
     def form_results(self) -> None:

@@ -3,12 +3,13 @@ from typing import TYPE_CHECKING
 import numpy as np
 import scipy.constants as spc
 
-from pymolresponse.utils import DirtyMocoeffs, fix_mocoeffs_shape, repack_matrix_to_vector
+from pymolresponse.utils import fix_mocoeffs_shape, repack_matrix_to_vector
 
 
 if TYPE_CHECKING:
     from pymolresponse.indices import Indices, Occupations
     from pymolresponse.integrals import PropertyIntegrals
+    from pymolresponse.utils import DirtyMocoeffs
 
 
 class Operator:
@@ -125,7 +126,7 @@ class Operator:
 
     def form_rhs_geometric(
         self,
-        C: DirtyMocoeffs,
+        C: "DirtyMocoeffs",
         occupations: "Occupations",
         natoms: int,
         MO_full,

@@ -1,10 +1,14 @@
 from abc import ABC, abstractmethod
 from collections.abc import Sequence
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-from pymolresponse.core import Hamiltonian, Program, Spin
-from pymolresponse.cphf import CPHF, Driver
+from pymolresponse.cphf import CPHF
 from pymolresponse.td import TDHF
+
+
+if TYPE_CHECKING:
+    from pymolresponse.core import Hamiltonian, Program, Spin
+    from pymolresponse.cphf import Driver
 
 
 class MolecularProperty(ABC):
@@ -13,18 +17,14 @@ class MolecularProperty(ABC):
     The TODO
     """
 
-    def __init__(self, program: Program, program_obj: Any, driver: Driver) -> None:
-        assert isinstance(program, Program)
+    def __init__(self, program: "Program", program_obj: Any, driver: "Driver") -> None:
         # TODO isinstance(program_obj, ...)
-        assert isinstance(driver, Driver)
         self.program = program
         self.program_obj = program_obj
         self.driver = driver
 
-    def run(self, hamiltonian: Hamiltonian, spin: Spin) -> None:
+    def run(self, hamiltonian: "Hamiltonian", spin: "Spin") -> None:
         assert self.driver.solver is not None
-        assert isinstance(hamiltonian, Hamiltonian)
-        assert isinstance(spin, Spin)
         self.driver.run(
             hamiltonian=hamiltonian, spin=spin, program=self.program, program_obj=self.program_obj
         )
@@ -44,7 +44,7 @@ class ResponseProperty(MolecularProperty, ABC):
     """
 
     def __init__(
-        self, program: Program, program_obj: Any, driver: "CPHF", *, frequencies: Sequence[float]
+        self, program: "Program", program_obj: Any, driver: "CPHF", *, frequencies: Sequence[float]
     ) -> None:
         driver.set_frequencies(frequencies)
         super().__init__(program, program_obj, driver)
@@ -53,6 +53,6 @@ class ResponseProperty(MolecularProperty, ABC):
 
 
 class TransitionProperty(MolecularProperty, ABC):
-    def __init__(self, program: Program, program_obj: Any, driver: "TDHF"):
+    def __init__(self, program: "Program", program_obj: Any, driver: "TDHF"):
         super().__init__(program, program_obj, driver)
         assert isinstance(self.driver, TDHF)  # for ty

@@ -44,9 +44,6 @@ def calc_center_of_nuclear_charge(coords: np.ndarray, charges: np.ndarray) -> np
 def nuclear_dipole_contribution(
     nuccoords: np.ndarray, nuccharges: np.ndarray, origin_in_bohrs: np.ndarray
 ) -> np.ndarray:
-    assert isinstance(nuccoords, np.ndarray)
-    assert isinstance(nuccharges, np.ndarray)
-    assert isinstance(origin_in_bohrs, np.ndarray)
     assert len(nuccoords.shape) == 2
     assert nuccoords.shape[1] == 3
     assert nuccoords.shape[0] == nuccharges.shape[0]

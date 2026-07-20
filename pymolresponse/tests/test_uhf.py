@@ -31,7 +31,7 @@ def test_explicit_uhf_from_rhf_outside_solver() -> None:
     ao2mo = AO2MOpyscf(mocoeffs, mol)
     ao2mo.perform_rhf_full()
     assert len(ao2mo.tei_mo) == 1
-    tei_mo = ao2mo.tei_mo[0]  # ty: ignore[index-out-of-bounds]
+    tei_mo = ao2mo.tei_mo[0]
 
     C_a = mocoeffs
     C_b = C_a.copy()
@@ -170,7 +170,7 @@ def test_explicit_uhf_outside_solver() -> None:
     ao2mo = AO2MOpyscf(mf.mo_coeff, mol)
     ao2mo.perform_uhf_full()
     assert len(ao2mo.tei_mo) == 4
-    tei_mo_aaaa, tei_mo_aabb, tei_mo_bbaa, tei_mo_bbbb = ao2mo.tei_mo  # ty: ignore[invalid-assignment]
+    tei_mo_aaaa, tei_mo_aabb, tei_mo_bbaa, tei_mo_bbbb = ao2mo.tei_mo
 
     occupations = utils.occupations_from_pyscf_mol(mol, mf.mo_coeff)
     nocc_a, nvirt_a, nocc_b, nvirt_b = occupations
