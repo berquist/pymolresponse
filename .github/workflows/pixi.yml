@@ -19,7 +19,7 @@ jobs:
     strategy:
       matrix:
         os:
-          - macos-15
+          - macos-26
           - ubuntu-24.04
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7
