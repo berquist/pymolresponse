@@ -1,10 +1,14 @@
 """Utility functions that are core to calculating physical values."""
 
 from collections.abc import Sequence
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 import periodictable
+
+
+if TYPE_CHECKING:
+    from pymolresponse.indices import Occupations
 
 
 def get_most_abundant_isotope(element: periodictable.core.Element) -> periodictable.core.Isotope:
@@ -28,13 +32,20 @@ def get_isotopic_masses(charges: Sequence[int]) -> np.ndarray:
 
 
 def calc_center_of_mass(coords: np.ndarray, masses: np.ndarray) -> np.ndarray:
+    assert len(coords.shape) == 2
+    assert coords.shape[1] == 3
     assert len(masses.shape) == 1
+    assert masses.shape[0] == coords.shape[0]
     denominator = np.sum(masses)
     numerator = np.sum(coords * masses[..., np.newaxis], axis=0)
     return numerator / denominator
 
 
 def calc_center_of_nuclear_charge(coords: np.ndarray, charges: np.ndarray) -> np.ndarray:
+    assert len(coords.shape) == 2
+    assert coords.shape[1] == 3
+    assert len(charges.shape) == 1
+    assert charges.shape[0] == coords.shape[0]
     dummy = np.zeros(3)
     center = nuclear_dipole_contribution(coords, charges, dummy)
     total_charge = np.sum(charges)
@@ -42,20 +53,20 @@ def calc_center_of_nuclear_charge(coords: np.ndarray, charges: np.ndarray) -> np
 
 
 def nuclear_dipole_contribution(
-    nuccoords: np.ndarray, nuccharges: np.ndarray, origin_in_bohrs: np.ndarray
+    coords: np.ndarray, charges: np.ndarray, origin: np.ndarray
 ) -> np.ndarray:
-    assert len(nuccoords.shape) == 2
-    assert nuccoords.shape[1] == 3
-    assert nuccoords.shape[0] == nuccharges.shape[0]
-    assert origin_in_bohrs.shape == (3,)
-    assert len(nuccharges.shape) in (1, 2)
-    if len(nuccharges.shape) == 1:
-        charges = nuccharges[..., np.newaxis]
+    assert len(coords.shape) == 2
+    assert coords.shape[1] == 3
+    assert coords.shape[0] == charges.shape[0]
+    assert origin.shape == (3,)
+    assert len(charges.shape) in (1, 2)
+    if len(charges.shape) == 1:
+        charges = charges[..., np.newaxis]
     else:
-        assert nuccharges.shape[1] == 1
-        charges = nuccharges
+        assert charges.shape[1] == 1
+        charges = charges
 
-    return np.sum((nuccoords - origin_in_bohrs) * charges, axis=0)
+    return np.sum((coords - origin) * charges, axis=0)
 
 
 def get_uhf_values(
@@ -107,3 +118,18 @@ def mat_uhf_to_packed_rohf(
     for idx, pair_rohf in enumerate(indices_display_rohf):
         mat_rohf[idx] = sum(get_uhf_values(mat_alpha, mat_beta, pair_rohf))
     return mat_rohf
+
+
+def make_density(
+    C: np.ndarray[tuple[int, int, int], np.dtype[np.floating]], occupations: "Occupations"
+) -> np.ndarray[tuple[int, int, int], np.dtype[np.floating]]:
+    nspin, nbasis, _ = C.shape
+    D = np.empty(shape=(nspin, nbasis, nbasis))
+    C_occ_a = C[0, :, : occupations[0]]
+    D[0] = C_occ_a @ C_occ_a.T
+    if nspin == 2:
+        C_occ_b = C[1, :, : occupations[2]]
+        D[1] = C_occ_b @ C_occ_b.T
+    else:
+        D *= 2.0
+    return D

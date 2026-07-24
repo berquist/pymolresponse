@@ -5,7 +5,8 @@ from typing import TYPE_CHECKING, Any
 import numpy as np
 
 from pymolresponse.core import Program
-from pymolresponse.interfaces.pyscf.helpers import calculate_origin_pyscf
+from pymolresponse.helpers import make_density
+from pymolresponse.interfaces.pyscf.helpers import calculate_origin
 from pymolresponse.molecular_property import ResponseProperty
 from pymolresponse.operators import Operator
 
@@ -70,21 +71,9 @@ class ElectronicGTensor(ResponseProperty):
             if isinstance(gauge_origin, str):
                 coords = program_obj.atom_coords()
                 charges = program_obj.atom_charges()
-                mocoeffs = self.driver.solver.mocoeffs
-                occupations = self.driver.solver.occupations
-                is_uhf = mocoeffs.shape[0] == 2
-                if is_uhf:
-                    Ca = mocoeffs[0]
-                    Cb = mocoeffs[1]
-                    nocc_a, _, nocc_b, _ = occupations
-                    Da = np.dot(Ca[:, :nocc_a], Ca[:, :nocc_a].T)
-                    Db = np.dot(Cb[:, :nocc_b], Cb[:, :nocc_b].T)
-                    D = Da + Db
-                else:
-                    C = mocoeffs[0]
-                    nocc_a, _, _, _ = occupations
-                    D = 2 * np.dot(C[:, :nocc_a], C[:, :nocc_a].T)
-                self.gauge_origin = calculate_origin_pyscf(
+                D_split = make_density(self.driver.solver.mocoeffs, self.driver.solver.occupations)
+                D = D_split[0] + D_split[1]
+                self.gauge_origin = calculate_origin(
                     gauge_origin, coords, charges, D, program_obj, do_print=True
                 )
             else:
