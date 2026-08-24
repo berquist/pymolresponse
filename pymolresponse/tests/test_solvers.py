@@ -91,7 +91,7 @@ def test_final_result_rhf_h2o_sto3g_rpa_singlet_iter() -> None:
     ref_polarizability.form_operators()
     ref_polarizability.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)
     ref_polarizability.form_results()
-    ref_operator = ref_polarizability.driver.solver.operators[0]  # noqa: F841
+    ref_operator = ref_polarizability.driver.solver.operators[0]  # ruff: ignore[unused-variable]
     res_polarizability = electric.Polarizability(
         Program.Psi4,
         mol,
@@ -103,7 +103,7 @@ def test_final_result_rhf_h2o_sto3g_rpa_singlet_iter() -> None:
     res_polarizability.form_operators()
     res_polarizability.run(hamiltonian=Hamiltonian.RPA, spin=Spin.singlet)
     res_polarizability.form_results()
-    res_operator = res_polarizability.driver.solver.operators[0]  # noqa: F841
+    res_operator = res_polarizability.driver.solver.operators[0]  # ruff: ignore[unused-variable]
 
     np.testing.assert_allclose(
         ref_polarizability.polarizabilities,

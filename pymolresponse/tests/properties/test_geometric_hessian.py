@@ -137,7 +137,7 @@ def test_geometric_hessian_rhf_outside_solver_psi4numpy() -> None:
                         np.testing.assert_allclose(
                             deriv2[map_key], deriv2_ref, rtol=0, atol=1.0e-10
                         )
-                        pq = pq + 1
+                        pq += 1
                         row = 3 * atom1 + p
                         col = 3 * atom2 + q
                         if key == "S":
@@ -175,7 +175,7 @@ def test_geometric_hessian_rhf_outside_solver_psi4numpy() -> None:
                     # np.save(os.path.join(datadir, f'{map_key}.npy'), deriv2[map_key])
                     deriv2_ref = np.load(os.path.join(datadir, f"{map_key}.npy"))
                     np.testing.assert_allclose(deriv2[map_key], deriv2_ref, rtol=0, atol=1.0e-10)
-                    pq = pq + 1
+                    pq += 1
                     row = 3 * atom1 + p
                     col = 3 * atom2 + q
                     Hes["J"][row][col] = 2.0 * np.einsum(
@@ -561,7 +561,7 @@ def test_geometric_hessian_rhf_outside_solver_chemists() -> None:
                         np.testing.assert_allclose(
                             deriv2[map_key], deriv2_ref, rtol=0, atol=1.0e-10
                         )
-                        pq = pq + 1
+                        pq += 1
                         row = 3 * atom1 + p
                         col = 3 * atom2 + q
                         if key == "S":
@@ -595,7 +595,7 @@ def test_geometric_hessian_rhf_outside_solver_chemists() -> None:
                     deriv2[map_key] = np.asarray(deriv2_mat[string][pq])
                     deriv2_ref = np.load(os.path.join(datadir, f"{map_key}.npy"))
                     np.testing.assert_allclose(deriv2[map_key], deriv2_ref, rtol=0, atol=1.0e-10)
-                    pq = pq + 1
+                    pq += 1
                     row = 3 * atom1 + p
                     col = 3 * atom2 + q
                     Hes["J"][row][col] = 2.0 * np.einsum("iijj->", deriv2[map_key][o, o, o, o])
@@ -895,7 +895,7 @@ def test_geometric_hessian_rhf_right_hand_side() -> None:
     cart = ["_X", "_Y", "_Z"]
     oei_dict = {"S": "OVERLAP", "T": "KINETIC", "V": "POTENTIAL"}
 
-    deriv1 = dict()
+    deriv1 = {}
 
     # 1st Derivative of OEIs
 
@@ -921,8 +921,8 @@ def test_geometric_hessian_rhf_right_hand_side() -> None:
 
     # B_ia^x = S_ia^x * epsilon_ii - F_ia^x + S_mn^x * [2(ia|mn) - (in|ma)]
 
-    F_grad = dict()
-    B = dict()
+    F_grad = {}
+    B = {}
 
     # Build F_pq^x now
 
@@ -974,7 +974,7 @@ def test_atomic_polar_tensor_rhf() -> None:
     E = moenergies_from_psi4wfn(wfn)
     occupations = occupations_from_psi4wfn(wfn)
     nocc, nvir, _, _ = occupations
-    norb = nocc + nvir  # noqa: F841
+    norb = nocc + nvir  # ruff: ignore[unused-variable]
 
     # electric perturbation part
     ao2mo = AO2MO(C, occupations, I=np.asarray(mints.ao_eri()))

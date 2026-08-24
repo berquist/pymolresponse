@@ -28,6 +28,6 @@ def test_jk_pyscf() -> None:
     """Test the PySCF Coulomb and exchange integral interface."""
     mol = molecules.molecule_water_sto3g()
     mol.build()
-    jk_generator = integrals.JKPyscf(mol)  # noqa: F841
+    jk_generator = integrals.JKPyscf(mol)  # ruff: ignore[unused-variable]
 
     # print(jk_generator.compute_from_mocoeffs())

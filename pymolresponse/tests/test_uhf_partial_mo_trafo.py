@@ -34,7 +34,7 @@ def test_explicit_uhf_outside_solver() -> None:
     norb = C_a.shape[1]
     nocc_a, nocc_b = mol.nelec
     nvirt_a, nvirt_b = norb - nocc_a, norb - nocc_b
-    occupations = [nocc_a, nvirt_a, nocc_b, nvirt_b]  # noqa: F841
+    occupations = [nocc_a, nvirt_a, nocc_b, nvirt_b]  # ruff: ignore[unused-variable]
 
     C_occ_alph = C_a[:, :nocc_a]
     C_virt_alph = C_a[:, nocc_a:]

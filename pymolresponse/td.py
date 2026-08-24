@@ -69,7 +69,7 @@ class TDHF(CPHF):
                 operator.transition_moments.append(transition_moment)
                 operator.oscillator_strengths.append(oscillator_strength)
                 operator.total_oscillator_strengths.append(total_oscillator_strength)
-        setattr(self.solver, "eigvecs_normed", eigvecs_normed)
+        self.solver.eigvecs_normed = eigvecs_normed
         for operator in self.solver.operators:
             operator.transition_moments = np.array(operator.transition_moments)
             operator.oscillator_strengths = np.array(operator.oscillator_strengths)
@@ -106,10 +106,14 @@ class TDHF(CPHF):
         indices_sorted = [indices_unrestricted_orbwin[i] for i in idxsort]
         ndiff = 10
         lines = []
-        lines.append(f"   {ndiff:>2d} smallest eigenvalue differences (eV) ")
-        lines.append("--------------------------------------------------------")
-        lines.append("  No. Spin  Occ  Vir  Irrep   E(Occ)    E(Vir)   E(Diff)")
-        lines.append("--------------------------------------------------------")
+        lines.extend(
+            (
+                f"   {ndiff:>2d} smallest eigenvalue differences (eV) ",
+                "--------------------------------------------------------",
+                "  No. Spin  Occ  Vir  Irrep   E(Occ)    E(Vir)   E(Diff)",
+                "--------------------------------------------------------",
+            )
+        )
         for idx in range(ndiff):
             iocc, ivirt = indices_sorted[idx]
             lines.append(
@@ -217,7 +221,7 @@ class TDA(TDHF):
                 operator.transition_moments.append(transition_moment)
                 operator.oscillator_strengths.append(oscillator_strength)
                 operator.total_oscillator_strengths.append(total_oscillator_strength)
-        setattr(self.solver, "eigvecs_normed", eigvecs_normed)
+        self.solver.eigvecs_normed = eigvecs_normed
         for operator in self.solver.operators:
             operator.transition_moments = np.array(operator.transition_moments)
             operator.oscillator_strengths = np.array(operator.oscillator_strengths)

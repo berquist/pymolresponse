@@ -48,7 +48,7 @@ def nuclear_dipole_contribution(
     assert nuccoords.shape[1] == 3
     assert nuccoords.shape[0] == nuccharges.shape[0]
     assert origin_in_bohrs.shape == (3,)
-    assert len(nuccharges.shape) in (1, 2)
+    assert len(nuccharges.shape) in {1, 2}
     if len(nuccharges.shape) == 1:
         charges = nuccharges[..., np.newaxis]
     else:

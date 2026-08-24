@@ -164,6 +164,7 @@ ignore = [
     "S101",  # high test coverage and not trying to enforce user contracts
     # makes assert usage ok for defensive programming
 ]
+preview = true
 
 [tool.ruff.lint.isort]
 lines-after-imports = 2

@@ -17,7 +17,7 @@ def pymolresponse_format(
     state = description.state
     assert state in {"distance", "dirty", "distance-dirty"}
 
-    if getenv(_ENVVARNAME, "False").lower() in ("true", "1", "t"):
+    if getenv(_ENVVARNAME, "False").lower() in {"true", "1", "t"}:
         fmt_distance = "{base_version}.post{distance}"
         if state != "distance":
             msg = "dirty state doesn't make sense when building for a package index"

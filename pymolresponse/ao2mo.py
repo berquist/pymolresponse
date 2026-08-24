@@ -22,7 +22,7 @@ class AO2MO:
         self,
         C: "DirtyMocoeffs",
         occupations: "Occupations",
-        I: np.ndarray[tuple[int, int, int, int], np.dtype[np.floating]] | None = None,  # noqa: E741
+        I: np.ndarray[tuple[int, int, int, int], np.dtype[np.floating]] | None = None,
     ) -> None:
         self.C = fix_mocoeffs_shape(C)
         self.occupations = occupations
@@ -30,11 +30,11 @@ class AO2MO:
 
         self.nocc_alph, self.nvirt_alph, self.nocc_beta, self.nvirt_beta = occupations
 
-        self.tei_mo = tuple()
+        self.tei_mo = ()
 
     @staticmethod
     def transform(
-        I: np.ndarray[tuple[int, int, int, int], np.dtype[np.floating]],  # noqa: E741
+        I: np.ndarray[tuple[int, int, int, int], np.dtype[np.floating]],
         C1: np.ndarray[tuple[int, int], np.dtype[np.floating]],
         C2: np.ndarray[tuple[int, int], np.dtype[np.floating]],
         C3: np.ndarray[tuple[int, int], np.dtype[np.floating]],

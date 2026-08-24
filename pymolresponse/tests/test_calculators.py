@@ -201,9 +201,9 @@ def calculate_rhf(
     """
     if operator_label:
         # TODO add dipvel
-        assert operator_label in ("dipole", "angmom", "spinorb")
-    assert source_moenergies in ("pyscf", "dalton")
-    assert source_mocoeffs in ("pyscf", "dalton")
+        assert operator_label in {"dipole", "angmom", "spinorb"}
+    assert source_moenergies in {"pyscf", "dalton"}
+    assert source_mocoeffs in {"pyscf", "dalton"}
 
     dalton_molecule = dalmol.readin(dalton_tmpdir / "DALTON.BAS")
     lines = []
@@ -245,15 +245,11 @@ def calculate_rhf(
         job = ccopen(dalton_tmpdir / "DALTON.OUT")
         data = job.parse()
         E = np.diag([convertor(x, "eV", "hartree") for x in data.moenergies[0]])[np.newaxis, ...]
-    else:
-        pass
 
     if source_mocoeffs == "pyscf":
         C = mf.mo_coeff[np.newaxis, ...]
     elif source_mocoeffs == "dalton":
         C = ifc.cmo[0][np.newaxis, ...]
-    else:
-        pass
 
     solver = solvers.ExactInv(C, E, occupations)
 
@@ -290,10 +286,6 @@ def calculate_rhf(
                 integrals_spinorb_ao += chg * mol.intor("cint1e_prinvxp_sph", comp=3)
             operator_spinorb.ao_integrals = integrals_spinorb_ao
             driver.add_operator(operator_spinorb)
-        else:
-            pass
-    else:
-        pass
 
     driver.set_frequencies()
 
@@ -324,9 +316,9 @@ def calculate_uhf(
     """
     if operator_label:
         # TODO add dipvel
-        assert operator_label in ("dipole", "angmom", "spinorb")
-    assert source_moenergies in ("pyscf", "dalton")
-    assert source_mocoeffs in ("pyscf", "dalton")
+        assert operator_label in {"dipole", "angmom", "spinorb"}
+    assert source_moenergies in {"pyscf", "dalton"}
+    assert source_mocoeffs in {"pyscf", "dalton"}
 
     dalton_molecule = dalmol.readin(dalton_tmpdir / "DALTON.BAS")
     lines = []
@@ -371,16 +363,12 @@ def calculate_uhf(
         data = job.parse()
         E = np.diag([convertor(x, "eV", "hartree") for x in data.moenergies[0]])[np.newaxis, ...]
         E = np.concatenate((E, E), axis=0)
-    else:
-        pass
 
     if source_mocoeffs == "pyscf":
         C = mf.mo_coeff
     elif source_mocoeffs == "dalton":
         C = ifc.cmo[0][np.newaxis, ...]
         C = np.concatenate((C, C), axis=0)
-    else:
-        pass
 
     solver = solvers.ExactInv(C, E, occupations)
 
@@ -417,10 +405,6 @@ def calculate_uhf(
                 integrals_spinorb_ao += chg * mol.intor("cint1e_prinvxp_sph", comp=3)
             operator_spinorb.ao_integrals = integrals_spinorb_ao
             driver.add_operator(operator_spinorb)
-        else:
-            pass
-    else:
-        pass
 
     driver.set_frequencies()
 

@@ -88,7 +88,7 @@ class Solver(ABC):
     ) -> None:
         # TODO program_obj
         nden = self.mocoeffs.shape[0]
-        assert nden in (1, 2)
+        assert nden in {1, 2}
         if program == Program.PySCF:
             from pymolresponse.interfaces.pyscf.ao2mo import AO2MOpyscf
 
@@ -167,7 +167,7 @@ class ExactLineqSolver(LineqSolver, ABC):
         self, hamiltonian: Hamiltonian, spin: Spin, frequency: float | None
     ) -> None:
         assert self.tei_mo is not None
-        assert len(self.tei_mo) in (1, 2, 4, 6)
+        assert len(self.tei_mo) in {1, 2, 4, 6}
         assert isinstance(self.tei_mo_type, AO2MOTransformationType)
 
         assert isinstance(frequency, float)
@@ -375,7 +375,7 @@ class ExactLineqSolver(LineqSolver, ABC):
                     [np.zeros(shape=(nov_beta, nov_beta)), -np.eye(nov_beta)],
                 ]
             )
-            superoverlap_beta = superoverlap_beta * frequency
+            superoverlap_beta *= frequency
 
             G_aa = np.block([[A_ss_a, B_ss_a], [B_ss_a, A_ss_a]])
             G_ab = np.block([[A_os_a, B_os_a], [B_os_a, A_os_a]])
@@ -703,12 +703,12 @@ class ExactDiagonalizationSolver(EigSolver):
     ) -> None:
         assert hasattr(self, "tei_mo")
         assert self.tei_mo is not None
-        assert len(self.tei_mo) in (1, 2, 4, 6)
+        assert len(self.tei_mo) in {1, 2, 4, 6}
         assert isinstance(self.tei_mo_type, AO2MOTransformationType)
 
         nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
         nov_alph = nocc_alph * nvirt_alph
-        nov_beta = nocc_beta * nvirt_beta  # noqa: F841
+        nov_beta = nocc_beta * nvirt_beta  # ruff: ignore[unused-variable]
 
         if not self.is_uhf:
             # Set up "function pointers".
@@ -761,7 +761,7 @@ class ExactDiagonalizationSolver(EigSolver):
     def diagonalize_explicit_hessian(self) -> None:
         nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
         nov_alph = nocc_alph * nvirt_alph
-        nov_beta = nocc_beta * nvirt_beta  # noqa: F841
+        nov_beta = nocc_beta * nvirt_beta  # ruff: ignore[unused-variable]
         if not self.is_uhf:
             eigvals, eigvecs = sp.linalg.eig(self.explicit_hessian)
             # Sort from lowest to highest eigenvalue (excitation
@@ -801,14 +801,14 @@ class ExactDiagonalizationSolverTDA(ExactDiagonalizationSolver, EigSolverTDA):
     ) -> None:
         assert hasattr(self, "tei_mo")
         assert self.tei_mo is not None
-        assert len(self.tei_mo) in (1, 2, 4, 6)
+        assert len(self.tei_mo) in {1, 2, 4, 6}
         assert isinstance(self.tei_mo_type, AO2MOTransformationType)
 
         assert hamiltonian == Hamiltonian.TDA
 
         nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
-        nov_alph = nocc_alph * nvirt_alph  # noqa: F841
-        nov_beta = nocc_beta * nvirt_beta  # noqa: F841
+        nov_alph = nocc_alph * nvirt_alph  # ruff: ignore[unused-variable]
+        nov_beta = nocc_beta * nvirt_beta  # ruff: ignore[unused-variable]
 
         if not self.is_uhf:
             # Set up "function pointers".
@@ -841,8 +841,8 @@ class ExactDiagonalizationSolverTDA(ExactDiagonalizationSolver, EigSolverTDA):
 
     def diagonalize_explicit_hessian(self) -> None:
         nocc_alph, nvirt_alph, nocc_beta, nvirt_beta = self.occupations
-        nov_alph = nocc_alph * nvirt_alph  # noqa: F841
-        nov_beta = nocc_beta * nvirt_beta  # noqa: F841
+        nov_alph = nocc_alph * nvirt_alph  # ruff: ignore[unused-variable]
+        nov_beta = nocc_beta * nvirt_beta  # ruff: ignore[unused-variable]
         if not self.is_uhf:
             eigvals, eigvecs = sp.linalg.eig(self.explicit_hessian)
             # Sort from lowest to highest eigenvalue (excitation

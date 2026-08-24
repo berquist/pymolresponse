@@ -48,7 +48,7 @@ class Magnetizability(ResponseProperty):
 
     def form_results(self) -> None:
         assert len(self.driver.results) == 1
-        operator_angmom = self.driver.solver.operators[0]  # noqa: F841
+        operator_angmom = self.driver.solver.operators[0]  # ruff: ignore[unused-variable]
         self.magnetizability = (1 / 4) * self.driver.results[0]
         # print('paramagnetic part of magnetic susceptibility/magnetizability, no GIAO, Cartesian origin')
         # print(self.magnetizability)
@@ -150,7 +150,7 @@ class ElectronicGTensor(ResponseProperty):
         self.driver.add_operator(operator_spinorb_eff)
 
     def form_results(self) -> None:
-        operator_angmom = self.driver.solver.operators[0]  # noqa: F841
+        operator_angmom = self.driver.solver.operators[0]  # ruff: ignore[unused-variable]
         # angmom_grad_alph = operator_angmom.mo_integrals_ai_supervector_alph
         # print(angmom_grad_alph[0, :, 0])
         # angmom_resp_alph = operator_angmom.rspvecs_alph[0]
@@ -159,29 +159,29 @@ class ElectronicGTensor(ResponseProperty):
         # print(np.linalg.norm(angmom_resp_alph[0, :, 0]))
         # print(angmom_resp_beta.shape)
         # print(np.linalg.norm(angmom_resp_beta[0, :, 0]))
-        operator_spinorb = self.driver.solver.operators[1]  # noqa: F841
-        operator_spinorb_eff = self.driver.solver.operators[2]  # noqa: F841
+        operator_spinorb = self.driver.solver.operators[1]  # ruff: ignore[unused-variable]
+        operator_spinorb_eff = self.driver.solver.operators[2]  # ruff: ignore[unused-variable]
 
-        np_formatter = {"float_kind": lambda x: f"{x:14.8f}"}  # noqa: F841
+        np_formatter = {"float_kind": lambda x: f"{x:14.8f}"}  # ruff: ignore[unused-variable]
         # np.set_printoptions(linewidth=200, formatter=np_formatter)
         assert len(self.driver.results) == 1
         results = self.driver.results[0]
         assert results.shape == (9, 9)
-        block_1 = results[0:3, 0:3]  # angmom/angmom  # noqa: F841
+        block_1 = results[0:3, 0:3]  # angmom/angmom  # ruff: ignore[unused-variable]
         block_2 = results[0:3, 3:6]  # angmom/spinorb
         block_3 = results[0:3, 6:9]  # angmom/spinorb_eff
-        block_4 = results[3:6, 0:3]  # spinorb/angmom  # noqa: F841
-        block_5 = results[3:6, 3:6]  # spinorb/spinorb  # noqa: F841
-        block_6 = results[3:6, 6:9]  # spinorb/spinorb_eff  # noqa: F841
-        block_7 = results[6:9, 0:3]  # spinorb_eff/angmom  # noqa: F841
-        block_8 = results[6:9, 3:6]  # spinorb_eff/spinorb  # noqa: F841
-        block_9 = results[6:9, 6:9]  # spinorb_eff/spinorb_eff  # noqa: F841
+        block_4 = results[3:6, 0:3]  # spinorb/angmom  # ruff: ignore[unused-variable]
+        block_5 = results[3:6, 3:6]  # spinorb/spinorb  # ruff: ignore[unused-variable]
+        block_6 = results[3:6, 6:9]  # spinorb/spinorb_eff  # ruff: ignore[unused-variable]
+        block_7 = results[6:9, 0:3]  # spinorb_eff/angmom  # ruff: ignore[unused-variable]
+        block_8 = results[6:9, 3:6]  # spinorb_eff/spinorb  # ruff: ignore[unused-variable]
+        block_9 = results[6:9, 6:9]  # spinorb_eff/spinorb_eff  # ruff: ignore[unused-variable]
 
         nalph, nbeta = self.program_obj.nelec
         exact_spin = 0.5 * (nalph - nbeta)
         res_1 = block_2 / exact_spin
         res_2 = (block_3 - block_2) / exact_spin
-        res = res_1 + res_2  # noqa: F841
+        res = res_1 + res_2  # ruff: ignore[unused-variable]
 
         # principal values are sqrt(eigvals(g.T * g)
         prin_1 = np.sqrt(np.linalg.eigvals(np.dot(res_1.T, res_1)))

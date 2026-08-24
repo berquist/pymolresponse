@@ -33,8 +33,8 @@ def np_load(filename: str | Path) -> np.ndarray[tuple[int, ...], np.dtype[np.num
     if isinstance(arr, np.lib.npyio.NpzFile):
         # Make the assumption that there's only a single array
         # present, even though *.npz files can hold multiple arrays.
-        for _arr in arr.values():
-            arr = _arr
+        for arr_ in arr.values():
+            arr = arr_
             break
     return arr
 
@@ -228,7 +228,7 @@ def fix_mocoeffs_shape(
     # assume np.ndarray
     else:
         shape = mocoeffs.shape
-        assert len(shape) in (2, 3)
+        assert len(shape) in {2, 3}
         if len(shape) == 2:
             mocoeffs_new = mocoeffs[np.newaxis]
         else:
@@ -254,7 +254,7 @@ def fix_moenergies_shape(
     else:
         shape = moenergies.shape
         ls = len(shape)
-        assert ls in (1, 2, 3)
+        assert ls in {1, 2, 3}
         if ls == 1:
             # It's a vector.
             moenergies_new = np.diag(moenergies)[np.newaxis]
@@ -267,7 +267,7 @@ def fix_moenergies_shape(
             if shape[0] == shape[1]:  # ty: ignore[index-out-of-bounds]
                 moenergies_new = moenergies[np.newaxis]
             else:
-                assert shape[0] in (1, 2)
+                assert shape[0] in {1, 2}
                 if shape[0] == 1:
                     # (1, norb)
                     # FIXME swapped?
@@ -278,13 +278,13 @@ def fix_moenergies_shape(
                     moenergies_beta = np.diag(moenergies[1, :])[np.newaxis]
                     moenergies_new = np.concatenate((moenergies_alph, moenergies_beta), axis=0)
         else:
-            assert shape[0] in (1, 2)
+            assert shape[0] in {1, 2}
             # You might think at first glance there's an assumption that nbsf
             # == nmo here, but the (Fock) matrix is entirely in the MO basis.
             assert shape[1] == shape[2]  # ty: ignore[index-out-of-bounds]
             moenergies_new = moenergies
     assert len(moenergies_new.shape) == 3
-    assert moenergies_new.shape[0] in (1, 2)
+    assert moenergies_new.shape[0] in {1, 2}
     assert moenergies_new.shape[1] == moenergies_new.shape[2]
     return moenergies_new  # ty: ignore[invalid-return-type]
 

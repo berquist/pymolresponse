@@ -32,55 +32,53 @@ def dalton_label_to_operator(label: str) -> Operator:
     # dipole length
     if "diplen" in label:
         operator_label = "dipole"
-        _coord = label[0]
-        slice_idx = coord1_to_slice[_coord]
+        coord = label[0]
+        slice_idx = coord1_to_slice[coord]
         is_imaginary = False
         is_spin_dependent = False
     # dipole velocity
     elif "dipvel" in label:
         operator_label = "dipvel"
-        _coord = label[0]
-        slice_idx = coord1_to_slice[_coord]
+        coord = label[0]
+        slice_idx = coord1_to_slice[coord]
         is_imaginary = True
         is_spin_dependent = False
     # angular momentum
     elif "angmom" in label:
         operator_label = "angmom"
-        _coord = label[0]
-        slice_idx = coord1_to_slice[_coord]
+        coord = label[0]
+        slice_idx = coord1_to_slice[coord]
         is_imaginary = True
         is_spin_dependent = False
     # spin-orbit
     elif "spnorb" in label:
         operator_label = "spinorb"
-        _coord = label[0]
-        slice_idx = coord1_to_slice[_coord]
+        coord = label[0]
+        slice_idx = coord1_to_slice[coord]
         is_imaginary = True
         is_spin_dependent = True
-        _nelec = label[1]
-        if _nelec in ("1", "2"):
-            operator_label += _nelec
+        nelec = label[1]
+        if nelec in {"1", "2"}:
+            operator_label += nelec
         # combined one- and two-electron
-        elif _nelec in (" ", "_"):
+        elif nelec in {" ", "_"}:
             operator_label += "c"
-        else:
-            pass
     # Fermi contact
     elif "fc" in label:
         operator_label = "fermi"
-        _atomid = label[6 : 6 + 2]
-        slice_idx = int(_atomid) - 1
+        atomid = label[6 : 6 + 2]
+        slice_idx = int(atomid) - 1
         is_imaginary = False
         is_spin_dependent = True
     # spin-dipole
     elif "sd" in label:
         operator_label = "sd"
-        _coord_atom = label[3 : 3 + 3]
-        _coord = label[7]
-        _atomid = (int(_coord_atom) - 1) // 3
-        _coord_1 = (int(_coord_atom) - 1) % 3
-        _coord_2 = slice_to_coord1[_coord_1] + _coord
-        slice_idx = (6 * _atomid) + coord2_to_slice[_coord_2]
+        coord_atom = label[3 : 3 + 3]
+        coord = label[7]
+        atomid = (int(coord_atom) - 1) // 3
+        coord_1 = (int(coord_atom) - 1) % 3
+        coord_2 = slice_to_coord1[coord_1] + coord
+        slice_idx = (6 * atomid) + coord2_to_slice[coord_2]
         is_imaginary = False
         is_spin_dependent = True
     # TODO SD+FC?

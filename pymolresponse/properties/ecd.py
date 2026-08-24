@@ -193,53 +193,53 @@ class ECD(TransitionProperty):
         tmom_angmom = op_angmom.transition_moments
         if self.do_dipvel:
             op_dipvel = self.driver.solver.operators[2]
-            rotstrvel = self.rotational_strengths_dipvel  # noqa: F841
+            rotstrvel = self.rotational_strengths_dipvel  # ruff: ignore[unused-variable]
             etoscsvel = op_dipvel.total_oscillator_strengths
             tmom_dipvel = op_dipvel.transition_moments
             t2_dipvel = np.asarray(
                 [np.dot(tmom_dipvel[x], tmom_dipvel[x]) for x in range(len(tmom_dipvel))]
             )
         nstates = len(energies)
-        lines.append(
-            "-----------------------------------------------------------------------------"
-        )
-        lines.append("         ABSORPTION SPECTRUM VIA TRANSITION ELECTRIC DIPOLE MOMENTS")
-        lines.append(
-            "-----------------------------------------------------------------------------"
-        )
-        lines.append("State   Energy  Wavelength   fosc         T2         TX        TY        TZ")
-        lines.append("        (cm-1)    (nm)                  (au**2)     (au)      (au)      (au)")
-        lines.append(
-            "-----------------------------------------------------------------------------"
+        lines.extend(
+            (
+                "-----------------------------------------------------------------------------",
+                "         ABSORPTION SPECTRUM VIA TRANSITION ELECTRIC DIPOLE MOMENTS",
+                "-----------------------------------------------------------------------------",
+                "State   Energy  Wavelength   fosc         T2         TX        TY        TZ",
+                "        (cm-1)    (nm)                  (au**2)     (au)      (au)      (au)",
+                "-----------------------------------------------------------------------------",
+            )
         )
         lines.extend(
             f"{state + 1:>4d}{energies_to_invcm[state]:>10.1f}{energies_to_nm[state]:>9.1f}{etoscslen[state]:>14.9f}{t2_diplen[state]:>10.5f}{tmom_diplen[state, 0]:>10.5f}{tmom_diplen[state, 1]:>10.5f}{tmom_diplen[state, 2]:>10.5f}"
             for state in range(nstates)
         )
-        lines.append("")
-        lines.append(
-            "-----------------------------------------------------------------------------"
-        )
-        lines.append("         ABSORPTION SPECTRUM VIA TRANSITION VELOCITY DIPOLE MOMENTS")
-        lines.append(
-            "-----------------------------------------------------------------------------"
-        )
-        lines.append("State   Energy  Wavelength   fosc         P2         PX        PY        PZ")
-        lines.append("        (cm-1)    (nm)                  (au**2)     (au)      (au)      (au)")
-        lines.append(
-            "-----------------------------------------------------------------------------"
+        lines.extend(
+            (
+                "",
+                "-----------------------------------------------------------------------------",
+                "         ABSORPTION SPECTRUM VIA TRANSITION VELOCITY DIPOLE MOMENTS",
+                "-----------------------------------------------------------------------------",
+                "State   Energy  Wavelength   fosc         P2         PX        PY        PZ",
+                "        (cm-1)    (nm)                  (au**2)     (au)      (au)      (au)",
+                "-----------------------------------------------------------------------------",
+            )
         )
         lines.extend(
             f"{state + 1:>4d}{energies_to_invcm[state]:>10.1f}{energies_to_nm[state]:>9.1f}{etoscsvel[state]:>14.9f}{t2_dipvel[state]:>10.5f}{tmom_dipvel[state, 0]:>10.5f}{tmom_dipvel[state, 1]:>10.5f}{tmom_dipvel[state, 2]:>10.5f}"
             for state in range(nstates)
         )
-        lines.append("")
-        lines.append("-------------------------------------------------------------------")
-        lines.append("                             CD SPECTRUM")
-        lines.append("-------------------------------------------------------------------")
-        lines.append("State   Energy Wavelength       R         MX        MY        MZ")
-        lines.append("        (cm-1)   (nm)       (1e40*cgs)   (au)      (au)      (au)")
-        lines.append("-------------------------------------------------------------------")
+        lines.extend(
+            (
+                "",
+                "-------------------------------------------------------------------",
+                "                             CD SPECTRUM",
+                "-------------------------------------------------------------------",
+                "State   Energy Wavelength       R         MX        MY        MZ",
+                "        (cm-1)   (nm)       (1e40*cgs)   (au)      (au)      (au)",
+                "-------------------------------------------------------------------",
+            )
+        )
         lines.extend(
             f"{state + 1:>4d}{energies_to_invcm[state]:>10.1f}{energies_to_nm[state]:>9.1f}{rotstrlen[state]:>13.5f}{tmom_angmom[state, 0]:>10.5f}{tmom_angmom[state, 1]:>10.5f}{tmom_angmom[state, 2]:>10.5f}"
             for state in range(nstates)
@@ -262,23 +262,25 @@ class ECD(TransitionProperty):
         eigvecs = self.driver.solver.eigvecs
         square_eigvecs = np.power(eigvecs, 2)
         lines = []
-        lines.append(" ---------------------------------------------------")
-        lines.append(
-            f"               {self.driver._HAMILTONIAN_MAP_ORCA[self.driver.hamiltonian]} Excitation Energies              "
+        lines.extend(
+            (
+                " ---------------------------------------------------",
+                f"               {self.driver._HAMILTONIAN_MAP_ORCA[self.driver.hamiltonian]} Excitation Energies              ",
+                " ---------------------------------------------------",
+                "",
+            )
         )
-        lines.append(" ---------------------------------------------------")
-        lines.append("")
         nstates = len(energies)
         for state in range(nstates):
-            lines.append(
-                f" Excited state{state + 1:>4d}: excitation energy (eV) ={energies_ev[state]:>10.4f}"
+            lines.extend(
+                (
+                    f" Excited state{state + 1:>4d}: excitation energy (eV) ={energies_ev[state]:>10.4f}",
+                    f" Total energy for state{state + 1:>3d}:{0:>31.8f} au",
+                    f"    Multiplicity: {self.driver._SPIN_MAP_QCHEM[self.driver.spin]}",
+                    f"    Trans. Mom.:{tmom_diplen[state, 0]:>8.4f} X{tmom_diplen[state, 1]:>9.4f} Y{tmom_diplen[state, 2]:>9.4f} Z",
+                    f"    Strength   :{etoscslen[state]:>17.10f}",
+                )
             )
-            lines.append(f" Total energy for state{state + 1:>3d}:{0:>31.8f} au")
-            lines.append(f"    Multiplicity: {self.driver._SPIN_MAP_QCHEM[self.driver.spin]}")
-            lines.append(
-                f"    Trans. Mom.:{tmom_diplen[state, 0]:>8.4f} X{tmom_diplen[state, 1]:>9.4f} Y{tmom_diplen[state, 2]:>9.4f} Z"
-            )
-            lines.append(f"    Strength   :{etoscslen[state]:>17.10f}")
             eigvec_state = eigvecs[:, state]
             square_eigvec_state = square_eigvecs[:, state]
             mask = square_eigvec_state > cutoff

@@ -105,7 +105,7 @@ def calculate_origin_pyscf(
     do_print: bool = False,
 ) -> np.ndarray:
     origin_string = origin_string.lower()
-    assert origin_string in (
+    assert origin_string in {
         "explicitly-set",
         "zero",
         "com",
@@ -114,7 +114,7 @@ def calculate_origin_pyscf(
         "centerofelcharge",
         "ncc",
         "centerofnuccharge",
-    )
+    }
     zerovec = np.zeros(3)
 
     if origin_string == "explicitly-set":
@@ -125,21 +125,19 @@ def calculate_origin_pyscf(
         if do_print:
             print(" --- Origin: zero ---")
         origin = zerovec
-    elif origin_string in ("com", "centerofmass"):
+    elif origin_string in {"com", "centerofmass"}:
         if do_print:
             print(" --- Origin: center of mass ---")
         masses = get_isotopic_masses(nuccharges[:, 0])
         origin = calc_center_of_mass(nuccoords, masses)
-    elif origin_string in ("ecc", "centerofelcharge"):
+    elif origin_string in {"ecc", "centerofelcharge"}:
         if do_print:
             print(" --- Origin: center of electronic charge ---")
         origin = calc_center_of_electronic_charge_pyscf(D, pyscfmol)
-    elif origin_string in ("ncc", "centerofnuccharge"):
+    elif origin_string in {"ncc", "centerofnuccharge"}:
         if do_print:
             print(" --- Origin: center of nuclear charge ---")
         origin = calc_center_of_nuclear_charge(nuccoords, nuccharges)
-    else:
-        pass
 
     if do_print:
         print(" Calculating the dipole at the requested origin...")
