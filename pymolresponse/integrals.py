@@ -9,7 +9,10 @@ import numpy as np
 
 STARS = "********"
 
-PropertyIntegrals = np.ndarray[tuple[int, int, int], np.dtype[np.floating]]
+PropertyIntegrals = (
+    np.ndarray[tuple[int, int], np.dtype[np.floating]]
+    | np.ndarray[tuple[int, int, int], np.dtype[np.floating]]
+)
 
 
 @unique

@@ -8,14 +8,13 @@ def molecule_water_sto3g_angstrom(verbose: int = 0) -> pyscf.gto.Mole:
     mol.verbose = verbose
     mol.output = None
 
+    with open(COORDDIR / "water_angstrom.xyz") as fh:
+        next(fh)
+        next(fh)
+        mol.atom = fh.read()
     mol.basis = "sto-3g"
     mol.charge = 0
     mol.spin = 0
-
-    mol.atom = """O         -1.81298        0.53384       -0.01233
-H         -0.82365        0.49649        0.00870
-H         -2.10234       -0.29131        0.45244
-"""
 
     return mol
 
