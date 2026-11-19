@@ -1,0 +1,156 @@
+import numpy as np
+import numpy.linalg as npl
+
+import psi4
+
+from pymolresponse.constants import convfac_au_to_debye
+from pymolresponse.helpers import (
+    calc_center_of_mass,
+    calc_center_of_nuclear_charge,
+    get_isotopic_masses,
+    nuclear_dipole_contribution,
+)
+
+
+# TODO
+def calc_center_of_mass_psi4(pyscfmol) -> np.ndarray:
+    charges = pyscfmol.atom_charges()
+    masses = get_isotopic_masses(charges)
+    coords = pyscfmol.atom_coords()
+    return calc_center_of_mass(coords, masses)
+
+
+def calc_center_of_electronic_charge_psi4(
+    D: np.ndarray, psi4wfn: psi4.core.Wavefunction
+) -> np.ndarray:
+    assert len(D.shape) == 2
+    # no linear dependencies!
+    assert D.shape[0] == D.shape[1]
+    zerovec = np.zeros(3)
+    dipole_at_zerovec = electronic_dipole_contribution_psi4(D, psi4wfn, zerovec)
+    nelec = psi4wfn.tot_electrons()
+    return -dipole_at_zerovec / nelec
+
+
+def electronic_dipole_contribution_psi4(
+    D: np.ndarray, psi4wfn: psi4.core.Wavefunction, origin: np.ndarray
+) -> np.ndarray:
+    assert isinstance(D, np.ndarray)
+    assert len(D.shape) == 2
+    assert D.shape[0] == D.shape[1]
+    assert isinstance(origin, np.ndarray)
+    assert origin.shape == (3,)
+
+    mints = psi4.core.MintsHelper(psi4wfn)
+    M_AO = np.asarray(mints.ao_dipole())
+    assert isinstance(M_AO, np.ndarray)
+    assert len(M_AO.shape) == 3
+    assert M_AO.shape[1] == M_AO.shape[2]
+    assert M_AO.shape[0] == 3
+    M100_AO = M_AO[0, :, :]
+    M010_AO = M_AO[1, :, :]
+    M001_AO = M_AO[2, :, :]
+
+    M100_MO = D * M100_AO
+    M010_MO = D * M010_AO
+    M001_MO = D * M001_AO
+
+    dipole_electronic_atomic_units = -np.asarray(
+        [np.sum(M100_MO), np.sum(M010_MO), np.sum(M001_MO)]
+    )
+    return dipole_electronic_atomic_units
+
+
+def calculate_dipole(
+    coords: np.ndarray,
+    charges: np.ndarray,
+    origin: np.ndarray,
+    D: np.ndarray,
+    psi4wfn: psi4.core.Wavefunction,
+    do_print: bool = False,
+) -> np.ndarray:
+    assert origin.shape == (3,)
+    nuclear_components_au = nuclear_dipole_contribution(coords, charges, origin)
+    electronic_components_au = electronic_dipole_contribution_psi4(D, psi4wfn, origin)
+    total_components_au = electronic_components_au + nuclear_components_au
+    if do_print:
+        nuclear_components_debye = nuclear_components_au * convfac_au_to_debye
+        electronic_components_debye = electronic_components_au * convfac_au_to_debye
+        total_components_debye = total_components_au * convfac_au_to_debye
+        nuclear_norm_au = npl.norm(nuclear_components_au)
+        electronic_norm_au = npl.norm(electronic_components_au)
+        total_norm_au = npl.norm(total_components_au)
+        nuclear_norm_debye = nuclear_norm_au * convfac_au_to_debye
+        electronic_norm_debye = electronic_norm_au * convfac_au_to_debye
+        total_norm_debye = total_norm_au * convfac_au_to_debye
+        print(" origin                        [a.u.]: {} {} {}".format(*origin))
+        print(" dipole components, electronic [a.u.]: {} {} {}".format(*electronic_components_au))
+        print(" dipole components, nuclear    [a.u.]: {} {} {}".format(*nuclear_components_au))
+        print(" dipole components, total      [a.u.]: {} {} {}".format(*total_components_au))
+        print(f" dipole moment, electronic     [a.u.]: {electronic_norm_au}")
+        print(f" dipole moment, nuclear        [a.u.]: {nuclear_norm_au}")
+        print(f" dipole moment, total          [a.u.]: {total_norm_au}")
+        print(
+            " dipole components, electronic [D]   : {} {} {}".format(*electronic_components_debye)
+        )
+        print(" dipole components, nuclear    [D]   : {} {} {}".format(*nuclear_components_debye))
+        print(" dipole components, total      [D]   : {} {} {}".format(*total_components_debye))
+        print(f" dipole moment, electronic     [D]   : {electronic_norm_debye}")
+        print(f" dipole moment, nuclear        [D]   : {nuclear_norm_debye}")
+        print(f" dipole moment, total          [D]   : {total_norm_debye}")
+    return total_components_au
+
+
+def calculate_origin(
+    origin_string: str,
+    coords: np.ndarray,
+    charges: np.ndarray,
+    D: np.ndarray,
+    psi4wfn: psi4.core.Wavefunction,
+    do_print: bool = False,
+) -> np.ndarray:
+    assert isinstance(origin_string, str)
+    origin_string = origin_string.lower()
+    assert origin_string in (
+        "explicitly-set",
+        "zero",
+        "com",
+        "centerofmass",
+        "ecc",
+        "centerofelcharge",
+        "ncc",
+        "centerofnuccharge",
+    )
+    zerovec = np.zeros(3)
+
+    if origin_string == "explicitly-set":
+        if do_print:
+            print(" --- Origin: explicitly-set ---")
+        # TODO
+        origin = zerovec
+    elif origin_string == "zero":
+        if do_print:
+            print(" --- Origin: zero ---")
+        origin = zerovec
+    elif origin_string in ("com", "centerofmass"):
+        if do_print:
+            print(" --- Origin: center of mass ---")
+        masses = get_isotopic_masses(charges[:, 0])
+        origin = calc_center_of_mass(coords, masses)
+    elif origin_string in ("ecc", "centerofelcharge"):
+        if do_print:
+            print(" --- Origin: center of electronic charge ---")
+        origin = calc_center_of_electronic_charge_psi4(D, psi4wfn)
+    elif origin_string in ("ncc", "centerofnuccharge"):
+        if do_print:
+            print(" --- Origin: center of nuclear charge ---")
+        origin = calc_center_of_nuclear_charge(coords, charges)
+    else:
+        msg = f"Unknown origin: {origin_string}"
+        raise RuntimeError(msg)
+
+    if do_print:
+        print(" Calculating the dipole at the requested origin...")
+        calculate_dipole(coords, charges, origin, D, psi4wfn, do_print)
+
+    return origin
